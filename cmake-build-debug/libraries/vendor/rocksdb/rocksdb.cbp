@@ -27,8 +27,6 @@
 					<Add option="-DSNAPPY"/>
 					<Add option="-DZLIB"/>
 					<Add option="-DBZIP2"/>
-					<Add option="-DHAVE_SSE42"/>
-					<Add option="-DROCKSDB_SUPPORT_THREAD_LOCAL"/>
 					<Add option="-DOS_LINUX"/>
 					<Add option="-DROCKSDB_PLATFORM_POSIX"/>
 					<Add option="-DROCKSDB_LIB_IO_POSIX"/>
@@ -62,8 +60,6 @@
 					<Add option="-DSNAPPY"/>
 					<Add option="-DZLIB"/>
 					<Add option="-DBZIP2"/>
-					<Add option="-DHAVE_SSE42"/>
-					<Add option="-DROCKSDB_SUPPORT_THREAD_LOCAL"/>
 					<Add option="-DOS_LINUX"/>
 					<Add option="-DROCKSDB_PLATFORM_POSIX"/>
 					<Add option="-DROCKSDB_LIB_IO_POSIX"/>
@@ -97,8 +93,6 @@
 					<Add option="-DSNAPPY"/>
 					<Add option="-DZLIB"/>
 					<Add option="-DBZIP2"/>
-					<Add option="-DHAVE_SSE42"/>
-					<Add option="-DROCKSDB_SUPPORT_THREAD_LOCAL"/>
 					<Add option="-DOS_LINUX"/>
 					<Add option="-DROCKSDB_PLATFORM_POSIX"/>
 					<Add option="-DROCKSDB_LIB_IO_POSIX"/>
@@ -133,8 +127,6 @@
 					<Add option="-DSNAPPY"/>
 					<Add option="-DZLIB"/>
 					<Add option="-DBZIP2"/>
-					<Add option="-DHAVE_SSE42"/>
-					<Add option="-DROCKSDB_SUPPORT_THREAD_LOCAL"/>
 					<Add option="-DOS_LINUX"/>
 					<Add option="-DROCKSDB_PLATFORM_POSIX"/>
 					<Add option="-DROCKSDB_LIB_IO_POSIX"/>
@@ -169,8 +161,6 @@
 					<Add option="-DSNAPPY"/>
 					<Add option="-DZLIB"/>
 					<Add option="-DBZIP2"/>
-					<Add option="-DHAVE_SSE42"/>
-					<Add option="-DROCKSDB_SUPPORT_THREAD_LOCAL"/>
 					<Add option="-DOS_LINUX"/>
 					<Add option="-DROCKSDB_PLATFORM_POSIX"/>
 					<Add option="-DROCKSDB_LIB_IO_POSIX"/>
@@ -204,8 +194,6 @@
 					<Add option="-DSNAPPY"/>
 					<Add option="-DZLIB"/>
 					<Add option="-DBZIP2"/>
-					<Add option="-DHAVE_SSE42"/>
-					<Add option="-DROCKSDB_SUPPORT_THREAD_LOCAL"/>
 					<Add option="-DOS_LINUX"/>
 					<Add option="-DROCKSDB_PLATFORM_POSIX"/>
 					<Add option="-DROCKSDB_LIB_IO_POSIX"/>
@@ -239,8 +227,6 @@
 					<Add option="-DSNAPPY"/>
 					<Add option="-DZLIB"/>
 					<Add option="-DBZIP2"/>
-					<Add option="-DHAVE_SSE42"/>
-					<Add option="-DROCKSDB_SUPPORT_THREAD_LOCAL"/>
 					<Add option="-DOS_LINUX"/>
 					<Add option="-DROCKSDB_PLATFORM_POSIX"/>
 					<Add option="-DROCKSDB_LIB_IO_POSIX"/>
@@ -274,8 +260,6 @@
 					<Add option="-DSNAPPY"/>
 					<Add option="-DZLIB"/>
 					<Add option="-DBZIP2"/>
-					<Add option="-DHAVE_SSE42"/>
-					<Add option="-DROCKSDB_SUPPORT_THREAD_LOCAL"/>
 					<Add option="-DOS_LINUX"/>
 					<Add option="-DROCKSDB_PLATFORM_POSIX"/>
 					<Add option="-DROCKSDB_LIB_IO_POSIX"/>
@@ -309,8 +293,6 @@
 					<Add option="-DSNAPPY"/>
 					<Add option="-DZLIB"/>
 					<Add option="-DBZIP2"/>
-					<Add option="-DHAVE_SSE42"/>
-					<Add option="-DROCKSDB_SUPPORT_THREAD_LOCAL"/>
 					<Add option="-DOS_LINUX"/>
 					<Add option="-DROCKSDB_PLATFORM_POSIX"/>
 					<Add option="-DROCKSDB_LIB_IO_POSIX"/>
@@ -344,8 +326,6 @@
 					<Add option="-DSNAPPY"/>
 					<Add option="-DZLIB"/>
 					<Add option="-DBZIP2"/>
-					<Add option="-DHAVE_SSE42"/>
-					<Add option="-DROCKSDB_SUPPORT_THREAD_LOCAL"/>
 					<Add option="-DOS_LINUX"/>
 					<Add option="-DROCKSDB_PLATFORM_POSIX"/>
 					<Add option="-DROCKSDB_LIB_IO_POSIX"/>
@@ -389,8 +369,6 @@
 					<Add option="-DSNAPPY"/>
 					<Add option="-DZLIB"/>
 					<Add option="-DBZIP2"/>
-					<Add option="-DHAVE_SSE42"/>
-					<Add option="-DROCKSDB_SUPPORT_THREAD_LOCAL"/>
 					<Add option="-DOS_LINUX"/>
 					<Add option="-DROCKSDB_PLATFORM_POSIX"/>
 					<Add option="-DROCKSDB_LIB_IO_POSIX"/>
@@ -424,8 +402,6 @@
 					<Add option="-DSNAPPY"/>
 					<Add option="-DZLIB"/>
 					<Add option="-DBZIP2"/>
-					<Add option="-DHAVE_SSE42"/>
-					<Add option="-DROCKSDB_SUPPORT_THREAD_LOCAL"/>
 					<Add option="-DOS_LINUX"/>
 					<Add option="-DROCKSDB_PLATFORM_POSIX"/>
 					<Add option="-DROCKSDB_LIB_IO_POSIX"/>
@@ -459,8 +435,6 @@
 					<Add option="-DSNAPPY"/>
 					<Add option="-DZLIB"/>
 					<Add option="-DBZIP2"/>
-					<Add option="-DHAVE_SSE42"/>
-					<Add option="-DROCKSDB_SUPPORT_THREAD_LOCAL"/>
 					<Add option="-DOS_LINUX"/>
 					<Add option="-DROCKSDB_PLATFORM_POSIX"/>
 					<Add option="-DROCKSDB_LIB_IO_POSIX"/>
@@ -494,8 +468,6 @@
 					<Add option="-DSNAPPY"/>
 					<Add option="-DZLIB"/>
 					<Add option="-DBZIP2"/>
-					<Add option="-DHAVE_SSE42"/>
-					<Add option="-DROCKSDB_SUPPORT_THREAD_LOCAL"/>
 					<Add option="-DOS_LINUX"/>
 					<Add option="-DROCKSDB_PLATFORM_POSIX"/>
 					<Add option="-DROCKSDB_LIB_IO_POSIX"/>
@@ -529,8 +501,6 @@
 					<Add option="-DSNAPPY"/>
 					<Add option="-DZLIB"/>
 					<Add option="-DBZIP2"/>
-					<Add option="-DHAVE_SSE42"/>
-					<Add option="-DROCKSDB_SUPPORT_THREAD_LOCAL"/>
 					<Add option="-DOS_LINUX"/>
 					<Add option="-DROCKSDB_PLATFORM_POSIX"/>
 					<Add option="-DROCKSDB_LIB_IO_POSIX"/>
@@ -564,8 +534,6 @@
 					<Add option="-DSNAPPY"/>
 					<Add option="-DZLIB"/>
 					<Add option="-DBZIP2"/>
-					<Add option="-DHAVE_SSE42"/>
-					<Add option="-DROCKSDB_SUPPORT_THREAD_LOCAL"/>
 					<Add option="-DOS_LINUX"/>
 					<Add option="-DROCKSDB_PLATFORM_POSIX"/>
 					<Add option="-DROCKSDB_LIB_IO_POSIX"/>
@@ -599,8 +567,6 @@
 					<Add option="-DSNAPPY"/>
 					<Add option="-DZLIB"/>
 					<Add option="-DBZIP2"/>
-					<Add option="-DHAVE_SSE42"/>
-					<Add option="-DROCKSDB_SUPPORT_THREAD_LOCAL"/>
 					<Add option="-DOS_LINUX"/>
 					<Add option="-DROCKSDB_PLATFORM_POSIX"/>
 					<Add option="-DROCKSDB_LIB_IO_POSIX"/>
@@ -634,8 +600,6 @@
 					<Add option="-DSNAPPY"/>
 					<Add option="-DZLIB"/>
 					<Add option="-DBZIP2"/>
-					<Add option="-DHAVE_SSE42"/>
-					<Add option="-DROCKSDB_SUPPORT_THREAD_LOCAL"/>
 					<Add option="-DOS_LINUX"/>
 					<Add option="-DROCKSDB_PLATFORM_POSIX"/>
 					<Add option="-DROCKSDB_LIB_IO_POSIX"/>
@@ -669,8 +633,6 @@
 					<Add option="-DSNAPPY"/>
 					<Add option="-DZLIB"/>
 					<Add option="-DBZIP2"/>
-					<Add option="-DHAVE_SSE42"/>
-					<Add option="-DROCKSDB_SUPPORT_THREAD_LOCAL"/>
 					<Add option="-DOS_LINUX"/>
 					<Add option="-DROCKSDB_PLATFORM_POSIX"/>
 					<Add option="-DROCKSDB_LIB_IO_POSIX"/>
@@ -704,8 +666,6 @@
 					<Add option="-DSNAPPY"/>
 					<Add option="-DZLIB"/>
 					<Add option="-DBZIP2"/>
-					<Add option="-DHAVE_SSE42"/>
-					<Add option="-DROCKSDB_SUPPORT_THREAD_LOCAL"/>
 					<Add option="-DOS_LINUX"/>
 					<Add option="-DROCKSDB_PLATFORM_POSIX"/>
 					<Add option="-DROCKSDB_LIB_IO_POSIX"/>
@@ -739,8 +699,6 @@
 					<Add option="-DSNAPPY"/>
 					<Add option="-DZLIB"/>
 					<Add option="-DBZIP2"/>
-					<Add option="-DHAVE_SSE42"/>
-					<Add option="-DROCKSDB_SUPPORT_THREAD_LOCAL"/>
 					<Add option="-DOS_LINUX"/>
 					<Add option="-DROCKSDB_PLATFORM_POSIX"/>
 					<Add option="-DROCKSDB_LIB_IO_POSIX"/>
@@ -774,8 +732,6 @@
 					<Add option="-DSNAPPY"/>
 					<Add option="-DZLIB"/>
 					<Add option="-DBZIP2"/>
-					<Add option="-DHAVE_SSE42"/>
-					<Add option="-DROCKSDB_SUPPORT_THREAD_LOCAL"/>
 					<Add option="-DOS_LINUX"/>
 					<Add option="-DROCKSDB_PLATFORM_POSIX"/>
 					<Add option="-DROCKSDB_LIB_IO_POSIX"/>
