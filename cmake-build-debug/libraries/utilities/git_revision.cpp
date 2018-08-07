@@ -1,9 +1,9 @@
 #include <stdint.h>
 #include <creativecoin/utilities/git_revision.hpp>
 
-#define CREA_GIT_REVISION_SHA "90a8b18144a4e8d7ab8803b376de75ec4484fd01"
-#define CREA_GIT_REVISION_UNIX_TIMESTAMP 1533630975
-#define CREA_GIT_REVISION_DESCRIPTION "v0.19.4rc1-562-g90a8b181"
+#define CREA_GIT_REVISION_SHA "9543574aa03fc53f11479ad8c93fb7cc5a758efa"
+#define CREA_GIT_REVISION_UNIX_TIMESTAMP 1533638929
+#define CREA_GIT_REVISION_DESCRIPTION "v0.19.4rc1-563-g9543574a"
 
 namespace creativecoin { namespace utilities {
 
