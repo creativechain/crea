@@ -1,1 +1,0 @@
-cmd='/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/secp256k1-zkp/configure;--prefix=/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/fc/vendor/secp256k1-zkp;--with-bignum=no'

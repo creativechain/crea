@@ -50,3 +50,4 @@ witness_node_data_dir
 *.egg-info/
 
 cmake-build-debug
+.idea
