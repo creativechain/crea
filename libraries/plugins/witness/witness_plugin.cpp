@@ -1,19 +1,19 @@
 
-#include <steem/plugins/block_data_export/block_data_export_plugin.hpp>
+#include <creativecoin/plugins/block_data_export/block_data_export_plugin.hpp>
 
-#include <steem/plugins/witness/witness_export_objects.hpp>
-#include <steem/plugins/witness/witness_plugin.hpp>
-#include <steem/plugins/witness/witness_objects.hpp>
+#include <creativecoin/plugins/witness/witness_export_objects.hpp>
+#include <creativecoin/plugins/witness/witness_plugin.hpp>
+#include <creativecoin/plugins/witness/witness_objects.hpp>
 
-#include <steem/chain/database_exceptions.hpp>
-#include <steem/chain/account_object.hpp>
-#include <steem/chain/comment_object.hpp>
-#include <steem/chain/witness_objects.hpp>
-#include <steem/chain/index.hpp>
-#include <steem/chain/util/impacted.hpp>
+#include <creativecoin/chain/database_exceptions.hpp>
+#include <creativecoin/chain/account_object.hpp>
+#include <creativecoin/chain/comment_object.hpp>
+#include <creativecoin/chain/witness_objects.hpp>
+#include <creativecoin/chain/index.hpp>
+#include <creativecoin/chain/util/impacted.hpp>
 
-#include <steem/utilities/key_conversion.hpp>
-#include <steem/utilities/plugin_utilities.hpp>
+#include <creativecoin/utilities/key_conversion.hpp>
+#include <creativecoin/utilities/plugin_utilities.hpp>
 
 #include <fc/io/json.hpp>
 #include <fc/macros.hpp>
@@ -28,12 +28,12 @@
 #define DISTANCE_CALC_PRECISION (10000)
 
 
-namespace steem { namespace plugins { namespace witness {
+namespace creativecoin { namespace plugins { namespace witness {
 
 using chain::plugin_exception;
 using std::string;
 using std::vector;
-using steem::plugins::block_data_export::block_data_export_plugin;
+using creativecoin::plugins::block_data_export::block_data_export_plugin;
 
 namespace bpo = boost::program_options;
 
@@ -44,7 +44,7 @@ void new_chain_banner( const chain::database& db )
       "********************************\n"
       "*                              *\n"
       "*   ------- NEW CHAIN ------   *\n"
-      "*   -   Welcome to Steem!  -   *\n"
+      "*   -   Welcome to Creativecoin!  -   *\n"
       "*   ------------------------   *\n"
       "*                              *\n"
       "********************************\n"
@@ -77,8 +77,8 @@ namespace detail {
    public:
       witness_plugin_impl( boost::asio::io_service& io ) :
          _timer(io),
-         _chain_plugin( appbase::app().get_plugin< steem::plugins::chain::chain_plugin >() ),
-         _db( appbase::app().get_plugin< steem::plugins::chain::chain_plugin >().db() )
+         _chain_plugin( appbase::app().get_plugin< creativecoin::plugins::chain::chain_plugin >() ),
+         _db( appbase::app().get_plugin< creativecoin::plugins::chain::chain_plugin >().db() )
          {}
 
       void on_pre_apply_block( const chain::block_notification& note );
@@ -94,14 +94,14 @@ namespace detail {
       block_production_condition::block_production_condition_enum maybe_produce_block(fc::mutable_variant_object& capture);
 
       bool _production_enabled = false;
-      uint32_t _required_witness_participation = 33 * STEEM_1_PERCENT;
+      uint32_t _required_witness_participation = 33 * CREA_1_PERCENT;
       uint32_t _production_skip_flags = chain::database::skip_nothing;
 
-      std::map< steem::protocol::public_key_type, fc::ecc::private_key > _private_keys;
-      std::set< steem::protocol::account_name_type >                     _witnesses;
+      std::map< creativecoin::protocol::public_key_type, fc::ecc::private_key > _private_keys;
+      std::set< creativecoin::protocol::account_name_type >                     _witnesses;
       boost::asio::deadline_timer                                        _timer;
 
-      std::set< steem::protocol::account_name_type >                     _dupe_customs;
+      std::set< creativecoin::protocol::account_name_type >                     _dupe_customs;
 
       plugins::chain::chain_plugin& _chain_plugin;
       chain::database&              _db;
@@ -121,7 +121,7 @@ namespace detail {
       const comment_object& _c;
       const database& _db;
 
-#ifdef STEEM_ENABLE_SMT
+#ifdef CREA_ENABLE_SMT
       void operator()( const allowed_vote_assets& va) const
       {
          FC_TODO("To be implemented  suppport for allowed_vote_assets");
@@ -130,7 +130,7 @@ namespace detail {
 
       void operator()( const comment_payout_beneficiaries& cpb )const
       {
-         STEEM_ASSERT( cpb.beneficiaries.size() <= 8,
+         CREA_ASSERT( cpb.beneficiaries.size() <= 8,
             plugin_exception,
             "Cannot specify more than 8 beneficiaries." );
       }
@@ -165,27 +165,27 @@ namespace detail {
       for( auto& key_weight_pair : auth.owner.key_auths )
       {
          for( auto& key : keys )
-            STEEM_ASSERT( key_weight_pair.first != key,  plugin_exception,
+            CREA_ASSERT( key_weight_pair.first != key,  plugin_exception,
                "Detected private owner key in memo field. You should change your owner keys." );
       }
 
       for( auto& key_weight_pair : auth.active.key_auths )
       {
          for( auto& key : keys )
-            STEEM_ASSERT( key_weight_pair.first != key,  plugin_exception,
+            CREA_ASSERT( key_weight_pair.first != key,  plugin_exception,
                "Detected private active key in memo field. You should change your active keys." );
       }
 
       for( auto& key_weight_pair : auth.posting.key_auths )
       {
          for( auto& key : keys )
-            STEEM_ASSERT( key_weight_pair.first != key,  plugin_exception,
+            CREA_ASSERT( key_weight_pair.first != key,  plugin_exception,
                "Detected private posting key in memo field. You should change your posting keys." );
       }
 
       const auto& memo_key = account.memo_key;
       for( auto& key : keys )
-         STEEM_ASSERT( memo_key != key,  plugin_exception,
+         CREA_ASSERT( memo_key != key,  plugin_exception,
             "Detected private memo key in memo field. You should change your memo key." );
    }
 
@@ -214,14 +214,14 @@ namespace detail {
 
       void operator()( const comment_operation& o )const
       {
-         if( o.parent_author != STEEM_ROOT_POST_PARENT )
+         if( o.parent_author != CREA_ROOT_POST_PARENT )
          {
             const auto& parent = _db.find_comment( o.parent_author, o.parent_permlink );
 
             if( parent != nullptr )
-            STEEM_ASSERT( parent->depth < STEEM_SOFT_MAX_COMMENT_DEPTH,
+            CREA_ASSERT( parent->depth < CREA_SOFT_MAX_COMMENT_DEPTH,
                plugin_exception,
-               "Comment is nested ${x} posts deep, maximum depth is ${y}.", ("x",parent->depth)("y",STEEM_SOFT_MAX_COMMENT_DEPTH) );
+               "Comment is nested ${x} posts deep, maximum depth is ${y}.", ("x",parent->depth)("y",CREA_SOFT_MAX_COMMENT_DEPTH) );
          }
       }
 
@@ -301,7 +301,7 @@ namespace detail {
 
             for( auto& account : impacted )
                if( _db.is_producing() )
-                  STEEM_ASSERT( _dupe_customs.insert( account ).second, plugin_exception,
+                  CREA_ASSERT( _dupe_customs.insert( account ).second, plugin_exception,
                      "Account ${a} already submitted a custom json operation this block.",
                      ("a", account) );
          }
@@ -324,10 +324,10 @@ namespace detail {
          _db.create< reserve_ratio_object >( [&]( reserve_ratio_object& r )
          {
             r.average_block_size = 0;
-            r.current_reserve_ratio = STEEM_MAX_RESERVE_RATIO * RESERVE_RATIO_PRECISION;
-            r.max_virtual_bandwidth = ( static_cast<uint128_t>( STEEM_MAX_BLOCK_SIZE) * STEEM_MAX_RESERVE_RATIO
-                                       * STEEM_BANDWIDTH_PRECISION * STEEM_BANDWIDTH_AVERAGE_WINDOW_SECONDS )
-                                       / STEEM_BLOCK_INTERVAL;
+            r.current_reserve_ratio = CREA_MAX_RESERVE_RATIO * RESERVE_RATIO_PRECISION;
+            r.max_virtual_bandwidth = ( static_cast<uint128_t>( CREA_MAX_BLOCK_SIZE) * CREA_MAX_RESERVE_RATIO
+                                       * CREA_BANDWIDTH_PRECISION * CREA_BANDWIDTH_AVERAGE_WINDOW_SECONDS )
+                                       / CREA_BLOCK_INTERVAL;
          });
          reserve_ratio_ptr = &_db.get( reserve_ratio_id_type() );
       }
@@ -369,8 +369,8 @@ namespace detail {
                   // By default, we should always slowly increase the reserve ratio.
                   r.current_reserve_ratio += std::max( RESERVE_RATIO_MIN_INCREMENT, ( r.current_reserve_ratio * distance ) / ( distance - DISTANCE_CALC_PRECISION ) );
 
-                  if( r.current_reserve_ratio > STEEM_MAX_RESERVE_RATIO * RESERVE_RATIO_PRECISION )
-                     r.current_reserve_ratio = STEEM_MAX_RESERVE_RATIO * RESERVE_RATIO_PRECISION;
+                  if( r.current_reserve_ratio > CREA_MAX_RESERVE_RATIO * RESERVE_RATIO_PRECISION )
+                     r.current_reserve_ratio = CREA_MAX_RESERVE_RATIO * RESERVE_RATIO_PRECISION;
                }
 
                if( old_reserve_ratio != r.current_reserve_ratio )
@@ -382,14 +382,14 @@ namespace detail {
                }
 
                r.max_virtual_bandwidth = ( uint128_t( max_block_size ) * uint128_t( r.current_reserve_ratio )
-                                          * uint128_t( STEEM_BANDWIDTH_PRECISION * STEEM_BANDWIDTH_AVERAGE_WINDOW_SECONDS ) )
-                                          / ( STEEM_BLOCK_INTERVAL * RESERVE_RATIO_PRECISION );
+                                          * uint128_t( CREA_BANDWIDTH_PRECISION * CREA_BANDWIDTH_AVERAGE_WINDOW_SECONDS ) )
+                                          / ( CREA_BLOCK_INTERVAL * RESERVE_RATIO_PRECISION );
             }
          });
       }
 
       std::shared_ptr< exp_witness_data_object > export_data =
-         steem::plugins::block_data_export::find_export_data< exp_witness_data_object >( STEEM_WITNESS_PLUGIN_NAME );
+         creativecoin::plugins::block_data_export::find_export_data< exp_witness_data_object >( CREA_WITNESS_PLUGIN_NAME );
       if( export_data )
          export_data->reserve_ratio = exp_reserve_ratio_object( *reserve_ratio_ptr, block_size );
 
@@ -417,14 +417,14 @@ namespace detail {
          }
 
          share_type new_bandwidth;
-         share_type trx_bandwidth = trx_size * STEEM_BANDWIDTH_PRECISION;
+         share_type trx_bandwidth = trx_size * CREA_BANDWIDTH_PRECISION;
          auto delta_time = ( _db.head_block_time() - band->last_bandwidth_update ).to_seconds();
 
-         if( delta_time > STEEM_BANDWIDTH_AVERAGE_WINDOW_SECONDS )
+         if( delta_time > CREA_BANDWIDTH_AVERAGE_WINDOW_SECONDS )
             new_bandwidth = 0;
          else
-            new_bandwidth = ( ( ( STEEM_BANDWIDTH_AVERAGE_WINDOW_SECONDS - delta_time ) * fc::uint128( band->average_bandwidth.value ) )
-               / STEEM_BANDWIDTH_AVERAGE_WINDOW_SECONDS ).to_uint64();
+            new_bandwidth = ( ( ( CREA_BANDWIDTH_AVERAGE_WINDOW_SECONDS - delta_time ) * fc::uint128( band->average_bandwidth.value ) )
+               / CREA_BANDWIDTH_AVERAGE_WINDOW_SECONDS ).to_uint64();
 
          new_bandwidth += trx_bandwidth;
 
@@ -443,15 +443,15 @@ namespace detail {
          has_bandwidth = ( account_vshares * max_virtual_bandwidth ) > ( account_average_bandwidth * total_vshares );
 
          if( _db.is_producing() )
-            STEEM_ASSERT( has_bandwidth,  plugin_exception,
-               "Account: ${account} bandwidth limit exceeded. Please wait to transact or power up STEEM.",
+            CREA_ASSERT( has_bandwidth,  plugin_exception,
+               "Account: ${account} bandwidth limit exceeded. Please wait to transact or power up CREA.",
                ("account", a.name)
                ("account_vshares", account_vshares)
                ("account_average_bandwidth", account_average_bandwidth)
                ("max_virtual_bandwidth", max_virtual_bandwidth)
                ("total_vesting_shares", total_vshares) );
          std::shared_ptr< exp_witness_data_object > export_data =
-            steem::plugins::block_data_export::find_export_data< exp_witness_data_object >( STEEM_WITNESS_PLUGIN_NAME );
+            creativecoin::plugins::block_data_export::find_export_data< exp_witness_data_object >( CREA_WITNESS_PLUGIN_NAME );
          if( export_data )
             export_data->bandwidth_updates.emplace_back( *band, trx_size );
       }
@@ -471,9 +471,9 @@ namespace detail {
 
    block_production_condition::block_production_condition_enum witness_plugin_impl::block_production_loop()
    {
-      if( fc::time_point::now() < fc::time_point(STEEM_GENESIS_TIME) )
+      if( fc::time_point::now() < fc::time_point(CREA_GENESIS_TIME) )
       {
-         wlog( "waiting until genesis time to produce block: ${t}", ("t",STEEM_GENESIS_TIME) );
+         wlog( "waiting until genesis time to produce block: ${t}", ("t",CREA_GENESIS_TIME) );
          schedule_production_loop();
          return block_production_condition::wait_for_genesis;
       }
@@ -592,7 +592,7 @@ namespace detail {
       uint32_t prate = _db.witness_participation_rate();
       if( prate < _required_witness_participation )
       {
-         capture("pct", uint32_t(100*uint64_t(prate) / STEEM_1_PERCENT));
+         capture("pct", uint32_t(100*uint64_t(prate) / CREA_1_PERCENT));
          return block_production_condition::low_participation;
       }
 
@@ -610,7 +610,7 @@ namespace detail {
          );
       capture("n", block.block_num())("t", block.timestamp)("c", now);
 
-      appbase::app().get_plugin< steem::plugins::p2p::p2p_plugin >().broadcast_block( block );
+      appbase::app().get_plugin< creativecoin::plugins::p2p::p2p_plugin >().broadcast_block( block );
       return block_production_condition::produced;
    }
 
@@ -643,18 +643,18 @@ void witness_plugin::plugin_initialize(const boost::program_options::variables_m
    if( export_plugin != nullptr )
    {
       ilog( "Registering witness export data factory" );
-      export_plugin->register_export_data_factory( STEEM_WITNESS_PLUGIN_NAME,
+      export_plugin->register_export_data_factory( CREA_WITNESS_PLUGIN_NAME,
          []() -> std::shared_ptr< exportable_block_data > { return std::make_shared< exp_witness_data_object >(); } );
    }
 
-   STEEM_LOAD_VALUE_SET( options, "witness", my->_witnesses, steem::protocol::account_name_type )
+   CREA_LOAD_VALUE_SET( options, "witness", my->_witnesses, creativecoin::protocol::account_name_type )
 
    if( options.count("private-key") )
    {
       const std::vector<std::string> keys = options["private-key"].as<std::vector<std::string>>();
       for (const std::string& wif_key : keys )
       {
-         fc::optional<fc::ecc::private_key> private_key = steem::utilities::wif_to_key(wif_key);
+         fc::optional<fc::ecc::private_key> private_key = creativecoin::utilities::wif_to_key(wif_key);
          FC_ASSERT( private_key.valid(), "unable to parse private key" );
          my->_private_keys[private_key->get_public_key()] = *private_key;
       }
@@ -664,7 +664,7 @@ void witness_plugin::plugin_initialize(const boost::program_options::variables_m
 
    if( options.count( "required-participation" ) )
    {
-      my->_required_witness_participation = STEEM_1_PERCENT * options.at( "required-participation" ).as< uint32_t >();
+      my->_required_witness_participation = CREA_1_PERCENT * options.at( "required-participation" ).as< uint32_t >();
    }
 
    my->_pre_apply_block_conn = my->_db.add_post_apply_block_handler(
@@ -688,12 +688,12 @@ void witness_plugin::plugin_initialize(const boost::program_options::variables_m
 void witness_plugin::plugin_startup()
 { try {
    ilog("witness plugin:  plugin_startup() begin" );
-   chain::database& d = appbase::app().get_plugin< steem::plugins::chain::chain_plugin >().db();
+   chain::database& d = appbase::app().get_plugin< creativecoin::plugins::chain::chain_plugin >().db();
 
    if( !my->_witnesses.empty() )
    {
       ilog( "Launching block production for ${n} witnesses.", ("n", my->_witnesses.size()) );
-      appbase::app().get_plugin< steem::plugins::p2p::p2p_plugin >().set_block_production( true );
+      appbase::app().get_plugin< creativecoin::plugins::p2p::p2p_plugin >().set_block_production( true );
       if( my->_production_enabled )
       {
          if( d.head_block_num() == 0 )
@@ -724,4 +724,4 @@ void witness_plugin::plugin_shutdown()
    }
 }
 
-} } } // steem::plugins::witness
+} } } // creativecoin::plugins::witness

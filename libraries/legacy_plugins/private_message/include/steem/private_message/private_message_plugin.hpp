@@ -23,15 +23,15 @@
  */
 #pragma once
 
-#include <steem/app/plugin.hpp>
-#include <steem/chain/database.hpp>
+#include <creativecoin/app/plugin.hpp>
+#include <creativecoin/chain/database.hpp>
 
 #include <boost/multi_index/composite_key.hpp>
 
 #include <fc/thread/future.hpp>
 #include <fc/api.hpp>
 
-namespace steem { namespace private_message {
+namespace creativecoin { namespace private_message {
 using namespace chain;
 using app::application;
 
@@ -45,15 +45,15 @@ using app::application;
 // various template automagic depends on them being known at compile
 // time.
 //
-#ifndef STEEM_PRIVATE_MESSAGE_SPACE_ID
-#define STEEM_PRIVATE_MESSAGE_SPACE_ID 6
+#ifndef CREA_PRIVATE_MESSAGE_SPACE_ID
+#define CREA_PRIVATE_MESSAGE_SPACE_ID 6
 #endif
 
-#define STEEM_PRIVATE_MESSAGE_COP_ID 777
+#define CREA_PRIVATE_MESSAGE_COP_ID 777
 
 enum private_message_object_type
 {
-   message_object_type = ( STEEM_PRIVATE_MESSAGE_SPACE_ID << 8 )
+   message_object_type = ( CREA_PRIVATE_MESSAGE_SPACE_ID << 8 )
 };
 
 
@@ -167,7 +167,7 @@ typedef multi_index_container<
  *   by the posting key.
  *
  */
-class private_message_plugin : public steem::app::plugin
+class private_message_plugin : public creativecoin::app::plugin
 {
    public:
       private_message_plugin( application* app );
@@ -206,15 +206,15 @@ class private_message_api : public std::enable_shared_from_this<private_message_
       app::application* _app = nullptr;
 };
 
-} } //steem::private_message
+} } //creativecoin::private_message
 
-FC_API( steem::private_message::private_message_api, (get_inbox)(get_outbox) );
+FC_API( creativecoin::private_message::private_message_api, (get_inbox)(get_outbox) );
 
-FC_REFLECT( steem::private_message::message_body, (thread_start)(subject)(body)(json_meta)(cc) );
+FC_REFLECT( creativecoin::private_message::message_body, (thread_start)(subject)(body)(json_meta)(cc) );
 
-FC_REFLECT( steem::private_message::message_object, (id)(from)(to)(from_memo_key)(to_memo_key)(sent_time)(receive_time)(checksum)(encrypted_message) );
-CHAINBASE_SET_INDEX_TYPE( steem::private_message::message_object, steem::private_message::message_index );
+FC_REFLECT( creativecoin::private_message::message_object, (id)(from)(to)(from_memo_key)(to_memo_key)(sent_time)(receive_time)(checksum)(encrypted_message) );
+CHAINBASE_SET_INDEX_TYPE( creativecoin::private_message::message_object, creativecoin::private_message::message_index );
 
-FC_REFLECT( steem::private_message::message_api_obj, (id)(from)(to)(from_memo_key)(to_memo_key)(sent_time)(receive_time)(checksum)(encrypted_message) );
+FC_REFLECT( creativecoin::private_message::message_api_obj, (id)(from)(to)(from_memo_key)(to_memo_key)(sent_time)(receive_time)(checksum)(encrypted_message) );
 
-FC_REFLECT_DERIVED( steem::private_message::extended_message_object, (steem::private_message::message_api_obj), (message) );
+FC_REFLECT_DERIVED( creativecoin::private_message::extended_message_object, (creativecoin::private_message::message_api_obj), (message) );

@@ -1,6 +1,6 @@
 
-#include <steem/protocol/transaction.hpp>
-#include <steem/protocol/transaction_util.hpp>
+#include <creativecoin/protocol/transaction.hpp>
+#include <creativecoin/protocol/transaction_util.hpp>
 
 #include <fc/io/raw.hpp>
 #include <fc/bitutil.hpp>
@@ -8,7 +8,7 @@
 
 #include <algorithm>
 
-namespace steem { namespace protocol {
+namespace creativecoin { namespace protocol {
 
 digest_type signed_transaction::merkle_digest()const
 {
@@ -39,7 +39,7 @@ void transaction::validate() const
       operation_validate(op);
 }
 
-steem::protocol::transaction_id_type steem::protocol::transaction::id() const
+creativecoin::protocol::transaction_id_type creativecoin::protocol::transaction::id() const
 {
    auto h = digest();
    transaction_id_type result;
@@ -47,14 +47,14 @@ steem::protocol::transaction_id_type steem::protocol::transaction::id() const
    return result;
 }
 
-const signature_type& steem::protocol::signed_transaction::sign(const private_key_type& key, const chain_id_type& chain_id)
+const signature_type& creativecoin::protocol::signed_transaction::sign(const private_key_type& key, const chain_id_type& chain_id)
 {
    digest_type h = sig_digest( chain_id );
    signatures.push_back(key.sign_compact(h));
    return signatures.back();
 }
 
-signature_type steem::protocol::signed_transaction::sign(const private_key_type& key, const chain_id_type& chain_id)const
+signature_type creativecoin::protocol::signed_transaction::sign(const private_key_type& key, const chain_id_type& chain_id)const
 {
    digest_type::encoder enc;
    fc::raw::pack( enc, chain_id );
@@ -88,7 +88,7 @@ flat_set<public_key_type> signed_transaction::get_signature_keys( const chain_id
    flat_set<public_key_type> result;
    for( const auto&  sig : signatures )
    {
-      STEEM_ASSERT(
+      CREA_ASSERT(
          result.insert( fc::ecc::public_key(sig,d) ).second,
          tx_duplicate_sig,
          "Duplicate Signature detected" );
@@ -172,7 +172,7 @@ set<public_key_type> signed_transaction::minimize_required_signatures(
       result.erase( k );
       try
       {
-         steem::protocol::verify_authority( operations, result, get_active, get_owner, get_posting, max_recursion );
+         creativecoin::protocol::verify_authority( operations, result, get_active, get_owner, get_posting, max_recursion );
          continue;  // element stays erased if verify_authority is ok
       }
       catch( const tx_missing_owner_auth& e ) {}
@@ -191,7 +191,7 @@ void signed_transaction::verify_authority(
    const authority_getter& get_posting,
    uint32_t max_recursion )const
 { try {
-   steem::protocol::verify_authority( operations, get_signature_keys( chain_id ), get_active, get_owner, get_posting, max_recursion );
+   creativecoin::protocol::verify_authority( operations, get_signature_keys( chain_id ), get_active, get_owner, get_posting, max_recursion );
 } FC_CAPTURE_AND_RETHROW( (*this) ) }
 
-} } // steem::protocol
+} } // creativecoin::protocol

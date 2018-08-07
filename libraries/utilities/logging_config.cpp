@@ -1,4 +1,4 @@
-#include <steem/utilities/logging_config.hpp>
+#include <creativecoin/utilities/logging_config.hpp>
 
 #include <fc/exception/exception.hpp>
 
@@ -8,7 +8,7 @@
 
 #include <vector>
 
-namespace steem { namespace utilities {
+namespace creativecoin { namespace utilities {
 
 using std::string;
 using std::vector;

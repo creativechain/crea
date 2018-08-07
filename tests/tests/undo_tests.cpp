@@ -1,16 +1,16 @@
 #ifdef IS_TEST_NET
 #include <boost/test/unit_test.hpp>
 
-#include <steem/protocol/exceptions.hpp>
-#include <steem/protocol/hardfork.hpp>
+#include <creativecoin/protocol/exceptions.hpp>
+#include <creativecoin/protocol/hardfork.hpp>
 
-#include <steem/chain/database.hpp>
-#include <steem/chain/database_exceptions.hpp>
-#include <steem/chain/steem_objects.hpp>
+#include <creativecoin/chain/database.hpp>
+#include <creativecoin/chain/database_exceptions.hpp>
+#include <creativecoin/chain/creativecoin_objects.hpp>
 
-#include <steem/chain/util/reward.hpp>
+#include <creativecoin/chain/util/reward.hpp>
 
-#include <steem/plugins/witness/witness_objects.hpp>
+#include <creativecoin/plugins/witness/witness_objects.hpp>
 
 #include <fc/macros.hpp>
 #include <fc/crypto/digest.hpp>
@@ -22,9 +22,9 @@
 #include <iostream>
 #include <stdexcept>
 
-using namespace steem;
-using namespace steem::chain;
-using namespace steem::protocol;
+using namespace creativecoin;
+using namespace creativecoin::chain;
+using namespace creativecoin::protocol;
 using fc::string;
 
 BOOST_FIXTURE_TEST_SUITE( undo_tests, clean_database_fixture )
@@ -159,7 +159,7 @@ BOOST_AUTO_TEST_CASE( undo_object_disapear )
             It's necessary to write fix, according to issue #2154.
       */
       //Temporary. After fix, this line should be enabled.
-      //STEEM_REQUIRE_THROW( ao.modify( obj1, [&]( account_object& obj ){ obj.name = "name00"; obj.proxy = "proxy00"; } ), boost::exception );
+      //CREA_REQUIRE_THROW( ao.modify( obj1, [&]( account_object& obj ){ obj.name = "name00"; obj.proxy = "proxy00"; } ), boost::exception );
       
       //Temporary. After fix, this line should be removed.
       ao.modify( obj1, [&]( account_object& obj ){ obj.name = "nameXYZ"; obj.proxy = "proxyXYZ"; } );
@@ -186,7 +186,7 @@ BOOST_AUTO_TEST_CASE( undo_key_collision )
       udb.undo_begin();
 
       ao.create( [&]( account_object& obj ){ obj.name = "name00"; } );
-      STEEM_REQUIRE_THROW( ao.create( [&]( account_object& obj ){ obj.name = "name00"; } ), boost::exception );
+      CREA_REQUIRE_THROW( ao.create( [&]( account_object& obj ){ obj.name = "name00"; } ), boost::exception );
 
       udb.undo_end();
       BOOST_REQUIRE( ao.check< account_index >() );
@@ -412,8 +412,8 @@ BOOST_AUTO_TEST_CASE( undo_generate_blocks )
       };
       _data data[4]=
       {
-        _data( "bob", "post4", std::string(STEEM_ROOT_POST_PARENT), "pl4", "t4", "b4" ),
-        _data( "alice", "post", std::string(STEEM_ROOT_POST_PARENT), "pl", "t", "b" ),
+        _data( "bob", "post4", std::string(CREA_ROOT_POST_PARENT), "pl4", "t4", "b4" ),
+        _data( "alice", "post", std::string(CREA_ROOT_POST_PARENT), "pl", "t", "b" ),
         _data( "dan", "post2", "bob", "post4", "t2", "b2" ),
         _data( "chuck", "post3", "bob", "post4", "t3", "b3" )
       };
@@ -431,7 +431,7 @@ BOOST_AUTO_TEST_CASE( undo_generate_blocks )
       data[0].fill( op );
       tx.operations.push_back( op );
 
-      tx.set_expiration( db->head_block_time() + STEEM_MAX_TIME_UNTIL_EXPIRATION );
+      tx.set_expiration( db->head_block_time() + CREA_MAX_TIME_UNTIL_EXPIRATION );
       tx.sign( bob_private_key, db->get_chain_id() );
       db->push_transaction( tx, 0 );
       generate_blocks( 1 );
@@ -448,7 +448,7 @@ BOOST_AUTO_TEST_CASE( undo_generate_blocks )
       data[1].fill( op );
       tx.operations.push_back( op );
 
-      tx.set_expiration( db->head_block_time() + STEEM_MAX_TIME_UNTIL_EXPIRATION );
+      tx.set_expiration( db->head_block_time() + CREA_MAX_TIME_UNTIL_EXPIRATION );
       tx.sign( alice_private_key, db->get_chain_id() );
 
       db->push_transaction( tx, 0 );
@@ -468,7 +468,7 @@ BOOST_AUTO_TEST_CASE( undo_generate_blocks )
       data[3].fill( op );
       tx.operations.push_back( op );
 
-      tx.set_expiration( db->head_block_time() + STEEM_MAX_TIME_UNTIL_EXPIRATION );
+      tx.set_expiration( db->head_block_time() + CREA_MAX_TIME_UNTIL_EXPIRATION );
       tx.sign( dan_private_key, db->get_chain_id() );
       tx.sign( chuck_private_key, db->get_chain_id() );
 

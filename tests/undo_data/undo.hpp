@@ -1,9 +1,9 @@
 #pragma once
 
-#include <steem/chain/database.hpp>
+#include <creativecoin/chain/database.hpp>
 #include <fstream>
 
-namespace steem { namespace chain {
+namespace creativecoin { namespace chain {
 
    namespace u_types
    {

@@ -1,24 +1,24 @@
-#include <steem/plugins/reputation/reputation_plugin.hpp>
-#include <steem/plugins/reputation/reputation_objects.hpp>
+#include <creativecoin/plugins/reputation/reputation_plugin.hpp>
+#include <creativecoin/plugins/reputation/reputation_objects.hpp>
 
-#include <steem/chain/util/impacted.hpp>
+#include <creativecoin/chain/util/impacted.hpp>
 
-#include <steem/protocol/config.hpp>
+#include <creativecoin/protocol/config.hpp>
 
-#include <steem/chain/database.hpp>
-#include <steem/chain/index.hpp>
-#include <steem/chain/operation_notification.hpp>
-#include <steem/chain/account_object.hpp>
-#include <steem/chain/comment_object.hpp>
+#include <creativecoin/chain/database.hpp>
+#include <creativecoin/chain/index.hpp>
+#include <creativecoin/chain/operation_notification.hpp>
+#include <creativecoin/chain/account_object.hpp>
+#include <creativecoin/chain/comment_object.hpp>
 
 #include <fc/smart_ref_impl.hpp>
 #include <fc/thread/thread.hpp>
 
 #include <memory>
 
-namespace steem { namespace plugins { namespace reputation {
+namespace creativecoin { namespace plugins { namespace reputation {
 
-using namespace steem::protocol;
+using namespace creativecoin::protocol;
 
 namespace detail {
 
@@ -26,7 +26,7 @@ class reputation_plugin_impl
 {
    public:
       reputation_plugin_impl( reputation_plugin& _plugin ) :
-         _db( appbase::app().get_plugin< steem::plugins::chain::chain_plugin >().db() ),
+         _db( appbase::app().get_plugin< creativecoin::plugins::chain::chain_plugin >().db() ),
          _self( _plugin ) {}
       ~reputation_plugin_impl() {}
 
@@ -216,4 +216,4 @@ void reputation_plugin::plugin_shutdown()
    chain::util::disconnect_signal( my->_post_apply_operation_conn );
 }
 
-} } } // steem::plugins::reputation
+} } } // creativecoin::plugins::reputation

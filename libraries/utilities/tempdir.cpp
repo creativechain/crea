@@ -22,18 +22,18 @@
  * THE SOFTWARE.
  */
 
-#include <steem/utilities/tempdir.hpp>
+#include <creativecoin/utilities/tempdir.hpp>
 
 #include <cstdlib>
 
-namespace steem { namespace utilities {
+namespace creativecoin { namespace utilities {
 
 fc::path temp_directory_path()
 {
-   const char* steemit_tempdir = getenv("STEEM_TEMPDIR");
-   if( steemit_tempdir != nullptr )
-      return fc::path( steemit_tempdir );
-   return fc::temp_directory_path() / "steem-tmp";
+   const char* creativecoin_tempdir = getenv("CREA_TEMPDIR");
+   if( creativecoin_tempdir != nullptr )
+      return fc::path( creativecoin_tempdir );
+   return fc::temp_directory_path() / "creativecoin-tmp";
 }
 
-} } // steem::utilities
+} } // creativecoin::utilities

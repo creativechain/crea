@@ -8,12 +8,12 @@
 #include <fc/reflect/reflect.hpp>
 #include <fc/variant.hpp>
 
-#include <steem/utilities/key_conversion.hpp>
+#include <creativecoin/utilities/key_conversion.hpp>
 
-#include <steem/protocol/types.hpp>
-#include <steem/protocol/authority.hpp>
+#include <creativecoin/protocol/types.hpp>
+#include <creativecoin/protocol/authority.hpp>
 
-#include <steem/chain/shared_authority.hpp>
+#include <creativecoin/chain/shared_authority.hpp>
 
 #include <boost/interprocess/managed_mapped_file.hpp>
 #include <boost/interprocess/allocators/allocator.hpp>
@@ -98,7 +98,7 @@ struct book
      template<typename Constructor, typename Allocator>
      book( Constructor&& c, const Allocator& al )
      :name(al),author(al),pages(0),prize(0),
-     auth( allocator<steem::chain::shared_authority >( al )),
+     auth( allocator<creativecoin::chain::shared_authority >( al )),
      deq( allocator<shared_string>( al ) )
      {
         c( *this );
@@ -108,12 +108,12 @@ struct book
      shared_string author;
      int32_t                          pages;
      int32_t                          prize;
-     steem::chain::shared_authority auth;
+     creativecoin::chain::shared_authority auth;
      t_deque< shared_string > deq;
 
      book(const shared_string::allocator_type& al):
      name(al),author(al),pages(0),prize(0),
-     auth( allocator<steem::chain::shared_authority >( al )),
+     auth( allocator<creativecoin::chain::shared_authority >( al )),
      deq( allocator<shared_string>( al ) )
      {}
 
@@ -174,7 +174,7 @@ int main(int argc, char** argv, char** envp)
    }
 
    //b.pages = pbc->size();
-   //b.auth = steem::chain::authority( 1, "dan", pbc->size() );
+   //b.auth = creativecoin::chain::authority( 1, "dan", pbc->size() );
 #ifndef ENABLE_STD_ALLOCATOR
    pbc->emplace( [&]( book& b ) {
                  b.name = "emplace name";

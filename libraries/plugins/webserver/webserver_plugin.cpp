@@ -1,6 +1,6 @@
-#include <steem/plugins/webserver/webserver_plugin.hpp>
+#include <creativecoin/plugins/webserver/webserver_plugin.hpp>
 
-#include <steem/plugins/chain/chain_plugin.hpp>
+#include <creativecoin/plugins/chain/chain_plugin.hpp>
 
 #include <fc/network/ip.hpp>
 #include <fc/log/logger_config.hpp>
@@ -24,7 +24,7 @@
 #include <memory>
 #include <iostream>
 
-namespace steem { namespace plugins { namespace webserver {
+namespace creativecoin { namespace plugins { namespace webserver {
 
 namespace asio = boost::asio;
 
@@ -375,4 +375,4 @@ void webserver_plugin::plugin_shutdown()
    my->stop_webserver();
 }
 
-} } } // steem::plugins::webserver
+} } } // creativecoin::plugins::webserver

@@ -1,0 +1,2383 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6"/>
+	<Project>
+		<Option title="rocksdb"/>
+		<Option makefile_is_custom="1"/>
+		<Option compiler="gcc"/>
+		<Option virtualFolders="CMake Files\;CMake Files\libraries\;CMake Files\libraries\appbase\;CMake Files\libraries\appbase\examples\;CMake Files\libraries\fc\;CMake Files\libraries\fc\CMakeModules\;CMake Files\libraries\fc\GitVersionGen\;CMake Files\libraries\fc\src\;CMake Files\libraries\fc\vendor\;CMake Files\libraries\fc\vendor\websocketpp\;CMake Files\libraries\fc\vendor\websocketpp\cmake\;CMake Files\libraries\fc\vendor\websocketpp\websocketpp\;CMake Files\libraries\fc\vendor\equihash\;CMake Files\libraries\fc\tests\;CMake Files\libraries\chainbase\;CMake Files\libraries\chainbase\test\;CMake Files\libraries\vendor\;CMake Files\libraries\vendor\rocksdb\;CMake Files\libraries\vendor\rocksdb\cmake\;CMake Files\libraries\vendor\rocksdb\cmake\modules\;CMake Files\libraries\vendor\rocksdb\util\;CMake Files\libraries\vendor\rocksdb\third-party\;CMake Files\libraries\vendor\rocksdb\third-party\gtest-1.7.0\;CMake Files\libraries\vendor\rocksdb\third-party\gtest-1.7.0\fused-src\;CMake Files\libraries\vendor\rocksdb\third-party\gtest-1.7.0\fused-src\gtest\;CMake Files\libraries\vendor\rocksdb\tools\;CMake Files\libraries\schema\;CMake Files\libraries\jsonball\;CMake Files\libraries\chain\;CMake Files\libraries\protocol\;CMake Files\libraries\net\;CMake Files\libraries\utilities\;CMake Files\libraries\plugins\;CMake Files\libraries\plugins\account_by_key\;CMake Files\libraries\plugins\account_history\;CMake Files\libraries\plugins\account_history_rocksdb\;CMake Files\libraries\plugins\apis\;CMake Files\libraries\plugins\apis\account_by_key_api\;CMake Files\libraries\plugins\apis\account_history_api\;CMake Files\libraries\plugins\apis\block_api\;CMake Files\libraries\plugins\apis\chain_api\;CMake Files\libraries\plugins\apis\condenser_api\;CMake Files\libraries\plugins\apis\database_api\;CMake Files\libraries\plugins\apis\debug_node_api\;CMake Files\libraries\plugins\apis\follow_api\;CMake Files\libraries\plugins\apis\market_history_api\;CMake Files\libraries\plugins\apis\network_broadcast_api\;CMake Files\libraries\plugins\apis\reputation_api\;CMake Files\libraries\plugins\apis\tags_api\;CMake Files\libraries\plugins\apis\test_api\;CMake Files\libraries\plugins\apis\witness_api\;CMake Files\libraries\plugins\block_data_export\;CMake Files\libraries\plugins\block_log_info\;CMake Files\libraries\plugins\chain\;CMake Files\libraries\plugins\debug_node\;CMake Files\libraries\plugins\follow\;CMake Files\libraries\plugins\json_rpc\;CMake Files\libraries\plugins\market_history\;CMake Files\libraries\plugins\p2p\;CMake Files\libraries\plugins\reputation\;CMake Files\libraries\plugins\smt_test\;CMake Files\libraries\plugins\stats_export\;CMake Files\libraries\plugins\statsd\;CMake Files\libraries\plugins\tags\;CMake Files\libraries\plugins\webserver\;CMake Files\libraries\plugins\witness\;CMake Files\libraries\manifest\;CMake Files\libraries\wallet\;CMake Files\.git\;CMake Files\.git\refs\;CMake Files\.git\refs\heads\;CMake Files\external_plugins\;CMake Files\cmake-build-debug\;CMake Files\cmake-build-debug\libraries\;CMake Files\cmake-build-debug\libraries\fc\;CMake Files\cmake-build-debug\libraries\fc\vendor\;CMake Files\cmake-build-debug\libraries\fc\vendor\secp256k1-zkp\;CMake Files\cmake-build-debug\libraries\fc\vendor\secp256k1-zkp\tmp\;CMake Files\cmake-build-debug\libraries\jsonball\;CMake Files\cmake-build-debug\libraries\jsonball\gensrc\;CMake Files\cmake-build-debug\libraries\jsonball\gensrc\jsonball\;CMake Files\cmake-build-debug\libraries\manifest\;CMake Files\cmake-build-debug\libraries\manifest\gensrc\;CMake Files\cmake-build-debug\libraries\manifest\gensrc\plugins\;CMake Files\programs\;CMake Files\programs\build_helpers\;CMake Files\programs\cli_wallet\;CMake Files\programs\creativecoind\;CMake Files\programs\js_operation_serializer\;CMake Files\programs\size_checker\;CMake Files\programs\util\;CMake Files\tests\;CMake Files\tests\db_fixture\;CMake Files\tests\bmic_objects\;"/>
+		<Build>
+			<Target title="all">
+				<Option working_dir="/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/vendor/rocksdb"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j4 -f &quot;/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/vendor/rocksdb/Makefile&quot;  VERBOSE=1 all"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/vendor/rocksdb/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/vendor/rocksdb/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/vendor/rocksdb/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="rocksdb">
+				<Option output="/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/vendor/rocksdb/librocksdb.a" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/vendor/rocksdb"/>
+				<Option object_output="./"/>
+				<Option type="2"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DSNAPPY"/>
+					<Add option="-DZLIB"/>
+					<Add option="-DBZIP2"/>
+					<Add option="-DHAVE_SSE42"/>
+					<Add option="-DROCKSDB_SUPPORT_THREAD_LOCAL"/>
+					<Add option="-DOS_LINUX"/>
+					<Add option="-DROCKSDB_PLATFORM_POSIX"/>
+					<Add option="-DROCKSDB_LIB_IO_POSIX"/>
+					<Add option="-DROCKSDB_MALLOC_USABLE_SIZE"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/include"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/third-party/gtest-1.7.0/fused-src"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+					<Add directory="/usr/include/c++/7"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/7"/>
+					<Add directory="/usr/include/c++/7/backward"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j4 -f &quot;/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/vendor/rocksdb/Makefile&quot;  VERBOSE=1 rocksdb"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/vendor/rocksdb/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/vendor/rocksdb/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/vendor/rocksdb/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="rocksdb/fast">
+				<Option output="/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/vendor/rocksdb/librocksdb.a" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/vendor/rocksdb"/>
+				<Option object_output="./"/>
+				<Option type="2"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DSNAPPY"/>
+					<Add option="-DZLIB"/>
+					<Add option="-DBZIP2"/>
+					<Add option="-DHAVE_SSE42"/>
+					<Add option="-DROCKSDB_SUPPORT_THREAD_LOCAL"/>
+					<Add option="-DOS_LINUX"/>
+					<Add option="-DROCKSDB_PLATFORM_POSIX"/>
+					<Add option="-DROCKSDB_LIB_IO_POSIX"/>
+					<Add option="-DROCKSDB_MALLOC_USABLE_SIZE"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/include"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/third-party/gtest-1.7.0/fused-src"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+					<Add directory="/usr/include/c++/7"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/7"/>
+					<Add directory="/usr/include/c++/7/backward"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j4 -f &quot;/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/vendor/rocksdb/Makefile&quot;  VERBOSE=1 rocksdb/fast"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/vendor/rocksdb/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/vendor/rocksdb/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/vendor/rocksdb/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="build_version">
+				<Option output="/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/vendor/rocksdb/CMakeFiles/build_version.dir/build_version.objlib" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/vendor/rocksdb"/>
+				<Option object_output="./"/>
+				<Option type="2"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DSNAPPY"/>
+					<Add option="-DZLIB"/>
+					<Add option="-DBZIP2"/>
+					<Add option="-DHAVE_SSE42"/>
+					<Add option="-DROCKSDB_SUPPORT_THREAD_LOCAL"/>
+					<Add option="-DOS_LINUX"/>
+					<Add option="-DROCKSDB_PLATFORM_POSIX"/>
+					<Add option="-DROCKSDB_LIB_IO_POSIX"/>
+					<Add option="-DROCKSDB_MALLOC_USABLE_SIZE"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/util"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/include"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/third-party/gtest-1.7.0/fused-src"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+					<Add directory="/usr/include/c++/7"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/7"/>
+					<Add directory="/usr/include/c++/7/backward"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j4 -f &quot;/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/vendor/rocksdb/Makefile&quot;  VERBOSE=1 build_version"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/vendor/rocksdb/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/vendor/rocksdb/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/vendor/rocksdb/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="build_version/fast">
+				<Option output="/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/vendor/rocksdb/CMakeFiles/build_version.dir/build_version.objlib" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/vendor/rocksdb"/>
+				<Option object_output="./"/>
+				<Option type="2"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DSNAPPY"/>
+					<Add option="-DZLIB"/>
+					<Add option="-DBZIP2"/>
+					<Add option="-DHAVE_SSE42"/>
+					<Add option="-DROCKSDB_SUPPORT_THREAD_LOCAL"/>
+					<Add option="-DOS_LINUX"/>
+					<Add option="-DROCKSDB_PLATFORM_POSIX"/>
+					<Add option="-DROCKSDB_LIB_IO_POSIX"/>
+					<Add option="-DROCKSDB_MALLOC_USABLE_SIZE"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/util"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/include"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/third-party/gtest-1.7.0/fused-src"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+					<Add directory="/usr/include/c++/7"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/7"/>
+					<Add directory="/usr/include/c++/7/backward"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j4 -f &quot;/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/vendor/rocksdb/Makefile&quot;  VERBOSE=1 build_version/fast"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/vendor/rocksdb/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/vendor/rocksdb/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/vendor/rocksdb/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="gtest">
+				<Option output="/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/vendor/rocksdb/third-party/gtest-1.7.0/fused-src/gtest/libgtest.a" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/vendor/rocksdb/third-party/gtest-1.7.0/fused-src/gtest"/>
+				<Option object_output="./"/>
+				<Option type="2"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DSNAPPY"/>
+					<Add option="-DZLIB"/>
+					<Add option="-DBZIP2"/>
+					<Add option="-DHAVE_SSE42"/>
+					<Add option="-DROCKSDB_SUPPORT_THREAD_LOCAL"/>
+					<Add option="-DOS_LINUX"/>
+					<Add option="-DROCKSDB_PLATFORM_POSIX"/>
+					<Add option="-DROCKSDB_LIB_IO_POSIX"/>
+					<Add option="-DROCKSDB_MALLOC_USABLE_SIZE"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/include"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/third-party/gtest-1.7.0/fused-src"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+					<Add directory="/usr/include/c++/7"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/7"/>
+					<Add directory="/usr/include/c++/7/backward"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j4 -f &quot;/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/vendor/rocksdb/third-party/gtest-1.7.0/fused-src/gtest/Makefile&quot;  VERBOSE=1 gtest"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/vendor/rocksdb/third-party/gtest-1.7.0/fused-src/gtest/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/vendor/rocksdb/third-party/gtest-1.7.0/fused-src/gtest/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/vendor/rocksdb/third-party/gtest-1.7.0/fused-src/gtest/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="gtest/fast">
+				<Option output="/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/vendor/rocksdb/third-party/gtest-1.7.0/fused-src/gtest/libgtest.a" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/vendor/rocksdb/third-party/gtest-1.7.0/fused-src/gtest"/>
+				<Option object_output="./"/>
+				<Option type="2"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DSNAPPY"/>
+					<Add option="-DZLIB"/>
+					<Add option="-DBZIP2"/>
+					<Add option="-DHAVE_SSE42"/>
+					<Add option="-DROCKSDB_SUPPORT_THREAD_LOCAL"/>
+					<Add option="-DOS_LINUX"/>
+					<Add option="-DROCKSDB_PLATFORM_POSIX"/>
+					<Add option="-DROCKSDB_LIB_IO_POSIX"/>
+					<Add option="-DROCKSDB_MALLOC_USABLE_SIZE"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/include"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/third-party/gtest-1.7.0/fused-src"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+					<Add directory="/usr/include/c++/7"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/7"/>
+					<Add directory="/usr/include/c++/7/backward"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j4 -f &quot;/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/vendor/rocksdb/third-party/gtest-1.7.0/fused-src/gtest/Makefile&quot;  VERBOSE=1 gtest/fast"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/vendor/rocksdb/third-party/gtest-1.7.0/fused-src/gtest/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/vendor/rocksdb/third-party/gtest-1.7.0/fused-src/gtest/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/vendor/rocksdb/third-party/gtest-1.7.0/fused-src/gtest/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="sst_dump">
+				<Option output="/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/vendor/rocksdb/tools/sst_dump" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/vendor/rocksdb/tools"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DSNAPPY"/>
+					<Add option="-DZLIB"/>
+					<Add option="-DBZIP2"/>
+					<Add option="-DHAVE_SSE42"/>
+					<Add option="-DROCKSDB_SUPPORT_THREAD_LOCAL"/>
+					<Add option="-DOS_LINUX"/>
+					<Add option="-DROCKSDB_PLATFORM_POSIX"/>
+					<Add option="-DROCKSDB_LIB_IO_POSIX"/>
+					<Add option="-DROCKSDB_MALLOC_USABLE_SIZE"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/include"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/third-party/gtest-1.7.0/fused-src"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+					<Add directory="/usr/include/c++/7"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/7"/>
+					<Add directory="/usr/include/c++/7/backward"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j4 -f &quot;/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/vendor/rocksdb/tools/Makefile&quot;  VERBOSE=1 sst_dump"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/vendor/rocksdb/tools/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/vendor/rocksdb/tools/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/vendor/rocksdb/tools/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="sst_dump/fast">
+				<Option output="/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/vendor/rocksdb/tools/sst_dump" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/vendor/rocksdb/tools"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DSNAPPY"/>
+					<Add option="-DZLIB"/>
+					<Add option="-DBZIP2"/>
+					<Add option="-DHAVE_SSE42"/>
+					<Add option="-DROCKSDB_SUPPORT_THREAD_LOCAL"/>
+					<Add option="-DOS_LINUX"/>
+					<Add option="-DROCKSDB_PLATFORM_POSIX"/>
+					<Add option="-DROCKSDB_LIB_IO_POSIX"/>
+					<Add option="-DROCKSDB_MALLOC_USABLE_SIZE"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/include"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/third-party/gtest-1.7.0/fused-src"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+					<Add directory="/usr/include/c++/7"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/7"/>
+					<Add directory="/usr/include/c++/7/backward"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j4 -f &quot;/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/vendor/rocksdb/tools/Makefile&quot;  VERBOSE=1 sst_dump/fast"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/vendor/rocksdb/tools/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/vendor/rocksdb/tools/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/vendor/rocksdb/tools/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="db_stress">
+				<Option output="/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/vendor/rocksdb/tools/db_stress" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/vendor/rocksdb/tools"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DSNAPPY"/>
+					<Add option="-DZLIB"/>
+					<Add option="-DBZIP2"/>
+					<Add option="-DHAVE_SSE42"/>
+					<Add option="-DROCKSDB_SUPPORT_THREAD_LOCAL"/>
+					<Add option="-DOS_LINUX"/>
+					<Add option="-DROCKSDB_PLATFORM_POSIX"/>
+					<Add option="-DROCKSDB_LIB_IO_POSIX"/>
+					<Add option="-DROCKSDB_MALLOC_USABLE_SIZE"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/include"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/third-party/gtest-1.7.0/fused-src"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+					<Add directory="/usr/include/c++/7"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/7"/>
+					<Add directory="/usr/include/c++/7/backward"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j4 -f &quot;/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/vendor/rocksdb/tools/Makefile&quot;  VERBOSE=1 db_stress"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/vendor/rocksdb/tools/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/vendor/rocksdb/tools/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/vendor/rocksdb/tools/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="db_stress/fast">
+				<Option output="/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/vendor/rocksdb/tools/db_stress" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/vendor/rocksdb/tools"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DSNAPPY"/>
+					<Add option="-DZLIB"/>
+					<Add option="-DBZIP2"/>
+					<Add option="-DHAVE_SSE42"/>
+					<Add option="-DROCKSDB_SUPPORT_THREAD_LOCAL"/>
+					<Add option="-DOS_LINUX"/>
+					<Add option="-DROCKSDB_PLATFORM_POSIX"/>
+					<Add option="-DROCKSDB_LIB_IO_POSIX"/>
+					<Add option="-DROCKSDB_MALLOC_USABLE_SIZE"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/include"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/third-party/gtest-1.7.0/fused-src"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+					<Add directory="/usr/include/c++/7"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/7"/>
+					<Add directory="/usr/include/c++/7/backward"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j4 -f &quot;/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/vendor/rocksdb/tools/Makefile&quot;  VERBOSE=1 db_stress/fast"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/vendor/rocksdb/tools/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/vendor/rocksdb/tools/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/vendor/rocksdb/tools/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="tools">
+				<Option working_dir="/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/vendor/rocksdb/tools"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j4 -f &quot;/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/vendor/rocksdb/tools/Makefile&quot;  VERBOSE=1 tools"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/vendor/rocksdb/tools/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/vendor/rocksdb/tools/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/vendor/rocksdb/tools/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="write_stress">
+				<Option output="/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/vendor/rocksdb/tools/write_stress" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/vendor/rocksdb/tools"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DSNAPPY"/>
+					<Add option="-DZLIB"/>
+					<Add option="-DBZIP2"/>
+					<Add option="-DHAVE_SSE42"/>
+					<Add option="-DROCKSDB_SUPPORT_THREAD_LOCAL"/>
+					<Add option="-DOS_LINUX"/>
+					<Add option="-DROCKSDB_PLATFORM_POSIX"/>
+					<Add option="-DROCKSDB_LIB_IO_POSIX"/>
+					<Add option="-DROCKSDB_MALLOC_USABLE_SIZE"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/include"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/third-party/gtest-1.7.0/fused-src"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+					<Add directory="/usr/include/c++/7"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/7"/>
+					<Add directory="/usr/include/c++/7/backward"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j4 -f &quot;/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/vendor/rocksdb/tools/Makefile&quot;  VERBOSE=1 write_stress"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/vendor/rocksdb/tools/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/vendor/rocksdb/tools/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/vendor/rocksdb/tools/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="write_stress/fast">
+				<Option output="/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/vendor/rocksdb/tools/write_stress" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/vendor/rocksdb/tools"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DSNAPPY"/>
+					<Add option="-DZLIB"/>
+					<Add option="-DBZIP2"/>
+					<Add option="-DHAVE_SSE42"/>
+					<Add option="-DROCKSDB_SUPPORT_THREAD_LOCAL"/>
+					<Add option="-DOS_LINUX"/>
+					<Add option="-DROCKSDB_PLATFORM_POSIX"/>
+					<Add option="-DROCKSDB_LIB_IO_POSIX"/>
+					<Add option="-DROCKSDB_MALLOC_USABLE_SIZE"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/include"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/third-party/gtest-1.7.0/fused-src"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+					<Add directory="/usr/include/c++/7"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/7"/>
+					<Add directory="/usr/include/c++/7/backward"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j4 -f &quot;/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/vendor/rocksdb/tools/Makefile&quot;  VERBOSE=1 write_stress/fast"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/vendor/rocksdb/tools/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/vendor/rocksdb/tools/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/vendor/rocksdb/tools/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="ldb">
+				<Option output="/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/vendor/rocksdb/tools/ldb" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/vendor/rocksdb/tools"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DSNAPPY"/>
+					<Add option="-DZLIB"/>
+					<Add option="-DBZIP2"/>
+					<Add option="-DHAVE_SSE42"/>
+					<Add option="-DROCKSDB_SUPPORT_THREAD_LOCAL"/>
+					<Add option="-DOS_LINUX"/>
+					<Add option="-DROCKSDB_PLATFORM_POSIX"/>
+					<Add option="-DROCKSDB_LIB_IO_POSIX"/>
+					<Add option="-DROCKSDB_MALLOC_USABLE_SIZE"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/include"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/third-party/gtest-1.7.0/fused-src"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+					<Add directory="/usr/include/c++/7"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/7"/>
+					<Add directory="/usr/include/c++/7/backward"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j4 -f &quot;/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/vendor/rocksdb/tools/Makefile&quot;  VERBOSE=1 ldb"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/vendor/rocksdb/tools/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/vendor/rocksdb/tools/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/vendor/rocksdb/tools/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="ldb/fast">
+				<Option output="/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/vendor/rocksdb/tools/ldb" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/vendor/rocksdb/tools"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DSNAPPY"/>
+					<Add option="-DZLIB"/>
+					<Add option="-DBZIP2"/>
+					<Add option="-DHAVE_SSE42"/>
+					<Add option="-DROCKSDB_SUPPORT_THREAD_LOCAL"/>
+					<Add option="-DOS_LINUX"/>
+					<Add option="-DROCKSDB_PLATFORM_POSIX"/>
+					<Add option="-DROCKSDB_LIB_IO_POSIX"/>
+					<Add option="-DROCKSDB_MALLOC_USABLE_SIZE"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/include"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/third-party/gtest-1.7.0/fused-src"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+					<Add directory="/usr/include/c++/7"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/7"/>
+					<Add directory="/usr/include/c++/7/backward"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j4 -f &quot;/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/vendor/rocksdb/tools/Makefile&quot;  VERBOSE=1 ldb/fast"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/vendor/rocksdb/tools/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/vendor/rocksdb/tools/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/vendor/rocksdb/tools/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="db_repl_stress">
+				<Option output="/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/vendor/rocksdb/tools/db_repl_stress" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/vendor/rocksdb/tools"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DSNAPPY"/>
+					<Add option="-DZLIB"/>
+					<Add option="-DBZIP2"/>
+					<Add option="-DHAVE_SSE42"/>
+					<Add option="-DROCKSDB_SUPPORT_THREAD_LOCAL"/>
+					<Add option="-DOS_LINUX"/>
+					<Add option="-DROCKSDB_PLATFORM_POSIX"/>
+					<Add option="-DROCKSDB_LIB_IO_POSIX"/>
+					<Add option="-DROCKSDB_MALLOC_USABLE_SIZE"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/include"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/third-party/gtest-1.7.0/fused-src"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+					<Add directory="/usr/include/c++/7"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/7"/>
+					<Add directory="/usr/include/c++/7/backward"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j4 -f &quot;/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/vendor/rocksdb/tools/Makefile&quot;  VERBOSE=1 db_repl_stress"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/vendor/rocksdb/tools/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/vendor/rocksdb/tools/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/vendor/rocksdb/tools/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="db_repl_stress/fast">
+				<Option output="/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/vendor/rocksdb/tools/db_repl_stress" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/vendor/rocksdb/tools"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DSNAPPY"/>
+					<Add option="-DZLIB"/>
+					<Add option="-DBZIP2"/>
+					<Add option="-DHAVE_SSE42"/>
+					<Add option="-DROCKSDB_SUPPORT_THREAD_LOCAL"/>
+					<Add option="-DOS_LINUX"/>
+					<Add option="-DROCKSDB_PLATFORM_POSIX"/>
+					<Add option="-DROCKSDB_LIB_IO_POSIX"/>
+					<Add option="-DROCKSDB_MALLOC_USABLE_SIZE"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/include"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/third-party/gtest-1.7.0/fused-src"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+					<Add directory="/usr/include/c++/7"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/7"/>
+					<Add directory="/usr/include/c++/7/backward"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j4 -f &quot;/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/vendor/rocksdb/tools/Makefile&quot;  VERBOSE=1 db_repl_stress/fast"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/vendor/rocksdb/tools/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/vendor/rocksdb/tools/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/vendor/rocksdb/tools/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="db_sanity_test">
+				<Option output="/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/vendor/rocksdb/tools/db_sanity_test" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/vendor/rocksdb/tools"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DSNAPPY"/>
+					<Add option="-DZLIB"/>
+					<Add option="-DBZIP2"/>
+					<Add option="-DHAVE_SSE42"/>
+					<Add option="-DROCKSDB_SUPPORT_THREAD_LOCAL"/>
+					<Add option="-DOS_LINUX"/>
+					<Add option="-DROCKSDB_PLATFORM_POSIX"/>
+					<Add option="-DROCKSDB_LIB_IO_POSIX"/>
+					<Add option="-DROCKSDB_MALLOC_USABLE_SIZE"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/include"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/third-party/gtest-1.7.0/fused-src"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+					<Add directory="/usr/include/c++/7"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/7"/>
+					<Add directory="/usr/include/c++/7/backward"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j4 -f &quot;/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/vendor/rocksdb/tools/Makefile&quot;  VERBOSE=1 db_sanity_test"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/vendor/rocksdb/tools/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/vendor/rocksdb/tools/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/vendor/rocksdb/tools/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="db_sanity_test/fast">
+				<Option output="/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/vendor/rocksdb/tools/db_sanity_test" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/vendor/rocksdb/tools"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DSNAPPY"/>
+					<Add option="-DZLIB"/>
+					<Add option="-DBZIP2"/>
+					<Add option="-DHAVE_SSE42"/>
+					<Add option="-DROCKSDB_SUPPORT_THREAD_LOCAL"/>
+					<Add option="-DOS_LINUX"/>
+					<Add option="-DROCKSDB_PLATFORM_POSIX"/>
+					<Add option="-DROCKSDB_LIB_IO_POSIX"/>
+					<Add option="-DROCKSDB_MALLOC_USABLE_SIZE"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/include"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/third-party/gtest-1.7.0/fused-src"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+					<Add directory="/usr/include/c++/7"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/7"/>
+					<Add directory="/usr/include/c++/7/backward"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j4 -f &quot;/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/vendor/rocksdb/tools/Makefile&quot;  VERBOSE=1 db_sanity_test/fast"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/vendor/rocksdb/tools/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/vendor/rocksdb/tools/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/vendor/rocksdb/tools/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="rocksdb_undump">
+				<Option output="/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/vendor/rocksdb/tools/rocksdb_undump" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/vendor/rocksdb/tools"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DSNAPPY"/>
+					<Add option="-DZLIB"/>
+					<Add option="-DBZIP2"/>
+					<Add option="-DHAVE_SSE42"/>
+					<Add option="-DROCKSDB_SUPPORT_THREAD_LOCAL"/>
+					<Add option="-DOS_LINUX"/>
+					<Add option="-DROCKSDB_PLATFORM_POSIX"/>
+					<Add option="-DROCKSDB_LIB_IO_POSIX"/>
+					<Add option="-DROCKSDB_MALLOC_USABLE_SIZE"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/include"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/third-party/gtest-1.7.0/fused-src"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+					<Add directory="/usr/include/c++/7"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/7"/>
+					<Add directory="/usr/include/c++/7/backward"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j4 -f &quot;/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/vendor/rocksdb/tools/Makefile&quot;  VERBOSE=1 rocksdb_undump"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/vendor/rocksdb/tools/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/vendor/rocksdb/tools/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/vendor/rocksdb/tools/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="rocksdb_undump/fast">
+				<Option output="/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/vendor/rocksdb/tools/rocksdb_undump" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/vendor/rocksdb/tools"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DSNAPPY"/>
+					<Add option="-DZLIB"/>
+					<Add option="-DBZIP2"/>
+					<Add option="-DHAVE_SSE42"/>
+					<Add option="-DROCKSDB_SUPPORT_THREAD_LOCAL"/>
+					<Add option="-DOS_LINUX"/>
+					<Add option="-DROCKSDB_PLATFORM_POSIX"/>
+					<Add option="-DROCKSDB_LIB_IO_POSIX"/>
+					<Add option="-DROCKSDB_MALLOC_USABLE_SIZE"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/include"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/third-party/gtest-1.7.0/fused-src"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+					<Add directory="/usr/include/c++/7"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/7"/>
+					<Add directory="/usr/include/c++/7/backward"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j4 -f &quot;/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/vendor/rocksdb/tools/Makefile&quot;  VERBOSE=1 rocksdb_undump/fast"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/vendor/rocksdb/tools/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/vendor/rocksdb/tools/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/vendor/rocksdb/tools/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="rocksdb_dump">
+				<Option output="/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/vendor/rocksdb/tools/rocksdb_dump" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/vendor/rocksdb/tools"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DSNAPPY"/>
+					<Add option="-DZLIB"/>
+					<Add option="-DBZIP2"/>
+					<Add option="-DHAVE_SSE42"/>
+					<Add option="-DROCKSDB_SUPPORT_THREAD_LOCAL"/>
+					<Add option="-DOS_LINUX"/>
+					<Add option="-DROCKSDB_PLATFORM_POSIX"/>
+					<Add option="-DROCKSDB_LIB_IO_POSIX"/>
+					<Add option="-DROCKSDB_MALLOC_USABLE_SIZE"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/include"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/third-party/gtest-1.7.0/fused-src"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+					<Add directory="/usr/include/c++/7"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/7"/>
+					<Add directory="/usr/include/c++/7/backward"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j4 -f &quot;/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/vendor/rocksdb/tools/Makefile&quot;  VERBOSE=1 rocksdb_dump"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/vendor/rocksdb/tools/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/vendor/rocksdb/tools/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/vendor/rocksdb/tools/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="rocksdb_dump/fast">
+				<Option output="/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/vendor/rocksdb/tools/rocksdb_dump" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/vendor/rocksdb/tools"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DSNAPPY"/>
+					<Add option="-DZLIB"/>
+					<Add option="-DBZIP2"/>
+					<Add option="-DHAVE_SSE42"/>
+					<Add option="-DROCKSDB_SUPPORT_THREAD_LOCAL"/>
+					<Add option="-DOS_LINUX"/>
+					<Add option="-DROCKSDB_PLATFORM_POSIX"/>
+					<Add option="-DROCKSDB_LIB_IO_POSIX"/>
+					<Add option="-DROCKSDB_MALLOC_USABLE_SIZE"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/include"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/third-party/gtest-1.7.0/fused-src"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+					<Add directory="/usr/include/c++/7"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/7"/>
+					<Add directory="/usr/include/c++/7/backward"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j4 -f &quot;/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/vendor/rocksdb/tools/Makefile&quot;  VERBOSE=1 rocksdb_dump/fast"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/vendor/rocksdb/tools/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/vendor/rocksdb/tools/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/vendor/rocksdb/tools/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="ldb_tests">
+				<Option working_dir="/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/vendor/rocksdb/tools"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j4 -f &quot;/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/vendor/rocksdb/tools/Makefile&quot;  VERBOSE=1 ldb_tests"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/vendor/rocksdb/tools/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/vendor/rocksdb/tools/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/vendor/rocksdb/tools/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+		</Build>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/build_version.cc">
+			<Option target="build_version"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/cache/clock_cache.cc">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/cache/clock_cache.h">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/cache/lru_cache.cc">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/cache/lru_cache.h">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/cache/sharded_cache.cc">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/cache/sharded_cache.h">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/db/builder.cc">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/db/builder.h">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/db/c.cc">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/db/column_family.cc">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/db/column_family.h">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/db/compacted_db_impl.cc">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/db/compacted_db_impl.h">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/db/compaction.cc">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/db/compaction.h">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/db/compaction_iterator.cc">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/db/compaction_iterator.h">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/db/compaction_job.cc">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/db/compaction_job.h">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/db/compaction_picker.cc">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/db/compaction_picker.h">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/db/compaction_picker_universal.cc">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/db/compaction_picker_universal.h">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/db/convenience.cc">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/db/db_filesnapshot.cc">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/db/db_impl.cc">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/db/db_impl.h">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/db/db_impl_compaction_flush.cc">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/db/db_impl_debug.cc">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/db/db_impl_experimental.cc">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/db/db_impl_files.cc">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/db/db_impl_open.cc">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/db/db_impl_readonly.cc">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/db/db_impl_readonly.h">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/db/db_impl_write.cc">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/db/db_info_dumper.cc">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/db/db_info_dumper.h">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/db/db_iter.cc">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/db/db_iter.h">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/db/dbformat.cc">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/db/dbformat.h">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/db/event_helpers.cc">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/db/event_helpers.h">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/db/experimental.cc">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/db/external_sst_file_ingestion_job.cc">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/db/external_sst_file_ingestion_job.h">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/db/file_indexer.cc">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/db/file_indexer.h">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/db/flush_job.cc">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/db/flush_job.h">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/db/flush_scheduler.cc">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/db/flush_scheduler.h">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/db/forward_iterator.cc">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/db/forward_iterator.h">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/db/internal_stats.cc">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/db/internal_stats.h">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/db/log_reader.cc">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/db/log_reader.h">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/db/log_writer.cc">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/db/log_writer.h">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/db/malloc_stats.cc">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/db/malloc_stats.h">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/db/managed_iterator.cc">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/db/managed_iterator.h">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/db/memtable.cc">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/db/memtable.h">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/db/memtable_list.cc">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/db/memtable_list.h">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/db/merge_helper.cc">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/db/merge_helper.h">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/db/merge_operator.cc">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/db/range_del_aggregator.cc">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/db/range_del_aggregator.h">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/db/repair.cc">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/db/snapshot_impl.cc">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/db/snapshot_impl.h">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/db/table_cache.cc">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/db/table_cache.h">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/db/table_properties_collector.cc">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/db/table_properties_collector.h">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/db/transaction_log_impl.cc">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/db/transaction_log_impl.h">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/db/version_builder.cc">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/db/version_builder.h">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/db/version_edit.cc">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/db/version_edit.h">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/db/version_set.cc">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/db/version_set.h">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/db/wal_manager.cc">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/db/wal_manager.h">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/db/write_batch.cc">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/db/write_batch_base.cc">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/db/write_controller.cc">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/db/write_controller.h">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/db/write_thread.cc">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/db/write_thread.h">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/env/env.cc">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/env/env_chroot.cc">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/env/env_chroot.h">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/env/env_encryption.cc">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/env/env_hdfs.cc">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/env/env_posix.cc">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/env/io_posix.cc">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/env/io_posix.h">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/env/mock_env.cc">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/env/mock_env.h">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/memtable/alloc_tracker.cc">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/memtable/hash_cuckoo_rep.cc">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/memtable/hash_cuckoo_rep.h">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/memtable/hash_linklist_rep.cc">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/memtable/hash_linklist_rep.h">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/memtable/hash_skiplist_rep.cc">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/memtable/hash_skiplist_rep.h">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/memtable/skiplistrep.cc">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/memtable/vectorrep.cc">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/memtable/write_buffer_manager.cc">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/monitoring/histogram.cc">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/monitoring/histogram.h">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/monitoring/histogram_windowing.cc">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/monitoring/histogram_windowing.h">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/monitoring/instrumented_mutex.cc">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/monitoring/instrumented_mutex.h">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/monitoring/iostats_context.cc">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/monitoring/perf_context.cc">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/monitoring/perf_level.cc">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/monitoring/statistics.cc">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/monitoring/statistics.h">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/monitoring/thread_status_impl.cc">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/monitoring/thread_status_updater.cc">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/monitoring/thread_status_updater.h">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/monitoring/thread_status_util.cc">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/monitoring/thread_status_util.h">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/monitoring/thread_status_util_debug.cc">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/options/cf_options.cc">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/options/cf_options.h">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/options/db_options.cc">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/options/db_options.h">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/options/options.cc">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/options/options_helper.cc">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/options/options_helper.h">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/options/options_parser.cc">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/options/options_parser.h">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/options/options_sanity_check.cc">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/options/options_sanity_check.h">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/port/port_posix.cc">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/port/port_posix.h">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/port/stack_trace.cc">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/port/stack_trace.h">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/table/adaptive_table_factory.cc">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/table/adaptive_table_factory.h">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/table/block.cc">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/table/block.h">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/table/block_based_filter_block.cc">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/table/block_based_filter_block.h">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/table/block_based_table_builder.cc">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/table/block_based_table_builder.h">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/table/block_based_table_factory.cc">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/table/block_based_table_factory.h">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/table/block_based_table_reader.cc">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/table/block_based_table_reader.h">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/table/block_builder.cc">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/table/block_builder.h">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/table/block_prefix_index.cc">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/table/block_prefix_index.h">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/table/bloom_block.cc">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/table/bloom_block.h">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/table/cuckoo_table_builder.cc">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/table/cuckoo_table_builder.h">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/table/cuckoo_table_factory.cc">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/table/cuckoo_table_factory.h">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/table/cuckoo_table_reader.cc">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/table/cuckoo_table_reader.h">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/table/flush_block_policy.cc">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/table/format.cc">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/table/format.h">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/table/full_filter_block.cc">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/table/full_filter_block.h">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/table/get_context.cc">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/table/get_context.h">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/table/index_builder.cc">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/table/index_builder.h">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/table/iterator.cc">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/table/merging_iterator.cc">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/table/merging_iterator.h">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/table/meta_blocks.cc">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/table/meta_blocks.h">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/table/partitioned_filter_block.cc">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/table/partitioned_filter_block.h">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/table/persistent_cache_helper.cc">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/table/persistent_cache_helper.h">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/table/plain_table_builder.cc">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/table/plain_table_builder.h">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/table/plain_table_factory.cc">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/table/plain_table_factory.h">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/table/plain_table_index.cc">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/table/plain_table_index.h">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/table/plain_table_key_coding.cc">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/table/plain_table_key_coding.h">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/table/plain_table_reader.cc">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/table/plain_table_reader.h">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/table/sst_file_writer.cc">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/table/table_properties.cc">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/table/two_level_iterator.cc">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/table/two_level_iterator.h">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/third-party/gtest-1.7.0/fused-src/gtest/gtest-all.cc">
+			<Option target="gtest"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/tools/db_bench_tool.cc">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/tools/db_repl_stress.cc">
+			<Option target="db_repl_stress"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/tools/db_sanity_test.cc">
+			<Option target="db_sanity_test"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/tools/db_stress.cc">
+			<Option target="db_stress"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/tools/dump/db_dump_tool.cc">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/tools/dump/rocksdb_dump.cc">
+			<Option target="rocksdb_dump"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/tools/dump/rocksdb_undump.cc">
+			<Option target="rocksdb_undump"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/tools/ldb.cc">
+			<Option target="ldb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/tools/ldb_cmd.cc">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/tools/ldb_tool.cc">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/tools/sst_dump.cc">
+			<Option target="sst_dump"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/tools/sst_dump_tool.cc">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/tools/write_stress.cc">
+			<Option target="write_stress"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/util/arena.cc">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/util/arena.h">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/util/auto_roll_logger.cc">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/util/auto_roll_logger.h">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/util/bloom.cc">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/util/coding.cc">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/util/coding.h">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/util/compaction_job_stats_impl.cc">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/util/comparator.cc">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/util/concurrent_arena.cc">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/util/concurrent_arena.h">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/util/crc32c.cc">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/util/crc32c.h">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/util/delete_scheduler.cc">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/util/delete_scheduler.h">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/util/dynamic_bloom.cc">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/util/dynamic_bloom.h">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/util/event_logger.cc">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/util/event_logger.h">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/util/file_reader_writer.cc">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/util/file_reader_writer.h">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/util/file_util.cc">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/util/file_util.h">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/util/filename.cc">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/util/filename.h">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/util/filter_policy.cc">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/util/hash.cc">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/util/hash.h">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/util/log_buffer.cc">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/util/log_buffer.h">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/util/murmurhash.cc">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/util/murmurhash.h">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/util/random.cc">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/util/random.h">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/util/rate_limiter.cc">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/util/rate_limiter.h">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/util/slice.cc">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/util/sst_file_manager_impl.cc">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/util/sst_file_manager_impl.h">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/util/status.cc">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/util/status_message.cc">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/util/string_util.cc">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/util/string_util.h">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/util/sync_point.cc">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/util/sync_point.h">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/util/testutil.cc">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/util/testutil.h">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/util/thread_local.cc">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/util/thread_local.h">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/util/threadpool_imp.cc">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/util/threadpool_imp.h">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/util/transaction_test_util.cc">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/util/transaction_test_util.h">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/util/xxhash.cc">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/util/xxhash.h">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/utilities/backupable/backupable_db.cc">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/utilities/blob_db/blob_db.cc">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/utilities/blob_db/blob_db.h">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/utilities/blob_db/blob_db_impl.cc">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/utilities/blob_db/blob_db_impl.h">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/utilities/blob_db/blob_dump_tool.cc">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/utilities/blob_db/blob_dump_tool.h">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/utilities/blob_db/blob_file.cc">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/utilities/blob_db/blob_file.h">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/utilities/blob_db/blob_log_format.cc">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/utilities/blob_db/blob_log_format.h">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/utilities/blob_db/blob_log_reader.cc">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/utilities/blob_db/blob_log_reader.h">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/utilities/blob_db/blob_log_writer.cc">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/utilities/blob_db/blob_log_writer.h">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/utilities/blob_db/ttl_extractor.cc">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/utilities/cassandra/cassandra_compaction_filter.cc">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/utilities/cassandra/cassandra_compaction_filter.h">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/utilities/cassandra/format.cc">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/utilities/cassandra/format.h">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/utilities/cassandra/merge_operator.cc">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/utilities/cassandra/merge_operator.h">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/utilities/checkpoint/checkpoint_impl.cc">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/utilities/checkpoint/checkpoint_impl.h">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/utilities/col_buf_decoder.cc">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/utilities/col_buf_decoder.h">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/utilities/col_buf_encoder.cc">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/utilities/col_buf_encoder.h">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/utilities/column_aware_encoding_util.cc">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/utilities/column_aware_encoding_util.h">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/utilities/compaction_filters/remove_emptyvalue_compactionfilter.cc">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/utilities/compaction_filters/remove_emptyvalue_compactionfilter.h">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/utilities/date_tiered/date_tiered_db_impl.cc">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/utilities/date_tiered/date_tiered_db_impl.h">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/utilities/debug.cc">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/utilities/document/document_db.cc">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/utilities/document/json_document.cc">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/utilities/document/json_document_builder.cc">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/utilities/env_mirror.cc">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/utilities/env_timed.cc">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/utilities/geodb/geodb_impl.cc">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/utilities/geodb/geodb_impl.h">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/utilities/leveldb_options/leveldb_options.cc">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/utilities/lua/rocks_lua_compaction_filter.cc">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/utilities/memory/memory_util.cc">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/utilities/merge_operators/max.cc">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/utilities/merge_operators/put.cc">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/utilities/merge_operators/string_append/stringappend.cc">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/utilities/merge_operators/string_append/stringappend.h">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/utilities/merge_operators/string_append/stringappend2.cc">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/utilities/merge_operators/string_append/stringappend2.h">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/utilities/merge_operators/uint64add.cc">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/utilities/option_change_migration/option_change_migration.cc">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/utilities/options/options_util.cc">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/utilities/persistent_cache/block_cache_tier.cc">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/utilities/persistent_cache/block_cache_tier.h">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/utilities/persistent_cache/block_cache_tier_file.cc">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/utilities/persistent_cache/block_cache_tier_file.h">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/utilities/persistent_cache/block_cache_tier_metadata.cc">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/utilities/persistent_cache/block_cache_tier_metadata.h">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/utilities/persistent_cache/persistent_cache_tier.cc">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/utilities/persistent_cache/persistent_cache_tier.h">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/utilities/persistent_cache/volatile_tier_impl.cc">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/utilities/persistent_cache/volatile_tier_impl.h">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/utilities/redis/redis_lists.cc">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/utilities/redis/redis_lists.h">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/utilities/simulator_cache/sim_cache.cc">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/utilities/spatialdb/spatial_db.cc">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/utilities/table_properties_collectors/compact_on_deletion_collector.cc">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/utilities/table_properties_collectors/compact_on_deletion_collector.h">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/utilities/transactions/optimistic_transaction.cc">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/utilities/transactions/optimistic_transaction.h">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/utilities/transactions/optimistic_transaction_db_impl.cc">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/utilities/transactions/optimistic_transaction_db_impl.h">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/utilities/transactions/pessimistic_transaction.cc">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/utilities/transactions/pessimistic_transaction.h">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/utilities/transactions/pessimistic_transaction_db.cc">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/utilities/transactions/pessimistic_transaction_db.h">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/utilities/transactions/snapshot_checker.cc">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/utilities/transactions/transaction_base.cc">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/utilities/transactions/transaction_base.h">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/utilities/transactions/transaction_db_mutex_impl.cc">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/utilities/transactions/transaction_db_mutex_impl.h">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/utilities/transactions/transaction_lock_mgr.cc">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/utilities/transactions/transaction_lock_mgr.h">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/utilities/transactions/transaction_util.cc">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/utilities/transactions/transaction_util.h">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/utilities/transactions/write_prepared_txn.cc">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/utilities/transactions/write_prepared_txn.h">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/utilities/transactions/write_prepared_txn_db.cc">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/utilities/transactions/write_prepared_txn_db.h">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/utilities/ttl/db_ttl_impl.cc">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/utilities/ttl/db_ttl_impl.h">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/utilities/write_batch_with_index/write_batch_with_index.cc">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/utilities/write_batch_with_index/write_batch_with_index_internal.cc">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/utilities/write_batch_with_index/write_batch_with_index_internal.h">
+			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\libraries\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/appbase/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\libraries\appbase\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/appbase/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\libraries\appbase\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/appbase/examples/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\libraries\appbase\examples\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/appbase/examples/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\libraries\appbase\examples\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\libraries\fc\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\libraries\fc\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/CMakeModules/FindBoost.cmake">
+			<Option virtualFolder="CMake Files\libraries\fc\CMakeModules\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/CMakeModules/FindBoost.cmake">
+			<Option virtualFolder="CMake Files\libraries\fc\CMakeModules\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/CMakeModules/FindBoost.cmake">
+			<Option virtualFolder="CMake Files\libraries\fc\CMakeModules\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/CMakeModules/VersionMacros.cmake">
+			<Option virtualFolder="CMake Files\libraries\fc\CMakeModules\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/CMakeModules/ArgumentParser.cmake">
+			<Option virtualFolder="CMake Files\libraries\fc\CMakeModules\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/CMakeModules/SetupTargetMacros.cmake">
+			<Option virtualFolder="CMake Files\libraries\fc\CMakeModules\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/CMakeModules/ArgumentParser.cmake">
+			<Option virtualFolder="CMake Files\libraries\fc\CMakeModules\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/CMakeModules/FindBoost.cmake">
+			<Option virtualFolder="CMake Files\libraries\fc\CMakeModules\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/CMakeModules/FindReadline.cmake">
+			<Option virtualFolder="CMake Files\libraries\fc\CMakeModules\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/CMakeModules/FindBoost.cmake">
+			<Option virtualFolder="CMake Files\libraries\fc\CMakeModules\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/CMakeModules/FindBoost.cmake">
+			<Option virtualFolder="CMake Files\libraries\fc\CMakeModules\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/CMakeModules/VersionMacros.cmake">
+			<Option virtualFolder="CMake Files\libraries\fc\CMakeModules\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/CMakeModules/ArgumentParser.cmake">
+			<Option virtualFolder="CMake Files\libraries\fc\CMakeModules\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/CMakeModules/SetupTargetMacros.cmake">
+			<Option virtualFolder="CMake Files\libraries\fc\CMakeModules\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/CMakeModules/ArgumentParser.cmake">
+			<Option virtualFolder="CMake Files\libraries\fc\CMakeModules\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/CMakeModules/FindBoost.cmake">
+			<Option virtualFolder="CMake Files\libraries\fc\CMakeModules\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/CMakeModules/FindReadline.cmake">
+			<Option virtualFolder="CMake Files\libraries\fc\CMakeModules\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/GitVersionGen/GetGitRevisionDescription.cmake">
+			<Option virtualFolder="CMake Files\libraries\fc\GitVersionGen\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/GitVersionGen/GetGitRevisionDescription.cmake.in">
+			<Option virtualFolder="CMake Files\libraries\fc\GitVersionGen\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/GitVersionGen/GetGitRevisionDescription.cmake">
+			<Option virtualFolder="CMake Files\libraries\fc\GitVersionGen\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/GitVersionGen/GetGitRevisionDescription.cmake.in">
+			<Option virtualFolder="CMake Files\libraries\fc\GitVersionGen\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/GitVersionGen/GetGitRevisionDescription.cmake.in">
+			<Option virtualFolder="CMake Files\libraries\fc\GitVersionGen\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/GitVersionGen/GetGitRevisionDescription.cmake">
+			<Option virtualFolder="CMake Files\libraries\fc\GitVersionGen\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/GitVersionGen/GetGitRevisionDescription.cmake.in">
+			<Option virtualFolder="CMake Files\libraries\fc\GitVersionGen\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/GitVersionGen/GetGitRevisionDescription.cmake.in">
+			<Option virtualFolder="CMake Files\libraries\fc\GitVersionGen\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/GitVersionGen/GetGitRevisionDescription.cmake.in">
+			<Option virtualFolder="CMake Files\libraries\fc\GitVersionGen\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/GitVersionGen/GetGitRevisionDescription.cmake">
+			<Option virtualFolder="CMake Files\libraries\fc\GitVersionGen\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/GitVersionGen/GetGitRevisionDescription.cmake.in">
+			<Option virtualFolder="CMake Files\libraries\fc\GitVersionGen\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/GitVersionGen/GetGitRevisionDescription.cmake.in">
+			<Option virtualFolder="CMake Files\libraries\fc\GitVersionGen\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/src/git_revision.cpp.in">
+			<Option virtualFolder="CMake Files\libraries\fc\src\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/src/git_revision.cpp.in">
+			<Option virtualFolder="CMake Files\libraries\fc\src\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/websocketpp/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\libraries\fc\vendor\websocketpp\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/websocketpp/websocketpp-config.cmake.in">
+			<Option virtualFolder="CMake Files\libraries\fc\vendor\websocketpp\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/websocketpp/websocketpp-configVersion.cmake.in">
+			<Option virtualFolder="CMake Files\libraries\fc\vendor\websocketpp\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/websocketpp/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\libraries\fc\vendor\websocketpp\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/websocketpp/websocketpp-config.cmake.in">
+			<Option virtualFolder="CMake Files\libraries\fc\vendor\websocketpp\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/websocketpp/websocketpp-configVersion.cmake.in">
+			<Option virtualFolder="CMake Files\libraries\fc\vendor\websocketpp\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/websocketpp/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\libraries\fc\vendor\websocketpp\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/websocketpp/websocketpp-config.cmake.in">
+			<Option virtualFolder="CMake Files\libraries\fc\vendor\websocketpp\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/websocketpp/websocketpp-configVersion.cmake.in">
+			<Option virtualFolder="CMake Files\libraries\fc\vendor\websocketpp\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/websocketpp/cmake/CMakeHelpers.cmake">
+			<Option virtualFolder="CMake Files\libraries\fc\vendor\websocketpp\cmake\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/websocketpp/cmake/CMakeHelpers.cmake">
+			<Option virtualFolder="CMake Files\libraries\fc\vendor\websocketpp\cmake\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/websocketpp/cmake/CMakeHelpers.cmake">
+			<Option virtualFolder="CMake Files\libraries\fc\vendor\websocketpp\cmake\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/websocketpp/websocketpp/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\libraries\fc\vendor\websocketpp\websocketpp\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/websocketpp/websocketpp/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\libraries\fc\vendor\websocketpp\websocketpp\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/websocketpp/websocketpp/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\libraries\fc\vendor\websocketpp\websocketpp\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/equihash/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\libraries\fc\vendor\equihash\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/equihash/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\libraries\fc\vendor\equihash\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/tests/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\libraries\fc\tests\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/tests/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\libraries\fc\tests\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/chainbase/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\libraries\chainbase\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/chainbase/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\libraries\chainbase\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/chainbase/test/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\libraries\chainbase\test\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/chainbase/test/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\libraries\chainbase\test\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\libraries\vendor\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\libraries\vendor\rocksdb\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\libraries\vendor\rocksdb\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/cmake/RocksDBConfig.cmake.in">
+			<Option virtualFolder="CMake Files\libraries\vendor\rocksdb\cmake\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/cmake/RocksDBConfig.cmake.in">
+			<Option virtualFolder="CMake Files\libraries\vendor\rocksdb\cmake\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/cmake/modules/Findsnappy.cmake">
+			<Option virtualFolder="CMake Files\libraries\vendor\rocksdb\cmake\modules\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/cmake/modules/Findzlib.cmake">
+			<Option virtualFolder="CMake Files\libraries\vendor\rocksdb\cmake\modules\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/cmake/modules/Findbzip2.cmake">
+			<Option virtualFolder="CMake Files\libraries\vendor\rocksdb\cmake\modules\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/cmake/modules/Findsnappy.cmake">
+			<Option virtualFolder="CMake Files\libraries\vendor\rocksdb\cmake\modules\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/cmake/modules/Findzlib.cmake">
+			<Option virtualFolder="CMake Files\libraries\vendor\rocksdb\cmake\modules\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/cmake/modules/Findbzip2.cmake">
+			<Option virtualFolder="CMake Files\libraries\vendor\rocksdb\cmake\modules\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/util/build_version.cc.in">
+			<Option virtualFolder="CMake Files\libraries\vendor\rocksdb\util\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/util/build_version.cc.in">
+			<Option virtualFolder="CMake Files\libraries\vendor\rocksdb\util\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/third-party/gtest-1.7.0/fused-src/gtest/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\libraries\vendor\rocksdb\third-party\gtest-1.7.0\fused-src\gtest\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/third-party/gtest-1.7.0/fused-src/gtest/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\libraries\vendor\rocksdb\third-party\gtest-1.7.0\fused-src\gtest\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/tools/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\libraries\vendor\rocksdb\tools\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/tools/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\libraries\vendor\rocksdb\tools\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/schema/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\libraries\schema\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/jsonball/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\libraries\jsonball\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/chain/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\libraries\chain\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/protocol/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\libraries\protocol\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/net/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\libraries\net\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/utilities/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\libraries\utilities\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/utilities/git_revision.cpp.in">
+			<Option virtualFolder="CMake Files\libraries\utilities\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/plugins/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\libraries\plugins\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/plugins/account_by_key/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\libraries\plugins\account_by_key\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/plugins/account_history/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\libraries\plugins\account_history\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/plugins/account_history_rocksdb/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\libraries\plugins\account_history_rocksdb\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/plugins/apis/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\libraries\plugins\apis\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/plugins/apis/account_by_key_api/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\libraries\plugins\apis\account_by_key_api\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/plugins/apis/account_history_api/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\libraries\plugins\apis\account_history_api\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/plugins/apis/block_api/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\libraries\plugins\apis\block_api\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/plugins/apis/chain_api/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\libraries\plugins\apis\chain_api\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/plugins/apis/condenser_api/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\libraries\plugins\apis\condenser_api\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/plugins/apis/database_api/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\libraries\plugins\apis\database_api\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/plugins/apis/debug_node_api/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\libraries\plugins\apis\debug_node_api\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/plugins/apis/follow_api/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\libraries\plugins\apis\follow_api\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/plugins/apis/market_history_api/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\libraries\plugins\apis\market_history_api\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/plugins/apis/network_broadcast_api/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\libraries\plugins\apis\network_broadcast_api\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/plugins/apis/reputation_api/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\libraries\plugins\apis\reputation_api\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/plugins/apis/tags_api/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\libraries\plugins\apis\tags_api\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/plugins/apis/test_api/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\libraries\plugins\apis\test_api\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/plugins/apis/witness_api/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\libraries\plugins\apis\witness_api\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/plugins/block_data_export/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\libraries\plugins\block_data_export\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/plugins/block_log_info/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\libraries\plugins\block_log_info\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/plugins/chain/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\libraries\plugins\chain\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/plugins/debug_node/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\libraries\plugins\debug_node\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/plugins/follow/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\libraries\plugins\follow\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/plugins/json_rpc/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\libraries\plugins\json_rpc\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/plugins/market_history/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\libraries\plugins\market_history\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/plugins/p2p/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\libraries\plugins\p2p\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/plugins/reputation/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\libraries\plugins\reputation\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/plugins/smt_test/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\libraries\plugins\smt_test\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/plugins/stats_export/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\libraries\plugins\stats_export\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/plugins/statsd/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\libraries\plugins\statsd\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/plugins/tags/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\libraries\plugins\tags\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/plugins/webserver/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\libraries\plugins\webserver\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/plugins/witness/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\libraries\plugins\witness\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/manifest/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\libraries\manifest\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/wallet/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\libraries\wallet\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/.git/HEAD">
+			<Option virtualFolder="CMake Files\.git\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/.git/HEAD">
+			<Option virtualFolder="CMake Files\.git\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/.git/HEAD">
+			<Option virtualFolder="CMake Files\.git\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/.git/HEAD">
+			<Option virtualFolder="CMake Files\.git\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/.git/HEAD">
+			<Option virtualFolder="CMake Files\.git\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/.git/HEAD">
+			<Option virtualFolder="CMake Files\.git\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/.git/HEAD">
+			<Option virtualFolder="CMake Files\.git\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/.git/HEAD">
+			<Option virtualFolder="CMake Files\.git\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/.git/refs/heads/master">
+			<Option virtualFolder="CMake Files\.git\refs\heads\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/.git/refs/heads/master">
+			<Option virtualFolder="CMake Files\.git\refs\heads\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/.git/refs/heads/master">
+			<Option virtualFolder="CMake Files\.git\refs\heads\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/.git/refs/heads/master">
+			<Option virtualFolder="CMake Files\.git\refs\heads\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/.git/refs/heads/master">
+			<Option virtualFolder="CMake Files\.git\refs\heads\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/.git/refs/heads/master">
+			<Option virtualFolder="CMake Files\.git\refs\heads\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/.git/refs/heads/master">
+			<Option virtualFolder="CMake Files\.git\refs\heads\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/.git/refs/heads/master">
+			<Option virtualFolder="CMake Files\.git\refs\heads\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/external_plugins/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\external_plugins\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/fc/vendor/secp256k1-zkp/tmp/project_secp256k1-cfgcmd.txt.in">
+			<Option virtualFolder="CMake Files\cmake-build-debug\libraries\fc\vendor\secp256k1-zkp\tmp\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/fc/vendor/secp256k1-zkp/tmp/project_secp256k1-cfgcmd.txt.in">
+			<Option virtualFolder="CMake Files\cmake-build-debug\libraries\fc\vendor\secp256k1-zkp\tmp\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/jsonball/gensrc/jsonball/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\cmake-build-debug\libraries\jsonball\gensrc\jsonball\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/manifest/gensrc/plugins/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\cmake-build-debug\libraries\manifest\gensrc\plugins\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/programs/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\programs\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/programs/build_helpers/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\programs\build_helpers\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/programs/cli_wallet/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\programs\cli_wallet\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/programs/creativecoind/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\programs\creativecoind\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/programs/js_operation_serializer/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\programs\js_operation_serializer\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/programs/size_checker/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\programs\size_checker\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/programs/util/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\programs\util\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/tests/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\tests\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/tests/db_fixture/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\tests\db_fixture\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/tests/bmic_objects/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\tests\bmic_objects\"/>
+		</Unit>
+	</Project>
+</CodeBlocks_project_file>

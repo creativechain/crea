@@ -1,7 +1,7 @@
 #pragma once
-#include <steem/app/plugin.hpp>
+#include <creativecoin/app/plugin.hpp>
 
-#include <steem/chain/steem_object_types.hpp>
+#include <creativecoin/chain/creativecoin_object_types.hpp>
 
 #include <boost/multi_index/composite_key.hpp>
 
@@ -15,22 +15,22 @@
 // various template automagic depends on them being known at compile
 // time.
 //
-#ifndef STEEM_BLOCKCHAIN_STATISTICS_SPACE_ID
-#define STEEM_BLOCKCHAIN_STATISTICS_SPACE_ID 9
+#ifndef CREA_BLOCKCHAIN_STATISTICS_SPACE_ID
+#define CREA_BLOCKCHAIN_STATISTICS_SPACE_ID 9
 #endif
 
-#ifndef STEEM_BLOCKCHAIN_STATISTICS_PLUGIN_NAME
-#define STEEM_BLOCKCHAIN_STATISTICS_PLUGIN_NAME "chain_stats"
+#ifndef CREA_BLOCKCHAIN_STATISTICS_PLUGIN_NAME
+#define CREA_BLOCKCHAIN_STATISTICS_PLUGIN_NAME "chain_stats"
 #endif
 
-namespace steem { namespace blockchain_statistics {
+namespace creativecoin { namespace blockchain_statistics {
 
-using namespace steem::chain;
+using namespace creativecoin::chain;
 using app::application;
 
 enum blockchain_statistics_object_type
 {
-   bucket_object_type = ( STEEM_BLOCKCHAIN_STATISTICS_SPACE_ID << 8 )
+   bucket_object_type = ( CREA_BLOCKCHAIN_STATISTICS_SPACE_ID << 8 )
 };
 
 namespace detail
@@ -38,13 +38,13 @@ namespace detail
    class blockchain_statistics_plugin_impl;
 }
 
-class blockchain_statistics_plugin : public steem::app::plugin
+class blockchain_statistics_plugin : public creativecoin::app::plugin
 {
    public:
       blockchain_statistics_plugin( application* app );
       virtual ~blockchain_statistics_plugin();
 
-      virtual std::string plugin_name()const override { return STEEM_BLOCKCHAIN_STATISTICS_PLUGIN_NAME; }
+      virtual std::string plugin_name()const override { return CREA_BLOCKCHAIN_STATISTICS_PLUGIN_NAME; }
       virtual void plugin_set_program_options(
          boost::program_options::options_description& cli,
          boost::program_options::options_description& cfg ) override;
@@ -76,7 +76,7 @@ struct bucket_object : public object< bucket_object_type, bucket_object >
    uint32_t             operations = 0;                              ///< Operations evaluated
    uint32_t             transactions = 0;                            ///< Transactions processed
    uint32_t             transfers = 0;                               ///< Account to account transfers
-   share_type           steem_transferred = 0;                       ///< STEEM transferred from account to account
+   share_type           creativecoin_transferred = 0;                       ///< CREA transferred from account to account
    share_type           sbd_transferred = 0;                         ///< SBD transferred from account to account
    share_type           sbd_paid_as_interest = 0;                    ///< SBD paid as interest
    uint32_t             paid_accounts_created = 0;                   ///< Accounts created with fee
@@ -95,20 +95,20 @@ struct bucket_object : public object< bucket_object_type, bucket_object >
    share_type           sbd_paid_to_authors = 0;                     ///< Ammount of SBD paid to authors
    share_type           vests_paid_to_authors = 0;                   ///< Ammount of VESS paid to authors
    share_type           vests_paid_to_curators = 0;                  ///< Ammount of VESTS paid to curators
-   share_type           liquidity_rewards_paid = 0;                  ///< Ammount of STEEM paid to market makers
-   uint32_t             transfers_to_vesting = 0;                    ///< Transfers of STEEM into VESTS
-   share_type           steem_vested = 0;                            ///< Ammount of STEEM vested
+   share_type           liquidity_rewards_paid = 0;                  ///< Ammount of CREA paid to market makers
+   uint32_t             transfers_to_vesting = 0;                    ///< Transfers of CREA into VESTS
+   share_type           creativecoin_vested = 0;                            ///< Ammount of CREA vested
    uint32_t             new_vesting_withdrawal_requests = 0;         ///< New vesting withdrawal requests
    uint32_t             modified_vesting_withdrawal_requests = 0;    ///< Changes to vesting withdrawal requests
    share_type           vesting_withdraw_rate_delta = 0;
    uint32_t             vesting_withdrawals_processed = 0;           ///< Number of vesting withdrawals
    uint32_t             finished_vesting_withdrawals = 0;            ///< Processed vesting withdrawals that are now finished
-   share_type           vests_withdrawn = 0;                         ///< Ammount of VESTS withdrawn to STEEM
+   share_type           vests_withdrawn = 0;                         ///< Ammount of VESTS withdrawn to CREA
    share_type           vests_transferred = 0;                       ///< Ammount of VESTS transferred to another account
    uint32_t             sbd_conversion_requests_created = 0;         ///< SBD conversion requests created
    share_type           sbd_to_be_converted = 0;                     ///< Amount of SBD to be converted
    uint32_t             sbd_conversion_requests_filled = 0;          ///< SBD conversion requests filled
-   share_type           steem_converted = 0;                         ///< Amount of STEEM that was converted
+   share_type           creativecoin_converted = 0;                         ///< Amount of CREA that was converted
    uint32_t             limit_orders_created = 0;                    ///< Limit orders created
    uint32_t             limit_orders_filled = 0;                     ///< Limit orders filled
    uint32_t             limit_orders_cancelled = 0;                  ///< Limit orders cancelled
@@ -134,9 +134,9 @@ typedef multi_index_container<
    allocator< bucket_object >
 > bucket_index;
 
-} } // steem::blockchain_statistics
+} } // creativecoin::blockchain_statistics
 
-FC_REFLECT( steem::blockchain_statistics::bucket_object,
+FC_REFLECT( creativecoin::blockchain_statistics::bucket_object,
    (id)
    (open)
    (seconds)
@@ -145,7 +145,7 @@ FC_REFLECT( steem::blockchain_statistics::bucket_object,
    (operations)
    (transactions)
    (transfers)
-   (steem_transferred)
+   (creativecoin_transferred)
    (sbd_transferred)
    (sbd_paid_as_interest)
    (paid_accounts_created)
@@ -166,7 +166,7 @@ FC_REFLECT( steem::blockchain_statistics::bucket_object,
    (vests_paid_to_curators)
    (liquidity_rewards_paid)
    (transfers_to_vesting)
-   (steem_vested)
+   (creativecoin_vested)
    (new_vesting_withdrawal_requests)
    (modified_vesting_withdrawal_requests)
    (vesting_withdraw_rate_delta)
@@ -177,11 +177,11 @@ FC_REFLECT( steem::blockchain_statistics::bucket_object,
    (sbd_conversion_requests_created)
    (sbd_to_be_converted)
    (sbd_conversion_requests_filled)
-   (steem_converted)
+   (creativecoin_converted)
    (limit_orders_created)
    (limit_orders_filled)
    (limit_orders_cancelled)
    (total_pow)
    (estimated_hashpower)
 )
-CHAINBASE_SET_INDEX_TYPE( steem::blockchain_statistics::bucket_object, steem::blockchain_statistics::bucket_index )
+CHAINBASE_SET_INDEX_TYPE( creativecoin::blockchain_statistics::bucket_object, creativecoin::blockchain_statistics::bucket_index )

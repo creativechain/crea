@@ -9,11 +9,11 @@
 
 #pragma once
 
-#include <steem/protocol/version.hpp>
+#include <creativecoin/protocol/version.hpp>
 #include <set>
 
 #ifdef IS_TEST_NET
-#define STEEM_NUM_HARDFORKS 21
+#define CREA_NUM_HARDFORKS 21
 #else
-#define STEEM_NUM_HARDFORKS 19
+#define CREA_NUM_HARDFORKS 19
 #endif

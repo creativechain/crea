@@ -1,0 +1,2825 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6"/>
+	<Project>
+		<Option title="fc"/>
+		<Option makefile_is_custom="1"/>
+		<Option compiler="gcc"/>
+		<Option virtualFolders="CMake Files\;CMake Files\libraries\;CMake Files\libraries\appbase\;CMake Files\libraries\appbase\examples\;CMake Files\libraries\fc\;CMake Files\libraries\fc\CMakeModules\;CMake Files\libraries\fc\GitVersionGen\;CMake Files\libraries\fc\src\;CMake Files\libraries\fc\vendor\;CMake Files\libraries\fc\vendor\websocketpp\;CMake Files\libraries\fc\vendor\websocketpp\cmake\;CMake Files\libraries\fc\vendor\websocketpp\websocketpp\;CMake Files\libraries\fc\vendor\equihash\;CMake Files\libraries\fc\tests\;CMake Files\libraries\chainbase\;CMake Files\libraries\chainbase\test\;CMake Files\libraries\vendor\;CMake Files\libraries\vendor\rocksdb\;CMake Files\libraries\vendor\rocksdb\cmake\;CMake Files\libraries\vendor\rocksdb\cmake\modules\;CMake Files\libraries\vendor\rocksdb\util\;CMake Files\libraries\vendor\rocksdb\third-party\;CMake Files\libraries\vendor\rocksdb\third-party\gtest-1.7.0\;CMake Files\libraries\vendor\rocksdb\third-party\gtest-1.7.0\fused-src\;CMake Files\libraries\vendor\rocksdb\third-party\gtest-1.7.0\fused-src\gtest\;CMake Files\libraries\vendor\rocksdb\tools\;CMake Files\libraries\schema\;CMake Files\libraries\jsonball\;CMake Files\libraries\chain\;CMake Files\libraries\protocol\;CMake Files\libraries\net\;CMake Files\libraries\utilities\;CMake Files\libraries\plugins\;CMake Files\libraries\plugins\account_by_key\;CMake Files\libraries\plugins\account_history\;CMake Files\libraries\plugins\account_history_rocksdb\;CMake Files\libraries\plugins\apis\;CMake Files\libraries\plugins\apis\account_by_key_api\;CMake Files\libraries\plugins\apis\account_history_api\;CMake Files\libraries\plugins\apis\block_api\;CMake Files\libraries\plugins\apis\chain_api\;CMake Files\libraries\plugins\apis\condenser_api\;CMake Files\libraries\plugins\apis\database_api\;CMake Files\libraries\plugins\apis\debug_node_api\;CMake Files\libraries\plugins\apis\follow_api\;CMake Files\libraries\plugins\apis\market_history_api\;CMake Files\libraries\plugins\apis\network_broadcast_api\;CMake Files\libraries\plugins\apis\reputation_api\;CMake Files\libraries\plugins\apis\tags_api\;CMake Files\libraries\plugins\apis\test_api\;CMake Files\libraries\plugins\apis\witness_api\;CMake Files\libraries\plugins\block_data_export\;CMake Files\libraries\plugins\block_log_info\;CMake Files\libraries\plugins\chain\;CMake Files\libraries\plugins\debug_node\;CMake Files\libraries\plugins\follow\;CMake Files\libraries\plugins\json_rpc\;CMake Files\libraries\plugins\market_history\;CMake Files\libraries\plugins\p2p\;CMake Files\libraries\plugins\reputation\;CMake Files\libraries\plugins\smt_test\;CMake Files\libraries\plugins\stats_export\;CMake Files\libraries\plugins\statsd\;CMake Files\libraries\plugins\tags\;CMake Files\libraries\plugins\webserver\;CMake Files\libraries\plugins\witness\;CMake Files\libraries\manifest\;CMake Files\libraries\wallet\;CMake Files\.git\;CMake Files\.git\refs\;CMake Files\.git\refs\heads\;CMake Files\external_plugins\;CMake Files\cmake-build-debug\;CMake Files\cmake-build-debug\libraries\;CMake Files\cmake-build-debug\libraries\fc\;CMake Files\cmake-build-debug\libraries\fc\vendor\;CMake Files\cmake-build-debug\libraries\fc\vendor\secp256k1-zkp\;CMake Files\cmake-build-debug\libraries\fc\vendor\secp256k1-zkp\tmp\;CMake Files\cmake-build-debug\libraries\jsonball\;CMake Files\cmake-build-debug\libraries\jsonball\gensrc\;CMake Files\cmake-build-debug\libraries\jsonball\gensrc\jsonball\;CMake Files\cmake-build-debug\libraries\manifest\;CMake Files\cmake-build-debug\libraries\manifest\gensrc\;CMake Files\cmake-build-debug\libraries\manifest\gensrc\plugins\;CMake Files\programs\;CMake Files\programs\build_helpers\;CMake Files\programs\cli_wallet\;CMake Files\programs\creativecoind\;CMake Files\programs\js_operation_serializer\;CMake Files\programs\size_checker\;CMake Files\programs\util\;CMake Files\tests\;CMake Files\tests\db_fixture\;CMake Files\tests\bmic_objects\;"/>
+		<Build>
+			<Target title="all">
+				<Option working_dir="/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/fc"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j4 -f &quot;/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/fc/Makefile&quot;  VERBOSE=1 all"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/fc/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/fc/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/fc/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="fc">
+				<Option output="/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/fc/libfc_debug.a" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/fc"/>
+				<Option object_output="./"/>
+				<Option type="2"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DHAS_ZLIB"/>
+					<Add option="-DHAS_BZIP2"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/include"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/diff-match-patch-cpp-stl"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/websocketpp"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/fc"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/cyoencode-1.0.2/src"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/secp256k1-zkp"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/equihash"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/equihash/include"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/secp256k1-zkp/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+					<Add directory="/usr/include/c++/7"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/7"/>
+					<Add directory="/usr/include/c++/7/backward"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j4 -f &quot;/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/fc/Makefile&quot;  VERBOSE=1 fc"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/fc/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/fc/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/fc/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="fc/fast">
+				<Option output="/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/fc/libfc_debug.a" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/fc"/>
+				<Option object_output="./"/>
+				<Option type="2"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DHAS_ZLIB"/>
+					<Add option="-DHAS_BZIP2"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/include"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/diff-match-patch-cpp-stl"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/websocketpp"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/fc"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/cyoencode-1.0.2/src"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/secp256k1-zkp"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/equihash"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/equihash/include"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/secp256k1-zkp/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+					<Add directory="/usr/include/c++/7"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/7"/>
+					<Add directory="/usr/include/c++/7/backward"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j4 -f &quot;/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/fc/Makefile&quot;  VERBOSE=1 fc/fast"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/fc/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/fc/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/fc/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="project_secp256k1">
+				<Option working_dir="/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/fc"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j4 -f &quot;/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/fc/Makefile&quot;  VERBOSE=1 project_secp256k1"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/fc/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/fc/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/fc/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="equihash">
+				<Option output="/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/fc/vendor/equihash/libequihash_debug.a" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/fc/vendor/equihash"/>
+				<Option object_output="./"/>
+				<Option type="2"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/equihash/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+					<Add directory="/usr/include/c++/7"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/7"/>
+					<Add directory="/usr/include/c++/7/backward"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j4 -f &quot;/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/fc/vendor/equihash/Makefile&quot;  VERBOSE=1 equihash"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/fc/vendor/equihash/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/fc/vendor/equihash/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/fc/vendor/equihash/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="equihash/fast">
+				<Option output="/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/fc/vendor/equihash/libequihash_debug.a" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/fc/vendor/equihash"/>
+				<Option object_output="./"/>
+				<Option type="2"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/equihash/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+					<Add directory="/usr/include/c++/7"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/7"/>
+					<Add directory="/usr/include/c++/7/backward"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j4 -f &quot;/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/fc/vendor/equihash/Makefile&quot;  VERBOSE=1 equihash/fast"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/fc/vendor/equihash/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/fc/vendor/equihash/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/fc/vendor/equihash/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="all_tests">
+				<Option output="/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/fc/tests/all_tests" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/fc/tests"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DHAS_ZLIB"/>
+					<Add option="-DHAS_BZIP2"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/websocketpp"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/equihash"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/include"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/diff-match-patch-cpp-stl"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/fc"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/equihash/include"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/secp256k1-zkp/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+					<Add directory="/usr/include/c++/7"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/7"/>
+					<Add directory="/usr/include/c++/7/backward"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j4 -f &quot;/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 all_tests"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="all_tests/fast">
+				<Option output="/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/fc/tests/all_tests" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/fc/tests"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DHAS_ZLIB"/>
+					<Add option="-DHAS_BZIP2"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/websocketpp"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/equihash"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/include"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/diff-match-patch-cpp-stl"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/fc"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/equihash/include"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/secp256k1-zkp/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+					<Add directory="/usr/include/c++/7"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/7"/>
+					<Add directory="/usr/include/c++/7/backward"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j4 -f &quot;/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 all_tests/fast"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="sha_test">
+				<Option output="/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/fc/tests/sha_test" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/fc/tests"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DHAS_ZLIB"/>
+					<Add option="-DHAS_BZIP2"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/websocketpp"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/equihash"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/include"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/diff-match-patch-cpp-stl"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/fc"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/equihash/include"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/secp256k1-zkp/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+					<Add directory="/usr/include/c++/7"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/7"/>
+					<Add directory="/usr/include/c++/7/backward"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j4 -f &quot;/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 sha_test"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="sha_test/fast">
+				<Option output="/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/fc/tests/sha_test" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/fc/tests"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DHAS_ZLIB"/>
+					<Add option="-DHAS_BZIP2"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/websocketpp"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/equihash"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/include"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/diff-match-patch-cpp-stl"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/fc"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/equihash/include"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/secp256k1-zkp/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+					<Add directory="/usr/include/c++/7"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/7"/>
+					<Add directory="/usr/include/c++/7/backward"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j4 -f &quot;/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 sha_test/fast"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="saturation_test">
+				<Option output="/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/fc/tests/saturation_test" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/fc/tests"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DHAS_ZLIB"/>
+					<Add option="-DHAS_BZIP2"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/websocketpp"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/equihash"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/include"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/diff-match-patch-cpp-stl"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/fc"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/equihash/include"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/secp256k1-zkp/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+					<Add directory="/usr/include/c++/7"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/7"/>
+					<Add directory="/usr/include/c++/7/backward"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j4 -f &quot;/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 saturation_test"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="saturation_test/fast">
+				<Option output="/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/fc/tests/saturation_test" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/fc/tests"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DHAS_ZLIB"/>
+					<Add option="-DHAS_BZIP2"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/websocketpp"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/equihash"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/include"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/diff-match-patch-cpp-stl"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/fc"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/equihash/include"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/secp256k1-zkp/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+					<Add directory="/usr/include/c++/7"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/7"/>
+					<Add directory="/usr/include/c++/7/backward"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j4 -f &quot;/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 saturation_test/fast"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="api">
+				<Option output="/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/fc/tests/api" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/fc/tests"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DHAS_ZLIB"/>
+					<Add option="-DHAS_BZIP2"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/websocketpp"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/equihash"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/include"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/diff-match-patch-cpp-stl"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/fc"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/equihash/include"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/secp256k1-zkp/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+					<Add directory="/usr/include/c++/7"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/7"/>
+					<Add directory="/usr/include/c++/7/backward"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j4 -f &quot;/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 api"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="api/fast">
+				<Option output="/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/fc/tests/api" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/fc/tests"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DHAS_ZLIB"/>
+					<Add option="-DHAS_BZIP2"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/websocketpp"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/equihash"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/include"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/diff-match-patch-cpp-stl"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/fc"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/equihash/include"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/secp256k1-zkp/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+					<Add directory="/usr/include/c++/7"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/7"/>
+					<Add directory="/usr/include/c++/7/backward"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j4 -f &quot;/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 api/fast"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="hmac_test">
+				<Option output="/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/fc/tests/hmac_test" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/fc/tests"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DHAS_ZLIB"/>
+					<Add option="-DHAS_BZIP2"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/websocketpp"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/equihash"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/include"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/diff-match-patch-cpp-stl"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/fc"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/equihash/include"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/secp256k1-zkp/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+					<Add directory="/usr/include/c++/7"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/7"/>
+					<Add directory="/usr/include/c++/7/backward"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j4 -f &quot;/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 hmac_test"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="hmac_test/fast">
+				<Option output="/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/fc/tests/hmac_test" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/fc/tests"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DHAS_ZLIB"/>
+					<Add option="-DHAS_BZIP2"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/websocketpp"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/equihash"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/include"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/diff-match-patch-cpp-stl"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/fc"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/equihash/include"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/secp256k1-zkp/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+					<Add directory="/usr/include/c++/7"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/7"/>
+					<Add directory="/usr/include/c++/7/backward"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j4 -f &quot;/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 hmac_test/fast"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="blind">
+				<Option output="/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/fc/tests/blind" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/fc/tests"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DHAS_ZLIB"/>
+					<Add option="-DHAS_BZIP2"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/websocketpp"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/equihash"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/include"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/diff-match-patch-cpp-stl"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/fc"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/equihash/include"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/secp256k1-zkp/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+					<Add directory="/usr/include/c++/7"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/7"/>
+					<Add directory="/usr/include/c++/7/backward"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j4 -f &quot;/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 blind"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="blind/fast">
+				<Option output="/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/fc/tests/blind" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/fc/tests"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DHAS_ZLIB"/>
+					<Add option="-DHAS_BZIP2"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/websocketpp"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/equihash"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/include"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/diff-match-patch-cpp-stl"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/fc"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/equihash/include"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/secp256k1-zkp/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+					<Add directory="/usr/include/c++/7"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/7"/>
+					<Add directory="/usr/include/c++/7/backward"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j4 -f &quot;/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 blind/fast"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="ecc_test">
+				<Option output="/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/fc/tests/ecc_test" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/fc/tests"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DHAS_ZLIB"/>
+					<Add option="-DHAS_BZIP2"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/websocketpp"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/equihash"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/include"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/diff-match-patch-cpp-stl"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/fc"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/equihash/include"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/secp256k1-zkp/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+					<Add directory="/usr/include/c++/7"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/7"/>
+					<Add directory="/usr/include/c++/7/backward"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j4 -f &quot;/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 ecc_test"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="ecc_test/fast">
+				<Option output="/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/fc/tests/ecc_test" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/fc/tests"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DHAS_ZLIB"/>
+					<Add option="-DHAS_BZIP2"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/websocketpp"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/equihash"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/include"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/diff-match-patch-cpp-stl"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/fc"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/equihash/include"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/secp256k1-zkp/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+					<Add directory="/usr/include/c++/7"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/7"/>
+					<Add directory="/usr/include/c++/7/backward"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j4 -f &quot;/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 ecc_test/fast"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="bip_lock">
+				<Option output="/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/fc/tests/bip_lock" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/fc/tests"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DHAS_ZLIB"/>
+					<Add option="-DHAS_BZIP2"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/websocketpp"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/equihash"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/include"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/diff-match-patch-cpp-stl"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/fc"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/equihash/include"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/secp256k1-zkp/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+					<Add directory="/usr/include/c++/7"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/7"/>
+					<Add directory="/usr/include/c++/7/backward"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j4 -f &quot;/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 bip_lock"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="bip_lock/fast">
+				<Option output="/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/fc/tests/bip_lock" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/fc/tests"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DHAS_ZLIB"/>
+					<Add option="-DHAS_BZIP2"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/websocketpp"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/equihash"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/include"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/diff-match-patch-cpp-stl"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/fc"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/equihash/include"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/secp256k1-zkp/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+					<Add directory="/usr/include/c++/7"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/7"/>
+					<Add directory="/usr/include/c++/7/backward"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j4 -f &quot;/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 bip_lock/fast"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="ntp_test">
+				<Option output="/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/fc/tests/ntp_test" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/fc/tests"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DHAS_ZLIB"/>
+					<Add option="-DHAS_BZIP2"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/websocketpp"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/equihash"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/include"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/diff-match-patch-cpp-stl"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/fc"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/equihash/include"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/secp256k1-zkp/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+					<Add directory="/usr/include/c++/7"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/7"/>
+					<Add directory="/usr/include/c++/7/backward"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j4 -f &quot;/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 ntp_test"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="ntp_test/fast">
+				<Option output="/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/fc/tests/ntp_test" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/fc/tests"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DHAS_ZLIB"/>
+					<Add option="-DHAS_BZIP2"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/websocketpp"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/equihash"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/include"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/diff-match-patch-cpp-stl"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/fc"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/equihash/include"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/secp256k1-zkp/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+					<Add directory="/usr/include/c++/7"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/7"/>
+					<Add directory="/usr/include/c++/7/backward"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j4 -f &quot;/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 ntp_test/fast"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="bloom_test">
+				<Option output="/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/fc/tests/bloom_test" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/fc/tests"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DHAS_ZLIB"/>
+					<Add option="-DHAS_BZIP2"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/websocketpp"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/equihash"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/include"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/diff-match-patch-cpp-stl"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/fc"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/equihash/include"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/secp256k1-zkp/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+					<Add directory="/usr/include/c++/7"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/7"/>
+					<Add directory="/usr/include/c++/7/backward"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j4 -f &quot;/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 bloom_test"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="bloom_test/fast">
+				<Option output="/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/fc/tests/bloom_test" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/fc/tests"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DHAS_ZLIB"/>
+					<Add option="-DHAS_BZIP2"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/websocketpp"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/equihash"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/include"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/diff-match-patch-cpp-stl"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/fc"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/equihash/include"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/secp256k1-zkp/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+					<Add directory="/usr/include/c++/7"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/7"/>
+					<Add directory="/usr/include/c++/7/backward"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j4 -f &quot;/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 bloom_test/fast"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="task_cancel_test">
+				<Option output="/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/fc/tests/task_cancel_test" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/fc/tests"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DHAS_ZLIB"/>
+					<Add option="-DHAS_BZIP2"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/websocketpp"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/equihash"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/include"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/diff-match-patch-cpp-stl"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/fc"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/equihash/include"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/secp256k1-zkp/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+					<Add directory="/usr/include/c++/7"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/7"/>
+					<Add directory="/usr/include/c++/7/backward"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j4 -f &quot;/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 task_cancel_test"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="task_cancel_test/fast">
+				<Option output="/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/fc/tests/task_cancel_test" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/fc/tests"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DHAS_ZLIB"/>
+					<Add option="-DHAS_BZIP2"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/websocketpp"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/equihash"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/include"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/diff-match-patch-cpp-stl"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/fc"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/equihash/include"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/secp256k1-zkp/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+					<Add directory="/usr/include/c++/7"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/7"/>
+					<Add directory="/usr/include/c++/7/backward"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j4 -f &quot;/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 task_cancel_test/fast"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="log_test">
+				<Option output="/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/fc/tests/log_test" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/fc/tests"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DHAS_ZLIB"/>
+					<Add option="-DHAS_BZIP2"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/websocketpp"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/equihash"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/include"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/diff-match-patch-cpp-stl"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/fc"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/equihash/include"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/secp256k1-zkp/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+					<Add directory="/usr/include/c++/7"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/7"/>
+					<Add directory="/usr/include/c++/7/backward"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j4 -f &quot;/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 log_test"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="log_test/fast">
+				<Option output="/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/fc/tests/log_test" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/fc/tests"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DHAS_ZLIB"/>
+					<Add option="-DHAS_BZIP2"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/websocketpp"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/equihash"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/include"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/diff-match-patch-cpp-stl"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/fc"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/equihash/include"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/secp256k1-zkp/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+					<Add directory="/usr/include/c++/7"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/7"/>
+					<Add directory="/usr/include/c++/7/backward"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j4 -f &quot;/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 log_test/fast"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="thread_test">
+				<Option output="/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/fc/tests/thread_test" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/fc/tests"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DHAS_ZLIB"/>
+					<Add option="-DHAS_BZIP2"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/websocketpp"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/equihash"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/include"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/diff-match-patch-cpp-stl"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/fc"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/equihash/include"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/secp256k1-zkp/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+					<Add directory="/usr/include/c++/7"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/7"/>
+					<Add directory="/usr/include/c++/7/backward"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j4 -f &quot;/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 thread_test"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="thread_test/fast">
+				<Option output="/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/fc/tests/thread_test" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/fc/tests"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DHAS_ZLIB"/>
+					<Add option="-DHAS_BZIP2"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/websocketpp"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/equihash"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/include"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/diff-match-patch-cpp-stl"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/fc"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/equihash/include"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/secp256k1-zkp/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+					<Add directory="/usr/include/c++/7"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/7"/>
+					<Add directory="/usr/include/c++/7/backward"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j4 -f &quot;/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 thread_test/fast"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="real128_test">
+				<Option output="/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/fc/tests/real128_test" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/fc/tests"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DHAS_ZLIB"/>
+					<Add option="-DHAS_BZIP2"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/websocketpp"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/equihash"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/include"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/diff-match-patch-cpp-stl"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/fc"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/equihash/include"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/secp256k1-zkp/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+					<Add directory="/usr/include/c++/7"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/7"/>
+					<Add directory="/usr/include/c++/7/backward"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j4 -f &quot;/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 real128_test"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="real128_test/fast">
+				<Option output="/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/fc/tests/real128_test" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/fc/tests"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DHAS_ZLIB"/>
+					<Add option="-DHAS_BZIP2"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/websocketpp"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/equihash"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/include"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/diff-match-patch-cpp-stl"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/fc"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/equihash/include"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/secp256k1-zkp/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+					<Add directory="/usr/include/c++/7"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/7"/>
+					<Add directory="/usr/include/c++/7/backward"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j4 -f &quot;/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 real128_test/fast"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="blinding_test">
+				<Option output="/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/fc/tests/blinding_test" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/fc/tests"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DHAS_ZLIB"/>
+					<Add option="-DHAS_BZIP2"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/websocketpp"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/equihash"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/include"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/diff-match-patch-cpp-stl"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/fc"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/equihash/include"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/secp256k1-zkp/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+					<Add directory="/usr/include/c++/7"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/7"/>
+					<Add directory="/usr/include/c++/7/backward"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j4 -f &quot;/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 blinding_test"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="blinding_test/fast">
+				<Option output="/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/fc/tests/blinding_test" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/fc/tests"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DHAS_ZLIB"/>
+					<Add option="-DHAS_BZIP2"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/websocketpp"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/equihash"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/include"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/diff-match-patch-cpp-stl"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/fc"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/equihash/include"/>
+					<Add directory="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/secp256k1-zkp/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+					<Add directory="/usr/include/c++/7"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/7"/>
+					<Add directory="/usr/include/c++/7/backward"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j4 -f &quot;/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 blinding_test/fast"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/fc/tests/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+		</Build>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/fc/git_revision.cpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/include/fc/actor.hpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/include/fc/aligned.hpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/include/fc/any.hpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/include/fc/api.hpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/include/fc/array.hpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/include/fc/asio.hpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/include/fc/bitutil.hpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/include/fc/bloom_filter.hpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/include/fc/compress/smaz.hpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/include/fc/compress/zlib.hpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/include/fc/container/deque.hpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/include/fc/container/deque_fwd.hpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/include/fc/container/flat.hpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/include/fc/container/flat_fwd.hpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/include/fc/crypto/aes.hpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/include/fc/crypto/base32.hpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/include/fc/crypto/base36.hpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/include/fc/crypto/base58.hpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/include/fc/crypto/base64.hpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/include/fc/crypto/bigint.hpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/include/fc/crypto/blowfish.hpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/include/fc/crypto/city.hpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/include/fc/crypto/dh.hpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/include/fc/crypto/digest.hpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/include/fc/crypto/elliptic.hpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/include/fc/crypto/equihash.hpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/include/fc/crypto/hex.hpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/include/fc/crypto/hmac.hpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/include/fc/crypto/openssl.hpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/include/fc/crypto/pke.hpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/include/fc/crypto/rand.hpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/include/fc/crypto/restartable_sha256.hpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/include/fc/crypto/ripemd160.hpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/include/fc/crypto/sha1.hpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/include/fc/crypto/sha224.hpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/include/fc/crypto/sha256.hpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/include/fc/crypto/sha512.hpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/include/fc/exception/exception.hpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/include/fc/filesystem.hpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/include/fc/fixed_string.hpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/include/fc/fwd.hpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/include/fc/fwd_impl.hpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/include/fc/git_revision.hpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/include/fc/int_array.hpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/include/fc/interprocess/container.hpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/include/fc/interprocess/file_mapping.hpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/include/fc/interprocess/file_mutex.hpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/include/fc/interprocess/iprocess.hpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/include/fc/interprocess/mmap_struct.hpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/include/fc/interprocess/process.hpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/include/fc/interprocess/signals.hpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/include/fc/io/buffered_iostream.hpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/include/fc/io/console.hpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/include/fc/io/datastream.hpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/include/fc/io/datastream_back.hpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/include/fc/io/enum_type.hpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/include/fc/io/fstream.hpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/include/fc/io/iobuffer.hpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/include/fc/io/iostream.hpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/include/fc/io/json.hpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/include/fc/io/json_relaxed.hpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/include/fc/io/raw.hpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/include/fc/io/raw_fwd.hpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/include/fc/io/raw_unpack_file.hpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/include/fc/io/raw_variant.hpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/include/fc/io/sstream.hpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/include/fc/io/stdio.hpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/include/fc/io/varint.hpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/include/fc/log/appender.hpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/include/fc/log/console_appender.hpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/include/fc/log/file_appender.hpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/include/fc/log/gelf_appender.hpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/include/fc/log/log_message.hpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/include/fc/log/logger.hpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/include/fc/log/logger_config.hpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/include/fc/macros.hpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/include/fc/make_fused.hpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/include/fc/network/gntp.hpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/include/fc/network/http/connection.hpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/include/fc/network/http/server.hpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/include/fc/network/http/websocket.hpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/include/fc/network/ip.hpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/include/fc/network/ntp.hpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/include/fc/network/rate_limiting.hpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/include/fc/network/resolve.hpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/include/fc/network/tcp_socket.hpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/include/fc/network/tcp_socket_io_hooks.hpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/include/fc/network/udp_socket.hpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/include/fc/network/url.hpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/include/fc/noncopyable.hpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/include/fc/optional.hpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/include/fc/platform_independence.hpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/include/fc/real128.hpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/include/fc/reflect/reflect.hpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/include/fc/reflect/typename.hpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/include/fc/reflect/variant.hpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/include/fc/rpc/api_connection.hpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/include/fc/rpc/binary_api_connection.hpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/include/fc/rpc/bstate.hpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/include/fc/rpc/cli.hpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/include/fc/rpc/http_api.hpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/include/fc/rpc/json_connection.hpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/include/fc/rpc/state.hpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/include/fc/rpc/variant_connection.hpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/include/fc/rpc/variant_stream.hpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/include/fc/rpc/websocket_api.hpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/include/fc/safe.hpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/include/fc/saturation.hpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/include/fc/scoped_exit.hpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/include/fc/shared_ptr.hpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/include/fc/signal.hpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/include/fc/signals.hpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/include/fc/smart_ref_fwd.hpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/include/fc/smart_ref_impl.hpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/include/fc/ssh/client.hpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/include/fc/ssh/error.hpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/include/fc/ssh/process.hpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/include/fc/stacktrace.hpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/include/fc/static_variant.hpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/include/fc/string.hpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/include/fc/thread/future.hpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/include/fc/thread/mutex.hpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/include/fc/thread/non_preemptable_scope_check.hpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/include/fc/thread/priority.hpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/include/fc/thread/scoped_lock.hpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/include/fc/thread/spin_lock.hpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/include/fc/thread/spin_yield_lock.hpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/include/fc/thread/task.hpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/include/fc/thread/thread.hpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/include/fc/thread/thread_specific.hpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/include/fc/thread/unique_lock.hpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/include/fc/thread/wait_condition.hpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/include/fc/time.hpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/include/fc/tuple.hpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/include/fc/uint128.hpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/include/fc/unique_ptr.hpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/include/fc/utf8.hpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/include/fc/utility.hpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/include/fc/variant.hpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/include/fc/variant_object.hpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/include/fc/vector.hpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/include/fc/vector_fwd.hpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/include/fc/wait_any.hpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/src/asio.cpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/src/byteswap.hpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/src/compress/smaz.cpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/src/compress/zlib.cpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/src/crypto/_digest_common.cpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/src/crypto/_digest_common.hpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/src/crypto/_elliptic_impl_priv.hpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/src/crypto/_elliptic_impl_pub.hpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/src/crypto/aes.cpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/src/crypto/base32.cpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/src/crypto/base36.cpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/src/crypto/base58.cpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/src/crypto/base64.cpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/src/crypto/bigint.cpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/src/crypto/blowfish.cpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/src/crypto/city.cpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/src/crypto/crc.cpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/src/crypto/dh.cpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/src/crypto/elliptic_common.cpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/src/crypto/elliptic_impl_priv.cpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/src/crypto/elliptic_secp256k1.cpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/src/crypto/equihash.cpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/src/crypto/hex.cpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/src/crypto/openssl.cpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/src/crypto/rand.cpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/src/crypto/restartable_sha256.cpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/src/crypto/ripemd160.cpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/src/crypto/sha1.cpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/src/crypto/sha224.cpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/src/crypto/sha256.cpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/src/crypto/sha512.cpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/src/exception.cpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/src/filesystem.cpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/src/interprocess/file_mapping.cpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/src/interprocess/file_mutex.cpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/src/interprocess/mmap_struct.cpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/src/interprocess/signals.cpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/src/io/buffered_iostream.cpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/src/io/console.cpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/src/io/datastream.cpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/src/io/fstream.cpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/src/io/iostream.cpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/src/io/json.cpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/src/io/sstream.cpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/src/io/varint.cpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/src/log/appender.cpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/src/log/console_appender.cpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/src/log/console_defines.h">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/src/log/file_appender.cpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/src/log/gelf_appender.cpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/src/log/log_message.cpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/src/log/logger.cpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/src/log/logger_config.cpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/src/network/gntp.cpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/src/network/http/http_connection.cpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/src/network/http/http_server.cpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/src/network/http/websocket.cpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/src/network/ip.cpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/src/network/ntp.cpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/src/network/rate_limiting.cpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/src/network/resolve.cpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/src/network/tcp_socket.cpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/src/network/udp_socket.cpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/src/network/url.cpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/src/real128.cpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/src/reflect/typename.cpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/src/rpc/bstate.cpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/src/rpc/cli.cpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/src/rpc/http_api.cpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/src/rpc/json_connection.cpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/src/rpc/state.cpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/src/rpc/websocket_api.cpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/src/shared_ptr.cpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/src/ssh/client_impl.hpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/src/stacktrace.cpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/src/string.cpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/src/thread/context.hpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/src/thread/future.cpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/src/thread/mutex.cpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/src/thread/non_preemptable_scope_check.cpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/src/thread/spin_lock.cpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/src/thread/spin_yield_lock.cpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/src/thread/task.cpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/src/thread/thread.cpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/src/thread/thread_d.hpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/src/thread/thread_specific.cpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/src/time.cpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/src/uint128.cpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/src/utf8.cpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/src/utf8/checked.h">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/src/utf8/core.h">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/src/utf8/unchecked.h">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/src/variant.cpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/src/variant_object.cpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/tests/all_tests.cpp">
+			<Option target="all_tests"/>
+			<Option target="blind"/>
+			<Option target="ntp_test"/>
+			<Option target="bloom_test"/>
+			<Option target="task_cancel_test"/>
+			<Option target="thread_test"/>
+			<Option target="real128_test"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/tests/api.cpp">
+			<Option target="api"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/tests/bip_lock.cpp">
+			<Option target="bip_lock"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/tests/blinding_test.cpp">
+			<Option target="blinding_test"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/tests/bloom_test.cpp">
+			<Option target="all_tests"/>
+			<Option target="bloom_test"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/tests/compress/compress.cpp">
+			<Option target="all_tests"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/tests/crypto/aes_test.cpp">
+			<Option target="all_tests"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/tests/crypto/base_n_tests.cpp">
+			<Option target="all_tests"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/tests/crypto/bigint_test.cpp">
+			<Option target="all_tests"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/tests/crypto/blind.cpp">
+			<Option target="all_tests"/>
+			<Option target="blind"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/tests/crypto/blowfish_test.cpp">
+			<Option target="all_tests"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/tests/crypto/dh_test.cpp">
+			<Option target="all_tests"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/tests/crypto/ecc_test.cpp">
+			<Option target="ecc_test"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/tests/crypto/log_test.cpp">
+			<Option target="log_test"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/tests/crypto/rand_test.cpp">
+			<Option target="all_tests"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/tests/crypto/sha_tests.cpp">
+			<Option target="all_tests"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/tests/hmac_test.cpp">
+			<Option target="hmac_test"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/tests/network/http/websocket_test.cpp">
+			<Option target="all_tests"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/tests/network/ntp_test.cpp">
+			<Option target="all_tests"/>
+			<Option target="ntp_test"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/tests/real128_test.cpp">
+			<Option target="all_tests"/>
+			<Option target="real128_test"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/tests/saturation_test.cpp">
+			<Option target="all_tests"/>
+			<Option target="saturation_test"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/tests/sha_test.cpp">
+			<Option target="sha_test"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/tests/thread/task_cancel.cpp">
+			<Option target="all_tests"/>
+			<Option target="task_cancel_test"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/tests/thread/thread_tests.cpp">
+			<Option target="all_tests"/>
+			<Option target="thread_test"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/tests/utf8_test.cpp">
+			<Option target="all_tests"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/cyoencode-1.0.2/src/CyoDecode.c">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/cyoencode-1.0.2/src/CyoDecode.h">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/cyoencode-1.0.2/src/CyoEncode.c">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/cyoencode-1.0.2/src/CyoEncode.h">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/diff-match-patch-cpp-stl/diff_match_patch.h">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/equihash/include/equihash/blake2-config.h">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/equihash/include/equihash/blake2-impl.h">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/equihash/include/equihash/blake2.h">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/equihash/include/equihash/blake2b-load-sse2.h">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/equihash/include/equihash/blake2b-load-sse41.h">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/equihash/include/equihash/blake2b-round.h">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/equihash/include/equihash/pow.hpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/equihash/src/blake2b.c">
+			<Option target="equihash"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/equihash/src/pow.cpp">
+			<Option target="equihash"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/secp256k1-zkp/include/secp256k1.h">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/secp256k1-zkp/src/bench.h">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/secp256k1-zkp/src/borromean.h">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/secp256k1-zkp/src/borromean_impl.h">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/secp256k1-zkp/src/ecdh.h">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/secp256k1-zkp/src/ecdh_impl.h">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/secp256k1-zkp/src/ecdsa.h">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/secp256k1-zkp/src/ecdsa_impl.h">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/secp256k1-zkp/src/eckey.h">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/secp256k1-zkp/src/eckey_impl.h">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/secp256k1-zkp/src/ecmult.h">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/secp256k1-zkp/src/ecmult_gen.h">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/secp256k1-zkp/src/ecmult_gen_impl.h">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/secp256k1-zkp/src/ecmult_impl.h">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/secp256k1-zkp/src/field.h">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/secp256k1-zkp/src/field_10x26.h">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/secp256k1-zkp/src/field_10x26_impl.h">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/secp256k1-zkp/src/field_5x52.h">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/secp256k1-zkp/src/field_5x52_asm_impl.h">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/secp256k1-zkp/src/field_5x52_impl.h">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/secp256k1-zkp/src/field_5x52_int128_impl.h">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/secp256k1-zkp/src/field_impl.h">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/secp256k1-zkp/src/group.h">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/secp256k1-zkp/src/group_impl.h">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/secp256k1-zkp/src/hash.h">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/secp256k1-zkp/src/hash_impl.h">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/secp256k1-zkp/src/java/org_bitcoin_NativeSecp256k1.h">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/secp256k1-zkp/src/num.h">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/secp256k1-zkp/src/num_gmp.h">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/secp256k1-zkp/src/num_gmp_impl.h">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/secp256k1-zkp/src/num_impl.h">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/secp256k1-zkp/src/rangeproof.h">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/secp256k1-zkp/src/rangeproof_impl.h">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/secp256k1-zkp/src/scalar.h">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/secp256k1-zkp/src/scalar_4x64.h">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/secp256k1-zkp/src/scalar_4x64_impl.h">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/secp256k1-zkp/src/scalar_8x32.h">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/secp256k1-zkp/src/scalar_8x32_impl.h">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/secp256k1-zkp/src/scalar_impl.h">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/secp256k1-zkp/src/testrand.h">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/secp256k1-zkp/src/testrand_impl.h">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/secp256k1-zkp/src/util.h">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/websocketpp/examples/echo_server/echo_handler.hpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/websocketpp/examples/external_io_service/tcp_echo_server.hpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/websocketpp/test/connection/connection_tu2.hpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/websocketpp/websocketpp/base64/base64.hpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/websocketpp/websocketpp/client.hpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/websocketpp/websocketpp/close.hpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/websocketpp/websocketpp/common/asio.hpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/websocketpp/websocketpp/common/asio_ssl.hpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/websocketpp/websocketpp/common/chrono.hpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/websocketpp/websocketpp/common/connection_hdl.hpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/websocketpp/websocketpp/common/cpp11.hpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/websocketpp/websocketpp/common/functional.hpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/websocketpp/websocketpp/common/md5.hpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/websocketpp/websocketpp/common/memory.hpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/websocketpp/websocketpp/common/network.hpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/websocketpp/websocketpp/common/platforms.hpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/websocketpp/websocketpp/common/random.hpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/websocketpp/websocketpp/common/regex.hpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/websocketpp/websocketpp/common/stdint.hpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/websocketpp/websocketpp/common/system_error.hpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/websocketpp/websocketpp/common/thread.hpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/websocketpp/websocketpp/common/time.hpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/websocketpp/websocketpp/common/type_traits.hpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/websocketpp/websocketpp/concurrency/basic.hpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/websocketpp/websocketpp/concurrency/none.hpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/websocketpp/websocketpp/config/asio.hpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/websocketpp/websocketpp/config/asio_client.hpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/websocketpp/websocketpp/config/asio_no_tls.hpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/websocketpp/websocketpp/config/asio_no_tls_client.hpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/websocketpp/websocketpp/config/boost_config.hpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/websocketpp/websocketpp/config/core.hpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/websocketpp/websocketpp/config/core_client.hpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/websocketpp/websocketpp/config/debug.hpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/websocketpp/websocketpp/config/debug_asio.hpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/websocketpp/websocketpp/config/debug_asio_no_tls.hpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/websocketpp/websocketpp/config/minimal_client.hpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/websocketpp/websocketpp/config/minimal_server.hpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/websocketpp/websocketpp/connection.hpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/websocketpp/websocketpp/connection_base.hpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/websocketpp/websocketpp/endpoint.hpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/websocketpp/websocketpp/endpoint_base.hpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/websocketpp/websocketpp/error.hpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/websocketpp/websocketpp/extensions/extension.hpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/websocketpp/websocketpp/extensions/permessage_deflate/disabled.hpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/websocketpp/websocketpp/extensions/permessage_deflate/enabled.hpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/websocketpp/websocketpp/frame.hpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/websocketpp/websocketpp/http/constants.hpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/websocketpp/websocketpp/http/impl/parser.hpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/websocketpp/websocketpp/http/impl/request.hpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/websocketpp/websocketpp/http/impl/response.hpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/websocketpp/websocketpp/http/parser.hpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/websocketpp/websocketpp/http/request.hpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/websocketpp/websocketpp/http/response.hpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/websocketpp/websocketpp/impl/connection_impl.hpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/websocketpp/websocketpp/impl/endpoint_impl.hpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/websocketpp/websocketpp/impl/utilities_impl.hpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/websocketpp/websocketpp/logger/basic.hpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/websocketpp/websocketpp/logger/levels.hpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/websocketpp/websocketpp/logger/stub.hpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/websocketpp/websocketpp/logger/syslog.hpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/websocketpp/websocketpp/message_buffer/alloc.hpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/websocketpp/websocketpp/message_buffer/message.hpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/websocketpp/websocketpp/message_buffer/pool.hpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/websocketpp/websocketpp/processors/base.hpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/websocketpp/websocketpp/processors/hybi00.hpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/websocketpp/websocketpp/processors/hybi07.hpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/websocketpp/websocketpp/processors/hybi08.hpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/websocketpp/websocketpp/processors/hybi13.hpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/websocketpp/websocketpp/processors/processor.hpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/websocketpp/websocketpp/random/none.hpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/websocketpp/websocketpp/random/random_device.hpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/websocketpp/websocketpp/roles/client_endpoint.hpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/websocketpp/websocketpp/roles/server_endpoint.hpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/websocketpp/websocketpp/server.hpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/websocketpp/websocketpp/sha1/sha1.hpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/websocketpp/websocketpp/transport/asio/base.hpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/websocketpp/websocketpp/transport/asio/connection.hpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/websocketpp/websocketpp/transport/asio/endpoint.hpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/websocketpp/websocketpp/transport/asio/security/base.hpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/websocketpp/websocketpp/transport/asio/security/none.hpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/websocketpp/websocketpp/transport/asio/security/tls.hpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/websocketpp/websocketpp/transport/base/connection.hpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/websocketpp/websocketpp/transport/base/endpoint.hpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/websocketpp/websocketpp/transport/debug/base.hpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/websocketpp/websocketpp/transport/debug/connection.hpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/websocketpp/websocketpp/transport/debug/endpoint.hpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/websocketpp/websocketpp/transport/iostream/base.hpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/websocketpp/websocketpp/transport/iostream/connection.hpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/websocketpp/websocketpp/transport/iostream/endpoint.hpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/websocketpp/websocketpp/transport/stub/base.hpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/websocketpp/websocketpp/transport/stub/connection.hpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/websocketpp/websocketpp/transport/stub/endpoint.hpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/websocketpp/websocketpp/uri.hpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/websocketpp/websocketpp/utf8_validator.hpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/websocketpp/websocketpp/utilities.hpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/websocketpp/websocketpp/version.hpp">
+			<Option target="fc"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\libraries\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/appbase/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\libraries\appbase\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/appbase/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\libraries\appbase\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/appbase/examples/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\libraries\appbase\examples\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/appbase/examples/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\libraries\appbase\examples\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\libraries\fc\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\libraries\fc\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/CMakeModules/FindBoost.cmake">
+			<Option virtualFolder="CMake Files\libraries\fc\CMakeModules\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/CMakeModules/FindBoost.cmake">
+			<Option virtualFolder="CMake Files\libraries\fc\CMakeModules\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/CMakeModules/FindBoost.cmake">
+			<Option virtualFolder="CMake Files\libraries\fc\CMakeModules\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/CMakeModules/VersionMacros.cmake">
+			<Option virtualFolder="CMake Files\libraries\fc\CMakeModules\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/CMakeModules/ArgumentParser.cmake">
+			<Option virtualFolder="CMake Files\libraries\fc\CMakeModules\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/CMakeModules/SetupTargetMacros.cmake">
+			<Option virtualFolder="CMake Files\libraries\fc\CMakeModules\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/CMakeModules/ArgumentParser.cmake">
+			<Option virtualFolder="CMake Files\libraries\fc\CMakeModules\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/CMakeModules/FindBoost.cmake">
+			<Option virtualFolder="CMake Files\libraries\fc\CMakeModules\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/CMakeModules/FindReadline.cmake">
+			<Option virtualFolder="CMake Files\libraries\fc\CMakeModules\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/CMakeModules/FindBoost.cmake">
+			<Option virtualFolder="CMake Files\libraries\fc\CMakeModules\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/CMakeModules/FindBoost.cmake">
+			<Option virtualFolder="CMake Files\libraries\fc\CMakeModules\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/CMakeModules/VersionMacros.cmake">
+			<Option virtualFolder="CMake Files\libraries\fc\CMakeModules\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/CMakeModules/ArgumentParser.cmake">
+			<Option virtualFolder="CMake Files\libraries\fc\CMakeModules\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/CMakeModules/SetupTargetMacros.cmake">
+			<Option virtualFolder="CMake Files\libraries\fc\CMakeModules\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/CMakeModules/ArgumentParser.cmake">
+			<Option virtualFolder="CMake Files\libraries\fc\CMakeModules\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/CMakeModules/FindBoost.cmake">
+			<Option virtualFolder="CMake Files\libraries\fc\CMakeModules\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/CMakeModules/FindReadline.cmake">
+			<Option virtualFolder="CMake Files\libraries\fc\CMakeModules\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/GitVersionGen/GetGitRevisionDescription.cmake">
+			<Option virtualFolder="CMake Files\libraries\fc\GitVersionGen\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/GitVersionGen/GetGitRevisionDescription.cmake.in">
+			<Option virtualFolder="CMake Files\libraries\fc\GitVersionGen\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/GitVersionGen/GetGitRevisionDescription.cmake">
+			<Option virtualFolder="CMake Files\libraries\fc\GitVersionGen\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/GitVersionGen/GetGitRevisionDescription.cmake.in">
+			<Option virtualFolder="CMake Files\libraries\fc\GitVersionGen\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/GitVersionGen/GetGitRevisionDescription.cmake.in">
+			<Option virtualFolder="CMake Files\libraries\fc\GitVersionGen\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/GitVersionGen/GetGitRevisionDescription.cmake">
+			<Option virtualFolder="CMake Files\libraries\fc\GitVersionGen\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/GitVersionGen/GetGitRevisionDescription.cmake.in">
+			<Option virtualFolder="CMake Files\libraries\fc\GitVersionGen\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/GitVersionGen/GetGitRevisionDescription.cmake.in">
+			<Option virtualFolder="CMake Files\libraries\fc\GitVersionGen\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/GitVersionGen/GetGitRevisionDescription.cmake.in">
+			<Option virtualFolder="CMake Files\libraries\fc\GitVersionGen\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/GitVersionGen/GetGitRevisionDescription.cmake">
+			<Option virtualFolder="CMake Files\libraries\fc\GitVersionGen\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/GitVersionGen/GetGitRevisionDescription.cmake.in">
+			<Option virtualFolder="CMake Files\libraries\fc\GitVersionGen\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/GitVersionGen/GetGitRevisionDescription.cmake.in">
+			<Option virtualFolder="CMake Files\libraries\fc\GitVersionGen\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/src/git_revision.cpp.in">
+			<Option virtualFolder="CMake Files\libraries\fc\src\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/src/git_revision.cpp.in">
+			<Option virtualFolder="CMake Files\libraries\fc\src\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/websocketpp/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\libraries\fc\vendor\websocketpp\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/websocketpp/websocketpp-config.cmake.in">
+			<Option virtualFolder="CMake Files\libraries\fc\vendor\websocketpp\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/websocketpp/websocketpp-configVersion.cmake.in">
+			<Option virtualFolder="CMake Files\libraries\fc\vendor\websocketpp\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/websocketpp/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\libraries\fc\vendor\websocketpp\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/websocketpp/websocketpp-config.cmake.in">
+			<Option virtualFolder="CMake Files\libraries\fc\vendor\websocketpp\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/websocketpp/websocketpp-configVersion.cmake.in">
+			<Option virtualFolder="CMake Files\libraries\fc\vendor\websocketpp\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/websocketpp/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\libraries\fc\vendor\websocketpp\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/websocketpp/websocketpp-config.cmake.in">
+			<Option virtualFolder="CMake Files\libraries\fc\vendor\websocketpp\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/websocketpp/websocketpp-configVersion.cmake.in">
+			<Option virtualFolder="CMake Files\libraries\fc\vendor\websocketpp\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/websocketpp/cmake/CMakeHelpers.cmake">
+			<Option virtualFolder="CMake Files\libraries\fc\vendor\websocketpp\cmake\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/websocketpp/cmake/CMakeHelpers.cmake">
+			<Option virtualFolder="CMake Files\libraries\fc\vendor\websocketpp\cmake\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/websocketpp/cmake/CMakeHelpers.cmake">
+			<Option virtualFolder="CMake Files\libraries\fc\vendor\websocketpp\cmake\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/websocketpp/websocketpp/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\libraries\fc\vendor\websocketpp\websocketpp\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/websocketpp/websocketpp/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\libraries\fc\vendor\websocketpp\websocketpp\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/websocketpp/websocketpp/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\libraries\fc\vendor\websocketpp\websocketpp\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/equihash/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\libraries\fc\vendor\equihash\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/vendor/equihash/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\libraries\fc\vendor\equihash\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/tests/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\libraries\fc\tests\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/fc/tests/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\libraries\fc\tests\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/chainbase/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\libraries\chainbase\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/chainbase/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\libraries\chainbase\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/chainbase/test/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\libraries\chainbase\test\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/chainbase/test/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\libraries\chainbase\test\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\libraries\vendor\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\libraries\vendor\rocksdb\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\libraries\vendor\rocksdb\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/cmake/RocksDBConfig.cmake.in">
+			<Option virtualFolder="CMake Files\libraries\vendor\rocksdb\cmake\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/cmake/RocksDBConfig.cmake.in">
+			<Option virtualFolder="CMake Files\libraries\vendor\rocksdb\cmake\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/cmake/modules/Findsnappy.cmake">
+			<Option virtualFolder="CMake Files\libraries\vendor\rocksdb\cmake\modules\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/cmake/modules/Findzlib.cmake">
+			<Option virtualFolder="CMake Files\libraries\vendor\rocksdb\cmake\modules\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/cmake/modules/Findbzip2.cmake">
+			<Option virtualFolder="CMake Files\libraries\vendor\rocksdb\cmake\modules\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/cmake/modules/Findsnappy.cmake">
+			<Option virtualFolder="CMake Files\libraries\vendor\rocksdb\cmake\modules\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/cmake/modules/Findzlib.cmake">
+			<Option virtualFolder="CMake Files\libraries\vendor\rocksdb\cmake\modules\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/cmake/modules/Findbzip2.cmake">
+			<Option virtualFolder="CMake Files\libraries\vendor\rocksdb\cmake\modules\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/util/build_version.cc.in">
+			<Option virtualFolder="CMake Files\libraries\vendor\rocksdb\util\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/util/build_version.cc.in">
+			<Option virtualFolder="CMake Files\libraries\vendor\rocksdb\util\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/third-party/gtest-1.7.0/fused-src/gtest/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\libraries\vendor\rocksdb\third-party\gtest-1.7.0\fused-src\gtest\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/third-party/gtest-1.7.0/fused-src/gtest/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\libraries\vendor\rocksdb\third-party\gtest-1.7.0\fused-src\gtest\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/tools/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\libraries\vendor\rocksdb\tools\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/tools/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\libraries\vendor\rocksdb\tools\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/schema/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\libraries\schema\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/jsonball/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\libraries\jsonball\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/chain/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\libraries\chain\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/protocol/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\libraries\protocol\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/net/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\libraries\net\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/utilities/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\libraries\utilities\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/utilities/git_revision.cpp.in">
+			<Option virtualFolder="CMake Files\libraries\utilities\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/plugins/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\libraries\plugins\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/plugins/account_by_key/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\libraries\plugins\account_by_key\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/plugins/account_history/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\libraries\plugins\account_history\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/plugins/account_history_rocksdb/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\libraries\plugins\account_history_rocksdb\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/plugins/apis/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\libraries\plugins\apis\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/plugins/apis/account_by_key_api/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\libraries\plugins\apis\account_by_key_api\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/plugins/apis/account_history_api/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\libraries\plugins\apis\account_history_api\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/plugins/apis/block_api/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\libraries\plugins\apis\block_api\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/plugins/apis/chain_api/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\libraries\plugins\apis\chain_api\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/plugins/apis/condenser_api/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\libraries\plugins\apis\condenser_api\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/plugins/apis/database_api/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\libraries\plugins\apis\database_api\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/plugins/apis/debug_node_api/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\libraries\plugins\apis\debug_node_api\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/plugins/apis/follow_api/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\libraries\plugins\apis\follow_api\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/plugins/apis/market_history_api/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\libraries\plugins\apis\market_history_api\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/plugins/apis/network_broadcast_api/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\libraries\plugins\apis\network_broadcast_api\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/plugins/apis/reputation_api/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\libraries\plugins\apis\reputation_api\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/plugins/apis/tags_api/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\libraries\plugins\apis\tags_api\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/plugins/apis/test_api/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\libraries\plugins\apis\test_api\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/plugins/apis/witness_api/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\libraries\plugins\apis\witness_api\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/plugins/block_data_export/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\libraries\plugins\block_data_export\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/plugins/block_log_info/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\libraries\plugins\block_log_info\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/plugins/chain/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\libraries\plugins\chain\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/plugins/debug_node/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\libraries\plugins\debug_node\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/plugins/follow/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\libraries\plugins\follow\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/plugins/json_rpc/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\libraries\plugins\json_rpc\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/plugins/market_history/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\libraries\plugins\market_history\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/plugins/p2p/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\libraries\plugins\p2p\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/plugins/reputation/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\libraries\plugins\reputation\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/plugins/smt_test/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\libraries\plugins\smt_test\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/plugins/stats_export/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\libraries\plugins\stats_export\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/plugins/statsd/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\libraries\plugins\statsd\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/plugins/tags/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\libraries\plugins\tags\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/plugins/webserver/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\libraries\plugins\webserver\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/plugins/witness/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\libraries\plugins\witness\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/manifest/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\libraries\manifest\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/wallet/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\libraries\wallet\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/.git/HEAD">
+			<Option virtualFolder="CMake Files\.git\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/.git/HEAD">
+			<Option virtualFolder="CMake Files\.git\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/.git/HEAD">
+			<Option virtualFolder="CMake Files\.git\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/.git/HEAD">
+			<Option virtualFolder="CMake Files\.git\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/.git/HEAD">
+			<Option virtualFolder="CMake Files\.git\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/.git/HEAD">
+			<Option virtualFolder="CMake Files\.git\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/.git/HEAD">
+			<Option virtualFolder="CMake Files\.git\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/.git/HEAD">
+			<Option virtualFolder="CMake Files\.git\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/.git/refs/heads/master">
+			<Option virtualFolder="CMake Files\.git\refs\heads\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/.git/refs/heads/master">
+			<Option virtualFolder="CMake Files\.git\refs\heads\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/.git/refs/heads/master">
+			<Option virtualFolder="CMake Files\.git\refs\heads\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/.git/refs/heads/master">
+			<Option virtualFolder="CMake Files\.git\refs\heads\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/.git/refs/heads/master">
+			<Option virtualFolder="CMake Files\.git\refs\heads\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/.git/refs/heads/master">
+			<Option virtualFolder="CMake Files\.git\refs\heads\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/.git/refs/heads/master">
+			<Option virtualFolder="CMake Files\.git\refs\heads\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/.git/refs/heads/master">
+			<Option virtualFolder="CMake Files\.git\refs\heads\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/external_plugins/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\external_plugins\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/fc/vendor/secp256k1-zkp/tmp/project_secp256k1-cfgcmd.txt.in">
+			<Option virtualFolder="CMake Files\cmake-build-debug\libraries\fc\vendor\secp256k1-zkp\tmp\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/fc/vendor/secp256k1-zkp/tmp/project_secp256k1-cfgcmd.txt.in">
+			<Option virtualFolder="CMake Files\cmake-build-debug\libraries\fc\vendor\secp256k1-zkp\tmp\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/jsonball/gensrc/jsonball/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\cmake-build-debug\libraries\jsonball\gensrc\jsonball\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/manifest/gensrc/plugins/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\cmake-build-debug\libraries\manifest\gensrc\plugins\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/programs/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\programs\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/programs/build_helpers/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\programs\build_helpers\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/programs/cli_wallet/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\programs\cli_wallet\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/programs/creativecoind/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\programs\creativecoind\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/programs/js_operation_serializer/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\programs\js_operation_serializer\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/programs/size_checker/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\programs\size_checker\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/programs/util/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\programs\util\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/tests/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\tests\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/tests/db_fixture/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\tests\db_fixture\"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/tests/bmic_objects/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\tests\bmic_objects\"/>
+		</Unit>
+	</Project>
+</CodeBlocks_project_file>

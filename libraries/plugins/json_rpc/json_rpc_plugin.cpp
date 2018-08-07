@@ -1,5 +1,5 @@
-#include <steem/plugins/json_rpc/json_rpc_plugin.hpp>
-#include <steem/plugins/json_rpc/utility.hpp>
+#include <creativecoin/plugins/json_rpc/json_rpc_plugin.hpp>
+#include <creativecoin/plugins/json_rpc/utility.hpp>
 
 #include <boost/algorithm/string.hpp>
 
@@ -12,7 +12,7 @@
 
 #define ENABLE_JSON_RPC_LOG
 
-namespace steem { namespace plugins { namespace json_rpc {
+namespace creativecoin { namespace plugins { namespace json_rpc {
 
 namespace detail
 {
@@ -472,9 +472,9 @@ string json_rpc_plugin::call( const string& message )
 
 }
 
-} } } // steem::plugins::json_rpc
+} } } // creativecoin::plugins::json_rpc
 
-FC_REFLECT( steem::plugins::json_rpc::detail::json_rpc_error, (code)(message)(data) )
-FC_REFLECT( steem::plugins::json_rpc::detail::json_rpc_response, (jsonrpc)(result)(error)(id) )
+FC_REFLECT( creativecoin::plugins::json_rpc::detail::json_rpc_error, (code)(message)(data) )
+FC_REFLECT( creativecoin::plugins::json_rpc::detail::json_rpc_response, (jsonrpc)(result)(error)(id) )
 
-FC_REFLECT( steem::plugins::json_rpc::detail::get_signature_args, (method) )
+FC_REFLECT( creativecoin::plugins::json_rpc::detail::get_signature_args, (method) )

@@ -1,9 +1,9 @@
 
-#include <steem/schema/schema.hpp>
+#include <creativecoin/schema/schema.hpp>
 
 #include <set>
 
-namespace steem { namespace schema {
+namespace creativecoin { namespace schema {
 
 namespace detail {
 
