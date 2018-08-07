@@ -7036,6 +7036,18 @@
 		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/fc/git_revision.cpp">
 			<Option target="fc"/>
 		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/jsonball/gensrc/jsonball/include/creativecoin/jsonball/jsonball.hpp">
+			<Option target="creativecoin_jsonball"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/jsonball/gensrc/jsonball/mm_ticks.cpp">
+			<Option target="creativecoin_jsonball"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/manifest/gensrc/plugins/include/creativecoin/manifest/plugins.hpp">
+			<Option target="creativecoin_plugins"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/manifest/gensrc/plugins/mf_plugins.cpp">
+			<Option target="creativecoin_plugins"/>
+		</Unit>
 		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/cmake-build-debug/libraries/utilities/git_revision.cpp">
 			<Option target="creativecoin_utilities"/>
 		</Unit>
@@ -7044,6 +7056,156 @@
 		</Unit>
 		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/appbase/examples/main.cpp">
 			<Option target="appbase_example"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/chain/block_log.cpp">
+			<Option target="creativecoin_chain"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/chain/creativecoin_evaluator.cpp">
+			<Option target="creativecoin_chain"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/chain/creativecoin_objects.cpp">
+			<Option target="creativecoin_chain"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/chain/database.cpp">
+			<Option target="creativecoin_chain"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/chain/fork_database.cpp">
+			<Option target="creativecoin_chain"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/chain/generic_custom_operation_interpreter.cpp">
+			<Option target="creativecoin_chain"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/chain/include/creativecoin/chain/account_object.hpp">
+			<Option target="creativecoin_chain"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/chain/include/creativecoin/chain/block_log.hpp">
+			<Option target="creativecoin_chain"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/chain/include/creativecoin/chain/block_notification.hpp">
+			<Option target="creativecoin_chain"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/chain/include/creativecoin/chain/block_summary_object.hpp">
+			<Option target="creativecoin_chain"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/chain/include/creativecoin/chain/buffer_type.hpp">
+			<Option target="creativecoin_chain"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/chain/include/creativecoin/chain/comment_object.hpp">
+			<Option target="creativecoin_chain"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/chain/include/creativecoin/chain/compound.hpp">
+			<Option target="creativecoin_chain"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/chain/include/creativecoin/chain/creativecoin_evaluator.hpp">
+			<Option target="creativecoin_chain"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/chain/include/creativecoin/chain/creativecoin_object_types.hpp">
+			<Option target="creativecoin_chain"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/chain/include/creativecoin/chain/creativecoin_objects.hpp">
+			<Option target="creativecoin_chain"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/chain/include/creativecoin/chain/custom_operation_interpreter.hpp">
+			<Option target="creativecoin_chain"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/chain/include/creativecoin/chain/database.hpp">
+			<Option target="creativecoin_chain"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/chain/include/creativecoin/chain/database_exceptions.hpp">
+			<Option target="creativecoin_chain"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/chain/include/creativecoin/chain/db_with.hpp">
+			<Option target="creativecoin_chain"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/chain/include/creativecoin/chain/evaluator.hpp">
+			<Option target="creativecoin_chain"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/chain/include/creativecoin/chain/evaluator_registry.hpp">
+			<Option target="creativecoin_chain"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/chain/include/creativecoin/chain/fork_database.hpp">
+			<Option target="creativecoin_chain"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/chain/include/creativecoin/chain/generic_custom_operation_interpreter.hpp">
+			<Option target="creativecoin_chain"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/chain/include/creativecoin/chain/global_property_object.hpp">
+			<Option target="creativecoin_chain"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/chain/include/creativecoin/chain/hardfork_property_object.hpp">
+			<Option target="creativecoin_chain"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/chain/include/creativecoin/chain/history_object.hpp">
+			<Option target="creativecoin_chain"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/chain/include/creativecoin/chain/index.hpp">
+			<Option target="creativecoin_chain"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/chain/include/creativecoin/chain/node_property_object.hpp">
+			<Option target="creativecoin_chain"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/chain/include/creativecoin/chain/operation_notification.hpp">
+			<Option target="creativecoin_chain"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/chain/include/creativecoin/chain/shared_authority.hpp">
+			<Option target="creativecoin_chain"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/chain/include/creativecoin/chain/shared_db_merkle.hpp">
+			<Option target="creativecoin_chain"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/chain/include/creativecoin/chain/smt_objects.hpp">
+			<Option target="creativecoin_chain"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/chain/include/creativecoin/chain/transaction_notification.hpp">
+			<Option target="creativecoin_chain"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/chain/include/creativecoin/chain/transaction_object.hpp">
+			<Option target="creativecoin_chain"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/chain/include/creativecoin/chain/util/advanced_benchmark_dumper.hpp">
+			<Option target="creativecoin_chain"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/chain/include/creativecoin/chain/util/asset.hpp">
+			<Option target="creativecoin_chain"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/chain/include/creativecoin/chain/util/impacted.hpp">
+			<Option target="creativecoin_chain"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/chain/include/creativecoin/chain/util/reward.hpp">
+			<Option target="creativecoin_chain"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/chain/include/creativecoin/chain/util/signal.hpp">
+			<Option target="creativecoin_chain"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/chain/include/creativecoin/chain/util/uint256.hpp">
+			<Option target="creativecoin_chain"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/chain/include/creativecoin/chain/witness_objects.hpp">
+			<Option target="creativecoin_chain"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/chain/include/creativecoin/chain/witness_schedule.hpp">
+			<Option target="creativecoin_chain"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/chain/shared_authority.cpp">
+			<Option target="creativecoin_chain"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/chain/smt_evaluator.cpp">
+			<Option target="creativecoin_chain"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/chain/smt_objects/smt_market_maker.cpp">
+			<Option target="creativecoin_chain"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/chain/util/advanced_benchmark_dumper.cpp">
+			<Option target="creativecoin_chain"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/chain/util/impacted.cpp">
+			<Option target="creativecoin_chain"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/chain/util/reward.cpp">
+			<Option target="creativecoin_chain"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/chain/witness_schedule.cpp">
+			<Option target="creativecoin_chain"/>
 		</Unit>
 		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/chainbase/src/chainbase.cpp">
 			<Option target="chainbase"/>
@@ -8387,6 +8549,12 @@
 		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/plugins/apis/chain_api/chain_api_plugin.cpp">
 			<Option target="chain_api_plugin"/>
 		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/plugins/apis/chain_api/include/creativecoin/plugins/chain_api/chain_api.hpp">
+			<Option target="chain_api_plugin"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/plugins/apis/chain_api/include/creativecoin/plugins/chain_api/chain_api_plugin.hpp">
+			<Option target="chain_api_plugin"/>
+		</Unit>
 		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/plugins/apis/condenser_api/condenser_api.cpp">
 			<Option target="condenser_api_plugin"/>
 		</Unit>
@@ -8465,6 +8633,9 @@
 		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/plugins/debug_node/debug_node_plugin.cpp">
 			<Option target="debug_node_plugin"/>
 		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/plugins/debug_node/include/creativecoin/plugins/debug_node/debug_node_plugin.hpp">
+			<Option target="debug_node_plugin"/>
+		</Unit>
 		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/plugins/follow/follow_evaluators.cpp">
 			<Option target="follow_plugin"/>
 		</Unit>
@@ -8477,11 +8648,23 @@
 		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/plugins/follow/inc_performance.cpp">
 			<Option target="follow_plugin"/>
 		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/plugins/json_rpc/include/creativecoin/plugins/json_rpc/json_rpc_plugin.hpp">
+			<Option target="json_rpc_plugin"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/plugins/json_rpc/include/creativecoin/plugins/json_rpc/utility.hpp">
+			<Option target="json_rpc_plugin"/>
+		</Unit>
 		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/plugins/json_rpc/json_rpc_plugin.cpp">
 			<Option target="json_rpc_plugin"/>
 		</Unit>
 		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/plugins/market_history/market_history_plugin.cpp">
 			<Option target="market_history_plugin"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/plugins/p2p/include/creativecoin/plugins/p2p/p2p_default_seeds.hpp">
+			<Option target="p2p_plugin"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/plugins/p2p/include/creativecoin/plugins/p2p/p2p_plugin.hpp">
+			<Option target="p2p_plugin"/>
 		</Unit>
 		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/plugins/p2p/p2p_plugin.cpp">
 			<Option target="p2p_plugin"/>
@@ -8495,6 +8678,12 @@
 		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/plugins/stats_export/stats_export_plugin.cpp">
 			<Option target="stats_export_plugin"/>
 		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/plugins/statsd/include/creativecoin/plugins/statsd/statsd_plugin.hpp">
+			<Option target="statsd_plugin"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/plugins/statsd/include/creativecoin/plugins/statsd/utility.hpp">
+			<Option target="statsd_plugin"/>
+		</Unit>
 		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/plugins/statsd/statsd_plugin.cpp">
 			<Option target="statsd_plugin"/>
 		</Unit>
@@ -8504,16 +8693,178 @@
 		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/plugins/tags/tags_plugin.cpp">
 			<Option target="tags_plugin"/>
 		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/plugins/webserver/include/creativecoin/plugins/webserver/webserver_plugin.hpp">
+			<Option target="webserver_plugin"/>
+		</Unit>
 		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/plugins/webserver/webserver_plugin.cpp">
 			<Option target="webserver_plugin"/>
 		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/plugins/witness/include/creativecoin/plugins/witness/witness_export_objects.hpp">
+			<Option target="witness_plugin"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/plugins/witness/include/creativecoin/plugins/witness/witness_objects.hpp">
+			<Option target="witness_plugin"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/plugins/witness/include/creativecoin/plugins/witness/witness_plugin.hpp">
+			<Option target="witness_plugin"/>
+		</Unit>
 		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/plugins/witness/witness_plugin.cpp">
 			<Option target="witness_plugin"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/protocol/asset.cpp">
+			<Option target="creativecoin_protocol"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/protocol/authority.cpp">
+			<Option target="creativecoin_protocol"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/protocol/block.cpp">
+			<Option target="creativecoin_protocol"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/protocol/creativecoin_operations.cpp">
+			<Option target="creativecoin_protocol"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/protocol/get_config.cpp">
+			<Option target="creativecoin_protocol"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/protocol/include/creativecoin/protocol/asset.hpp">
+			<Option target="creativecoin_protocol"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/protocol/include/creativecoin/protocol/asset_symbol.hpp">
+			<Option target="creativecoin_protocol"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/protocol/include/creativecoin/protocol/authority.hpp">
+			<Option target="creativecoin_protocol"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/protocol/include/creativecoin/protocol/base.hpp">
+			<Option target="creativecoin_protocol"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/protocol/include/creativecoin/protocol/block.hpp">
+			<Option target="creativecoin_protocol"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/protocol/include/creativecoin/protocol/block_header.hpp">
+			<Option target="creativecoin_protocol"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/protocol/include/creativecoin/protocol/config.hpp">
+			<Option target="creativecoin_protocol"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/protocol/include/creativecoin/protocol/exceptions.hpp">
+			<Option target="creativecoin_protocol"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/protocol/include/creativecoin/protocol/fixed_string.hpp">
+			<Option target="creativecoin_protocol"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/protocol/include/creativecoin/protocol/get_config.hpp">
+			<Option target="creativecoin_protocol"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/protocol/include/creativecoin/protocol/legacy_asset.hpp">
+			<Option target="creativecoin_protocol"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/protocol/include/creativecoin/protocol/misc_utilities.hpp">
+			<Option target="creativecoin_protocol"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/protocol/include/creativecoin/protocol/operation_util.hpp">
+			<Option target="creativecoin_protocol"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/protocol/include/creativecoin/protocol/operation_util_impl.hpp">
+			<Option target="creativecoin_protocol"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/protocol/include/creativecoin/protocol/operations.hpp">
+			<Option target="creativecoin_protocol"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/protocol/include/creativecoin/protocol/protocol.hpp">
+			<Option target="creativecoin_protocol"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/protocol/include/creativecoin/protocol/sign_state.hpp">
+			<Option target="creativecoin_protocol"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/protocol/include/creativecoin/protocol/smt_operations.hpp">
+			<Option target="creativecoin_protocol"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/protocol/include/creativecoin/protocol/steem_operations.hpp">
+			<Option target="creativecoin_protocol"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/protocol/include/creativecoin/protocol/steem_virtual_operations.hpp">
+			<Option target="creativecoin_protocol"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/protocol/include/creativecoin/protocol/transaction.hpp">
+			<Option target="creativecoin_protocol"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/protocol/include/creativecoin/protocol/transaction_util.hpp">
+			<Option target="creativecoin_protocol"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/protocol/include/creativecoin/protocol/types.hpp">
+			<Option target="creativecoin_protocol"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/protocol/include/creativecoin/protocol/types_fwd.hpp">
+			<Option target="creativecoin_protocol"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/protocol/include/creativecoin/protocol/validation.hpp">
+			<Option target="creativecoin_protocol"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/protocol/include/creativecoin/protocol/version.hpp">
+			<Option target="creativecoin_protocol"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/protocol/operations.cpp">
+			<Option target="creativecoin_protocol"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/protocol/sign_state.cpp">
+			<Option target="creativecoin_protocol"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/protocol/smt_operations.cpp">
+			<Option target="creativecoin_protocol"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/protocol/transaction.cpp">
+			<Option target="creativecoin_protocol"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/protocol/types.cpp">
+			<Option target="creativecoin_protocol"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/protocol/version.cpp">
+			<Option target="creativecoin_protocol"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/schema/include/creativecoin/schema/abstract_schema.hpp">
+			<Option target="creativecoin_schema"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/schema/include/creativecoin/schema/schema.hpp">
+			<Option target="creativecoin_schema"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/schema/include/creativecoin/schema/schema_impl.hpp">
+			<Option target="creativecoin_schema"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/schema/include/creativecoin/schema/schema_types.hpp">
+			<Option target="creativecoin_schema"/>
 		</Unit>
 		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/schema/schema.cpp">
 			<Option target="creativecoin_schema"/>
 		</Unit>
 		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/utilities/benchmark_dumper.cpp">
+			<Option target="creativecoin_utilities"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/utilities/include/creativecoin/utilities/benchmark_dumper.hpp">
+			<Option target="creativecoin_utilities"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/utilities/include/creativecoin/utilities/git_revision.hpp">
+			<Option target="creativecoin_utilities"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/utilities/include/creativecoin/utilities/key_conversion.hpp">
+			<Option target="creativecoin_utilities"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/utilities/include/creativecoin/utilities/logging_config.hpp">
+			<Option target="creativecoin_utilities"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/utilities/include/creativecoin/utilities/padding_ostream.hpp">
+			<Option target="creativecoin_utilities"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/utilities/include/creativecoin/utilities/plugin_utilities.hpp">
+			<Option target="creativecoin_utilities"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/utilities/include/creativecoin/utilities/string_escape.hpp">
+			<Option target="creativecoin_utilities"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/utilities/include/creativecoin/utilities/tempdir.hpp">
+			<Option target="creativecoin_utilities"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/utilities/include/creativecoin/utilities/words.hpp">
 			<Option target="creativecoin_utilities"/>
 		</Unit>
 		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/utilities/key_conversion.cpp">
@@ -9637,6 +9988,18 @@
 		</Unit>
 		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/vendor/rocksdb/utilities/write_batch_with_index/write_batch_with_index_internal.h">
 			<Option target="rocksdb"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/wallet/include/creativecoin/wallet/api_documentation.hpp">
+			<Option target="creativecoin_wallet"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/wallet/include/creativecoin/wallet/reflect_util.hpp">
+			<Option target="creativecoin_wallet"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/wallet/include/creativecoin/wallet/remote_node_api.hpp">
+			<Option target="creativecoin_wallet"/>
+		</Unit>
+		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/wallet/include/creativecoin/wallet/wallet.hpp">
+			<Option target="creativecoin_wallet"/>
 		</Unit>
 		<Unit filename="/home/ander/CLionProjects/creativecoin-swap/libraries/wallet/remote_node_api.cpp">
 			<Option target="creativecoin_wallet"/>
