@@ -1,4 +1,4 @@
-º#include <creativecoin/chain/creativecoin_evaluator.hpp>
+#include <creativecoin/chain/creativecoin_evaluator.hpp>
 #include <creativecoin/chain/database.hpp>
 #include <creativecoin/chain/custom_operation_interpreter.hpp>
 #include <creativecoin/chain/creativecoin_objects.hpp>
