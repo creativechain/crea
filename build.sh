@@ -43,20 +43,32 @@ function downloadDependency {
 }
 
 function buildBoost {
-    downloadDependency "https://sourceforge.net/projects/boost/files/boost/1.60.0/boost_1_60_0.tar.bz2/download" "boost_1_60_0.tar.bz2" "boost_1_60_0"
-    printMsg "Building Boost 1.60.0"
-    cd $DOWNLOAD_DIR/boost_1_60_0
-    ./bootstrap.sh "--prefix=$INCLUDE_DIR"
-    ./b2 install
+    local file=$DEPENDS_DIR/.boost
+    if [ ! -f $file ]; then
+        downloadDependency "https://sourceforge.net/projects/boost/files/boost/1.60.0/boost_1_60_0.tar.bz2/download" "boost_1_60_0.tar.bz2" "boost_1_60_0"
+        printMsg "Building Boost 1.60.0"
+        cd $DOWNLOAD_DIR/boost_1_60_0
+        ./bootstrap.sh "--prefix=$INCLUDE_DIR"
+        ./b2 install
+        touch $file
+     else
+        echo "Boost already built..."
+     fi
 }
 
 function buildOpenssl {
-    downloadDependency "https://www.openssl.org/source/openssl-1.0.2o.tar.gz" "openssl-1.0.2o.tar.gz" "openssl-1.0.2o"
-    printMsg "Building OpenSSL 1.0.2"
-    cd $DOWNLOAD_DIR/openssl-1.0.2o
-    ./config --prefix=$INCLUDE_DIR
-    make
-    make install
+    local file=$DEPENDS_DIR/.openssl
+    if [ ! -f $file ]; then
+        downloadDependency "https://www.openssl.org/source/openssl-1.0.2o.tar.gz" "openssl-1.0.2o.tar.gz" "openssl-1.0.2o"
+        printMsg "Building OpenSSL 1.0.2"
+        cd $DOWNLOAD_DIR/openssl-1.0.2o
+        ./config --prefix=$INCLUDE_DIR
+        make
+        make install
+        touch $file
+     else
+        echo "OpenSSL already built..."
+     fi
 }
 
 function buildSource {
