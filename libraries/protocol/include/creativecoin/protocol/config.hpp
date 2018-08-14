@@ -15,7 +15,7 @@
 #define CREA_INIT_PUBLIC_KEY_STR             (std::string( creativecoin::protocol::public_key_type(CREA_INIT_PRIVATE_KEY.get_public_key()) ))
 #define CREA_CHAIN_ID_NAME "testnet"
 #define CREA_CHAIN_ID (fc::sha256::hash(CREA_CHAIN_ID_NAME))
-#define CREA_ADDRESS_PREFIX                  "TST"
+#define CREA_ADDRESS_PREFIX                  "crea"
 
 #define CREA_GENESIS_TIME                    (fc::time_point_sec(1451606400))
 #define CREA_MINING_TIME                     (fc::time_point_sec(1451606400))
@@ -47,7 +47,7 @@
 #define CREA_INIT_PUBLIC_KEY_STR             "STM8GC13uCZbP44HzMLV6zPZGwVQ8Nt4Kji8PapsPiNq1BK153XTX"
 #define CREA_CHAIN_ID_NAME ""
 #define CREA_CHAIN_ID fc::sha256()
-#define CREA_ADDRESS_PREFIX                  "STM"
+#define CREA_ADDRESS_PREFIX                  "crea"
 
 #define CREA_GENESIS_TIME                    (fc::time_point_sec(1458835200))
 #define CREA_MINING_TIME                     (fc::time_point_sec(1458838800))
@@ -86,13 +86,13 @@
 #define CREA_NUM_INIT_MINERS                 1
 #define CREA_INIT_TIME                       (fc::time_point_sec());
 
-#define CREA_MAX_WITNESSES                   21
+#define CREA_MAX_WITNESSES                   25
 
 #define CREA_MAX_VOTED_WITNESSES_HF0         19
 #define CREA_MAX_MINER_WITNESSES_HF0         1
 #define CREA_MAX_RUNNER_WITNESSES_HF0        1
 
-#define CREA_MAX_VOTED_WITNESSES_HF17        20
+#define CREA_MAX_VOTED_WITNESSES_HF17        24
 #define CREA_MAX_MINER_WITNESSES_HF17        0
 #define CREA_MAX_RUNNER_WITNESSES_HF17       1
 
@@ -101,7 +101,7 @@
 #define CREA_MAX_MEMO_SIZE                   2048
 #define CREA_MAX_PROXY_RECURSION_DEPTH       4
 #define CREA_VESTING_WITHDRAW_INTERVALS_PRE_HF_16 104
-#define CREA_VESTING_WITHDRAW_INTERVALS      13
+#define CREA_VESTING_WITHDRAW_INTERVALS      8
 #define CREA_VESTING_WITHDRAW_INTERVAL_SECONDS (60*60*24*7) /// 1 week per interval
 #define CREA_MAX_WITHDRAW_ROUTES             10
 #define CREA_SAVINGS_WITHDRAW_TIME        	(fc::days(3))
@@ -118,7 +118,7 @@
 #define CREA_POST_AVERAGE_WINDOW             (60*60*24u) // 1 day
 #define CREA_POST_WEIGHT_CONSTANT            (uint64_t(4*CREA_100_PERCENT) * (4*CREA_100_PERCENT))// (4*CREA_100_PERCENT) -> 2 posts per 1 days, average 1 every 12 hours
 
-#define CREA_MAX_ACCOUNT_WITNESS_VOTES       30
+#define CREA_MAX_ACCOUNT_WITNESS_VOTES       35
 
 #define CREA_100_PERCENT                     10000
 #define CREA_1_PERCENT                       (CREA_100_PERCENT/100)
@@ -126,8 +126,8 @@
 
 #define CREA_INFLATION_RATE_START_PERCENT    (978) // Fixes block 7,000,000 to 9.5%
 #define CREA_INFLATION_RATE_STOP_PERCENT     (95) // 0.95%
-#define CREA_INFLATION_NARROWING_PERIOD      (250000) // Narrow 0.01% every 250k blocks
-#define CREA_CONTENT_REWARD_PERCENT          (75*CREA_1_PERCENT) //75% of inflation, 7.125% inflation
+#define CREA_INFLATION_NARROWING_PERIOD      (300000) // Narrow 0.01% every 300k blocks
+#define CREA_CONTENT_REWARD_PERCENT          (70*CREA_1_PERCENT) //75% of inflation, 7.125% inflation
 #define CREA_VESTING_FUND_PERCENT            (15*CREA_1_PERCENT) //15% of inflation, 1.425% inflation
 
 #define CREA_MINER_PAY_PERCENT               (CREA_1_PERCENT) // 1%

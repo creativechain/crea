@@ -31,19 +31,19 @@
 
 #define VESTS_SYMBOL_U64  (uint64_t('V') | (uint64_t('E') << 8) | (uint64_t('S') << 16) | (uint64_t('T') << 24) | (uint64_t('S') << 32))
 #define CREA_SYMBOL_U64  (uint64_t('T') | (uint64_t('E') << 8) | (uint64_t('S') << 16) | (uint64_t('T') << 24) | (uint64_t('S') << 32))
-#define SBD_SYMBOL_U64    (uint64_t('T') | (uint64_t('B') << 8) | (uint64_t('D') << 16))
+#define CBD_SYMBOL_U64    (uint64_t('T') | (uint64_t('B') << 8) | (uint64_t('D') << 16))
 
 #else
 
 #define VESTS_SYMBOL_U64  (uint64_t('V') | (uint64_t('E') << 8) | (uint64_t('S') << 16) | (uint64_t('T') << 24) | (uint64_t('S') << 32))
-#define CREA_SYMBOL_U64  (uint64_t('S') | (uint64_t('T') << 8) | (uint64_t('E') << 16) | (uint64_t('E') << 24) | (uint64_t('M') << 32))
-#define SBD_SYMBOL_U64    (uint64_t('S') | (uint64_t('B') << 8) | (uint64_t('D') << 16))
+#define CREA_SYMBOL_U64  (uint64_t('C') | (uint64_t('R') << 8) | (uint64_t('E') << 16) | (uint64_t('A') << 24) | (uint64_t('2') << 32))
+#define CBD_SYMBOL_U64    (uint64_t('C') | (uint64_t('B') << 8) | (uint64_t('D') << 16))
 
 #endif
 
 #define VESTS_SYMBOL_SER  (uint64_t(6) | (VESTS_SYMBOL_U64 << 8)) ///< VESTS|VESTS with 6 digits of precision
 #define CREA_SYMBOL_SER  (uint64_t(3) | (CREA_SYMBOL_U64 << 8)) ///< CREA|TESTS with 3 digits of precision
-#define SBD_SYMBOL_SER    (uint64_t(3) |   (SBD_SYMBOL_U64 << 8)) ///< SBD|TBD with 3 digits of precision
+#define CBD_SYMBOL_SER    (uint64_t(3) |   (CBD_SYMBOL_U64 << 8)) ///< SBD|TBD with 3 digits of precision
 
 #define CREA_ASSET_MAX_DECIMALS 12
 
@@ -153,7 +153,7 @@ inline void pack( Stream& s, const creativecoin::protocol::asset_symbol_type& sy
                ser = CREA_SYMBOL_SER;
                break;
             case CREA_ASSET_NUM_SBD:
-               ser = SBD_SYMBOL_SER;
+               ser = CBD_SYMBOL_SER;
                break;
             case CREA_ASSET_NUM_VESTS:
                ser = VESTS_SYMBOL_SER;
@@ -185,9 +185,9 @@ inline void unpack( Stream& s, creativecoin::protocol::asset_symbol_type& sym )
          FC_ASSERT( ser == CREA_SYMBOL_SER, "invalid asset bits" );
          sym.asset_num = CREA_ASSET_NUM_CREA;
          break;
-      case SBD_SYMBOL_SER & 0xFFFFFFFF:
+      case CBD_SYMBOL_SER & 0xFFFFFFFF:
          s.read( ((char*) &ser)+4, 4 );
-         FC_ASSERT( ser == SBD_SYMBOL_SER, "invalid asset bits" );
+         FC_ASSERT( ser == CBD_SYMBOL_SER, "invalid asset bits" );
          sym.asset_num = CREA_ASSET_NUM_SBD;
          break;
       case VESTS_SYMBOL_SER & 0xFFFFFFFF:

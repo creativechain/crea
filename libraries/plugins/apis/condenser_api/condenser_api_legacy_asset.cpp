@@ -46,7 +46,7 @@ uint32_t string_to_asset_num( const char* p, uint8_t decimals )
                FC_ASSERT( decimals == 3, "Incorrect decimal places" );
                asset_num = CREA_ASSET_NUM_CREA;
                break;
-            case SBD_SYMBOL_U64:
+            case CBD_SYMBOL_U64:
                FC_ASSERT( decimals == 3, "Incorrect decimal places" );
                asset_num = CREA_ASSET_NUM_SBD;
                break;
