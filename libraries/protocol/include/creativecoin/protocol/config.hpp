@@ -88,7 +88,7 @@
 
 #define CREA_MAX_WITNESSES                   25
 
-#define CREA_MAX_VOTED_WITNESSES_HF0         19
+#define CREA_MAX_VOTED_WITNESSES_HF0         23
 #define CREA_MAX_MINER_WITNESSES_HF0         1
 #define CREA_MAX_RUNNER_WITNESSES_HF0        1
 
