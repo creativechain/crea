@@ -10,9 +10,9 @@
 #define CREA_ASSET_SYMBOL_NAI_LENGTH        10
 #define CREA_ASSET_SYMBOL_NAI_STRING_LENGTH ( CREA_ASSET_SYMBOL_NAI_LENGTH + 2 )
 
-#define CREA_PRECISION_SBD   (8)
-#define CREA_PRECISION_CREA (8)
-#define CREA_PRECISION_VESTS (8)
+#define CREA_PRECISION_SBD   (3)
+#define CREA_PRECISION_CREA (3)
+#define CREA_PRECISION_VESTS (6)
 
 // One's place is used for check digit, which means NAI 0-9 all have NAI data of 0 which is invalid
 // This space is safe to use because it would alwasys result in failure to convert from NAI
@@ -41,9 +41,9 @@
 
 #endif
 
-#define VESTS_SYMBOL_SER  (uint64_t(8) | (VESTS_SYMBOL_U64 << 8)) ///< VESTS|VESTS with 8 digits of precision
-#define CREA_SYMBOL_SER  (uint64_t(8) | (CREA_SYMBOL_U64 << 8)) ///< CREA|TESTS with 8 digits of precision
-#define CBD_SYMBOL_SER    (uint64_t(8) |   (CBD_SYMBOL_U64 << 8)) ///< SBD|TBD with 8 digits of precision
+#define VESTS_SYMBOL_SER  (uint64_t(6) | (VESTS_SYMBOL_U64 << 8)) ///< VESTS|VESTS with 8 digits of precision
+#define CREA_SYMBOL_SER  (uint64_t(3) | (CREA_SYMBOL_U64 << 8)) ///< CREA|TESTS with 8 digits of precision
+#define CBD_SYMBOL_SER    (uint64_t(3) |   (CBD_SYMBOL_U64 << 8)) ///< SBD|TBD with 8 digits of precision
 
 #define CREA_ASSET_MAX_DECIMALS 12
 
