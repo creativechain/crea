@@ -36,7 +36,7 @@
 #else
 
 #define VESTS_SYMBOL_U64  (uint64_t('V') | (uint64_t('E') << 8) | (uint64_t('S') << 16) | (uint64_t('T') << 24) | (uint64_t('S') << 32))
-#define CREA_SYMBOL_U64  (uint64_t('C') | (uint64_t('R') << 8) | (uint64_t('E') << 16) | (uint64_t('A') << 24))
+#define CREA_SYMBOL_U64  (uint64_t('C') | (uint64_t('R') << 8) | (uint64_t('E') << 16) | (uint64_t('A') << 24) | (uint64_t('A') << 24))
 #define CBD_SYMBOL_U64    (uint64_t('C') | (uint64_t('B') << 8) | (uint64_t('D') << 16))
 
 #endif
