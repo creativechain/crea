@@ -1470,13 +1470,13 @@ BOOST_AUTO_TEST_CASE( feed_publish_mean )
          txs.push_back( signed_transaction() );
       }
 
-      ops[0].exchange_rate = price( asset( 1000, SBD_SYMBOL ), asset( 100000, CREA_SYMBOL ) );
-      ops[1].exchange_rate = price( asset( 1000, SBD_SYMBOL ), asset( 105000, CREA_SYMBOL ) );
-      ops[2].exchange_rate = price( asset( 1000, SBD_SYMBOL ), asset(  98000, CREA_SYMBOL ) );
-      ops[3].exchange_rate = price( asset( 1000, SBD_SYMBOL ), asset(  97000, CREA_SYMBOL ) );
-      ops[4].exchange_rate = price( asset( 1000, SBD_SYMBOL ), asset(  99000, CREA_SYMBOL ) );
-      ops[5].exchange_rate = price( asset( 1000, SBD_SYMBOL ), asset(  97500, CREA_SYMBOL ) );
-      ops[6].exchange_rate = price( asset( 1000, SBD_SYMBOL ), asset( 102000, CREA_SYMBOL ) );
+      ops[0].exchange_rate = price( asset( 1000, CBD_SYMBOL ), asset( 100000, CREA_SYMBOL ) );
+      ops[1].exchange_rate = price( asset( 1000, CBD_SYMBOL ), asset( 105000, CREA_SYMBOL ) );
+      ops[2].exchange_rate = price( asset( 1000, CBD_SYMBOL ), asset(  98000, CREA_SYMBOL ) );
+      ops[3].exchange_rate = price( asset( 1000, CBD_SYMBOL ), asset(  97000, CREA_SYMBOL ) );
+      ops[4].exchange_rate = price( asset( 1000, CBD_SYMBOL ), asset(  99000, CREA_SYMBOL ) );
+      ops[5].exchange_rate = price( asset( 1000, CBD_SYMBOL ), asset(  97500, CREA_SYMBOL ) );
+      ops[6].exchange_rate = price( asset( 1000, CBD_SYMBOL ), asset( 102000, CREA_SYMBOL ) );
 
       for( int i = 0; i < 7; i++ )
       {
@@ -1492,8 +1492,8 @@ BOOST_AUTO_TEST_CASE( feed_publish_mean )
       BOOST_TEST_MESSAGE( "Get feed history object" );
       feed_history_object feed_history = db->get_feed_history();
       BOOST_TEST_MESSAGE( "Check state" );
-      BOOST_REQUIRE( feed_history.current_median_history == price( asset( 1000, SBD_SYMBOL ), asset( 99000, CREA_SYMBOL) ) );
-      BOOST_REQUIRE( feed_history.price_history[ 0 ] == price( asset( 1000, SBD_SYMBOL ), asset( 99000, CREA_SYMBOL) ) );
+      BOOST_REQUIRE( feed_history.current_median_history == price( asset( 1000, CBD_SYMBOL ), asset( 99000, CREA_SYMBOL) ) );
+      BOOST_REQUIRE( feed_history.price_history[ 0 ] == price( asset( 1000, CBD_SYMBOL ), asset( 99000, CREA_SYMBOL) ) );
       validate_database();
 
       for ( int i = 0; i < 23; i++ )
@@ -1546,7 +1546,7 @@ BOOST_AUTO_TEST_CASE( convert_delay )
       tx.operations.clear();
       tx.signatures.clear();
       op.owner = "alice";
-      op.amount = asset( 2000, SBD_SYMBOL );
+      op.amount = asset( 2000, CBD_SYMBOL );
       op.requestid = 2;
       tx.operations.push_back( op );
       tx.set_expiration( db->head_block_time() + CREA_MAX_TIME_UNTIL_EXPIRATION );
@@ -1791,7 +1791,7 @@ BOOST_AUTO_TEST_CASE( sbd_interest )
       auto start_time = db->get_account( "alice" ).sbd_seconds_last_update;
       auto alice_sbd = db->get_account( "alice" ).sbd_balance;
 
-      generate_blocks( db->head_block_time() + fc::seconds( CREA_SBD_INTEREST_COMPOUND_INTERVAL_SEC ), true );
+      generate_blocks( db->head_block_time() + fc::seconds( CREA_CBD_INTEREST_COMPOUND_INTERVAL_SEC ), true );
 
       transfer_operation transfer;
       transfer.to = "bob";
@@ -1818,7 +1818,7 @@ BOOST_AUTO_TEST_CASE( sbd_interest )
       start_time = db->get_account( "alice" ).sbd_seconds_last_update;
       alice_sbd = db->get_account( "alice" ).sbd_balance;
 
-      generate_blocks( db->head_block_time() + fc::seconds( CREA_SBD_INTEREST_COMPOUND_INTERVAL_SEC / 2 ), true );
+      generate_blocks( db->head_block_time() + fc::seconds( CREA_CBD_INTEREST_COMPOUND_INTERVAL_SEC / 2 ), true );
 
       tx.operations.clear();
       tx.signatures.clear();
@@ -1836,7 +1836,7 @@ BOOST_AUTO_TEST_CASE( sbd_interest )
 
       BOOST_TEST_MESSAGE( "Testing longer interest period" );
 
-      generate_blocks( db->head_block_time() + fc::seconds( ( CREA_SBD_INTEREST_COMPOUND_INTERVAL_SEC * 7 ) / 3 ), true );
+      generate_blocks( db->head_block_time() + fc::seconds( ( CREA_CBD_INTEREST_COMPOUND_INTERVAL_SEC * 7 ) / 3 ), true );
 
       tx.operations.clear();
       tx.signatures.clear();
@@ -1900,7 +1900,7 @@ BOOST_AUTO_TEST_CASE( liquidity_rewards )
 
       limit_order_create_operation op;
       op.owner = "alice";
-      op.amount_to_sell = asset( alice_sbd.amount.value / 20, SBD_SYMBOL ) ;
+      op.amount_to_sell = asset( alice_sbd.amount.value / 20, CBD_SYMBOL ) ;
       op.min_to_receive = op.amount_to_sell * exchange_rate;
       op.expiration = db->head_block_time() + fc::seconds( CREA_MAX_LIMIT_ORDER_EXPIRATION );
       op.orderid = 1;
@@ -1916,7 +1916,7 @@ BOOST_AUTO_TEST_CASE( liquidity_rewards )
 
       generate_blocks( db->head_block_time() + CREA_MIN_LIQUIDITY_REWARD_PERIOD_SEC_HF10, true );
 
-      BOOST_TEST_MESSAGE( "Creating Limit Order for SBD that will be filled immediately." );
+      BOOST_TEST_MESSAGE( "Creating Limit Order for CBD that will be filled immediately." );
 
       op.owner = "bob";
       op.min_to_receive = op.amount_to_sell;
@@ -1931,9 +1931,9 @@ BOOST_AUTO_TEST_CASE( liquidity_rewards )
       tx.sign( bob_private_key, db->get_chain_id() );
       db->push_transaction( tx, 0 );
 
-      alice_creativecoin_volume += ( asset( alice_sbd.amount / 20, SBD_SYMBOL ) * exchange_rate ).amount.value;
+      alice_creativecoin_volume += ( asset( alice_sbd.amount / 20, CBD_SYMBOL ) * exchange_rate ).amount.value;
       alice_reward_last_update = db->head_block_time();
-      bob_creativecoin_volume -= ( asset( alice_sbd.amount / 20, SBD_SYMBOL ) * exchange_rate ).amount.value;
+      bob_creativecoin_volume -= ( asset( alice_sbd.amount / 20, CBD_SYMBOL ) * exchange_rate ).amount.value;
       bob_reward_last_update = db->head_block_time();
 
       auto ops = get_last_operations( 1 );
@@ -1958,19 +1958,19 @@ BOOST_AUTO_TEST_CASE( liquidity_rewards )
 
       BOOST_REQUIRE( fill_order_op.open_owner == "alice" );
       BOOST_REQUIRE( fill_order_op.open_orderid == 1 );
-      BOOST_REQUIRE( fill_order_op.open_pays.amount.value == asset( alice_sbd.amount.value / 20, SBD_SYMBOL ).amount.value );
+      BOOST_REQUIRE( fill_order_op.open_pays.amount.value == asset( alice_sbd.amount.value / 20, CBD_SYMBOL ).amount.value );
       BOOST_REQUIRE( fill_order_op.current_owner == "bob" );
       BOOST_REQUIRE( fill_order_op.current_orderid == 2 );
-      BOOST_REQUIRE( fill_order_op.current_pays.amount.value == ( asset( alice_sbd.amount.value / 20, SBD_SYMBOL ) * exchange_rate ).amount.value );
+      BOOST_REQUIRE( fill_order_op.current_pays.amount.value == ( asset( alice_sbd.amount.value / 20, CBD_SYMBOL ) * exchange_rate ).amount.value );
 
       BOOST_CHECK( limit_order_idx.find( std::make_tuple( "alice", 1 ) ) == limit_order_idx.end() );
       BOOST_CHECK( limit_order_idx.find( std::make_tuple( "bob", 2 ) ) == limit_order_idx.end() );
 
-      BOOST_TEST_MESSAGE( "Creating Limit Order for SBD that will stay on the books for 60 minutes." );
+      BOOST_TEST_MESSAGE( "Creating Limit Order for CBD that will stay on the books for 60 minutes." );
 
       op.owner = "sam";
       op.amount_to_sell = asset( ( alice_sbd.amount.value / 20 ), CREA_SYMBOL );
-      op.min_to_receive = asset( ( alice_sbd.amount.value / 20 ), SBD_SYMBOL );
+      op.min_to_receive = asset( ( alice_sbd.amount.value / 20 ), CBD_SYMBOL );
       op.orderid = 3;
 
       tx.signatures.clear();
@@ -1983,12 +1983,12 @@ BOOST_AUTO_TEST_CASE( liquidity_rewards )
 
       generate_blocks( db->head_block_time() + CREA_MIN_LIQUIDITY_REWARD_PERIOD_SEC_HF10, true );
 
-      BOOST_TEST_MESSAGE( "Creating Limit Order for SBD that will stay on the books for 30 minutes." );
+      BOOST_TEST_MESSAGE( "Creating Limit Order for CBD that will stay on the books for 30 minutes." );
 
       op.owner = "bob";
       op.orderid = 4;
       op.amount_to_sell = asset( ( alice_sbd.amount.value / 10 ) * 3 - alice_sbd.amount.value / 20, CREA_SYMBOL );
-      op.min_to_receive = asset( ( alice_sbd.amount.value / 10 ) * 3 - alice_sbd.amount.value / 20, SBD_SYMBOL );
+      op.min_to_receive = asset( ( alice_sbd.amount.value / 10 ) * 3 - alice_sbd.amount.value / 20, CBD_SYMBOL );
 
       tx.signatures.clear();
       tx.operations.clear();
@@ -2005,7 +2005,7 @@ BOOST_AUTO_TEST_CASE( liquidity_rewards )
 
       op.owner = "alice";
       op.orderid = 5;
-      op.amount_to_sell = asset( ( alice_sbd.amount.value / 10 ) * 3, SBD_SYMBOL );
+      op.amount_to_sell = asset( ( alice_sbd.amount.value / 10 ) * 3, CBD_SYMBOL );
       op.min_to_receive = asset( ( alice_sbd.amount.value / 10 ) * 3, CREA_SYMBOL );
 
       tx.signatures.clear();
@@ -2029,7 +2029,7 @@ BOOST_AUTO_TEST_CASE( liquidity_rewards )
       BOOST_REQUIRE( fill_order_op.open_pays.amount.value == asset( ( alice_sbd.amount.value / 10 ) * 3 - alice_sbd.amount.value / 20, CREA_SYMBOL ).amount.value );
       BOOST_REQUIRE( fill_order_op.current_owner == "alice" );
       BOOST_REQUIRE( fill_order_op.current_orderid == 5 );
-      BOOST_REQUIRE( fill_order_op.current_pays.amount.value == asset( ( alice_sbd.amount.value / 10 ) * 3 - alice_sbd.amount.value / 20, SBD_SYMBOL ).amount.value );
+      BOOST_REQUIRE( fill_order_op.current_pays.amount.value == asset( ( alice_sbd.amount.value / 10 ) * 3 - alice_sbd.amount.value / 20, CBD_SYMBOL ).amount.value );
 
       fill_order_op = ops[3].get< fill_order_operation >();
       BOOST_REQUIRE( fill_order_op.open_owner == "sam" );
@@ -2037,7 +2037,7 @@ BOOST_AUTO_TEST_CASE( liquidity_rewards )
       BOOST_REQUIRE( fill_order_op.open_pays.amount.value == asset( alice_sbd.amount.value / 20, CREA_SYMBOL ).amount.value );
       BOOST_REQUIRE( fill_order_op.current_owner == "alice" );
       BOOST_REQUIRE( fill_order_op.current_orderid == 5 );
-      BOOST_REQUIRE( fill_order_op.current_pays.amount.value == asset( alice_sbd.amount.value / 20, SBD_SYMBOL ).amount.value );
+      BOOST_REQUIRE( fill_order_op.current_pays.amount.value == asset( alice_sbd.amount.value / 20, CBD_SYMBOL ).amount.value );
 
       reward = liquidity_idx.find( db->get_account( "alice" ).id );
       BOOST_REQUIRE( reward == liquidity_idx.end() );
@@ -2063,7 +2063,7 @@ BOOST_AUTO_TEST_CASE( liquidity_rewards )
       BOOST_TEST_MESSAGE( "Testing a partial fill before minimum time and full fill after minimum time" );
 
       op.orderid = 6;
-      op.amount_to_sell = asset( alice_sbd.amount.value / 20 * 2, SBD_SYMBOL );
+      op.amount_to_sell = asset( alice_sbd.amount.value / 20 * 2, CBD_SYMBOL );
       op.min_to_receive = asset( alice_sbd.amount.value / 20 * 2, CREA_SYMBOL );
 
       tx.signatures.clear();
@@ -2078,7 +2078,7 @@ BOOST_AUTO_TEST_CASE( liquidity_rewards )
       op.owner = "bob";
       op.orderid = 7;
       op.amount_to_sell = asset( alice_sbd.amount.value / 20, CREA_SYMBOL );
-      op.min_to_receive = asset( alice_sbd.amount.value / 20, SBD_SYMBOL );
+      op.min_to_receive = asset( alice_sbd.amount.value / 20, CBD_SYMBOL );
 
       tx.signatures.clear();
       tx.operations.clear();
@@ -2094,7 +2094,7 @@ BOOST_AUTO_TEST_CASE( liquidity_rewards )
 
       BOOST_REQUIRE( fill_order_op.open_owner == "alice" );
       BOOST_REQUIRE( fill_order_op.open_orderid == 6 );
-      BOOST_REQUIRE( fill_order_op.open_pays.amount.value == asset( alice_sbd.amount.value / 20, SBD_SYMBOL ).amount.value );
+      BOOST_REQUIRE( fill_order_op.open_pays.amount.value == asset( alice_sbd.amount.value / 20, CBD_SYMBOL ).amount.value );
       BOOST_REQUIRE( fill_order_op.current_owner == "bob" );
       BOOST_REQUIRE( fill_order_op.current_orderid == 7 );
       BOOST_REQUIRE( fill_order_op.current_pays.amount.value == asset( alice_sbd.amount.value / 20, CREA_SYMBOL ).amount.value );
@@ -2142,7 +2142,7 @@ BOOST_AUTO_TEST_CASE( liquidity_rewards )
 
       BOOST_REQUIRE( fill_order_op.open_owner == "alice" );
       BOOST_REQUIRE( fill_order_op.open_orderid == 6 );
-      BOOST_REQUIRE( fill_order_op.open_pays.amount.value == asset( alice_sbd.amount.value / 20, SBD_SYMBOL ).amount.value );
+      BOOST_REQUIRE( fill_order_op.open_pays.amount.value == asset( alice_sbd.amount.value / 20, CBD_SYMBOL ).amount.value );
       BOOST_REQUIRE( fill_order_op.current_owner == "sam" );
       BOOST_REQUIRE( fill_order_op.current_orderid == 8 );
       BOOST_REQUIRE( fill_order_op.current_pays.amount.value == asset( alice_sbd.amount.value / 20, CREA_SYMBOL ).amount.value );
@@ -2173,7 +2173,7 @@ BOOST_AUTO_TEST_CASE( liquidity_rewards )
       transfer_operation transfer;
       transfer.to = "dave";
       transfer.from = "alice";
-      transfer.amount = asset( alice_sbd.amount / 2, SBD_SYMBOL );
+      transfer.amount = asset( alice_sbd.amount / 2, CBD_SYMBOL );
 
       tx.operations.clear();
       tx.signatures.clear();
@@ -2184,7 +2184,7 @@ BOOST_AUTO_TEST_CASE( liquidity_rewards )
 
       op.owner = "alice";
       op.amount_to_sell = asset( 8 * ( alice_sbd.amount.value / 20 ), CREA_SYMBOL );
-      op.min_to_receive = asset( op.amount_to_sell.amount, SBD_SYMBOL );
+      op.min_to_receive = asset( op.amount_to_sell.amount, CBD_SYMBOL );
       op.orderid = 9;
       tx.operations.clear();
       tx.signatures.clear();
@@ -2195,7 +2195,7 @@ BOOST_AUTO_TEST_CASE( liquidity_rewards )
       generate_blocks( db->head_block_time() + CREA_MIN_LIQUIDITY_REWARD_PERIOD_SEC_HF10, true );
 
       op.owner = "dave";
-      op.amount_to_sell = asset( 7 * ( alice_sbd.amount.value / 20 ), SBD_SYMBOL );;
+      op.amount_to_sell = asset( 7 * ( alice_sbd.amount.value / 20 ), CBD_SYMBOL );;
       op.min_to_receive = asset( op.amount_to_sell.amount, CREA_SYMBOL );
       op.orderid = 10;
       tx.operations.clear();
@@ -2303,7 +2303,7 @@ BOOST_AUTO_TEST_CASE( liquidity_rewards )
 
       transfer.to = "bob";
       transfer.from = "alice";
-      transfer.amount = asset( alice_sbd.amount / 5, SBD_SYMBOL );
+      transfer.amount = asset( alice_sbd.amount / 5, CBD_SYMBOL );
       tx.operations.clear();
       tx.signatures.clear();
       tx.operations.push_back( transfer );
@@ -2313,7 +2313,7 @@ BOOST_AUTO_TEST_CASE( liquidity_rewards )
 
       op.owner = "bob";
       op.orderid = 12;
-      op.amount_to_sell = asset( 3 * ( alice_sbd.amount / 40 ), SBD_SYMBOL );
+      op.amount_to_sell = asset( 3 * ( alice_sbd.amount / 40 ), CBD_SYMBOL );
       op.min_to_receive = asset( op.amount_to_sell.amount, CREA_SYMBOL );
       tx.operations.clear();
       tx.signatures.clear();
@@ -2326,7 +2326,7 @@ BOOST_AUTO_TEST_CASE( liquidity_rewards )
       op.owner = "dave";
       op.orderid = 13;
       op.amount_to_sell = op.min_to_receive;
-      op.min_to_receive.symbol = SBD_SYMBOL;
+      op.min_to_receive.symbol = CBD_SYMBOL;
       tx.operations.clear();
       tx.signatures.clear();
       tx.operations.push_back( op );
@@ -2453,7 +2453,7 @@ BOOST_AUTO_TEST_CASE( liquidity_rewards )
 
       op.owner = "alice";
       op.orderid = 15;
-      op.amount_to_sell.symbol = SBD_SYMBOL;
+      op.amount_to_sell.symbol = CBD_SYMBOL;
       op.min_to_receive.symbol = CREA_SYMBOL;
       tx.operations.clear();
       tx.signatures.clear();
@@ -2732,7 +2732,7 @@ BOOST_AUTO_TEST_CASE( sbd_stability )
 
       BOOST_TEST_MESSAGE( "Changing sam and gpo to set up market cap conditions" );
 
-      asset sbd_balance = asset( ( gpo.virtual_supply.amount * ( CREA_SBD_STOP_PERCENT + 30 ) ) / CREA_100_PERCENT, CREA_SYMBOL ) * exchange_rate;
+      asset sbd_balance = asset( ( gpo.virtual_supply.amount * ( CREA_CBD_STOP_PERCENT + 30 ) ) / CREA_100_PERCENT, CREA_SYMBOL ) * exchange_rate;
       db_plugin->debug_update( [=]( database& db )
       {
          db.modify( db.get_account( "sam" ), [&]( account_object& a )
@@ -2760,7 +2760,7 @@ BOOST_AUTO_TEST_CASE( sbd_stability )
       auto alice_sbd = db->get_account( "alice" ).sbd_balance + db->get_account( "alice" ).reward_sbd_balance + asset( sbd_reward, CREA_SYMBOL ) * exchange_rate;
       auto alice_creativecoin = db->get_account( "alice" ).balance + db->get_account( "alice" ).reward_creativecoin_balance ;
 
-      BOOST_TEST_MESSAGE( "Checking printing SBD has slowed" );
+      BOOST_TEST_MESSAGE( "Checking printing CBD has slowed" );
       BOOST_REQUIRE( db->get_dynamic_global_properties().sbd_print_rate < CREA_100_PERCENT );
 
       BOOST_TEST_MESSAGE( "Pay out comment and check rewards are paid as CREA" );
@@ -2771,14 +2771,14 @@ BOOST_AUTO_TEST_CASE( sbd_stability )
       BOOST_REQUIRE( db->get_account( "alice" ).sbd_balance + db->get_account( "alice" ).reward_sbd_balance == alice_sbd );
       BOOST_REQUIRE( db->get_account( "alice" ).balance + db->get_account( "alice" ).reward_creativecoin_balance > alice_creativecoin );
 
-      BOOST_TEST_MESSAGE( "Letting percent market cap fall to 2% to verify printing of SBD turns back on" );
+      BOOST_TEST_MESSAGE( "Letting percent market cap fall to 2% to verify printing of CBD turns back on" );
 
-      // Get close to 1.5% for printing SBD to start again, but not all the way
+      // Get close to 1.5% for printing CBD to start again, but not all the way
       db_plugin->debug_update( [=]( database& db )
       {
          db.modify( db.get_account( "sam" ), [&]( account_object& a )
          {
-            a.sbd_balance = asset( ( 194 * sbd_balance.amount ) / 500, SBD_SYMBOL );
+            a.sbd_balance = asset( ( 194 * sbd_balance.amount ) / 500, CBD_SYMBOL );
          });
       }, database::skip_witness_signature );
 
@@ -2786,7 +2786,7 @@ BOOST_AUTO_TEST_CASE( sbd_stability )
       {
          db.modify( db.get_dynamic_global_properties(), [&]( dynamic_global_property_object& gpo )
          {
-            gpo.current_sbd_supply = alice_sbd + asset( ( 194 * sbd_balance.amount ) / 500, SBD_SYMBOL );
+            gpo.current_sbd_supply = alice_sbd + asset( ( 194 * sbd_balance.amount ) / 500, CBD_SYMBOL );
          });
       }, database::skip_witness_signature );
 
@@ -2797,8 +2797,8 @@ BOOST_AUTO_TEST_CASE( sbd_stability )
 
       auto last_print_rate = db->get_dynamic_global_properties().sbd_print_rate;
 
-      // Keep producing blocks until printing SBD is back
-      while( ( db->get_dynamic_global_properties().current_sbd_supply * exchange_rate ).amount >= ( db->get_dynamic_global_properties().virtual_supply.amount * CREA_SBD_START_PERCENT ) / CREA_100_PERCENT )
+      // Keep producing blocks until printing CBD is back
+      while( ( db->get_dynamic_global_properties().current_sbd_supply * exchange_rate ).amount >= ( db->get_dynamic_global_properties().virtual_supply.amount * CREA_CBD_START_PERCENT ) / CREA_100_PERCENT )
       {
          auto& gpo = db->get_dynamic_global_properties();
          BOOST_REQUIRE( gpo.sbd_print_rate >= last_print_rate );
@@ -2848,7 +2848,7 @@ BOOST_AUTO_TEST_CASE( sbd_price_feed_limit )
 
       generate_blocks( db->get_comment( "alice", string( "test" ) ).cashout_time, true );
 
-      BOOST_TEST_MESSAGE( "Setting SBD percent to greater than 10% market cap." );
+      BOOST_TEST_MESSAGE( "Setting CBD percent to greater than 10% market cap." );
 
       db->skip_price_feed_limit_check = false;
       const auto& gpo = db->get_dynamic_global_properties();

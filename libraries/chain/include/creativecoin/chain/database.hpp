@@ -391,7 +391,7 @@ namespace creativecoin { namespace chain {
 
          /**
           * Helper method to return the current sbd value of a given amount of
-          * CREA.  Return 0 SBD if there isn't a current_median_history
+          * CREA.  Return 0 CBD if there isn't a current_median_history
           */
          asset to_sbd( const asset& creativecoin )const;
          asset to_creativecoin( const asset& sbd )const;

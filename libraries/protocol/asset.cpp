@@ -180,9 +180,9 @@ uint32_t asset_symbol_type::asset_num_from_nai( uint32_t nai, uint8_t decimal_pl
       case CREA_NAI_CREA:
          FC_ASSERT( decimal_places == CREA_PRECISION_CREA );
          return CREA_ASSET_NUM_CREA;
-      case CREA_NAI_SBD:
-         FC_ASSERT( decimal_places == CREA_PRECISION_SBD );
-         return CREA_ASSET_NUM_SBD;
+      case CREA_NAI_CBD:
+         FC_ASSERT( decimal_places == CREA_PRECISION_CBD );
+         return CREA_ASSET_NUM_CBD;
       case CREA_NAI_VESTS:
          FC_ASSERT( decimal_places == CREA_PRECISION_VESTS );
          return CREA_ASSET_NUM_VESTS;
@@ -202,8 +202,8 @@ uint32_t asset_symbol_type::to_nai()const
       case CREA_ASSET_NUM_CREA:
          nai_data_digits = CREA_NAI_CREA;
          break;
-      case CREA_ASSET_NUM_SBD:
-         nai_data_digits = CREA_NAI_SBD;
+      case CREA_ASSET_NUM_CBD:
+         nai_data_digits = CREA_NAI_CBD;
          break;
       case CREA_ASSET_NUM_VESTS:
          nai_data_digits = CREA_NAI_VESTS;
@@ -227,8 +227,8 @@ bool asset_symbol_type::is_vesting() const
          {
             case CREA_ASSET_NUM_CREA:
                return false;
-            case CREA_ASSET_NUM_SBD:
-               // SBD is certainly liquid.
+            case CREA_ASSET_NUM_CBD:
+               // CBD is certainly liquid.
                return false;
             case CREA_ASSET_NUM_VESTS:
                return true;
@@ -254,7 +254,7 @@ asset_symbol_type asset_symbol_type::get_paired_symbol() const
          {
             case CREA_ASSET_NUM_CREA:
                return from_asset_num( CREA_ASSET_NUM_VESTS );
-            case CREA_ASSET_NUM_SBD:
+            case CREA_ASSET_NUM_CBD:
                return *this;
             case CREA_ASSET_NUM_VESTS:
                return from_asset_num( CREA_ASSET_NUM_CREA );
@@ -279,7 +279,7 @@ asset_symbol_type::asset_symbol_space asset_symbol_type::space()const
    switch( asset_num )
    {
       case CREA_ASSET_NUM_CREA:
-      case CREA_ASSET_NUM_SBD:
+      case CREA_ASSET_NUM_CBD:
       case CREA_ASSET_NUM_VESTS:
          s = legacy_space;
          break;
@@ -294,7 +294,7 @@ void asset_symbol_type::validate()const
    switch( asset_num )
    {
       case CREA_ASSET_NUM_CREA:
-      case CREA_ASSET_NUM_SBD:
+      case CREA_ASSET_NUM_CBD:
       case CREA_ASSET_NUM_VESTS:
          break;
       default:

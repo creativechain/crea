@@ -191,7 +191,7 @@ namespace creativecoin { namespace protocol {
       account_name_type author;
       string            permlink;
 
-      asset             max_accepted_payout    = asset( 1000000000, SBD_SYMBOL );       /// SBD value of the maximum payout this post will receive
+      asset             max_accepted_payout    = asset( 1000000000, CBD_SYMBOL );       /// CBD value of the maximum payout this post will receive
       uint16_t          percent_creativecoin_dollars  = CREA_100_PERCENT; /// the percent of Creativecoin Dollars to key, unkept amounts will be received as Creativecoin Power
       bool              allow_votes            = true;      /// allows a post to receive votes;
       bool              allow_curation_rewards = true; /// allows voters to recieve curation rewards. Rewards return to reward fund.
@@ -299,7 +299,7 @@ namespace creativecoin { namespace protocol {
       account_name_type agent;
       uint32_t          escrow_id = 30;
 
-      asset             sbd_amount = asset( 0, SBD_SYMBOL );
+      asset             sbd_amount = asset( 0, CBD_SYMBOL );
       asset             creativecoin_amount = asset( 0, CREA_SYMBOL );
       asset             fee;
 
@@ -371,7 +371,7 @@ namespace creativecoin { namespace protocol {
       account_name_type receiver; ///< the account that should receive funds (might be from, might be to)
 
       uint32_t          escrow_id = 30;
-      asset             sbd_amount = asset( 0, SBD_SYMBOL ); ///< the amount of sbd to release
+      asset             sbd_amount = asset( 0, CBD_SYMBOL ); ///< the amount of sbd to release
       asset             creativecoin_amount = asset( 0, CREA_SYMBOL ); ///< the amount of creativecoin to release
 
       void validate()const;
@@ -455,7 +455,7 @@ namespace creativecoin { namespace protocol {
        *  to tune rate limiting and capacity
        */
       uint32_t          maximum_block_size = CREA_MIN_BLOCK_SIZE_LIMIT * 2;
-      uint16_t          sbd_interest_rate  = CREA_DEFAULT_SBD_INTEREST_RATE;
+      uint16_t          sbd_interest_rate  = CREA_DEFAULT_CBD_INTEREST_RATE;
 
       template< bool force_canon >
       void validate()const
@@ -612,7 +612,7 @@ namespace creativecoin { namespace protocol {
 
 
    /**
-    *  This operation instructs the blockchain to start a conversion between CREA and SBD,
+    *  This operation instructs the blockchain to start a conversion between CREA and CBD,
     *  The funds are deposited after CREA_CONVERSION_DELAY
     */
    struct convert_operation : public base_operation

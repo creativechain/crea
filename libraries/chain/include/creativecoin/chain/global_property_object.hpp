@@ -52,8 +52,8 @@ namespace creativecoin { namespace chain {
          asset       virtual_supply             = asset( 0, CREA_SYMBOL );
          asset       current_supply             = asset( 0, CREA_SYMBOL );
          asset       confidential_supply        = asset( 0, CREA_SYMBOL ); ///< total asset held in confidential balances
-         asset       current_sbd_supply         = asset( 0, SBD_SYMBOL );
-         asset       confidential_sbd_supply    = asset( 0, SBD_SYMBOL ); ///< total asset held in confidential balances
+         asset       current_sbd_supply         = asset( 0, CBD_SYMBOL );
+         asset       confidential_sbd_supply    = asset( 0, CBD_SYMBOL ); ///< total asset held in confidential balances
          asset       total_vesting_fund_creativecoin   = asset( 0, CREA_SYMBOL );
          asset       total_vesting_shares       = asset( 0, VESTS_SYMBOL );
          asset       total_reward_fund_creativecoin    = asset( 0, CREA_SYMBOL );
@@ -76,7 +76,7 @@ namespace creativecoin { namespace chain {
          }
 
          /**
-          *  This property defines the interest rate that SBD deposits receive.
+          *  This property defines the interest rate that CBD deposits receive.
           */
          uint16_t sbd_interest_rate = 0;
 
@@ -117,7 +117,7 @@ namespace creativecoin { namespace chain {
          uint32_t delegation_return_period = CREA_DELEGATION_RETURN_PERIOD_HF0;
 
 #ifdef CREA_ENABLE_SMT
-         asset smt_creation_fee = asset( 1000000, SBD_SYMBOL );
+         asset smt_creation_fee = asset( 1000000, CBD_SYMBOL );
 #endif
    };
 

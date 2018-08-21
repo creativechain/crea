@@ -790,7 +790,7 @@ DEFINE_API_IMPL( database_api_impl, find_vesting_delegation_expirations )
 }
 
 
-/* SBD Conversion Requests */
+/* CBD Conversion Requests */
 
 DEFINE_API_IMPL( database_api_impl, list_sbd_conversion_requests )
 {
@@ -1266,15 +1266,15 @@ DEFINE_API_IMPL( database_api_impl, get_order_book )
    FC_ASSERT( args.limit <= DATABASE_API_SINGLE_QUERY_LIMIT );
    get_order_book_return result;
 
-   auto max_sell = price::max( SBD_SYMBOL, CREA_SYMBOL );
-   auto max_buy = price::max( CREA_SYMBOL, SBD_SYMBOL );
+   auto max_sell = price::max( CBD_SYMBOL, CREA_SYMBOL );
+   auto max_buy = price::max( CREA_SYMBOL, CBD_SYMBOL );
 
    const auto& limit_price_idx = _db.get_index< chain::limit_order_index >().indices().get< chain::by_price >();
    auto sell_itr = limit_price_idx.lower_bound( max_sell );
    auto buy_itr  = limit_price_idx.lower_bound( max_buy );
    auto end = limit_price_idx.end();
 
-   while( sell_itr != end && sell_itr->sell_price.base.symbol == SBD_SYMBOL && result.bids.size() < args.limit )
+   while( sell_itr != end && sell_itr->sell_price.base.symbol == CBD_SYMBOL && result.bids.size() < args.limit )
    {
       auto itr = sell_itr;
       order cur;
@@ -1282,7 +1282,7 @@ DEFINE_API_IMPL( database_api_impl, get_order_book )
       cur.real_price  = 0.0;
       // cur.real_price  = (cur.order_price).to_real();
       cur.sbd = itr->for_sale;
-      cur.creativecoin = ( asset( itr->for_sale, SBD_SYMBOL ) * cur.order_price ).amount;
+      cur.creativecoin = ( asset( itr->for_sale, CBD_SYMBOL ) * cur.order_price ).amount;
       cur.created = itr->created;
       result.bids.push_back( cur );
       ++sell_itr;

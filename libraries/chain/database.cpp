@@ -1096,7 +1096,7 @@ uint32_t database::get_slot_at_time(fc::time_point_sec when)const
  */
 std::pair< asset, asset > database::create_sbd( const account_object& to_account, asset creativecoin, bool to_reward_balance )
 {
-   std::pair< asset, asset > assets( asset( 0, SBD_SYMBOL ), asset( 0, CREA_SYMBOL ) );
+   std::pair< asset, asset > assets( asset( 0, CBD_SYMBOL ), asset( 0, CREA_SYMBOL ) );
 
    try
    {
@@ -1204,7 +1204,7 @@ asset database::create_vesting( const account_object& to_account, asset liquid, 
 #endif
 
       FC_ASSERT( liquid.symbol == CREA_SYMBOL );
-      // ^ A novelty, needed but risky in case someone managed to slip SBD/TESTS here in blockchain history.
+      // ^ A novelty, needed but risky in case someone managed to slip CBD/TESTS here in blockchain history.
       // Get share price.
       const auto& cprops = get_dynamic_global_properties();
       price vesting_share_price = to_reward_balance ? cprops.get_reward_vesting_share_price() : cprops.get_vesting_share_price();
@@ -1377,7 +1377,7 @@ void database::clear_null_account_balance()
 
    const auto& null_account = get_account( CREA_NULL_ACCOUNT );
    asset total_creativecoin( 0, CREA_SYMBOL );
-   asset total_sbd( 0, SBD_SYMBOL );
+   asset total_sbd( 0, CBD_SYMBOL );
 
    if( null_account.balance.amount > 0 )
    {
@@ -1902,7 +1902,7 @@ void database::process_comment_cashout()
     *
     * Each payout follows a similar pattern, but for a different reason.
     * Cashout comment helper does not know about the reward fund it is paying from.
-    * The helper only does token allocation based on curation rewards and the SBD
+    * The helper only does token allocation based on curation rewards and the CBD
     * global %, etc.
     *
     * Each context is used by get_rshare_reward to determine what part of each budget
@@ -2254,7 +2254,7 @@ void database::process_conversions()
    if( fhistory.current_median_history.is_null() )
       return;
 
-   asset net_sbd( 0, SBD_SYMBOL );
+   asset net_sbd( 0, CBD_SYMBOL );
    asset net_creativecoin( 0, CREA_SYMBOL );
 
    while( itr != request_by_date.end() && itr->conversion_date <= now )
@@ -3127,7 +3127,7 @@ try {
             if( has_hardfork( CREA_HARDFORK_0_14__230 ) )
             {
                const auto& gpo = get_dynamic_global_properties();
-               price min_price( asset( 9 * gpo.current_sbd_supply.amount, SBD_SYMBOL ), gpo.current_supply ); // This price limits SBD to 10% market cap
+               price min_price( asset( 9 * gpo.current_sbd_supply.amount, CBD_SYMBOL ), gpo.current_supply ); // This price limits CBD to 10% market cap
 
                if( min_price > fho.current_median_history )
                   fho.current_median_history = min_price;
@@ -3482,12 +3482,12 @@ void database::update_virtual_supply()
          auto percent_sbd = uint16_t( ( ( fc::uint128_t( ( dgp.current_sbd_supply * get_feed_history().current_median_history ).amount.value ) * CREA_100_PERCENT )
             / dgp.virtual_supply.amount.value ).to_uint64() );
 
-         if( percent_sbd <= CREA_SBD_START_PERCENT )
+         if( percent_sbd <= CREA_CBD_START_PERCENT )
             dgp.sbd_print_rate = CREA_100_PERCENT;
-         else if( percent_sbd >= CREA_SBD_STOP_PERCENT )
+         else if( percent_sbd >= CREA_CBD_STOP_PERCENT )
             dgp.sbd_print_rate = 0;
          else
-            dgp.sbd_print_rate = ( ( CREA_SBD_STOP_PERCENT - percent_sbd ) * CREA_100_PERCENT ) / ( CREA_SBD_STOP_PERCENT - CREA_SBD_START_PERCENT );
+            dgp.sbd_print_rate = ( ( CREA_CBD_STOP_PERCENT - percent_sbd ) * CREA_100_PERCENT ) / ( CREA_CBD_STOP_PERCENT - CREA_CBD_START_PERCENT );
       }
    });
 } FC_CAPTURE_AND_RETHROW() }
@@ -3903,19 +3903,19 @@ void database::modify_balance( const account_object& a, const asset& delta, bool
                FC_ASSERT( acnt.balance.amount.value >= 0, "Insufficient CREA funds" );
             }
             break;
-         case CREA_ASSET_NUM_SBD:
+         case CREA_ASSET_NUM_CBD:
             if( a.sbd_seconds_last_update != head_block_time() )
             {
                acnt.sbd_seconds += fc::uint128_t(a.sbd_balance.amount.value) * (head_block_time() - a.sbd_seconds_last_update).to_seconds();
                acnt.sbd_seconds_last_update = head_block_time();
 
                if( acnt.sbd_seconds > 0 &&
-                   (acnt.sbd_seconds_last_update - acnt.sbd_last_interest_payment).to_seconds() > CREA_SBD_INTEREST_COMPOUND_INTERVAL_SEC )
+                   (acnt.sbd_seconds_last_update - acnt.sbd_last_interest_payment).to_seconds() > CREA_CBD_INTEREST_COMPOUND_INTERVAL_SEC )
                {
                   auto interest = acnt.sbd_seconds / CREA_SECONDS_PER_YEAR;
                   interest *= get_dynamic_global_properties().sbd_interest_rate;
                   interest /= CREA_100_PERCENT;
-                  asset interest_paid(interest.to_uint64(), SBD_SYMBOL);
+                  asset interest_paid(interest.to_uint64(), CBD_SYMBOL);
                   acnt.sbd_balance += interest_paid;
                   acnt.sbd_seconds = 0;
                   acnt.sbd_last_interest_payment = head_block_time();
@@ -3933,7 +3933,7 @@ void database::modify_balance( const account_object& a, const asset& delta, bool
             acnt.sbd_balance += delta;
             if( check_balance )
             {
-               FC_ASSERT( acnt.sbd_balance.amount.value >= 0, "Insufficient SBD funds" );
+               FC_ASSERT( acnt.sbd_balance.amount.value >= 0, "Insufficient CBD funds" );
             }
             break;
          case CREA_ASSET_NUM_VESTS:
@@ -3974,12 +3974,12 @@ void database::modify_reward_balance( const account_object& a, const asset& valu
                }
             }
             break;
-         case CREA_ASSET_NUM_SBD:
+         case CREA_ASSET_NUM_CBD:
             FC_ASSERT( share_delta.amount.value == 0 );
             acnt.reward_sbd_balance += value_delta;
             if( check_balance )
             {
-               FC_ASSERT( acnt.reward_sbd_balance.amount.value >= 0, "Insufficient reward SBD funds" );
+               FC_ASSERT( acnt.reward_sbd_balance.amount.value >= 0, "Insufficient reward CBD funds" );
             }
             break;
          default:
@@ -4093,19 +4093,19 @@ void database::adjust_savings_balance( const account_object& a, const asset& del
                FC_ASSERT( acnt.savings_balance.amount.value >= 0, "Insufficient savings CREA funds" );
             }
             break;
-         case CREA_ASSET_NUM_SBD:
+         case CREA_ASSET_NUM_CBD:
             if( a.savings_sbd_seconds_last_update != head_block_time() )
             {
                acnt.savings_sbd_seconds += fc::uint128_t(a.savings_sbd_balance.amount.value) * (head_block_time() - a.savings_sbd_seconds_last_update).to_seconds();
                acnt.savings_sbd_seconds_last_update = head_block_time();
 
                if( acnt.savings_sbd_seconds > 0 &&
-                   (acnt.savings_sbd_seconds_last_update - acnt.savings_sbd_last_interest_payment).to_seconds() > CREA_SBD_INTEREST_COMPOUND_INTERVAL_SEC )
+                   (acnt.savings_sbd_seconds_last_update - acnt.savings_sbd_last_interest_payment).to_seconds() > CREA_CBD_INTEREST_COMPOUND_INTERVAL_SEC )
                {
                   auto interest = acnt.savings_sbd_seconds / CREA_SECONDS_PER_YEAR;
                   interest *= get_dynamic_global_properties().sbd_interest_rate;
                   interest /= CREA_100_PERCENT;
-                  asset interest_paid(interest.to_uint64(), SBD_SYMBOL);
+                  asset interest_paid(interest.to_uint64(), CBD_SYMBOL);
                   acnt.savings_sbd_balance += interest_paid;
                   acnt.savings_sbd_seconds = 0;
                   acnt.savings_sbd_last_interest_payment = head_block_time();
@@ -4123,7 +4123,7 @@ void database::adjust_savings_balance( const account_object& a, const asset& del
             acnt.savings_sbd_balance += delta;
             if( check_balance )
             {
-               FC_ASSERT( acnt.savings_sbd_balance.amount.value >= 0, "Insufficient savings SBD funds" );
+               FC_ASSERT( acnt.savings_sbd_balance.amount.value >= 0, "Insufficient savings CBD funds" );
             }
             break;
          default:
@@ -4211,7 +4211,7 @@ void database::adjust_supply( const asset& delta, bool adjust_vesting )
             }
             break;
          }
-         case CREA_ASSET_NUM_SBD:
+         case CREA_ASSET_NUM_CBD:
             props.current_sbd_supply += delta;
             props.virtual_supply = props.current_sbd_supply * get_feed_history().current_median_history + props.current_supply;
             if( check_supply )
@@ -4232,7 +4232,7 @@ asset database::get_balance( const account_object& a, asset_symbol_type symbol )
    {
       case CREA_ASSET_NUM_CREA:
          return a.balance;
-      case CREA_ASSET_NUM_SBD:
+      case CREA_ASSET_NUM_CBD:
          return a.sbd_balance;
       default:
       {
@@ -4262,7 +4262,7 @@ asset database::get_savings_balance( const account_object& a, asset_symbol_type 
    {
       case CREA_ASSET_NUM_CREA:
          return a.savings_balance;
-      case CREA_ASSET_NUM_SBD:
+      case CREA_ASSET_NUM_CBD:
          return a.savings_sbd_balance;
       default: // Note no savings balance for SMT per comments in issue 1682.
          FC_ASSERT( !"invalid symbol" );
@@ -4733,7 +4733,7 @@ void database::validate_invariants()const
    {
       const auto& account_idx = get_index<account_index>().indices().get<by_name>();
       asset total_supply = asset( 0, CREA_SYMBOL );
-      asset total_sbd = asset( 0, SBD_SYMBOL );
+      asset total_sbd = asset( 0, CBD_SYMBOL );
       asset total_vesting = asset( 0, VESTS_SYMBOL );
       asset pending_vesting_creativecoin = asset( 0, CREA_SYMBOL );
       share_type total_vsf_votes = share_type( 0 );
@@ -4769,7 +4769,7 @@ void database::validate_invariants()const
       {
          if( itr->amount.symbol == CREA_SYMBOL )
             total_supply += itr->amount;
-         else if( itr->amount.symbol == SBD_SYMBOL )
+         else if( itr->amount.symbol == CBD_SYMBOL )
             total_sbd += itr->amount;
          else
             FC_ASSERT( false, "Encountered illegal symbol in convert_request_object" );
@@ -4783,9 +4783,9 @@ void database::validate_invariants()const
          {
             total_supply += asset( itr->for_sale, CREA_SYMBOL );
          }
-         else if ( itr->sell_price.base.symbol == SBD_SYMBOL )
+         else if ( itr->sell_price.base.symbol == CBD_SYMBOL )
          {
-            total_sbd += asset( itr->for_sale, SBD_SYMBOL );
+            total_sbd += asset( itr->for_sale, CBD_SYMBOL );
          }
       }
 
@@ -4798,10 +4798,10 @@ void database::validate_invariants()const
 
          if( itr->pending_fee.symbol == CREA_SYMBOL )
             total_supply += itr->pending_fee;
-         else if( itr->pending_fee.symbol == SBD_SYMBOL )
+         else if( itr->pending_fee.symbol == CBD_SYMBOL )
             total_sbd += itr->pending_fee;
          else
-            FC_ASSERT( false, "found escrow pending fee that is not SBD or CREA" );
+            FC_ASSERT( false, "found escrow pending fee that is not CBD or CREA" );
       }
 
       const auto& savings_withdraw_idx = get_index< savings_withdraw_index >().indices().get< by_id >();
@@ -4810,10 +4810,10 @@ void database::validate_invariants()const
       {
          if( itr->amount.symbol == CREA_SYMBOL )
             total_supply += itr->amount;
-         else if( itr->amount.symbol == SBD_SYMBOL )
+         else if( itr->amount.symbol == CBD_SYMBOL )
             total_sbd += itr->amount;
          else
-            FC_ASSERT( false, "found savings withdraw that is not SBD or CREA" );
+            FC_ASSERT( false, "found savings withdraw that is not CBD or CREA" );
       }
 
       const auto& reward_idx = get_index< reward_fund_index, by_id >();

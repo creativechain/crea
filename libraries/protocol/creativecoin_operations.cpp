@@ -123,7 +123,7 @@ namespace creativecoin { namespace protocol {
    {
       validate_account_name( author );
       FC_ASSERT( percent_creativecoin_dollars <= CREA_100_PERCENT, "Percent cannot exceed 100%" );
-      FC_ASSERT( max_accepted_payout.symbol == SBD_SYMBOL, "Max accepted payout must be in SBD" );
+      FC_ASSERT( max_accepted_payout.symbol == CBD_SYMBOL, "Max accepted payout must be in CBD" );
       FC_ASSERT( max_accepted_payout.amount.value >= 0, "Cannot accept less than 0 payout" );
       validate_permlink( permlink );
       for( auto& e : extensions )
@@ -260,8 +260,8 @@ namespace creativecoin { namespace protocol {
       {
          price sbd_exchange_rate;
          fc::raw::unpack_from_vector( itr->second, sbd_exchange_rate );
-         FC_ASSERT( ( is_asset_type( sbd_exchange_rate.base, SBD_SYMBOL ) && is_asset_type( sbd_exchange_rate.quote, CREA_SYMBOL ) ),
-            "Price feed must be a CREA/SBD price" );
+         FC_ASSERT( ( is_asset_type( sbd_exchange_rate.base, CBD_SYMBOL ) && is_asset_type( sbd_exchange_rate.quote, CREA_SYMBOL ) ),
+            "Price feed must be a CREA/CBD price" );
          sbd_exchange_rate.validate();
       }
 
@@ -443,9 +443,9 @@ namespace creativecoin { namespace protocol {
    void feed_publish_operation::validate()const
    {
       validate_account_name( publisher );
-      FC_ASSERT( ( is_asset_type( exchange_rate.base, CREA_SYMBOL ) && is_asset_type( exchange_rate.quote, SBD_SYMBOL ) )
-         || ( is_asset_type( exchange_rate.base, SBD_SYMBOL ) && is_asset_type( exchange_rate.quote, CREA_SYMBOL ) ),
-         "Price feed must be a CREA/SBD price" );
+      FC_ASSERT( ( is_asset_type( exchange_rate.base, CREA_SYMBOL ) && is_asset_type( exchange_rate.quote, CBD_SYMBOL ) )
+         || ( is_asset_type( exchange_rate.base, CBD_SYMBOL ) && is_asset_type( exchange_rate.quote, CREA_SYMBOL ) ),
+         "Price feed must be a CREA/CBD price" );
       exchange_rate.validate();
    }
 
@@ -453,8 +453,8 @@ namespace creativecoin { namespace protocol {
    {
       validate_account_name( owner );
 
-      FC_ASSERT(  ( is_asset_type( amount_to_sell, CREA_SYMBOL ) && is_asset_type( min_to_receive, SBD_SYMBOL ) )
-               || ( is_asset_type( amount_to_sell, SBD_SYMBOL ) && is_asset_type( min_to_receive, CREA_SYMBOL ) )
+      FC_ASSERT(  ( is_asset_type( amount_to_sell, CREA_SYMBOL ) && is_asset_type( min_to_receive, CBD_SYMBOL ) )
+               || ( is_asset_type( amount_to_sell, CBD_SYMBOL ) && is_asset_type( min_to_receive, CREA_SYMBOL ) )
                || (
                      amount_to_sell.symbol.space() == asset_symbol_type::smt_nai_space
                      && is_asset_type( min_to_receive, CREA_SYMBOL )
@@ -463,7 +463,7 @@ namespace creativecoin { namespace protocol {
                      is_asset_type( amount_to_sell, CREA_SYMBOL )
                      && min_to_receive.symbol.space() == asset_symbol_type::smt_nai_space
                   ),
-               "Limit order must be for the CREA:SBD or SMT:(CREA/SBD) market" );
+               "Limit order must be for the CREA:CBD or SMT:(CREA/CBD) market" );
 
       (amount_to_sell / min_to_receive).validate();
    }
@@ -475,8 +475,8 @@ namespace creativecoin { namespace protocol {
       FC_ASSERT( amount_to_sell.symbol == exchange_rate.base.symbol, "Sell asset must be the base of the price" );
       exchange_rate.validate();
 
-      FC_ASSERT(  ( is_asset_type( amount_to_sell, CREA_SYMBOL ) && is_asset_type( exchange_rate.quote, SBD_SYMBOL ) )
-               || ( is_asset_type( amount_to_sell, SBD_SYMBOL ) && is_asset_type( exchange_rate.quote, CREA_SYMBOL ) )
+      FC_ASSERT(  ( is_asset_type( amount_to_sell, CREA_SYMBOL ) && is_asset_type( exchange_rate.quote, CBD_SYMBOL ) )
+               || ( is_asset_type( amount_to_sell, CBD_SYMBOL ) && is_asset_type( exchange_rate.quote, CREA_SYMBOL ) )
                || (
                      amount_to_sell.symbol.space() == asset_symbol_type::smt_nai_space
                      && is_asset_type( exchange_rate.quote, CREA_SYMBOL )
@@ -485,7 +485,7 @@ namespace creativecoin { namespace protocol {
                      is_asset_type( amount_to_sell, CREA_SYMBOL )
                      && exchange_rate.quote.symbol.space() == asset_symbol_type::smt_nai_space
                   ),
-               "Limit order must be for the CREA:SBD or SMT:(CREA/SBD) market" );
+               "Limit order must be for the CREA:CBD or SMT:(CREA/CBD) market" );
 
       FC_ASSERT( (amount_to_sell * exchange_rate).amount > 0, "Amount to sell cannot round to 0 when traded" );
    }
@@ -498,10 +498,10 @@ namespace creativecoin { namespace protocol {
    void convert_operation::validate()const
    {
       validate_account_name( owner );
-      /// only allow conversion from SBD to CREA, allowing the opposite can enable traders to abuse
+      /// only allow conversion from CBD to CREA, allowing the opposite can enable traders to abuse
       /// market fluxuations through converting large quantities without moving the price.
-      FC_ASSERT( is_asset_type( amount, SBD_SYMBOL ), "Can only convert SBD to CREA" );
-      FC_ASSERT( amount.amount > 0, "Must convert some SBD" );
+      FC_ASSERT( is_asset_type( amount, CBD_SYMBOL ), "Can only convert CBD to CREA" );
+      FC_ASSERT( amount.amount > 0, "Must convert some CBD" );
    }
 
    void report_over_production_operation::validate()const
@@ -524,8 +524,8 @@ namespace creativecoin { namespace protocol {
       FC_ASSERT( creativecoin_amount.amount >= 0, "creativecoin amount cannot be negative" );
       FC_ASSERT( sbd_amount.amount > 0 || creativecoin_amount.amount > 0, "escrow must transfer a non-zero amount" );
       FC_ASSERT( from != agent && to != agent, "agent must be a third party" );
-      FC_ASSERT( (fee.symbol == CREA_SYMBOL) || (fee.symbol == SBD_SYMBOL), "fee must be CREA or SBD" );
-      FC_ASSERT( sbd_amount.symbol == SBD_SYMBOL, "sbd amount must contain SBD" );
+      FC_ASSERT( (fee.symbol == CREA_SYMBOL) || (fee.symbol == CBD_SYMBOL), "fee must be CREA or CBD" );
+      FC_ASSERT( sbd_amount.symbol == CBD_SYMBOL, "sbd amount must contain CBD" );
       FC_ASSERT( creativecoin_amount.symbol == CREA_SYMBOL, "creativecoin amount must contain CREA" );
       FC_ASSERT( ratification_deadline < escrow_expiration, "ratification deadline must be before escrow expiration" );
       if ( json_meta.size() > 0 )
@@ -565,7 +565,7 @@ namespace creativecoin { namespace protocol {
       FC_ASSERT( sbd_amount.amount >= 0, "sbd amount cannot be negative" );
       FC_ASSERT( creativecoin_amount.amount >= 0, "creativecoin amount cannot be negative" );
       FC_ASSERT( sbd_amount.amount > 0 || creativecoin_amount.amount > 0, "escrow must release a non-zero amount" );
-      FC_ASSERT( sbd_amount.symbol == SBD_SYMBOL, "sbd amount must contain SBD" );
+      FC_ASSERT( sbd_amount.symbol == CBD_SYMBOL, "sbd amount must contain CBD" );
       FC_ASSERT( creativecoin_amount.symbol == CREA_SYMBOL, "creativecoin amount must contain CREA" );
    }
 
@@ -597,7 +597,7 @@ namespace creativecoin { namespace protocol {
       validate_account_name( from );
       validate_account_name( to );
       FC_ASSERT( amount.amount > 0 );
-      FC_ASSERT( amount.symbol == CREA_SYMBOL || amount.symbol == SBD_SYMBOL );
+      FC_ASSERT( amount.symbol == CREA_SYMBOL || amount.symbol == CBD_SYMBOL );
       FC_ASSERT( memo.size() < CREA_MAX_MEMO_SIZE, "Memo is too large" );
       FC_ASSERT( fc::is_utf8( memo ), "Memo is not UTF8" );
    }
@@ -605,7 +605,7 @@ namespace creativecoin { namespace protocol {
       validate_account_name( from );
       validate_account_name( to );
       FC_ASSERT( amount.amount > 0 );
-      FC_ASSERT( amount.symbol == CREA_SYMBOL || amount.symbol == SBD_SYMBOL );
+      FC_ASSERT( amount.symbol == CREA_SYMBOL || amount.symbol == CBD_SYMBOL );
       FC_ASSERT( memo.size() < CREA_MAX_MEMO_SIZE, "Memo is too large" );
       FC_ASSERT( fc::is_utf8( memo ), "Memo is not UTF8" );
    }
@@ -640,7 +640,7 @@ namespace creativecoin { namespace protocol {
    {
       validate_account_name( account );
       FC_ASSERT( is_asset_type( reward_creativecoin, CREA_SYMBOL ), "Reward Creativecoin must be CREA" );
-      FC_ASSERT( is_asset_type( reward_sbd, SBD_SYMBOL ), "Reward Creativecoin must be SBD" );
+      FC_ASSERT( is_asset_type( reward_sbd, CBD_SYMBOL ), "Reward Creativecoin must be CBD" );
       FC_ASSERT( is_asset_type( reward_vests, VESTS_SYMBOL ), "Reward Creativecoin must be VESTS" );
       FC_ASSERT( reward_creativecoin.amount >= 0, "Cannot claim a negative amount" );
       FC_ASSERT( reward_sbd.amount >= 0, "Cannot claim a negative amount" );

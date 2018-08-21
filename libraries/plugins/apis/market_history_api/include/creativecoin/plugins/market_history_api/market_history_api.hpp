@@ -27,7 +27,7 @@ struct get_ticker_return
    double      highest_bid = 0;
    double      percent_change = 0;
    asset       creativecoin_volume = asset( 0 , CREA_SYMBOL );
-   asset       sbd_volume = asset( 0, SBD_SYMBOL );
+   asset       sbd_volume = asset( 0, CBD_SYMBOL );
 };
 
 typedef void_type get_volume_args;
@@ -35,7 +35,7 @@ typedef void_type get_volume_args;
 struct get_volume_return
 {
    asset       creativecoin_volume = asset( 0, CREA_SYMBOL );
-   asset       sbd_volume = asset( 0, SBD_SYMBOL );
+   asset       sbd_volume = asset( 0, CBD_SYMBOL );
 };
 
 struct order

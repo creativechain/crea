@@ -633,7 +633,7 @@ class wallet_api
          bool broadcast = false);
 
       /**
-       * Transfer funds from one account to another. CREA and SBD can be transferred.
+       * Transfer funds from one account to another. CREA and CBD can be transferred.
        *
        * @param from The account the funds are coming from
        * @param to The account the funds are going to
@@ -649,13 +649,13 @@ class wallet_api
          bool broadcast = false);
 
       /**
-       * Transfer funds from one account to another using escrow. CREA and SBD can be transferred.
+       * Transfer funds from one account to another using escrow. CREA and CBD can be transferred.
        *
        * @param from The account the funds are coming from
        * @param to The account the funds are going to
        * @param agent The account acting as the agent in case of dispute
        * @param escrow_id A unique id for the escrow transfer. (from, escrow_id) must be a unique pair
-       * @param sbd_amount The amount of SBD to transfer
+       * @param sbd_amount The amount of CBD to transfer
        * @param creativecoin_amount The amount of CREA to transfer
        * @param fee The fee paid to the agent
        * @param ratification_deadline The deadline for 'to' and 'agent' to approve the escrow transfer
@@ -727,7 +727,7 @@ class wallet_api
        * @param who The account authorizing the release
        * @param receiver The account that will receive funds being released
        * @param escrow_id A unique id for the escrow transfer
-       * @param sbd_amount The amount of SBD that will be released
+       * @param sbd_amount The amount of CBD that will be released
        * @param creativecoin_amount The amount of CREA that will be released
        * @param broadcast true if you wish to broadcast the transaction
        */
@@ -828,11 +828,11 @@ class wallet_api
          bool broadcast = false );
 
       /**
-       *  This method will convert SBD to CREA at the current_median_history price one
+       *  This method will convert CBD to CREA at the current_median_history price one
        *  week from the time it is executed. This method depends upon there being a valid price feed.
        *
-       *  @param from The account requesting conversion of its SBD i.e. "1.000 SBD"
-       *  @param amount The amount of SBD to convert
+       *  @param from The account requesting conversion of its CBD i.e. "1.000 CBD"
+       *  @param amount The amount of CBD to convert
        *  @param broadcast true if you wish to broadcast the transaction
        */
       condenser_api::legacy_signed_transaction convert_sbd(
@@ -841,8 +841,8 @@ class wallet_api
          bool broadcast = false );
 
       /**
-       * A witness can public a price feed for the CREA:SBD market. The median price feed is used
-       * to process conversion requests from SBD to CREA.
+       * A witness can public a price feed for the CREA:CBD market. The median price feed is used
+       * to process conversion requests from CBD to CREA.
        *
        * @param witness The witness publishing the price feed
        * @param exchange_rate The desired exchange rate
@@ -884,7 +884,7 @@ class wallet_api
       operation get_prototype_operation(string operation_type);
 
       /**
-       * Gets the current order book for CREA:SBD
+       * Gets the current order book for CREA:CBD
        *
        * @param limit Maximum number of orders to return for bids and asks. Max is 1000.
        */
@@ -896,7 +896,7 @@ class wallet_api
        *
        *  @param owner The name of the account creating the order
        *  @param order_id is a unique identifier assigned by the creator of the order, it can be reused after the order has been filled
-       *  @param amount_to_sell The amount of either SBD or CREA you wish to sell
+       *  @param amount_to_sell The amount of either CBD or CREA you wish to sell
        *  @param min_to_receive The amount of the other asset you will receive at a minimum
        *  @param fill_or_kill true if you want the order to be killed if it cannot immediately be filled
        *  @param expiration the time the order should expire if it has not been filled

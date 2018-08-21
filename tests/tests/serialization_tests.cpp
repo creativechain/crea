@@ -140,9 +140,9 @@ BOOST_AUTO_TEST_CASE( legacy_asset_test )
       BOOST_CHECK_EQUAL( sbd.amount.value, 654321 );
       BOOST_CHECK_EQUAL( sbd.symbol.decimals(), 3 );
       BOOST_CHECK_EQUAL( sbd.to_string(), "654.321 TBD" );
-      BOOST_CHECK( sbd.symbol == SBD_SYMBOL );
-      BOOST_CHECK_EQUAL( legacy_asset::from_asset( asset(50, SBD_SYMBOL ) ).to_string(), "0.050 TBD" );
-      BOOST_CHECK_EQUAL( legacy_asset::from_asset( asset(50000, SBD_SYMBOL ) ).to_string(), "50.000 TBD" );
+      BOOST_CHECK( sbd.symbol == CBD_SYMBOL );
+      BOOST_CHECK_EQUAL( legacy_asset::from_asset( asset(50, CBD_SYMBOL ) ).to_string(), "0.050 TBD" );
+      BOOST_CHECK_EQUAL( legacy_asset::from_asset( asset(50000, CBD_SYMBOL ) ).to_string(), "50.000 TBD" );
 
       BOOST_CHECK_THROW( legacy_asset::from_string( "1.00000000000000000000 TESTS" ), fc::exception );
       BOOST_CHECK_THROW( legacy_asset::from_string( "1.000TESTS" ), fc::exception );
@@ -194,9 +194,9 @@ BOOST_AUTO_TEST_CASE( asset_test )
       BOOST_CHECK_EQUAL( sbd.amount.value, 654321 );
       BOOST_CHECK_EQUAL( sbd.symbol.decimals(), 3 );
       BOOST_CHECK_EQUAL( fc::json::to_string( sbd ), "{\"amount\":\"654321\",\"precision\":3,\"nai\":\"@@000000013\"}" );
-      BOOST_CHECK( sbd.symbol.asset_num == CREA_ASSET_NUM_SBD );
-      BOOST_CHECK_EQUAL( fc::json::to_string( asset( 50, SBD_SYMBOL ) ), "{\"amount\":\"50\",\"precision\":3,\"nai\":\"@@000000013\"}" );
-      BOOST_CHECK_EQUAL( fc::json::to_string( asset( 50000, SBD_SYMBOL ) ), "{\"amount\":\"50000\",\"precision\":3,\"nai\":\"@@000000013\"}" );
+      BOOST_CHECK( sbd.symbol.asset_num == CREA_ASSET_NUM_CBD );
+      BOOST_CHECK_EQUAL( fc::json::to_string( asset( 50, CBD_SYMBOL ) ), "{\"amount\":\"50\",\"precision\":3,\"nai\":\"@@000000013\"}" );
+      BOOST_CHECK_EQUAL( fc::json::to_string( asset( 50000, CBD_SYMBOL ) ), "{\"amount\":\"50000\",\"precision\":3,\"nai\":\"@@000000013\"}" );
 
       BOOST_CHECK_EQUAL( vests.amount.value, 123456789 );
       BOOST_CHECK_EQUAL( vests.symbol.decimals(), 6 );
@@ -255,7 +255,7 @@ void old_pack_symbol(vector<char>& v, asset_symbol_type sym)
       v.push_back('T'   ); v.push_back('S' ); v.push_back('\0'); v.push_back('\0');
       // 03 54 45 53 54 53 00 00
    }
-   else if( sym == SBD_SYMBOL )
+   else if( sym == CBD_SYMBOL )
    {
       v.push_back('\x03'); v.push_back('T' ); v.push_back('B' ); v.push_back('D' );
       v.push_back('\0'  ); v.push_back('\0'); v.push_back('\0'); v.push_back('\0');
@@ -292,7 +292,7 @@ void old_pack_asset( vector<char>& v, const asset& a )
 std::string old_json_asset( const asset& a )
 {
    size_t decimal_places = 0;
-   if( (a.symbol == CREA_SYMBOL) || (a.symbol == SBD_SYMBOL) )
+   if( (a.symbol == CREA_SYMBOL) || (a.symbol == CBD_SYMBOL) )
       decimal_places = 3;
    else if( a.symbol == VESTS_SYMBOL )
       decimal_places = 6;
@@ -302,7 +302,7 @@ std::string old_json_asset( const asset& a )
    result.insert( result.length() - decimal_places, 1, '.' );
    if( a.symbol == CREA_SYMBOL )
       result += " TESTS";
-   else if( a.symbol == SBD_SYMBOL )
+   else if( a.symbol == CBD_SYMBOL )
       result += " TBD";
    else if( a.symbol == VESTS_SYMBOL )
       result += " VESTS";
@@ -315,7 +315,7 @@ BOOST_AUTO_TEST_CASE( asset_raw_test )
 {
    try
    {
-      BOOST_CHECK( SBD_SYMBOL < CREA_SYMBOL );
+      BOOST_CHECK( CBD_SYMBOL < CREA_SYMBOL );
       BOOST_CHECK( CREA_SYMBOL < VESTS_SYMBOL );
 
       // get a bunch of random bits
@@ -336,12 +336,12 @@ BOOST_AUTO_TEST_CASE( asset_raw_test )
 /*      asset creativecoin = asset::from_string( "0.001 TESTS" );
 #define VESTS_SYMBOL  (uint64_t(6) | (uint64_t('V') << 8) | (uint64_t('E') << 16) | (uint64_t('S') << 24) | (uint64_t('T') << 32) | (uint64_t('S') << 40)) ///< VESTS with 6 digits of precision
 #define CREA_SYMBOL  (uint64_t(3) | (uint64_t('T') << 8) | (uint64_t('E') << 16) | (uint64_t('S') << 24) | (uint64_t('T') << 32) | (uint64_t('S') << 40)) ///< CREA with 3 digits of precision
-#define SBD_SYMBOL    (uint64_t(3) | (uint64_t('T') << 8) | (uint64_t('B') << 16) | (uint64_t('D') << 24) ) ///< Test Backed Dollars with 3 digits of precision
+#define CBD_SYMBOL    (uint64_t(3) | (uint64_t('T') << 8) | (uint64_t('B') << 16) | (uint64_t('D') << 24) ) ///< Test Backed Dollars with 3 digits of precision
 */
       std::vector< asset_symbol_type > symbols;
 
       symbols.push_back( CREA_SYMBOL );
-      symbols.push_back( SBD_SYMBOL   );
+      symbols.push_back( CBD_SYMBOL   );
       symbols.push_back( VESTS_SYMBOL );
 
       for( const share_type& amount : amounts )

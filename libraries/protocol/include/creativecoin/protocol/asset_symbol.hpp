@@ -10,18 +10,18 @@
 #define CREA_ASSET_SYMBOL_NAI_LENGTH        10
 #define CREA_ASSET_SYMBOL_NAI_STRING_LENGTH ( CREA_ASSET_SYMBOL_NAI_LENGTH + 2 )
 
-#define CREA_PRECISION_SBD   (3)
+#define CREA_PRECISION_CBD   (3)
 #define CREA_PRECISION_CREA (3)
 #define CREA_PRECISION_VESTS (6)
 
 // One's place is used for check digit, which means NAI 0-9 all have NAI data of 0 which is invalid
 // This space is safe to use because it would alwasys result in failure to convert from NAI
-#define CREA_NAI_SBD   (1)
+#define CREA_NAI_CBD   (1)
 #define CREA_NAI_CREA (2)
 #define CREA_NAI_VESTS (3)
 
-#define CREA_ASSET_NUM_SBD \
-  (((SMT_MAX_NAI + CREA_NAI_SBD)   << CREA_ASSET_SYMBOL_PRECISION_BITS) | CREA_PRECISION_SBD)
+#define CREA_ASSET_NUM_CBD \
+  (((SMT_MAX_NAI + CREA_NAI_CBD)   << CREA_ASSET_SYMBOL_PRECISION_BITS) | CREA_PRECISION_CBD)
 #define CREA_ASSET_NUM_CREA \
   (((SMT_MAX_NAI + CREA_NAI_CREA) << CREA_ASSET_SYMBOL_PRECISION_BITS) | CREA_PRECISION_CREA)
 #define CREA_ASSET_NUM_VESTS \
@@ -43,7 +43,7 @@
 
 #define VESTS_SYMBOL_SER  (uint64_t(6) | (VESTS_SYMBOL_U64 << 8)) ///< VESTS|VESTS with 8 digits of precision
 #define CREA_SYMBOL_SER  (uint64_t(3) | (CREA_SYMBOL_U64 << 8)) ///< CREA|TESTS with 8 digits of precision
-#define CBD_SYMBOL_SER    (uint64_t(3) |   (CBD_SYMBOL_U64 << 8)) ///< SBD|TBD with 8 digits of precision
+#define CBD_SYMBOL_SER    (uint64_t(3) |   (CBD_SYMBOL_U64 << 8)) ///< CBD|TBD with 8 digits of precision
 
 #define CREA_ASSET_MAX_DECIMALS 12
 
@@ -91,7 +91,7 @@ class asset_symbol_type
       bool is_vesting() const;
       /**Returns vesting symbol when called from liquid one
        * and liquid symbol when called from vesting one.
-       * Returns back the SBD symbol if represents SBD.
+       * Returns back the CBD symbol if represents CBD.
        */
       asset_symbol_type get_paired_symbol() const;
       /**Returns asset_num stripped of precision holding bits.
@@ -152,7 +152,7 @@ inline void pack( Stream& s, const creativecoin::protocol::asset_symbol_type& sy
             case CREA_ASSET_NUM_CREA:
                ser = CREA_SYMBOL_SER;
                break;
-            case CREA_ASSET_NUM_SBD:
+            case CREA_ASSET_NUM_CBD:
                ser = CBD_SYMBOL_SER;
                break;
             case CREA_ASSET_NUM_VESTS:
@@ -188,7 +188,7 @@ inline void unpack( Stream& s, creativecoin::protocol::asset_symbol_type& sym )
       case CBD_SYMBOL_SER & 0xFFFFFFFF:
          s.read( ((char*) &ser)+4, 4 );
          FC_ASSERT( ser == CBD_SYMBOL_SER, "invalid asset bits" );
-         sym.asset_num = CREA_ASSET_NUM_SBD;
+         sym.asset_num = CREA_ASSET_NUM_CBD;
          break;
       case VESTS_SYMBOL_SER & 0xFFFFFFFF:
          s.read( ((char*) &ser)+4, 4 );

@@ -54,7 +54,7 @@ namespace creativecoin { namespace chain {
          asset             savings_balance = asset( 0, CREA_SYMBOL );  ///< total liquid shares held by this account
 
          /**
-          *  SBD Deposits pay interest based upon the interest rate set by witnesses. The purpose of these
+          *  CBD Deposits pay interest based upon the interest rate set by witnesses. The purpose of these
           *  fields is to track the total (time * sbd_balance) that it is held. Then at the appointed time
           *  interest can be paid using the following equation:
           *
@@ -67,13 +67,13 @@ namespace creativecoin { namespace chain {
           *  @defgroup sbd_data sbd Balance Data
           */
          ///@{
-         asset             sbd_balance = asset( 0, SBD_SYMBOL ); /// total sbd balance
+         asset             sbd_balance = asset( 0, CBD_SYMBOL ); /// total sbd balance
          uint128_t         sbd_seconds; ///< total sbd * how long it has been hel
          time_point_sec    sbd_seconds_last_update; ///< the last time the sbd_seconds was updated
          time_point_sec    sbd_last_interest_payment; ///< used to pay interest at most once per month
 
 
-         asset             savings_sbd_balance = asset( 0, SBD_SYMBOL ); /// total sbd balance
+         asset             savings_sbd_balance = asset( 0, CBD_SYMBOL ); /// total sbd balance
          uint128_t         savings_sbd_seconds; ///< total sbd * how long it has been hel
          time_point_sec    savings_sbd_seconds_last_update; ///< the last time the sbd_seconds was updated
          time_point_sec    savings_sbd_last_interest_payment; ///< used to pay interest at most once per month
@@ -81,7 +81,7 @@ namespace creativecoin { namespace chain {
          uint8_t           savings_withdraw_requests = 0;
          ///@}
 
-         asset             reward_sbd_balance = asset( 0, SBD_SYMBOL );
+         asset             reward_sbd_balance = asset( 0, CBD_SYMBOL );
          asset             reward_creativecoin_balance = asset( 0, CREA_SYMBOL );
          asset             reward_vesting_balance = asset( 0, VESTS_SYMBOL );
          asset             reward_vesting_creativecoin = asset( 0, CREA_SYMBOL );

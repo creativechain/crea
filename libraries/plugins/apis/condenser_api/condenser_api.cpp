@@ -1991,7 +1991,7 @@ namespace detail
          auto itr = cidx.lower_bound( d.id );
          if( itr != cidx.end() && itr->comment == d.id )
          {
-            d.promoted = legacy_asset::from_asset( asset( itr->promoted_balance, SBD_SYMBOL ) );
+            d.promoted = legacy_asset::from_asset( asset( itr->promoted_balance, CBD_SYMBOL ) );
          }
       }
 

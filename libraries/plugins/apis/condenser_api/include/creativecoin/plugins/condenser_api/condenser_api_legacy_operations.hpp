@@ -101,7 +101,7 @@ namespace creativecoin { namespace plugins { namespace condenser_api {
 
       legacy_asset   account_creation_fee;
       uint32_t       maximum_block_size = CREA_MIN_BLOCK_SIZE_LIMIT * 2;
-      uint16_t       sbd_interest_rate = CREA_DEFAULT_SBD_INTEREST_RATE;
+      uint16_t       sbd_interest_rate = CREA_DEFAULT_CBD_INTEREST_RATE;
    };
 
    struct legacy_account_create_operation

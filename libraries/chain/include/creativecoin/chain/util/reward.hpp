@@ -43,7 +43,7 @@ uint128_t evaluate_reward_curve( const uint128_t& rshares, const protocol::curve
 
 inline bool is_comment_payout_dust( const price& p, uint64_t creativecoin_payout )
 {
-   return to_sbd( p, asset( creativecoin_payout, CREA_SYMBOL ) ) < CREA_MIN_PAYOUT_SBD;
+   return to_sbd( p, asset( creativecoin_payout, CREA_SYMBOL ) ) < CREA_MIN_PAYOUT_CBD;
 }
 
 } } } // creativecoin::chain::util

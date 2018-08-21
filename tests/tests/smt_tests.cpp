@@ -121,14 +121,14 @@ BOOST_AUTO_TEST_CASE( smt_create_apply )
       op.symbol = get_new_smt_symbol( 3, db );
       op.precision = op.symbol.decimals();
 
-      // Fund with CREA, and set fee with SBD.
+      // Fund with CREA, and set fee with CBD.
       FUND( "alice", test_amount );
-      // Declare fee in SBD/TBD though alice has none.
-      op.smt_creation_fee = asset( test_amount, SBD_SYMBOL );
-      // Throw due to insufficient balance of SBD/TBD.
+      // Declare fee in CBD/TBD though alice has none.
+      op.smt_creation_fee = asset( test_amount, CBD_SYMBOL );
+      // Throw due to insufficient balance of CBD/TBD.
       FAIL_WITH_OP(op, alice_private_key, fc::assert_exception);
 
-      // Now fund with SBD, and set fee with CREA.
+      // Now fund with CBD, and set fee with CREA.
       convert( "alice", asset( test_amount, CREA_SYMBOL ) );
       // Declare fee in CREA though alice has none.
       op.smt_creation_fee = asset( test_amount, CREA_SYMBOL );
@@ -136,7 +136,7 @@ BOOST_AUTO_TEST_CASE( smt_create_apply )
       FAIL_WITH_OP(op, alice_private_key, fc::assert_exception);
 
       // Push valid operation.
-      op.smt_creation_fee = asset( test_amount, SBD_SYMBOL );
+      op.smt_creation_fee = asset( test_amount, CBD_SYMBOL );
       PUSH_OP( op, alice_private_key );
 
       // Check the SMT cannot be created twice even with different precision.
@@ -163,9 +163,9 @@ BOOST_AUTO_TEST_CASE( smt_create_apply )
       op.smt_creation_fee = asset( too_low_fee_amount, CREA_SYMBOL );
       FAIL_WITH_OP(op, bob_private_key, fc::assert_exception);
 
-      // Check too low fee in SBD.
+      // Check too low fee in CBD.
       convert( "bob", asset( too_low_fee_amount, CREA_SYMBOL ) );
-      op.smt_creation_fee = asset( too_low_fee_amount, SBD_SYMBOL );
+      op.smt_creation_fee = asset( too_low_fee_amount, CBD_SYMBOL );
       FAIL_WITH_OP(op, bob_private_key, fc::assert_exception);
 
       validate_database();
@@ -869,9 +869,9 @@ BOOST_AUTO_TEST_CASE( asset_symbol_vesting_methods )
       FC_ASSERT( Vests.is_vesting() );
       FC_ASSERT( Vests.get_paired_symbol() == CREA_SYMBOL );
 
-      asset_symbol_type Sbd = SBD_SYMBOL;
+      asset_symbol_type Sbd = CBD_SYMBOL;
       FC_ASSERT( Sbd.is_vesting() == false );
-      FC_ASSERT( Sbd.get_paired_symbol() == SBD_SYMBOL );
+      FC_ASSERT( Sbd.get_paired_symbol() == CBD_SYMBOL );
 
       ACTORS( (alice) )
       generate_block();

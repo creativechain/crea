@@ -72,7 +72,7 @@
 
 #define VESTS_SYMBOL  (creativecoin::protocol::asset_symbol_type::from_asset_num( CREA_ASSET_NUM_VESTS ) )
 #define CREA_SYMBOL  (creativecoin::protocol::asset_symbol_type::from_asset_num( CREA_ASSET_NUM_CREA ) )
-#define SBD_SYMBOL    (creativecoin::protocol::asset_symbol_type::from_asset_num( CREA_ASSET_NUM_SBD ) )
+#define CBD_SYMBOL    (creativecoin::protocol::asset_symbol_type::from_asset_num( CREA_ASSET_NUM_CBD ) )
 
 #define CREA_BLOCKCHAIN_HARDFORK_VERSION     ( hardfork_version( CREA_BLOCKCHAIN_VERSION ) )
 
@@ -122,7 +122,7 @@
 
 #define CREA_100_PERCENT                     10000
 #define CREA_1_PERCENT                       (CREA_100_PERCENT/100)
-#define CREA_DEFAULT_SBD_INTEREST_RATE       (10*CREA_1_PERCENT) ///< 10% APR
+#define CREA_DEFAULT_CBD_INTEREST_RATE       (10*CREA_1_PERCENT) ///< 10% APR
 
 #define CREA_INFLATION_RATE_START_PERCENT    (978) // Fixes block 7,000,000 to 9.5%
 #define CREA_INFLATION_RATE_STOP_PERCENT     (95) // 0.95%
@@ -206,10 +206,10 @@
 #define CREA_PRODUCER_APR_PERCENT             750
 #define CREA_POW_APR_PERCENT                  750
 
-#define CREA_MIN_PAYOUT_SBD                  (asset(20,SBD_SYMBOL))
+#define CREA_MIN_PAYOUT_CBD                  (asset(20,CBD_SYMBOL))
 
-#define CREA_SBD_STOP_PERCENT                (5*CREA_1_PERCENT ) // Stop printing SBD at 5% Market Cap
-#define CREA_SBD_START_PERCENT               (2*CREA_1_PERCENT) // Start reducing printing of SBD at 2% Market Cap
+#define CREA_CBD_STOP_PERCENT                (5*CREA_1_PERCENT ) // Stop printing CBD at 5% Market Cap
+#define CREA_CBD_START_PERCENT               (2*CREA_1_PERCENT) // Start reducing printing of CBD at 2% Market Cap
 
 #define CREA_MIN_ACCOUNT_NAME_LENGTH          3
 #define CREA_MAX_ACCOUNT_NAME_LENGTH         16
@@ -225,7 +225,7 @@
 #define CREA_MIN_TRANSACTION_SIZE_LIMIT      1024
 #define CREA_SECONDS_PER_YEAR                (uint64_t(60*60*24*365ll))
 
-#define CREA_SBD_INTEREST_COMPOUND_INTERVAL_SEC  (60*60*24*30)
+#define CREA_CBD_INTEREST_COMPOUND_INTERVAL_SEC  (60*60*24*30)
 #define CREA_MAX_TRANSACTION_SIZE            (1024*64)
 #define CREA_MIN_BLOCK_SIZE_LIMIT            (CREA_MAX_TRANSACTION_SIZE)
 #define CREA_MAX_BLOCK_SIZE                  (CREA_MAX_TRANSACTION_SIZE*CREA_BLOCK_INTERVAL*2000)

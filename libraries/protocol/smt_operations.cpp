@@ -29,7 +29,7 @@ void smt_create_operation::validate()const
    smt_base_operation::validate();
    FC_ASSERT( smt_creation_fee.amount >= 0, "fee cannot be negative" );
    FC_ASSERT( smt_creation_fee.amount <= CREA_MAX_SHARE_SUPPLY, "Fee must be smaller than CREA_MAX_SHARE_SUPPLY" );
-   FC_ASSERT( is_asset_type( smt_creation_fee, CREA_SYMBOL ) || is_asset_type( smt_creation_fee, SBD_SYMBOL ), "Fee must be CREA or SBD" );
+   FC_ASSERT( is_asset_type( smt_creation_fee, CREA_SYMBOL ) || is_asset_type( smt_creation_fee, CBD_SYMBOL ), "Fee must be CREA or CBD" );
    FC_ASSERT( symbol.decimals() == precision, "Mismatch between redundantly provided precision ${prec1} vs ${prec2}",
       ("prec1",symbol.decimals())("prec2",precision) );
 }

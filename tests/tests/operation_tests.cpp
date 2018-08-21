@@ -2304,7 +2304,7 @@ BOOST_AUTO_TEST_CASE( feed_publish_apply )
       BOOST_TEST_MESSAGE( "--- Test publishing price feed" );
       feed_publish_operation op;
       op.publisher = "alice";
-      op.exchange_rate = price( ASSET( "1.000 TBD" ), ASSET( "1000.000 TESTS" ) ); // 1000 CREA : 1 SBD
+      op.exchange_rate = price( ASSET( "1.000 TBD" ), ASSET( "1000.000 TESTS" ) ); // 1000 CREA : 1 CBD
 
       signed_transaction tx;
       tx.set_expiration( db->head_block_time() + CREA_MAX_TIME_UNTIL_EXPIRATION );
@@ -2329,7 +2329,7 @@ BOOST_AUTO_TEST_CASE( feed_publish_apply )
       CREA_REQUIRE_THROW( db->push_transaction( tx, 0 ), fc::exception );
       validate_database();
 
-      BOOST_TEST_MESSAGE( "--- Test failure publishing with SBD base symbol" );
+      BOOST_TEST_MESSAGE( "--- Test failure publishing with CBD base symbol" );
 
       tx.operations.clear();
       tx.signatures.clear();
@@ -2474,7 +2474,7 @@ BOOST_AUTO_TEST_CASE( convert_apply )
       tx.sign( alice_private_key, db->get_chain_id() );
       CREA_REQUIRE_THROW( db->push_transaction( tx, 0 ), fc::exception );
 
-      BOOST_TEST_MESSAGE( "--- Test success converting SBD to TESTS" );
+      BOOST_TEST_MESSAGE( "--- Test success converting CBD to TESTS" );
       op.owner = "bob";
       op.amount = ASSET( "3.000 TBD" );
       tx.operations.clear();
@@ -2679,7 +2679,7 @@ BOOST_AUTO_TEST_CASE( limit_order_create_apply )
       BOOST_REQUIRE( limit_order->orderid == op.orderid );
       BOOST_REQUIRE( limit_order->for_sale == op.amount_to_sell.amount );
       BOOST_REQUIRE( limit_order->sell_price == price( op.amount_to_sell / op.min_to_receive ) );
-      BOOST_REQUIRE( limit_order->get_market() == std::make_pair( SBD_SYMBOL, CREA_SYMBOL ) );
+      BOOST_REQUIRE( limit_order->get_market() == std::make_pair( CBD_SYMBOL, CREA_SYMBOL ) );
       BOOST_REQUIRE( alice.balance.amount.value == ASSET( "990.000 TESTS" ).amount.value );
       BOOST_REQUIRE( alice.sbd_balance.amount.value == ASSET( "0.000 TBD" ).amount.value );
       validate_database();
@@ -2699,7 +2699,7 @@ BOOST_AUTO_TEST_CASE( limit_order_create_apply )
       BOOST_REQUIRE( limit_order->orderid == op.orderid );
       BOOST_REQUIRE( limit_order->for_sale == 10000 );
       BOOST_REQUIRE( limit_order->sell_price == price( ASSET( "10.000 TESTS" ), op.min_to_receive ) );
-      BOOST_REQUIRE( limit_order->get_market() == std::make_pair( SBD_SYMBOL, CREA_SYMBOL ) );
+      BOOST_REQUIRE( limit_order->get_market() == std::make_pair( CBD_SYMBOL, CREA_SYMBOL ) );
       BOOST_REQUIRE( alice.balance.amount.value == ASSET( "990.000 TESTS" ).amount.value );
       BOOST_REQUIRE( alice.sbd_balance.amount.value == ASSET( "0.000 TBD" ).amount.value );
       validate_database();
@@ -2720,8 +2720,8 @@ BOOST_AUTO_TEST_CASE( limit_order_create_apply )
       validate_database();
 
       BOOST_TEST_MESSAGE( "--- Test having a partial match to limit order" );
-      // Alice has order for 15 SBD at a price of 2:3
-      // Fill 5 CREA for 7.5 SBD
+      // Alice has order for 15 CBD at a price of 2:3
+      // Fill 5 CREA for 7.5 CBD
 
       op.owner = "bob";
       op.orderid = 1;
@@ -2743,7 +2743,7 @@ BOOST_AUTO_TEST_CASE( limit_order_create_apply )
       BOOST_REQUIRE( limit_order->orderid == op.orderid );
       BOOST_REQUIRE( limit_order->for_sale == 5000 );
       BOOST_REQUIRE( limit_order->sell_price == price( ASSET( "10.000 TESTS" ), ASSET( "15.000 TBD" ) ) );
-      BOOST_REQUIRE( limit_order->get_market() == std::make_pair( SBD_SYMBOL, CREA_SYMBOL ) );
+      BOOST_REQUIRE( limit_order->get_market() == std::make_pair( CBD_SYMBOL, CREA_SYMBOL ) );
       BOOST_REQUIRE( limit_order_idx.find( std::make_tuple( "bob", op.orderid ) ) == limit_order_idx.end() );
       BOOST_REQUIRE( alice.balance.amount.value == ASSET( "990.000 TESTS" ).amount.value );
       BOOST_REQUIRE( alice.sbd_balance.amount.value == ASSET( "7.500 TBD" ).amount.value );
@@ -2773,7 +2773,7 @@ BOOST_AUTO_TEST_CASE( limit_order_create_apply )
       BOOST_REQUIRE( limit_order->orderid == 1 );
       BOOST_REQUIRE( limit_order->for_sale.value == 7500 );
       BOOST_REQUIRE( limit_order->sell_price == price( ASSET( "15.000 TBD" ), ASSET( "10.000 TESTS" ) ) );
-      BOOST_REQUIRE( limit_order->get_market() == std::make_pair( SBD_SYMBOL, CREA_SYMBOL ) );
+      BOOST_REQUIRE( limit_order->get_market() == std::make_pair( CBD_SYMBOL, CREA_SYMBOL ) );
       BOOST_REQUIRE( limit_order_idx.find( std::make_tuple( "alice", 1 ) ) == limit_order_idx.end() );
       BOOST_REQUIRE( alice.balance.amount.value == ASSET( "990.000 TESTS" ).amount.value );
       BOOST_REQUIRE( alice.sbd_balance.amount.value == ASSET( "15.000 TBD" ).amount.value );
@@ -2830,7 +2830,7 @@ BOOST_AUTO_TEST_CASE( limit_order_create_apply )
       BOOST_REQUIRE( limit_order->orderid == 4 );
       BOOST_REQUIRE( limit_order->for_sale.value == 1000 );
       BOOST_REQUIRE( limit_order->sell_price == price( ASSET( "12.000 TBD" ), ASSET( "10.000 TESTS" ) ) );
-      BOOST_REQUIRE( limit_order->get_market() == std::make_pair( SBD_SYMBOL, CREA_SYMBOL ) );
+      BOOST_REQUIRE( limit_order->get_market() == std::make_pair( CBD_SYMBOL, CREA_SYMBOL ) );
       BOOST_REQUIRE( alice.balance.amount.value == ASSET( "975.000 TESTS" ).amount.value );
       BOOST_REQUIRE( alice.sbd_balance.amount.value == ASSET( "33.500 TBD" ).amount.value );
       BOOST_REQUIRE( bob.balance.amount.value == ASSET( "25.000 TESTS" ).amount.value );
@@ -2878,7 +2878,7 @@ BOOST_AUTO_TEST_CASE( limit_order_create_apply )
       BOOST_REQUIRE( limit_order->orderid == 5 );
       BOOST_REQUIRE( limit_order->for_sale.value == 9091 );
       BOOST_REQUIRE( limit_order->sell_price == price( ASSET( "20.000 TESTS" ), ASSET( "22.000 TBD" ) ) );
-      BOOST_REQUIRE( limit_order->get_market() == std::make_pair( SBD_SYMBOL, CREA_SYMBOL ) );
+      BOOST_REQUIRE( limit_order->get_market() == std::make_pair( CBD_SYMBOL, CREA_SYMBOL ) );
       BOOST_REQUIRE( alice.balance.amount.value == ASSET( "955.000 TESTS" ).amount.value );
       BOOST_REQUIRE( alice.sbd_balance.amount.value == ASSET( "45.500 TBD" ).amount.value );
       BOOST_REQUIRE( bob.balance.amount.value == ASSET( "35.909 TESTS" ).amount.value );
@@ -3044,7 +3044,7 @@ BOOST_AUTO_TEST_CASE( limit_order_create2_apply )
       BOOST_REQUIRE( limit_order->orderid == op.orderid );
       BOOST_REQUIRE( limit_order->for_sale == op.amount_to_sell.amount );
       BOOST_REQUIRE( limit_order->sell_price == op.exchange_rate );
-      BOOST_REQUIRE( limit_order->get_market() == std::make_pair( SBD_SYMBOL, CREA_SYMBOL ) );
+      BOOST_REQUIRE( limit_order->get_market() == std::make_pair( CBD_SYMBOL, CREA_SYMBOL ) );
       BOOST_REQUIRE( alice.balance.amount.value == ASSET( "990.000 TESTS" ).amount.value );
       BOOST_REQUIRE( alice.sbd_balance.amount.value == ASSET( "0.000 TBD" ).amount.value );
       validate_database();
@@ -3064,7 +3064,7 @@ BOOST_AUTO_TEST_CASE( limit_order_create2_apply )
       BOOST_REQUIRE( limit_order->orderid == op.orderid );
       BOOST_REQUIRE( limit_order->for_sale == 10000 );
       BOOST_REQUIRE( limit_order->sell_price == op.exchange_rate );
-      BOOST_REQUIRE( limit_order->get_market() == std::make_pair( SBD_SYMBOL, CREA_SYMBOL ) );
+      BOOST_REQUIRE( limit_order->get_market() == std::make_pair( CBD_SYMBOL, CREA_SYMBOL ) );
       BOOST_REQUIRE( alice.balance.amount.value == ASSET( "990.000 TESTS" ).amount.value );
       BOOST_REQUIRE( alice.sbd_balance.amount.value == ASSET( "0.000 TBD" ).amount.value );
       validate_database();
@@ -3085,8 +3085,8 @@ BOOST_AUTO_TEST_CASE( limit_order_create2_apply )
       validate_database();
 
       BOOST_TEST_MESSAGE( "--- Test having a partial match to limit order" );
-      // Alice has order for 15 SBD at a price of 2:3
-      // Fill 5 CREA for 7.5 SBD
+      // Alice has order for 15 CBD at a price of 2:3
+      // Fill 5 CREA for 7.5 CBD
 
       op.owner = "bob";
       op.orderid = 1;
@@ -3108,7 +3108,7 @@ BOOST_AUTO_TEST_CASE( limit_order_create2_apply )
       BOOST_REQUIRE( limit_order->orderid == op.orderid );
       BOOST_REQUIRE( limit_order->for_sale == 5000 );
       BOOST_REQUIRE( limit_order->sell_price == price( ASSET( "2.000 TESTS" ), ASSET( "3.000 TBD" ) ) );
-      BOOST_REQUIRE( limit_order->get_market() == std::make_pair( SBD_SYMBOL, CREA_SYMBOL ) );
+      BOOST_REQUIRE( limit_order->get_market() == std::make_pair( CBD_SYMBOL, CREA_SYMBOL ) );
       BOOST_REQUIRE( limit_order_idx.find( std::make_tuple( "bob", op.orderid ) ) == limit_order_idx.end() );
       BOOST_REQUIRE( alice.balance.amount.value == ASSET( "990.000 TESTS" ).amount.value );
       BOOST_REQUIRE( alice.sbd_balance.amount.value == ASSET( "7.500 TBD" ).amount.value );
@@ -3138,7 +3138,7 @@ BOOST_AUTO_TEST_CASE( limit_order_create2_apply )
       BOOST_REQUIRE( limit_order->orderid == 1 );
       BOOST_REQUIRE( limit_order->for_sale.value == 7500 );
       BOOST_REQUIRE( limit_order->sell_price == price( ASSET( "3.000 TBD" ), ASSET( "2.000 TESTS" ) ) );
-      BOOST_REQUIRE( limit_order->get_market() == std::make_pair( SBD_SYMBOL, CREA_SYMBOL ) );
+      BOOST_REQUIRE( limit_order->get_market() == std::make_pair( CBD_SYMBOL, CREA_SYMBOL ) );
       BOOST_REQUIRE( limit_order_idx.find( std::make_tuple( "alice", 1 ) ) == limit_order_idx.end() );
       BOOST_REQUIRE( alice.balance.amount.value == ASSET( "990.000 TESTS" ).amount.value );
       BOOST_REQUIRE( alice.sbd_balance.amount.value == ASSET( "15.000 TBD" ).amount.value );
@@ -3195,7 +3195,7 @@ BOOST_AUTO_TEST_CASE( limit_order_create2_apply )
       BOOST_REQUIRE( limit_order->orderid == 4 );
       BOOST_REQUIRE( limit_order->for_sale.value == 1000 );
       BOOST_REQUIRE( limit_order->sell_price == op.exchange_rate );
-      BOOST_REQUIRE( limit_order->get_market() == std::make_pair( SBD_SYMBOL, CREA_SYMBOL ) );
+      BOOST_REQUIRE( limit_order->get_market() == std::make_pair( CBD_SYMBOL, CREA_SYMBOL ) );
       BOOST_REQUIRE( alice.balance.amount.value == ASSET( "975.000 TESTS" ).amount.value );
       BOOST_REQUIRE( alice.sbd_balance.amount.value == ASSET( "33.500 TBD" ).amount.value );
       BOOST_REQUIRE( bob.balance.amount.value == ASSET( "25.000 TESTS" ).amount.value );
@@ -3244,7 +3244,7 @@ BOOST_AUTO_TEST_CASE( limit_order_create2_apply )
       BOOST_REQUIRE( limit_order->orderid == 5 );
       BOOST_REQUIRE( limit_order->for_sale.value == 9091 );
       BOOST_REQUIRE( limit_order->sell_price == price( ASSET( "1.000 TESTS" ), ASSET( "1.100 TBD" ) ) );
-      BOOST_REQUIRE( limit_order->get_market() == std::make_pair( SBD_SYMBOL, CREA_SYMBOL ) );
+      BOOST_REQUIRE( limit_order->get_market() == std::make_pair( CBD_SYMBOL, CREA_SYMBOL ) );
       BOOST_REQUIRE( alice.balance.amount.value == ASSET( "955.000 TESTS" ).amount.value );
       BOOST_REQUIRE( alice.sbd_balance.amount.value == ASSET( "45.500 TBD" ).amount.value );
       BOOST_REQUIRE( bob.balance.amount.value == ASSET( "35.909 TESTS" ).amount.value );
@@ -3838,16 +3838,16 @@ BOOST_AUTO_TEST_CASE( escrow_transfer_validate )
       op.ratification_deadline = db->head_block_time() + 100;
       op.escrow_expiration = db->head_block_time() + 200;
 
-      BOOST_TEST_MESSAGE( "--- failure when sbd symbol != SBD" );
+      BOOST_TEST_MESSAGE( "--- failure when sbd symbol != CBD" );
       op.sbd_amount.symbol = CREA_SYMBOL;
       CREA_REQUIRE_THROW( op.validate(), fc::exception );
 
       BOOST_TEST_MESSAGE( "--- failure when creativecoin symbol != CREA" );
-      op.sbd_amount.symbol = SBD_SYMBOL;
-      op.creativecoin_amount.symbol = SBD_SYMBOL;
+      op.sbd_amount.symbol = CBD_SYMBOL;
+      op.creativecoin_amount.symbol = CBD_SYMBOL;
       CREA_REQUIRE_THROW( op.validate(), fc::exception );
 
-      BOOST_TEST_MESSAGE( "--- failure when fee symbol != SBD and fee symbol != CREA" );
+      BOOST_TEST_MESSAGE( "--- failure when fee symbol != CBD and fee symbol != CREA" );
       op.creativecoin_amount.symbol = CREA_SYMBOL;
       op.fee.symbol = VESTS_SYMBOL;
       CREA_REQUIRE_THROW( op.validate(), fc::exception );
@@ -4649,7 +4649,7 @@ BOOST_AUTO_TEST_CASE( escrow_release_validate )
 
 
       BOOST_TEST_MESSAGE( "--- failure when creativecoin is not creativecoin symbol" );
-      op.sbd_amount.symbol = SBD_SYMBOL;
+      op.sbd_amount.symbol = CBD_SYMBOL;
       op.creativecoin_amount = ASSET( "1.000 TBD" );
       CREA_REQUIRE_THROW( op.validate(), fc::exception );
 
@@ -5196,7 +5196,7 @@ BOOST_AUTO_TEST_CASE( transfer_to_savings_validate )
       CREA_REQUIRE_THROW( op.validate(), fc::exception );
 
 
-      BOOST_TEST_MESSAGE( "success when amount is SBD" );
+      BOOST_TEST_MESSAGE( "success when amount is CBD" );
       op.amount = ASSET( "1.000 TBD" );
       op.validate();
 
@@ -5296,7 +5296,7 @@ BOOST_AUTO_TEST_CASE( transfer_to_savings_apply )
       validate_database();
 
 
-      BOOST_TEST_MESSAGE( "--- success transferring SBD to self" );
+      BOOST_TEST_MESSAGE( "--- success transferring CBD to self" );
       op.amount = ASSET( "1.000 TBD" );
 
       tx.clear();
@@ -5323,7 +5323,7 @@ BOOST_AUTO_TEST_CASE( transfer_to_savings_apply )
       validate_database();
 
 
-      BOOST_TEST_MESSAGE( "--- success transferring SBD to other" );
+      BOOST_TEST_MESSAGE( "--- success transferring CBD to other" );
       op.amount = ASSET( "1.000 TBD" );
 
       tx.clear();
@@ -5373,7 +5373,7 @@ BOOST_AUTO_TEST_CASE( transfer_from_savings_validate )
       CREA_REQUIRE_THROW( op.validate(), fc::exception );
 
 
-      BOOST_TEST_MESSAGE( "success when amount is SBD" );
+      BOOST_TEST_MESSAGE( "success when amount is CBD" );
       op.amount = ASSET( "1.000 TBD" );
       op.validate();
 
@@ -5492,7 +5492,7 @@ BOOST_AUTO_TEST_CASE( transfer_from_savings_apply )
       validate_database();
 
 
-      BOOST_TEST_MESSAGE( "--- success withdrawing SBD to self" );
+      BOOST_TEST_MESSAGE( "--- success withdrawing CBD to self" );
       op.amount = ASSET( "1.000 TBD" );
       op.request_id = 1;
 
@@ -5544,7 +5544,7 @@ BOOST_AUTO_TEST_CASE( transfer_from_savings_apply )
       validate_database();
 
 
-      BOOST_TEST_MESSAGE( "--- success withdrawing SBD to other" );
+      BOOST_TEST_MESSAGE( "--- success withdrawing CBD to other" );
       op.amount = ASSET( "1.000 TBD" );
       op.request_id = 4;
 
@@ -5996,7 +5996,7 @@ BOOST_AUTO_TEST_CASE( claim_reward_balance_validate )
       CREA_REQUIRE_THROW( op.validate(), fc::assert_exception );
 
 
-      BOOST_TEST_MESSAGE( "Testing wrong SBD symbol" );
+      BOOST_TEST_MESSAGE( "Testing wrong CBD symbol" );
       op.reward_creativecoin = ASSET( "1.000 TESTS" );
       op.reward_sbd = ASSET( "1.000 TESTS" );
       CREA_REQUIRE_THROW( op.validate(), fc::assert_exception );
@@ -6779,7 +6779,7 @@ BOOST_AUTO_TEST_CASE( witness_set_properties_validate )
       prop_op.props[ "sbd_interest_rate" ] = fc::raw::pack_to_vector( CREA_100_PERCENT + 1 );
       CREA_REQUIRE_THROW( prop_op.validate(), fc::assert_exception );
 
-      BOOST_TEST_MESSAGE( "--- failure when setting new sbd_exchange_rate with SBD / CREA" );
+      BOOST_TEST_MESSAGE( "--- failure when setting new sbd_exchange_rate with CBD / CREA" );
       prop_op.props.erase( "sbd_interest_rate" );
       prop_op.props[ "sbd_exchange_rate" ] = fc::raw::pack_to_vector( price( ASSET( "1.000 TESTS" ), ASSET( "10.000 TBD" ) ) );
       CREA_REQUIRE_THROW( prop_op.validate(), fc::assert_exception );

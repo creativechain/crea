@@ -48,7 +48,7 @@ uint32_t string_to_asset_num( const char* p, uint8_t decimals )
                break;
             case CBD_SYMBOL_U64:
                FC_ASSERT( decimals == 3, "Incorrect decimal places" );
-               asset_num = CREA_ASSET_NUM_SBD;
+               asset_num = CREA_ASSET_NUM_CBD;
                break;
             case VESTS_SYMBOL_U64:
                FC_ASSERT( decimals == 6, "Incorrect decimal places" );
@@ -89,13 +89,13 @@ std::string asset_num_to_string( uint32_t asset_num )
 #ifdef IS_TEST_NET
       case CREA_ASSET_NUM_CREA:
          return "TESTS";
-      case CREA_ASSET_NUM_SBD:
+      case CREA_ASSET_NUM_CBD:
          return "TBD";
 #else
       case CREA_ASSET_NUM_CREA:
          return "CREA";
-      case CREA_ASSET_NUM_SBD:
-         return "SBD";
+      case CREA_ASSET_NUM_CBD:
+         return "CBD";
 #endif
       case CREA_ASSET_NUM_VESTS:
          return "VESTS";

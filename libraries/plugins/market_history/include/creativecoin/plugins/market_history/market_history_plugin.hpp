@@ -101,13 +101,13 @@ struct bucket_object : public object< bucket_object_type, bucket_object >
    bucket_object_details non_creativecoin;
 
 #ifdef CREA_ENABLE_SMT
-   asset_symbol_type symbol = SBD_SYMBOL;
+   asset_symbol_type symbol = CBD_SYMBOL;
 
    price high()const { return asset( non_creativecoin.high, symbol ) / asset( creativecoin.high, CREA_SYMBOL ); }
    price low()const { return asset( non_creativecoin.low, symbol ) / asset( creativecoin.low, CREA_SYMBOL ); }
 #else
-   price high()const { return asset( non_creativecoin.high, SBD_SYMBOL ) / asset( creativecoin.high, CREA_SYMBOL ); }
-   price low()const { return asset( non_creativecoin.low, SBD_SYMBOL ) / asset( creativecoin.low, CREA_SYMBOL ); }
+   price high()const { return asset( non_creativecoin.high, CBD_SYMBOL ) / asset( creativecoin.high, CREA_SYMBOL ); }
+   price low()const { return asset( non_creativecoin.low, CBD_SYMBOL ) / asset( creativecoin.low, CREA_SYMBOL ); }
 #endif
 };
 

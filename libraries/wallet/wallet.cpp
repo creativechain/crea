@@ -731,7 +731,7 @@ public:
          auto accounts = result.as<vector<condenser_api::api_account_object>>();
          asset total_creativecoin;
          asset total_vest(0, VESTS_SYMBOL );
-         asset total_sbd(0, SBD_SYMBOL );
+         asset total_sbd(0, CBD_SYMBOL );
          for( const auto& a : accounts ) {
             total_creativecoin += a.balance.to_asset();
             total_vest  += a.vesting_shares.to_asset();
@@ -791,21 +791,21 @@ public:
       m["get_order_book"] = []( variant result, const fc::variants& a ) {
          auto orders = result.as< condenser_api::get_order_book_return >();
          std::stringstream ss;
-         asset bid_sum = asset( 0, SBD_SYMBOL );
-         asset ask_sum = asset( 0, SBD_SYMBOL );
+         asset bid_sum = asset( 0, CBD_SYMBOL );
+         asset ask_sum = asset( 0, CBD_SYMBOL );
          int spacing = 24;
 
          ss << setiosflags( ios::fixed ) << setiosflags( ios::left ) ;
 
          ss << ' ' << setw( ( spacing * 4 ) + 6 ) << "Bids" << "Asks\n"
             << ' '
-            << setw( spacing + 3 ) << "Sum(SBD)"
-            << setw( spacing + 1) << "SBD"
+            << setw( spacing + 3 ) << "Sum(CBD)"
+            << setw( spacing + 1) << "CBD"
             << setw( spacing + 1 ) << "CREA"
             << setw( spacing + 1 ) << "Price"
             << setw( spacing + 1 ) << "Price"
             << setw( spacing + 1 ) << "CREA "
-            << setw( spacing + 1 ) << "SBD " << "Sum(SBD)"
+            << setw( spacing + 1 ) << "CBD " << "Sum(CBD)"
             << "\n====================================================================================================="
             << "|=====================================================================================================\n";
 
@@ -813,10 +813,10 @@ public:
          {
             if ( i < orders.bids.size() )
             {
-               bid_sum += asset( orders.bids[i].sbd, SBD_SYMBOL );
+               bid_sum += asset( orders.bids[i].sbd, CBD_SYMBOL );
                ss
                   << ' ' << setw( spacing ) << legacy_asset::from_asset( bid_sum ).to_string()
-                  << ' ' << setw( spacing ) << legacy_asset::from_asset( asset( orders.bids[i].sbd, SBD_SYMBOL ) ).to_string()
+                  << ' ' << setw( spacing ) << legacy_asset::from_asset( asset( orders.bids[i].sbd, CBD_SYMBOL ) ).to_string()
                   << ' ' << setw( spacing ) << legacy_asset::from_asset( asset( orders.bids[i].creativecoin, CREA_SYMBOL ) ).to_string()
                   << ' ' << setw( spacing ) << orders.bids[i].real_price;
             }
@@ -829,10 +829,10 @@ public:
 
             if ( i < orders.asks.size() )
             {
-               ask_sum += asset( orders.asks[i].sbd, SBD_SYMBOL );
+               ask_sum += asset( orders.asks[i].sbd, CBD_SYMBOL );
                ss << ' ' << setw( spacing ) << orders.asks[i].real_price
                   << ' ' << setw( spacing ) << legacy_asset::from_asset( asset( orders.asks[i].creativecoin, CREA_SYMBOL ) ).to_string()
-                  << ' ' << setw( spacing ) << legacy_asset::from_asset( asset( orders.asks[i].sbd, SBD_SYMBOL ) ).to_string()
+                  << ' ' << setw( spacing ) << legacy_asset::from_asset( asset( orders.asks[i].sbd, CBD_SYMBOL ) ).to_string()
                   << ' ' << setw( spacing ) << legacy_asset::from_asset( ask_sum ).to_string();
             }
 

@@ -38,9 +38,9 @@ DEFINE_API_IMPL( market_history_api_impl, get_ticker )
 
    if( itr != bucket_idx.end() )
    {
-      auto open = ASSET_TO_REAL( asset( itr->non_creativecoin.open, SBD_SYMBOL ) ) / ASSET_TO_REAL( asset( itr->creativecoin.open, CREA_SYMBOL ) );
+      auto open = ASSET_TO_REAL( asset( itr->non_creativecoin.open, CBD_SYMBOL ) ) / ASSET_TO_REAL( asset( itr->creativecoin.open, CREA_SYMBOL ) );
       itr = bucket_idx.lower_bound( boost::make_tuple( 0, _db.head_block_time() ) );
-      result.latest = ASSET_TO_REAL( asset( itr->non_creativecoin.close, SBD_SYMBOL ) ) / ASSET_TO_REAL( asset( itr->creativecoin.close, CREA_SYMBOL ) );
+      result.latest = ASSET_TO_REAL( asset( itr->non_creativecoin.close, CBD_SYMBOL ) ) / ASSET_TO_REAL( asset( itr->creativecoin.close, CREA_SYMBOL ) );
       result.percent_change = ( (result.latest - open ) / open ) * 100;
    }
 
@@ -83,23 +83,23 @@ DEFINE_API_IMPL( market_history_api_impl, get_order_book )
    FC_ASSERT( args.limit <= 500 );
 
    const auto& order_idx = _db.get_index< chain::limit_order_index, chain::by_price >();
-   auto itr = order_idx.lower_bound( price::max( SBD_SYMBOL, CREA_SYMBOL ) );
+   auto itr = order_idx.lower_bound( price::max( CBD_SYMBOL, CREA_SYMBOL ) );
 
    get_order_book_return result;
 
-   while( itr != order_idx.end() && itr->sell_price.base.symbol == SBD_SYMBOL && result.bids.size() < args.limit )
+   while( itr != order_idx.end() && itr->sell_price.base.symbol == CBD_SYMBOL && result.bids.size() < args.limit )
    {
       order cur;
       cur.order_price = itr->sell_price;
       cur.real_price = ASSET_TO_REAL( itr->sell_price.base ) / ASSET_TO_REAL( itr->sell_price.quote );
-      cur.creativecoin = ( asset( itr->for_sale, SBD_SYMBOL ) * itr->sell_price ).amount;
+      cur.creativecoin = ( asset( itr->for_sale, CBD_SYMBOL ) * itr->sell_price ).amount;
       cur.sbd = itr->for_sale;
       cur.created = itr->created;
       result.bids.push_back( cur );
       ++itr;
    }
 
-   itr = order_idx.lower_bound( price::max( CREA_SYMBOL, SBD_SYMBOL ) );
+   itr = order_idx.lower_bound( price::max( CREA_SYMBOL, CBD_SYMBOL ) );
 
    while( itr != order_idx.end() && itr->sell_price.base.symbol == CREA_SYMBOL && result.asks.size() < args.limit )
    {

@@ -23,8 +23,8 @@ struct statistics
    uint32_t             transactions = 0;                            ///< Transactions processed
    uint32_t             transfers = 0;                               ///< Account to account transfers
    share_type           creativecoin_transferred = 0;                       ///< CREA transferred from account to account
-   share_type           sbd_transferred = 0;                         ///< SBD transferred from account to account
-   share_type           sbd_paid_as_interest = 0;                    ///< SBD paid as interest
+   share_type           sbd_transferred = 0;                         ///< CBD transferred from account to account
+   share_type           sbd_paid_as_interest = 0;                    ///< CBD paid as interest
    uint32_t             accounts_created = 0;                        ///< Total accounts created
    uint32_t             paid_accounts_created = 0;                   ///< Accounts created with fee
    uint32_t             mined_accounts_created = 0;                  ///< Accounts mined for free
@@ -47,7 +47,7 @@ struct statistics
    uint32_t             new_reply_votes = 0;                         ///< New votes on replies
    uint32_t             changed_reply_votes = 0;                     ///< Changed votes on replies
    uint32_t             payouts = 0;                                 ///< Number of comment payouts
-   share_type           sbd_paid_to_authors = 0;                     ///< Ammount of SBD paid to authors
+   share_type           sbd_paid_to_authors = 0;                     ///< Ammount of CBD paid to authors
    share_type           vests_paid_to_authors = 0;                   ///< Ammount of VESS paid to authors
    share_type           vests_paid_to_curators = 0;                  ///< Ammount of VESTS paid to curators
    share_type           liquidity_rewards_paid = 0;                  ///< Ammount of CREA paid to market makers
@@ -60,9 +60,9 @@ struct statistics
    uint32_t             finished_vesting_withdrawals = 0;            ///< Processed vesting withdrawals that are now finished
    share_type           vests_withdrawn = 0;                         ///< Ammount of VESTS withdrawn to CREA
    share_type           vests_transferred = 0;                       ///< Ammount of VESTS transferred to another account
-   uint32_t             sbd_conversion_requests_created = 0;         ///< SBD conversion requests created
-   share_type           sbd_to_be_converted = 0;                     ///< Amount of SBD to be converted
-   uint32_t             sbd_conversion_requests_filled = 0;          ///< SBD conversion requests filled
+   uint32_t             sbd_conversion_requests_created = 0;         ///< CBD conversion requests created
+   share_type           sbd_to_be_converted = 0;                     ///< Amount of CBD to be converted
+   uint32_t             sbd_conversion_requests_filled = 0;          ///< CBD conversion requests filled
    share_type           creativecoin_converted = 0;                         ///< Amount of CREA that was converted
    uint32_t             limit_orders_created = 0;                    ///< Limit orders created
    uint32_t             limit_orders_filled = 0;                     ///< Limit orders filled

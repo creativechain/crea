@@ -38,7 +38,7 @@ namespace creativecoin { namespace chain {
        *  to tune rate limiting and capacity
        */
       uint32_t          maximum_block_size = CREA_MIN_BLOCK_SIZE_LIMIT * 2;
-      uint16_t          sbd_interest_rate  = CREA_DEFAULT_SBD_INTEREST_RATE;
+      uint16_t          sbd_interest_rate  = CREA_DEFAULT_CBD_INTEREST_RATE;
       uint32_t          account_subsidy_limit = 0;
    };
 

@@ -81,10 +81,10 @@ void smt_create_evaluator::do_apply( const smt_create_operation& o )
 
    asset effective_elevation_fee;
 
-   FC_ASSERT( dgpo.smt_creation_fee.symbol == CREA_SYMBOL || dgpo.smt_creation_fee.symbol == SBD_SYMBOL,
+   FC_ASSERT( dgpo.smt_creation_fee.symbol == CREA_SYMBOL || dgpo.smt_creation_fee.symbol == CBD_SYMBOL,
       "Unexpected internal error - wrong symbol ${s} of SMT creation fee.", ("s", dgpo.smt_creation_fee.symbol) );
-   FC_ASSERT( o.smt_creation_fee.symbol == CREA_SYMBOL || o.smt_creation_fee.symbol == SBD_SYMBOL,
-      "Asset fee must be CREA or SBD, was ${s}", ("s", o.smt_creation_fee.symbol) );
+   FC_ASSERT( o.smt_creation_fee.symbol == CREA_SYMBOL || o.smt_creation_fee.symbol == CBD_SYMBOL,
+      "Asset fee must be CREA or CBD, was ${s}", ("s", o.smt_creation_fee.symbol) );
    if( o.smt_creation_fee.symbol == dgpo.smt_creation_fee.symbol )
    {
       effective_elevation_fee = dgpo.smt_creation_fee;
@@ -92,7 +92,7 @@ void smt_create_evaluator::do_apply( const smt_create_operation& o )
    else
    {
       const auto& fhistory = _db.get_feed_history();
-      FC_ASSERT( !fhistory.current_median_history.is_null(), "Cannot pay the fee using SBD because there is no price feed." );
+      FC_ASSERT( !fhistory.current_median_history.is_null(), "Cannot pay the fee using CBD because there is no price feed." );
       if( o.smt_creation_fee.symbol == CREA_SYMBOL )
       {
          effective_elevation_fee = _db.to_sbd( o.smt_creation_fee );
