@@ -58,7 +58,9 @@ void info()
       std::cerr << "------------------------------------------------------\n\n";
       std::cerr << "            STARTING CREA NETWORK\n\n";
       std::cerr << "------------------------------------------------------\n";
+      auto initminer_private_key = creativecoin::utilities::key_to_wif( CREA_INIT_PRIVATE_KEY );
       std::cerr << "initminer public key: " << CREA_INIT_PUBLIC_KEY_STR << "\n";
+      std::cerr << "initminer private key: " << initminer_private_key << "\n";
       std::cerr << "chain id: " << std::string( CREA_CHAIN_ID ) << "\n";
       std::cerr << "blockchain version: " << fc::string( CREA_BLOCKCHAIN_VERSION ) << "\n";
       std::cerr << "------------------------------------------------------\n";

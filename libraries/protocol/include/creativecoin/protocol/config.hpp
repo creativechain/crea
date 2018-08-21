@@ -44,7 +44,8 @@
 
 #define CREA_BLOCKCHAIN_VERSION              ( version(0, 19, 10) )
 
-#define CREA_INIT_PUBLIC_KEY_STR             "CREA8GC13uCZbP44HzMLV6zPZGwVQ8Nt4Kji8PapsPiNq1BK153XTX"
+#define CREA_INIT_PRIVATE_KEY                (fc::ecc::private_key::regenerate(fc::sha256::hash(std::string("init_key"))))
+#define CREA_INIT_PUBLIC_KEY_STR             (std::string( creativecoin::protocol::public_key_type(CREA_INIT_PRIVATE_KEY.get_public_key()) ))
 #define CREA_CHAIN_ID_NAME ""
 #define CREA_CHAIN_ID fc::sha256()
 #define CREA_ADDRESS_PREFIX                  "CREA"
