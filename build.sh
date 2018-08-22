@@ -77,8 +77,8 @@ function buildSource {
     export BOOST_ROOT=$INCLUDE_DIR
     export OPENSSL_ROOT_DIR=$INCLUDE_DIR
     cmake -DCMAKE_CXX_FLAGS_RELEASE="-fpermissive -O3" -DCMAKE_BUILD_TYPE=Release ..
-    make CXX=g++-5.4 CC=gcc-5.4 -j$(nproc) creativecoind
-    make CXX=g++-5.4 CC=gcc-5.4 -j$(nproc) cli_wallet
+    make -j$(nproc) creativecoind
+    make -j$(nproc) cli_wallet
 }
 
 makeDir $DOWNLOAD_DIR
