@@ -7,6 +7,8 @@ DEPENDS_DIR=$BUILD_DIR/depends
 DOWNLOAD_DIR=$DEPENDS_DIR/download
 INCLUDE_DIR=$DEPENDS_DIR/`uname -s`
 
+GCC_VERSION="5.4.0"
+
 function printMsg {
     echo ""
     echo $1
@@ -17,6 +19,15 @@ function makeDir {
     if [ ! -d "$DIRECTORY" ]; then
         printMsg "Creating $DIRECTORY"
         mkdir -p $DIRECTORY
+    fi
+}
+
+function checkGccVersion {
+    local GCC_INSTALLED_VER="$(gcc -dumpversion)"
+    if [ "$(printf '%s\n' "$GCC_VERSION" "$GCC_INSTALLED_VER" | sort -V | head -n1)" = "$GCC_VERSION" ]; then
+        echo 0
+    else
+        echo 1
     fi
 }
 
@@ -47,6 +58,11 @@ function buildBoost {
     if [ ! -f $file ]; then
         downloadDependency "https://sourceforge.net/projects/boost/files/boost/1.60.0/boost_1_60_0.tar.bz2/download" "boost_1_60_0.tar.bz2" "boost_1_60_0"
         printMsg "Building Boost 1.60.0"
+        if [ ! checkGccVersion ]; then
+            curl 'https://raw.githubusercontent.com/boostorg/multiprecision/f9c8f9ec091ad232c0a291904f7839d665d098e0/include/boost/multiprecision/cpp_int.hpp' \
+            > $DOWNLOAD_DIR/boost_1_60_0/boost/multiprecision/cpp_int.hpp
+        fi
+
         cd $DOWNLOAD_DIR/boost_1_60_0
         ./bootstrap.sh "--prefix=$INCLUDE_DIR"
         ./b2 install
@@ -76,7 +92,12 @@ function buildSource {
     cd $BUILD_DIR
     export BOOST_ROOT=$INCLUDE_DIR
     export OPENSSL_ROOT_DIR=$INCLUDE_DIR
-    cmake -DCMAKE_CXX_FLAGS_RELEASE="-fpermissive -O3" -DCMAKE_BUILD_TYPE=Release ..
+    if [ ! checkGccVersion ]; then
+        cmake -DCMAKE_CXX_FLAGS_RELEASE="-fpermissive -O3" -DENABLE_CONTENT_PATCHING=OFF -DLOW_MEMORY_NODE=ON -DCMAKE_BUILD_TYPE=Release ..
+    else
+        cmake -DCMAKE_CXX_FLAGS_RELEASE="-fpermissive -O3" -DCMAKE_BUILD_TYPE=Release ..
+    fi
+
     make -j$(nproc) creativecoind
     make -j$(nproc) cli_wallet
 }
