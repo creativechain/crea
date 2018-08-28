@@ -67,7 +67,7 @@
 #define CREA_OWNER_UPDATE_LIMIT                          fc::minutes(60)
 #define CREA_OWNER_AUTH_HISTORY_TRACKING_START_BLOCK_NUM 3186477
 
-#define CREA_INIT_SUPPLY                     int64_t(0)
+#define CREA_INIT_SUPPLY                     (int64_t( 250 ) * int64_t( 1000000 ) * int64_t( 1000 ))
 
 #endif
 
