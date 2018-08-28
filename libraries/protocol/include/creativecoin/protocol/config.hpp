@@ -50,7 +50,7 @@
 #define CREA_CHAIN_ID fc::sha256()
 #define CREA_ADDRESS_PREFIX                  "CREA"
 
-#define CREA_GENESIS_TIME                    (fc::time_point_sec(1458835200))
+#define CREA_GENESIS_TIME                    (fc::time_point_sec(1535482923))
 #define CREA_MINING_TIME                     (fc::time_point_sec(1535482923))
 #define CREA_CASHOUT_WINDOW_SECONDS_PRE_HF12 (60*60*24)    /// 1 day
 #define CREA_CASHOUT_WINDOW_SECONDS_PRE_HF17 (60*60*12)    /// 12 hours
@@ -94,7 +94,7 @@
 #define CREA_MAX_RUNNER_WITNESSES_HF0        1
 
 #define CREA_MAX_VOTED_WITNESSES_HF17        24
-#define CREA_MAX_MINER_WITNESSES_HF17        0
+#define CREA_MAX_MINER_WITNESSES_HF17        1
 #define CREA_MAX_RUNNER_WITNESSES_HF17       1
 
 #define CREA_HARDFORK_REQUIRED_WITNESSES     1 // 17 of the 21 dpos witnesses (20 elected and 1 virtual time) required for hardfork. This guarantees 75% participation on all subsequent rounds.
