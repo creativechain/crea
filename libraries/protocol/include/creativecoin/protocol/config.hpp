@@ -93,8 +93,8 @@
 #define CREA_MAX_MINER_WITNESSES_HF0         1
 #define CREA_MAX_RUNNER_WITNESSES_HF0        1
 
-#define CREA_MAX_VOTED_WITNESSES_HF17        24
-#define CREA_MAX_MINER_WITNESSES_HF17        0
+#define CREA_MAX_VOTED_WITNESSES_HF17        23
+#define CREA_MAX_MINER_WITNESSES_HF17        1
 #define CREA_MAX_RUNNER_WITNESSES_HF17       1
 
 #define CREA_HARDFORK_REQUIRED_WITNESSES     1 // 17 of the 21 dpos witnesses (20 elected and 1 virtual time) required for hardfork. This guarantees 75% participation on all subsequent rounds.
