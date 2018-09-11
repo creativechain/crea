@@ -188,7 +188,7 @@ function buildSource {
 
     cmake -DCMAKE_CXX_FLAGS_RELEASE="-fpermissive -O3" -DENABLE_CONTENT_PATCHING=OFF -DCMAKE_BUILD_TYPE=Release ..
 
-    export PERL_USE_UNSAFE_INC=1
+    #export PERL_USE_UNSAFE_INC=1
 
     make -j$(nproc) creativecoind
     make -j$(nproc) cli_wallet
