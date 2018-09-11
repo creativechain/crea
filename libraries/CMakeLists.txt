@@ -30,7 +30,7 @@ ENDIF()
 
 IF(NOT "$ENV{BZIP2_ROOT}" STREQUAL "")
     set(BZIP2_ROOT_DIR $ENV{BZIP2_ROOT} )
-    set(BZIP2_ICNLUDE_DIR $ENV{BZIP2_ROOT}/include )
+    set(BZIP2_INCLUDE_DIR $ENV{BZIP2_ROOT}/include )
     set(BZIP2_LIBRARIES $ENV{BZIP2_ROOT}/lib )
     message(STATUS "Setting up BZip2 library to ${BZIP2_ROOT_DIR}")
 ENDIF()
