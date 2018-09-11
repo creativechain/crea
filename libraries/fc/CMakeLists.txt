@@ -328,9 +328,8 @@ ELSE()
 ENDIF()
 
 IF(NOT "$ENV{ZLIB_ROOT}" STREQUAL "")
-    set(ZLIB_ROOT $ENV{ZLIB_ROOT} )
-    set(ZLIB_LIBRARIES ${ZLIB_ROOT} )
-    message(STATUS "Setting up ZLib library to ${ZLIB_ROOT}")
+    set(ZLIB_ROOT_DIR $ENV{ZLIB_ROOT} )
+    message(STATUS "Setting up ZLib library to ${ZLIB_ROOT_DIR}")
 ENDIF()
 
 IF(APPLE)
@@ -352,9 +351,8 @@ else()
 endif( ZLIB_FOUND )
 
 IF(NOT "$ENV{BZIP2_ROOT}" STREQUAL "")
-    set(BZIP2_ROOT $ENV{BZIP2_ROOT} )
-    set(BZIP2_LIBRARIES ${BZIP2_ROOT} )
-    message(STATUS "Setting up BZip2 library to ${BZIP2_ROOT}")
+    set(BZIP2_ROOT_DIR $ENV{BZIP2_ROOT} )
+    message(STATUS "Setting up BZip2 library to ${BZIP2_ROOT_DIR}")
 ENDIF()
 
 find_package( BZip2 )
