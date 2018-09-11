@@ -16,6 +16,7 @@ IF(NOT "$ENV{ZLIB_ROOT}" STREQUAL "")
     set(ZLIB_ROOT_DIR $ENV{ZLIB_ROOT} )
     set(ZLIB_INCLUDE_DIR $ENV{ZLIB_ROOT}/include )
     set(ZLIB_LIBRARIES $ENV{ZLIB_ROOT}/lib )
+    set(ZLIB_LIBRARY $ENV{ZLIB_ROOT}/lib )
     message(STATUS "Setting up ZLib library to ${ZLIB_ROOT_DIR}")
 ENDIF()
 
