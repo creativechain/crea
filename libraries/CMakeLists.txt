@@ -25,7 +25,7 @@ IF(NOT "$ENV{SNAPPY_ROOT}" STREQUAL "")
     set(SNAPPY_INCLUDE_DIR $ENV{SNAPPY_ROOT}/include )
     set(SNAPPY_LIBRARIES $ENV{SNAPPY_ROOT}/lib )
     set(SNAPPY_LIBRARY $ENV{SNAPPY_ROOT}/lib )
-    message(STATUS "Setting up ZLib library to ${SNAPPY_ROOT_DIR}")
+    message(STATUS "Setting up Snappy library to ${SNAPPY_ROOT_DIR}")
 ENDIF()
 
 IF(NOT "$ENV{BZIP2_ROOT}" STREQUAL "")
