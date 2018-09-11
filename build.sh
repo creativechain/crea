@@ -155,6 +155,7 @@ function buildBZip2 {
         downloadDependency "https://api.github.com/repos/enthought/bzip2-1.0.6/tarball/master" "bzip2-1.0.6.tar.gz" "bzip2-1.0.6"
         mkdir $DOWNLOAD_DIR/bzip2-1.0.6
         mv $DOWNLOAD_DIR/enthought-bzip2-1.0.6-288acf9/* $DOWNLOAD_DIR/bzip2-1.0.6/
+        rm -rf $DOWNLOAD_DIR/enthought-bzip2-1.0.6-288acf9
         printMsg "Building BZip2 1.0.6"
         cd $DOWNLOAD_DIR/bzip2-1.0.6
         make install PREFIX=$LIBRARIES_DIR
