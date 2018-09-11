@@ -259,23 +259,7 @@ add_subdirectory( vendor/equihash )
 setup_library( fc SOURCES ${sources} LIBRARY_TYPE STATIC DONT_INSTALL_LIBRARY )
 
 # begin readline stuff
-
-IF(NOT "$ENV{CURSES_ROOT}" STREQUAL "")
-    set(CURSES_ROOT $ENV{CURSES_ROOT} )
-    set(CURSES_LIBRARY ${CURSES_ROOT}/lib )
-    set(CURSES_INCLUDE_PATH ${CURSES_ROOT}/include )
-    message(STATUS "Setting up Curses library to ${CURSES_ROOT}")
-ENDIF()
-
 find_package(Curses)
-
-IF(NOT "$ENV{READLINE_ROOT}" STREQUAL "")
-    set(READLINE_ROOT $ENV{READLINE_ROOT} )
-    set(Readline_INCLUDE_DIR ${READLINE_ROOT}/include )
-    set(Readline_LIBRARY ${READLINE_ROOT}/lib )
-    message(STATUS "Setting up Readline library to ${READLINE_ROOT}")
-ENDIF()
-
 find_package(Readline)
 
 file(GLOB HEADERS "include/bts/cli/*.hpp")
@@ -327,13 +311,6 @@ ELSE()
   ENDIF()
 ENDIF()
 
-IF(NOT "$ENV{ZLIB_ROOT}" STREQUAL "")
-    set(ZLIB_ROOT_DIR $ENV{ZLIB_ROOT} )
-    set(ZLIB_INCLUDE_DIR $ENV{ZLIB_ROOT}/include )
-    set(ZLIB_LIBRARIES $ENV{ZLIB_ROOT}/lib )
-    message(STATUS "Setting up ZLib library to ${ZLIB_ROOT_DIR}")
-ENDIF()
-
 IF(APPLE)
   # As of 10.10 yosemite, the OpenSSL static libraries shipped with os x have a dependency
   # on zlib, so any time you link in openssl you also need to link zlib.  .  We really want to detect whether openssl was configured with the --no-zlib
@@ -351,13 +328,6 @@ else()
   MESSAGE( STATUS "zlib not found" )
   set( ZLIB_LIBRARIES "" )
 endif( ZLIB_FOUND )
-
-IF(NOT "$ENV{BZIP2_ROOT}" STREQUAL "")
-    set(BZIP2_ROOT_DIR $ENV{BZIP2_ROOT} )
-    set(BZIP2_ICNLUDE_DIR $ENV{BZIP2_ROOT}/include )
-    set(BZIP2_LIBRARIES $ENV{BZIP2_ROOT}/lib )
-    message(STATUS "Setting up BZip2 library to ${BZIP2_ROOT_DIR}")
-ENDIF()
 
 find_package( BZip2 )
 if( BZIP2_FOUND )
