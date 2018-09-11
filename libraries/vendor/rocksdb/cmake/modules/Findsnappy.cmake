@@ -13,6 +13,7 @@ find_library(SNAPPY_LIBRARIES
   NAMES snappy
   HINTS ${SNAPPY_ROOT_DIR}/lib)
 
+message(STATUS "Snappy libs: ${SNAPPY_INCLUDE_DIR}, ${SNAPPY_LIBRARIES}")
 include(FindPackageHandleStandardArgs)
 find_package_handle_standard_args(snappy DEFAULT_MSG SNAPPY_LIBRARIES SNAPPY_INCLUDE_DIR)
 
