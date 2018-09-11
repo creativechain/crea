@@ -110,7 +110,7 @@ function buildSnappy {
         printMsg "Building Snappy 1.1.7"
         cd $DOWNLOAD_DIR/snappy-1.1.7
         cmake -DCMAKE_INSTALL_PREFIX=$LIBRARIES_DIR
-        make all install
+        make install
         touch $file
      else
         echo "Snappy already built..."
