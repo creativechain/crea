@@ -329,6 +329,8 @@ ENDIF()
 
 IF(NOT "$ENV{ZLIB_ROOT}" STREQUAL "")
     set(ZLIB_ROOT_DIR $ENV{ZLIB_ROOT} )
+    set(ZLIB_INCLUDE_DIR $ENV{ZLIB_ROOT}/include )
+    set(ZLIB_LIBRARIES $ENV{ZLIB_ROOT}/lib )
     message(STATUS "Setting up ZLib library to ${ZLIB_ROOT_DIR}")
 ENDIF()
 
@@ -352,6 +354,8 @@ endif( ZLIB_FOUND )
 
 IF(NOT "$ENV{BZIP2_ROOT}" STREQUAL "")
     set(BZIP2_ROOT_DIR $ENV{BZIP2_ROOT} )
+    set(BZIP2_ICNLUDE_DIR $ENV{BZIP2_ROOT}/include )
+    set(BZIP2_LIBRARIES $ENV{BZIP2_ROOT}/lib )
     message(STATUS "Setting up BZip2 library to ${BZIP2_ROOT_DIR}")
 ENDIF()
 
