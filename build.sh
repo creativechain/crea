@@ -80,7 +80,7 @@ function buildOpenssl {
         cd $DOWNLOAD_DIR/openssl-1.0.2o
         ./config --prefix=$LIBRARIES_DIR
         make
-        make -j$(nproc) install
+        make install
         touch $file
      else
         echo "OpenSSL already built..."
@@ -96,7 +96,7 @@ function buildZlib {
         make distclean
         ./configure --prefix=$LIBRARIES_DIR
         make
-        make -j$(nproc) install
+        make install
         touch $file
      else
         echo "ZLib already built..."
@@ -110,7 +110,7 @@ function buildSnappy {
         printMsg "Building Snappy 1.1.7"
         cd $DOWNLOAD_DIR/snappy-1.1.7
         cmake -DCMAKE_INSTALL_PREFIX=$LIBRARIES_DIR
-        make -j$(nproc) all install
+        make all install
         touch $file
      else
         echo "Snappy already built..."
@@ -125,7 +125,7 @@ function buildNCurses {
         cd $DOWNLOAD_DIR/ncurses-6.1
         ./configure --prefix=$LIBRARIES_DIR
         make
-        make -j$(nproc) install
+        make install
         touch $file
      else
         echo "Ncurses already built..."
@@ -141,7 +141,7 @@ function buildReadline {
         cd $DOWNLOAD_DIR/readline-6.3
         ./configure --prefix=$LIBRARIES_DIR
         make
-        make -j$(nproc) install
+        make install
         touch $file
      else
         echo "Readline already built..."
@@ -158,7 +158,7 @@ function buildBZip2 {
         rm -rf $DOWNLOAD_DIR/enthought-bzip2-1.0.6-288acf9
         printMsg "Building BZip2 1.0.6"
         cd $DOWNLOAD_DIR/bzip2-1.0.6
-        make -j$(nproc) install PREFIX=$LIBRARIES_DIR
+        make install PREFIX=$LIBRARIES_DIR
         touch $file
      else
         echo "BZip2 already built..."
