@@ -2,9 +2,10 @@ file(GLOB HEADERS "include/creativecoin/wallet/*.hpp")
 
 find_package( Perl )
 find_package( Doxygen )
+message(STATUS "Doxygen => ${CMAKE_CURRENT_BINARY_DIR}/doxygen/perlmod/DoxyDocs.pm")
 
 if( PERL_FOUND AND DOXYGEN_FOUND AND NOT "${CMAKE_GENERATOR}" STREQUAL "Ninja" )
-  message(STATUS "Doxygen => ${CMAKE_CURRENT_BINARY_DIR}/doxygen/perlmod/DoxyDocs.pm")
+
   configure_file( ${CMAKE_CURRENT_SOURCE_DIR}/Doxyfile.in ${CMAKE_CURRENT_BINARY_DIR}/Doxyfile )
   add_custom_command( OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/doxygen/perlmod/DoxyDocs.pm
                       WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
