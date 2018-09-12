@@ -5,8 +5,6 @@
 # BZIP2_LIBRARIES - List of libraries when using bzip2.
 # BZIP2_FOUND - True if bzip2 found.
 
-message(STATUS "Check BZip2 => ${BZIP2_INCLUDE_DIR}, ${BZIP2_LIBRARIES}")
-
 find_path(BZIP2_INCLUDE_DIR
   NAMES bzlib.h
   HINTS ${BZIP2_ROOT_DIR}/include)
@@ -14,6 +12,8 @@ find_path(BZIP2_INCLUDE_DIR
 find_library(BZIP2_LIBRARIES
   NAMES bz2
   HINTS ${BZIP2_ROOT_DIR}/lib)
+
+message(STATUS "Check BZip2 => ${BZIP2_INCLUDE_DIR}, ${BZIP2_LIBRARIES}")
 
 include(FindPackageHandleStandardArgs)
 find_package_handle_standard_args(bzip2 DEFAULT_MSG BZIP2_LIBRARIES BZIP2_INCLUDE_DIR)

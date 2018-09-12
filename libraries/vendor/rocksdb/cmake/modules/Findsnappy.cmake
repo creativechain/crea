@@ -5,15 +5,19 @@
 # SNAPPY_LIBRARIES - List of libraries when using snappy.
 # SNAPPY_FOUND - True if snappy found.
 
-message(STATUS "Check Snappy => ${SNAPPY_INCLUDE_DIR}, ${SNAPPY_LIBRARIES}")
-
 find_path(SNAPPY_INCLUDE_DIR
   NAMES snappy.h
-  HINTS ${SNAPPY_ROOT_DIR}/include)
+  HINTS ${SNAPPY_ROOT_DIR}/include
+  PATHS $ENV{LIBRARIES_DIR}
+  NO_CMAKE_PATH)
 
 find_library(SNAPPY_LIBRARIES
   NAMES snappy
-  HINTS ${SNAPPY_ROOT_DIR}/lib)
+  HINTS ${SNAPPY_ROOT_DIR}/lib
+  PATHS $ENV{LIBRARIES_DIR}
+  NO_CMAKE_PATH)
+
+message(STATUS "Check Snappy => ${SNAPPY_INCLUDE_DIR}, ${SNAPPY_LIBRARIES}")
 
 include(FindPackageHandleStandardArgs)
 find_package_handle_standard_args(snappy DEFAULT_MSG SNAPPY_LIBRARIES SNAPPY_INCLUDE_DIR)
