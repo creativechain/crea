@@ -186,7 +186,6 @@ function buildSource {
     export READLINE_ROOT=$LIBRARIES_DIR
     export BZIP2_ROOT=$LIBRARIES_DIR
 
-    make clean
     cmake -DCMAKE_CXX_FLAGS_RELEASE="-fpermissive -O3" -DENABLE_CONTENT_PATCHING=OFF -DCMAKE_BUILD_TYPE=Release ..
 
     #export PERL_USE_UNSAFE_INC=1
