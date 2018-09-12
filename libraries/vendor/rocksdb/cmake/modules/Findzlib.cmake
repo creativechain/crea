@@ -5,6 +5,8 @@
 # ZLIB_LIBRARIES - List of libraries when using zlib.
 # ZLIB_FOUND - True if zlib found.
 
+message(STATUS "Check Zlib => ${ZLIB_INCLUDE_DIR}, ${ZLIB_LIBRARIES}")
+
 find_path(ZLIB_INCLUDE_DIR
   NAMES zlib.h
   HINTS ${ZLIB_ROOT_DIR}/include)
