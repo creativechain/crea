@@ -5,6 +5,8 @@
 # ZLIB_LIBRARIES - List of libraries when using zlib.
 # ZLIB_FOUND - True if zlib found.
 
+set(ZLIB_INCLUDE_DIR $ENV{ZLIB_ROOT}/include )
+
 find_path(ZLIB_INCLUDE_DIR
   NAMES zlib.h
   HINTS ${ZLIB_ROOT_DIR}/include)

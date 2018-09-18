@@ -5,6 +5,8 @@
 # BZIP2_LIBRARIES - List of libraries when using bzip2.
 # BZIP2_FOUND - True if bzip2 found.
 
+set(BZIP2_INCLUDE_DIR $ENV{BZIP2_ROOT}/include )
+
 find_path(BZIP2_INCLUDE_DIR
   NAMES bzlib.h
   HINTS ${BZIP2_ROOT_DIR}/include)
