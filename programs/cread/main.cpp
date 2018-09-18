@@ -1,20 +1,20 @@
 #include <appbase/application.hpp>
-#include <creativecoin/manifest/plugins.hpp>
+#include <crea/manifest/plugins.hpp>
 
-#include <creativecoin/protocol/types.hpp>
-#include <creativecoin/protocol/version.hpp>
+#include <crea/protocol/types.hpp>
+#include <crea/protocol/version.hpp>
 
-#include <creativecoin/utilities/logging_config.hpp>
-#include <creativecoin/utilities/key_conversion.hpp>
-#include <creativecoin/utilities/git_revision.hpp>
+#include <crea/utilities/logging_config.hpp>
+#include <crea/utilities/key_conversion.hpp>
+#include <crea/utilities/git_revision.hpp>
 
-#include <creativecoin/plugins/account_by_key/account_by_key_plugin.hpp>
-#include <creativecoin/plugins/account_by_key_api/account_by_key_api_plugin.hpp>
-#include <creativecoin/plugins/chain/chain_plugin.hpp>
-#include <creativecoin/plugins/condenser_api/condenser_api_plugin.hpp>
-#include <creativecoin/plugins/p2p/p2p_plugin.hpp>
-#include <creativecoin/plugins/webserver/webserver_plugin.hpp>
-#include <creativecoin/plugins/witness/witness_plugin.hpp>
+#include <crea/plugins/account_by_key/account_by_key_plugin.hpp>
+#include <crea/plugins/account_by_key_api/account_by_key_api_plugin.hpp>
+#include <crea/plugins/chain/chain_plugin.hpp>
+#include <crea/plugins/condenser_api/condenser_api_plugin.hpp>
+#include <crea/plugins/p2p/p2p_plugin.hpp>
+#include <crea/plugins/webserver/webserver_plugin.hpp>
+#include <crea/plugins/witness/witness_plugin.hpp>
 
 #include <fc/exception/exception.hpp>
 #include <fc/thread/thread.hpp>
@@ -30,15 +30,15 @@
 #include <vector>
 
 namespace bpo = boost::program_options;
-using creativecoin::protocol::version;
+using crea::protocol::version;
 using std::string;
 using std::vector;
 
 string& version_string()
 {
    static string v_str =
-      "creativecoin_blockchain_version: " + fc::string( CREA_BLOCKCHAIN_VERSION ) + "\n" +
-      "creativecoin_git_revision:       " + fc::string( creativecoin::utilities::git_revision_sha ) + "\n" +
+      "crea_blockchain_version: " + fc::string( CREA_BLOCKCHAIN_VERSION ) + "\n" +
+      "crea_git_revision:       " + fc::string( crea::utilities::git_revision_sha ) + "\n" +
       "fc_git_revision:          " + fc::string( fc::git_revision_sha ) + "\n";
    return v_str;
 }
@@ -49,7 +49,7 @@ void info()
       std::cerr << "------------------------------------------------------\n\n";
       std::cerr << "            STARTING TEST NETWORK\n\n";
       std::cerr << "------------------------------------------------------\n";
-      auto initminer_private_key = creativecoin::utilities::key_to_wif( CREA_INIT_PRIVATE_KEY );
+      auto initminer_private_key = crea::utilities::key_to_wif( CREA_INIT_PRIVATE_KEY );
       std::cerr << "initminer public key: " << CREA_INIT_PUBLIC_KEY_STR << "\n";
       std::cerr << "initminer private key: " << initminer_private_key << "\n";
       std::cerr << "blockchain version: " << fc::string( CREA_BLOCKCHAIN_VERSION ) << "\n";
@@ -58,7 +58,7 @@ void info()
       std::cerr << "------------------------------------------------------\n\n";
       std::cerr << "            STARTING CREA NETWORK\n\n";
       std::cerr << "------------------------------------------------------\n";
-      auto initminer_private_key = creativecoin::utilities::key_to_wif( CREA_INIT_PRIVATE_KEY );
+      auto initminer_private_key = crea::utilities::key_to_wif( CREA_INIT_PRIVATE_KEY );
       std::cerr << "initminer public key: " << CREA_INIT_PUBLIC_KEY_STR << "\n";
       std::cerr << "initminer private key: " << initminer_private_key << "\n";
       std::cerr << "chain id: " << std::string( CREA_CHAIN_ID ) << "\n";
@@ -74,29 +74,29 @@ int main( int argc, char** argv )
       // Setup logging config
       bpo::options_description options;
 
-      creativecoin::utilities::set_logging_program_options( options );
+      crea::utilities::set_logging_program_options( options );
       options.add_options()
          ("backtrace", bpo::value< string >()->default_value( "yes" ), "Whether to print backtrace on SIGSEGV" );
 
       appbase::app().add_program_options( bpo::options_description(), options );
 
-      creativecoin::plugins::register_plugins();
+      crea::plugins::register_plugins();
 
       appbase::app().set_version_string( version_string() );
-      appbase::app().set_app_name( "creativecoind" );
+      appbase::app().set_app_name( "cread" );
 
       // These plugins are included in the default config
       appbase::app().set_default_plugins<
-         creativecoin::plugins::witness::witness_plugin,
-         creativecoin::plugins::account_by_key::account_by_key_plugin,
-         creativecoin::plugins::account_by_key::account_by_key_api_plugin,
-         creativecoin::plugins::condenser_api::condenser_api_plugin >();
+         crea::plugins::witness::witness_plugin,
+         crea::plugins::account_by_key::account_by_key_plugin,
+         crea::plugins::account_by_key::account_by_key_api_plugin,
+         crea::plugins::condenser_api::condenser_api_plugin >();
 
       // These plugins are loaded regardless of the config
       bool initialized = appbase::app().initialize<
-            creativecoin::plugins::chain::chain_plugin,
-            creativecoin::plugins::p2p::p2p_plugin,
-            creativecoin::plugins::webserver::webserver_plugin >
+            crea::plugins::chain::chain_plugin,
+            crea::plugins::p2p::p2p_plugin,
+            crea::plugins::webserver::webserver_plugin >
             ( argc, argv );
 
       info();
@@ -108,7 +108,7 @@ int main( int argc, char** argv )
 
       try
       {
-         fc::optional< fc::logging_config > logging_config = creativecoin::utilities::load_logging_config( args, appbase::app().data_dir() );
+         fc::optional< fc::logging_config > logging_config = crea::utilities::load_logging_config( args, appbase::app().data_dir() );
          if( logging_config )
             fc::configure_logging( *logging_config );
       }
