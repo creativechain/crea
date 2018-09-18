@@ -1,12 +1,12 @@
 #pragma once
 
-#include <creativecoin/protocol/types.hpp>
-#include <creativecoin/protocol/authority.hpp>
-#include <creativecoin/protocol/version.hpp>
+#include <crea/protocol/types.hpp>
+#include <crea/protocol/authority.hpp>
+#include <crea/protocol/version.hpp>
 
 #include <fc/time.hpp>
 
-namespace creativecoin { namespace protocol {
+namespace crea { namespace protocol {
 
    struct base_operation
    {
@@ -39,7 +39,7 @@ namespace creativecoin { namespace protocol {
    typedef flat_set<future_extensions> extensions_type;
 
 
-} } // creativecoin::protocol
+} } // crea::protocol
 
-FC_REFLECT_TYPENAME( creativecoin::protocol::block_header_extensions )
-FC_REFLECT_TYPENAME( creativecoin::protocol::future_extensions )
+FC_REFLECT_TYPENAME( crea::protocol::block_header_extensions )
+FC_REFLECT_TYPENAME( crea::protocol::future_extensions )

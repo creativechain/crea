@@ -1,10 +1,10 @@
 #pragma once
 #include <appbase/application.hpp>
 
-#include <creativecoin/plugins/chain/chain_plugin.hpp>
-#include <creativecoin/plugins/block_data_export/block_data_export_plugin.hpp>
+#include <crea/plugins/chain/chain_plugin.hpp>
+#include <crea/plugins/block_data_export/block_data_export_plugin.hpp>
 
-namespace creativecoin { namespace plugins { namespace stats_export {
+namespace crea { namespace plugins { namespace stats_export {
 
 namespace detail { class stats_export_plugin_impl; }
 
@@ -19,8 +19,8 @@ class stats_export_plugin : public appbase::plugin< stats_export_plugin >
       virtual ~stats_export_plugin();
 
       APPBASE_PLUGIN_REQUIRES(
-         (creativecoin::plugins::block_data_export::block_data_export_plugin)
-         (creativecoin::plugins::chain::chain_plugin)
+         (crea::plugins::block_data_export::block_data_export_plugin)
+         (crea::plugins::chain::chain_plugin)
       )
 
       static const std::string& name() { static std::string name = CREA_STATS_EXPORT_PLUGIN_NAME; return name; }
@@ -34,4 +34,4 @@ class stats_export_plugin : public appbase::plugin< stats_export_plugin >
       std::unique_ptr< detail::stats_export_plugin_impl > my;
 };
 
-} } } // creativecoin::plugins::stats_export
+} } } // crea::plugins::stats_export

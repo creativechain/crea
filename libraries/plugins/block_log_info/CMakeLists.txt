@@ -1,10 +1,10 @@
-file(GLOB HEADERS "include/creativecoin/plugins/block_log_info/*.hpp")
+file(GLOB HEADERS "include/crea/plugins/block_log_info/*.hpp")
 
 add_library( block_log_info_plugin
              block_log_info_plugin.cpp
            )
 
-target_link_libraries( block_log_info_plugin chain_plugin creativecoin_chain creativecoin_protocol )
+target_link_libraries( block_log_info_plugin chain_plugin crea_chain crea_protocol )
 target_include_directories( block_log_info_plugin
                             PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/include" )
 

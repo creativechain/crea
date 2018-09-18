@@ -1,15 +1,15 @@
 #pragma once
 
-#include <creativecoin/protocol/authority.hpp>
-#include <creativecoin/protocol/creativecoin_operations.hpp>
+#include <crea/protocol/authority.hpp>
+#include <crea/protocol/crea_operations.hpp>
 
-#include <creativecoin/chain/creativecoin_object_types.hpp>
-#include <creativecoin/chain/witness_objects.hpp>
+#include <crea/chain/crea_object_types.hpp>
+#include <crea/chain/witness_objects.hpp>
 
 #include <boost/multi_index/composite_key.hpp>
 
 
-namespace creativecoin { namespace chain {
+namespace crea { namespace chain {
 
    using protocol::beneficiary_route_type;
    using chainbase::t_vector;
@@ -100,7 +100,7 @@ namespace creativecoin { namespace chain {
          id_type           root_comment;
 
          asset             max_accepted_payout = asset( 1000000000, CBD_SYMBOL );       /// CBD value of the maximum payout this post will receive
-         uint16_t          percent_creativecoin_dollars = CREA_100_PERCENT; /// the percent of Creativecoin Dollars to key, unkept amounts will be received as Creativecoin Power
+         uint16_t          percent_crea_dollars = CREA_100_PERCENT; /// the percent of Creativecoin Dollars to key, unkept amounts will be received as Creativecoin Power
          bool              allow_replies = true;      /// allows a post to disable replies.
          bool              allow_votes   = true;      /// allows a post to receive votes;
          bool              allow_curation_rewards = true;
@@ -258,10 +258,10 @@ namespace creativecoin { namespace chain {
       allocator< comment_content_object >
    > comment_content_index;
 
-} } // creativecoin::chain
+} } // crea::chain
 
 #ifdef CREA_ENABLE_SMT
-FC_REFLECT( creativecoin::chain::comment_object,
+FC_REFLECT( crea::chain::comment_object,
              (id)(author)(permlink)
              (category)(parent_author)(parent_permlink)
              (last_update)(created)(active)(last_payout)
@@ -269,11 +269,11 @@ FC_REFLECT( creativecoin::chain::comment_object,
              (net_rshares)(abs_rshares)(vote_rshares)
              (children_abs_rshares)(cashout_time)(max_cashout_time)
              (total_vote_weight)(reward_weight)(total_payout_value)(curator_payout_value)(beneficiary_payout_value)(author_rewards)(net_votes)(root_comment)
-             (max_accepted_payout)(percent_creativecoin_dollars)(allow_replies)(allow_votes)(allow_curation_rewards)
+             (max_accepted_payout)(percent_crea_dollars)(allow_replies)(allow_votes)(allow_curation_rewards)
              (beneficiaries)(allowed_vote_assets)
           )
 #else
-FC_REFLECT( creativecoin::chain::comment_object,
+FC_REFLECT( crea::chain::comment_object,
              (id)(author)(permlink)
              (category)(parent_author)(parent_permlink)
              (last_update)(created)(active)(last_payout)
@@ -281,33 +281,33 @@ FC_REFLECT( creativecoin::chain::comment_object,
              (net_rshares)(abs_rshares)(vote_rshares)
              (children_abs_rshares)(cashout_time)(max_cashout_time)
              (total_vote_weight)(reward_weight)(total_payout_value)(curator_payout_value)(beneficiary_payout_value)(author_rewards)(net_votes)(root_comment)
-             (max_accepted_payout)(percent_creativecoin_dollars)(allow_replies)(allow_votes)(allow_curation_rewards)
+             (max_accepted_payout)(percent_crea_dollars)(allow_replies)(allow_votes)(allow_curation_rewards)
              (beneficiaries)
           )
 #endif
-CHAINBASE_SET_INDEX_TYPE( creativecoin::chain::comment_object, creativecoin::chain::comment_index )
+CHAINBASE_SET_INDEX_TYPE( crea::chain::comment_object, crea::chain::comment_index )
 
-FC_REFLECT( creativecoin::chain::comment_content_object,
+FC_REFLECT( crea::chain::comment_content_object,
             (id)(comment)(title)(body)(json_metadata) )
-CHAINBASE_SET_INDEX_TYPE( creativecoin::chain::comment_content_object, creativecoin::chain::comment_content_index )
+CHAINBASE_SET_INDEX_TYPE( crea::chain::comment_content_object, crea::chain::comment_content_index )
 
-FC_REFLECT( creativecoin::chain::comment_vote_object,
+FC_REFLECT( crea::chain::comment_vote_object,
              (id)(voter)(comment)(weight)(rshares)(vote_percent)(last_update)(num_changes)
           )
-CHAINBASE_SET_INDEX_TYPE( creativecoin::chain::comment_vote_object, creativecoin::chain::comment_vote_index )
+CHAINBASE_SET_INDEX_TYPE( crea::chain::comment_vote_object, crea::chain::comment_vote_index )
 
 namespace helpers
 {
-   using creativecoin::chain::shared_string;
+   using crea::chain::shared_string;
    
    template <>
-   class index_statistic_provider<creativecoin::chain::comment_index>
+   class index_statistic_provider<crea::chain::comment_index>
    {
    public:
-      typedef creativecoin::chain::comment_index IndexType;
-      typedef typename creativecoin::chain::comment_object::t_beneficiaries t_beneficiaries;
+      typedef crea::chain::comment_index IndexType;
+      typedef typename crea::chain::comment_object::t_beneficiaries t_beneficiaries;
 #ifdef CREA_ENABLE_SMT
-      typedef typename creativecoin::chain::comment_object::t_votable_assets t_votable_assets;
+      typedef typename crea::chain::comment_object::t_votable_assets t_votable_assets;
 #endif
       index_statistic_info gather_statistics(const IndexType& index, bool onlyStaticInfo) const
       {
@@ -333,10 +333,10 @@ namespace helpers
    };
 
    template <>
-   class index_statistic_provider<creativecoin::chain::comment_content_index>
+   class index_statistic_provider<crea::chain::comment_content_index>
    {
    public:
-      typedef creativecoin::chain::comment_content_index IndexType;
+      typedef crea::chain::comment_content_index IndexType;
 
       index_statistic_info gather_statistics(const IndexType& index, bool onlyStaticInfo) const
       {

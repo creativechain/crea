@@ -1,13 +1,13 @@
 
 #pragma once
 
-#include <creativecoin/app/plugin.hpp>
+#include <crea/app/plugin.hpp>
 
-namespace creativecoin { namespace plugin { namespace raw_block {
+namespace crea { namespace plugin { namespace raw_block {
 
-using creativecoin::app::application;
+using crea::app::application;
 
-class raw_block_plugin : public creativecoin::app::plugin
+class raw_block_plugin : public crea::app::plugin
 {
    public:
       raw_block_plugin( application* app );

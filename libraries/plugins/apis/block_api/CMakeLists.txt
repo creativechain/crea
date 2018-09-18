@@ -1,4 +1,4 @@
-file(GLOB HEADERS "include/creativecoin/plugins/block_api/*.hpp")
+file(GLOB HEADERS "include/crea/plugins/block_api/*.hpp")
 
 add_library( block_api_plugin
              block_api.cpp

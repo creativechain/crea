@@ -1,8 +1,8 @@
-#include <creativecoin/plugins/follow_api/follow_api_plugin.hpp>
-#include <creativecoin/plugins/follow_api/follow_api.hpp>
+#include <crea/plugins/follow_api/follow_api_plugin.hpp>
+#include <crea/plugins/follow_api/follow_api.hpp>
 
 
-namespace creativecoin { namespace plugins { namespace follow {
+namespace crea { namespace plugins { namespace follow {
 
 follow_api_plugin::follow_api_plugin() {}
 follow_api_plugin::~follow_api_plugin() {}
@@ -17,4 +17,4 @@ void follow_api_plugin::plugin_initialize( const variables_map& options )
 void follow_api_plugin::plugin_startup() {}
 void follow_api_plugin::plugin_shutdown() {}
 
-} } } // creativecoin::plugins::follow
+} } } // crea::plugins::follow

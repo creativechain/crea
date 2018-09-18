@@ -24,7 +24,7 @@
 #include <graphene/net/peer_connection.hpp>
 #include <graphene/net/exceptions.hpp>
 #include <graphene/net/config.hpp>
-#include <creativecoin/protocol/config.hpp>
+#include <crea/protocol/config.hpp>
 
 #include <fc/thread/thread.hpp>
 

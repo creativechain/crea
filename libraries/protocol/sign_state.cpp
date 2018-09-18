@@ -1,7 +1,7 @@
 
-#include <creativecoin/protocol/sign_state.hpp>
+#include <crea/protocol/sign_state.hpp>
 
-namespace creativecoin { namespace protocol {
+namespace crea { namespace protocol {
 
 bool sign_state::signed_by( const public_key_type& k )
 {
@@ -82,4 +82,4 @@ sign_state::sign_state(
    approved_by.insert( "temp"  );
 }
 
-} } // creativecoin::protocol
+} } // crea::protocol

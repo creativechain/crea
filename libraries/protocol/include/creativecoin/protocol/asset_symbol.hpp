@@ -1,7 +1,7 @@
 #pragma once
 
 #include <fc/io/raw.hpp>
-#include <creativecoin/protocol/types_fwd.hpp>
+#include <crea/protocol/types_fwd.hpp>
 
 #define CREA_ASSET_SYMBOL_PRECISION_BITS    4
 #define SMT_MAX_NAI                          99999999
@@ -51,7 +51,7 @@
 #define SMT_ASSET_NUM_CONTROL_MASK     0x10
 #define SMT_ASSET_NUM_VESTING_MASK     0x20
 
-namespace creativecoin { namespace protocol {
+namespace crea { namespace protocol {
 
 class asset_symbol_type
 {
@@ -123,9 +123,9 @@ class asset_symbol_type
       uint32_t asset_num = 0;
 };
 
-} } // creativecoin::protocol
+} } // crea::protocol
 
-FC_REFLECT(creativecoin::protocol::asset_symbol_type, (asset_num))
+FC_REFLECT(crea::protocol::asset_symbol_type, (asset_num))
 
 namespace fc { namespace raw {
 
@@ -140,11 +140,11 @@ namespace fc { namespace raw {
 // NAI internal storage of legacy assets
 
 template< typename Stream >
-inline void pack( Stream& s, const creativecoin::protocol::asset_symbol_type& sym )
+inline void pack( Stream& s, const crea::protocol::asset_symbol_type& sym )
 {
    switch( sym.space() )
    {
-      case creativecoin::protocol::asset_symbol_type::legacy_space:
+      case crea::protocol::asset_symbol_type::legacy_space:
       {
          uint64_t ser = 0;
          switch( sym.asset_num )
@@ -164,7 +164,7 @@ inline void pack( Stream& s, const creativecoin::protocol::asset_symbol_type& sy
          pack( s, ser );
          break;
       }
-      case creativecoin::protocol::asset_symbol_type::smt_nai_space:
+      case crea::protocol::asset_symbol_type::smt_nai_space:
          pack( s, sym.asset_num );
          break;
       default:
@@ -173,7 +173,7 @@ inline void pack( Stream& s, const creativecoin::protocol::asset_symbol_type& sy
 }
 
 template< typename Stream >
-inline void unpack( Stream& s, creativecoin::protocol::asset_symbol_type& sym )
+inline void unpack( Stream& s, crea::protocol::asset_symbol_type& sym )
 {
    uint64_t ser = 0;
    s.read( (char*) &ser, 4 );
@@ -203,7 +203,7 @@ inline void unpack( Stream& s, creativecoin::protocol::asset_symbol_type& sym )
 
 } // fc::raw
 
-inline void to_variant( const creativecoin::protocol::asset_symbol_type& sym, fc::variant& var )
+inline void to_variant( const crea::protocol::asset_symbol_type& sym, fc::variant& var )
 {
    try
    {
@@ -213,14 +213,14 @@ inline void to_variant( const creativecoin::protocol::asset_symbol_type& sym, fc
    } FC_CAPTURE_AND_RETHROW()
 }
 
-inline void from_variant( const fc::variant& var, creativecoin::protocol::asset_symbol_type& sym )
+inline void from_variant( const fc::variant& var, crea::protocol::asset_symbol_type& sym )
 {
    try
    {
       auto v = var.as< std::vector< variant > >();
       FC_ASSERT( v.size() == 2, "Expected tuple of length 2." );
 
-      sym = creativecoin::protocol::asset_symbol_type::from_nai_string( v[1].as< std::string >().c_str(), v[0].as< uint8_t >() );
+      sym = crea::protocol::asset_symbol_type::from_nai_string( v[1].as< std::string >().c_str(), v[0].as< uint8_t >() );
    } FC_CAPTURE_AND_RETHROW()
 }
 

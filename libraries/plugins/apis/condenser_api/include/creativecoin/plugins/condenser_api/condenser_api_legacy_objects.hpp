@@ -1,9 +1,9 @@
 #pragma once
-#include <creativecoin/plugins/condenser_api/condenser_api_legacy_operations.hpp>
+#include <crea/plugins/condenser_api/condenser_api_legacy_operations.hpp>
 
-#include <creativecoin/plugins/block_api/block_api_objects.hpp>
+#include <crea/plugins/block_api/block_api_objects.hpp>
 
-namespace creativecoin { namespace plugins { namespace condenser_api {
+namespace crea { namespace plugins { namespace condenser_api {
 
 typedef static_variant<
          void_t,
@@ -142,17 +142,17 @@ struct legacy_signed_block
    vector< transaction_id_type >       transaction_ids;
 };
 
-} } } // creativecoin::plugins::condenser_api
+} } } // crea::plugins::condenser_api
 
 namespace fc {
 
-void to_variant( const creativecoin::plugins::condenser_api::legacy_block_header_extensions&, fc::variant& );
-void from_variant( const fc::variant&, creativecoin::plugins::condenser_api::legacy_block_header_extensions& );
+void to_variant( const crea::plugins::condenser_api::legacy_block_header_extensions&, fc::variant& );
+void from_variant( const fc::variant&, crea::plugins::condenser_api::legacy_block_header_extensions& );
 
 }
 
-FC_REFLECT( creativecoin::plugins::condenser_api::legacy_signed_transaction,
+FC_REFLECT( crea::plugins::condenser_api::legacy_signed_transaction,
             (ref_block_num)(ref_block_prefix)(expiration)(operations)(extensions)(signatures)(transaction_id)(block_num)(transaction_num) )
 
-FC_REFLECT( creativecoin::plugins::condenser_api::legacy_signed_block,
+FC_REFLECT( crea::plugins::condenser_api::legacy_signed_block,
             (previous)(timestamp)(witness)(transaction_merkle_root)(extensions)(witness_signature)(transactions)(block_id)(signing_key)(transaction_ids) )

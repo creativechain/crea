@@ -1,8 +1,8 @@
 
-#include <creativecoin/chain/creativecoin_objects.hpp>
+#include <crea/chain/crea_objects.hpp>
 
 #include <fc/uint128.hpp>
 
-namespace creativecoin { namespace chain {
+namespace crea { namespace chain {
 
-} } // creativecoin::chain
+} } // crea::chain

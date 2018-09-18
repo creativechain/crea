@@ -1,14 +1,14 @@
-#include <creativecoin/plugins/account_history_rocksdb/account_history_rocksdb_plugin.hpp>
+#include <crea/plugins/account_history_rocksdb/account_history_rocksdb_plugin.hpp>
 
-#include <creativecoin/chain/database.hpp>
-#include <creativecoin/chain/history_object.hpp>
-#include <creativecoin/chain/index.hpp>
-#include <creativecoin/chain/util/impacted.hpp>
+#include <crea/chain/database.hpp>
+#include <crea/chain/history_object.hpp>
+#include <crea/chain/index.hpp>
+#include <crea/chain/util/impacted.hpp>
 
-#include <creativecoin/plugins/chain/chain_plugin.hpp>
+#include <crea/plugins/chain/chain_plugin.hpp>
 
-#include <creativecoin/utilities/benchmark_dumper.hpp>
-#include <creativecoin/utilities/plugin_utilities.hpp>
+#include <crea/utilities/benchmark_dumper.hpp>
+#include <crea/utilities/plugin_utilities.hpp>
 
 #include <appbase/application.hpp>
 
@@ -28,7 +28,7 @@
 
 namespace bpo = boost::program_options;
 
-#define CREA_NAMESPACE_PREFIX "creativecoin::protocol::"
+#define CREA_NAMESPACE_PREFIX "crea::protocol::"
 #define OPEN_FILE_LIMIT 750
 
 #define DIAGNOSTIC(s)
@@ -53,19 +53,19 @@ namespace bpo = boost::program_options;
 #define STORE_MAJOR_VERSION          1
 #define STORE_MINOR_VERSION          0
 
-namespace creativecoin { namespace plugins { namespace account_history_rocksdb {
+namespace crea { namespace plugins { namespace account_history_rocksdb {
 
-using creativecoin::protocol::account_name_type;
-using creativecoin::protocol::block_id_type;
-using creativecoin::protocol::operation;
-using creativecoin::protocol::signed_block;
-using creativecoin::protocol::signed_block_header;
-using creativecoin::protocol::signed_transaction;
+using crea::protocol::account_name_type;
+using crea::protocol::block_id_type;
+using crea::protocol::operation;
+using crea::protocol::signed_block;
+using crea::protocol::signed_block_header;
+using crea::protocol::signed_transaction;
 
-using creativecoin::chain::operation_notification;
-using creativecoin::chain::transaction_id_type;
+using crea::chain::operation_notification;
+using crea::chain::transaction_id_type;
 
-using creativecoin::utilities::benchmark_dumper;
+using crea::utilities::benchmark_dumper;
 
 using ::rocksdb::DB;
 using ::rocksdb::DBOptions;
@@ -358,18 +358,18 @@ class account_history_rocksdb_plugin::impl final
 public:
    impl( account_history_rocksdb_plugin& self, const bpo::variables_map& options, const bfs::path& storagePath) :
       _self(self),
-      _mainDb(appbase::app().get_plugin<creativecoin::plugins::chain::chain_plugin>().db()),
+      _mainDb(appbase::app().get_plugin<crea::plugins::chain::chain_plugin>().db()),
       _storagePath(storagePath),
       _writeBuffer(_storage, _columnHandles)
       {
       collectOptions(options);
 
-      _mainDb.add_pre_reindex_handler([&]( const creativecoin::chain::reindex_notification& note ) -> void
+      _mainDb.add_pre_reindex_handler([&]( const crea::chain::reindex_notification& note ) -> void
          {
             on_pre_reindex( note );
          }, _self, 0);
 
-      _mainDb.add_post_reindex_handler([&]( const creativecoin::chain::reindex_notification& note ) -> void
+      _mainDb.add_post_reindex_handler([&]( const crea::chain::reindex_notification& note ) -> void
          {
             on_post_reindex( note );
          }, _self, 0);
@@ -444,8 +444,8 @@ public:
    }
 
    void printReport(uint32_t blockNo, const char* detailText) const;
-   void on_pre_reindex( const creativecoin::chain::reindex_notification& note );
-   void on_post_reindex( const creativecoin::chain::reindex_notification& note );
+   void on_pre_reindex( const crea::chain::reindex_notification& note );
+   void on_post_reindex( const crea::chain::reindex_notification& note );
 
    /// Allows to start immediate data import (outside replay process).
    void importData(unsigned int blockLimit);
@@ -774,7 +774,7 @@ inline bool account_history_rocksdb_plugin::impl::isTrackedAccount(const account
 std::vector<account_name_type> account_history_rocksdb_plugin::impl::getImpactedAccounts(const operation& op) const
 {
    flat_set<account_name_type> impacted;
-   creativecoin::app::operation_get_impacted_accounts(op, impacted);
+   crea::app::operation_get_impacted_accounts(op, impacted);
    std::vector<account_name_type> retVal;
 
    if(impacted.empty())
@@ -1192,7 +1192,7 @@ void account_history_rocksdb_plugin::impl::prunePotentiallyTooOldItems(account_h
    }
 }
 
-void account_history_rocksdb_plugin::impl::on_pre_reindex(const creativecoin::chain::reindex_notification& note)
+void account_history_rocksdb_plugin::impl::on_pre_reindex(const crea::chain::reindex_notification& note)
 {
    ilog("Received onReindexStart request, attempting to clean database storage.");
 
@@ -1217,7 +1217,7 @@ void account_history_rocksdb_plugin::impl::on_pre_reindex(const creativecoin::ch
    ilog("onReindexStart request completed successfully.");
 }
 
-void account_history_rocksdb_plugin::impl::on_post_reindex(const creativecoin::chain::reindex_notification& note)
+void account_history_rocksdb_plugin::impl::on_post_reindex(const crea::chain::reindex_notification& note)
 {
    ilog("Reindex completed up to block: ${b}. Setting back write limit to non-massive level.",
       ("b", note.last_block_number));
@@ -1497,5 +1497,5 @@ uint32_t account_history_rocksdb_plugin::enum_operations_from_block_range(uint32
 
 } } }
 
-FC_REFLECT( creativecoin::plugins::account_history_rocksdb::account_history_info,
+FC_REFLECT( crea::plugins::account_history_rocksdb::account_history_info,
    (id)(oldestEntryId)(newestEntryId)(oldestEntryTimestamp) )

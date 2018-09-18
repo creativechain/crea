@@ -1,6 +1,6 @@
 #pragma once
 
-#include <creativecoin/protocol/asset.hpp>
+#include <crea/protocol/asset.hpp>
 
 #define CREA_SYMBOL_LEGACY_SER_1   (uint64_t(1) | (CREA_SYMBOL_U64 << 8))
 #define CREA_SYMBOL_LEGACY_SER_2   (uint64_t(2) | (CREA_SYMBOL_U64 << 8))
@@ -8,12 +8,12 @@
 #define CREA_SYMBOL_LEGACY_SER_4   (uint64_t(3) | (uint64_t('0') << 8) | (uint64_t('.') << 16) | (uint64_t('0') << 24) | (uint64_t('0') << 32) | (uint64_t('1') << 40))
 #define CREA_SYMBOL_LEGACY_SER_5   (uint64_t(3) | (uint64_t('6') << 8) | (uint64_t('.') << 16) | (uint64_t('0') << 24) | (uint64_t('0') << 32) | (uint64_t('0') << 40))
 
-namespace creativecoin { namespace protocol {
+namespace crea { namespace protocol {
 
-class legacy_creativecoin_asset_symbol_type
+class legacy_crea_asset_symbol_type
 {
    public:
-      legacy_creativecoin_asset_symbol_type() {}
+      legacy_crea_asset_symbol_type() {}
 
       bool is_canon()const
       {   return ( ser == CREA_SYMBOL_SER );    }
@@ -21,10 +21,10 @@ class legacy_creativecoin_asset_symbol_type
       uint64_t ser = CREA_SYMBOL_SER;
 };
 
-struct legacy_creativecoin_asset
+struct legacy_crea_asset
 {
    public:
-      legacy_creativecoin_asset() {}
+      legacy_crea_asset() {}
 
       template< bool force_canon >
       asset to_asset()const
@@ -36,21 +36,21 @@ struct legacy_creativecoin_asset
          return asset( amount, CREA_SYMBOL );
       }
 
-      static legacy_creativecoin_asset from_amount( share_type amount )
+      static legacy_crea_asset from_amount( share_type amount )
       {
-         legacy_creativecoin_asset leg;
+         legacy_crea_asset leg;
          leg.amount = amount;
          return leg;
       }
 
-      static legacy_creativecoin_asset from_asset( const asset& a )
+      static legacy_crea_asset from_asset( const asset& a )
       {
          FC_ASSERT( a.symbol == CREA_SYMBOL );
          return from_amount( a.amount );
       }
 
       share_type                       amount;
-      legacy_creativecoin_asset_symbol_type   symbol;
+      legacy_crea_asset_symbol_type   symbol;
 };
 
 } }
@@ -58,7 +58,7 @@ struct legacy_creativecoin_asset
 namespace fc { namespace raw {
 
 template< typename Stream >
-inline void pack( Stream& s, const creativecoin::protocol::legacy_creativecoin_asset_symbol_type& sym )
+inline void pack( Stream& s, const crea::protocol::legacy_crea_asset_symbol_type& sym )
 {
    switch( sym.ser )
    {
@@ -77,7 +77,7 @@ inline void pack( Stream& s, const creativecoin::protocol::legacy_creativecoin_a
 }
 
 template< typename Stream >
-inline void unpack( Stream& s, creativecoin::protocol::legacy_creativecoin_asset_symbol_type& sym )
+inline void unpack( Stream& s, crea::protocol::legacy_crea_asset_symbol_type& sym )
 {
    //  994240:        "account_creation_fee": "0.1 CREA"
    // 1021529:        "account_creation_fee": "10.0 CREA"
@@ -109,21 +109,21 @@ inline void unpack( Stream& s, creativecoin::protocol::legacy_creativecoin_asset
 
 } // fc::raw
 
-inline void to_variant( const creativecoin::protocol::legacy_creativecoin_asset& leg, fc::variant& v )
+inline void to_variant( const crea::protocol::legacy_crea_asset& leg, fc::variant& v )
 {
    to_variant( leg.to_asset<false>(), v );
 }
 
-inline void from_variant( const fc::variant& v, creativecoin::protocol::legacy_creativecoin_asset& leg )
+inline void from_variant( const fc::variant& v, crea::protocol::legacy_crea_asset& leg )
 {
-   creativecoin::protocol::asset a;
+   crea::protocol::asset a;
    from_variant( v, a );
-   leg = creativecoin::protocol::legacy_creativecoin_asset::from_asset( a );
+   leg = crea::protocol::legacy_crea_asset::from_asset( a );
 }
 
 } // fc
 
-FC_REFLECT( creativecoin::protocol::legacy_creativecoin_asset,
+FC_REFLECT( crea::protocol::legacy_crea_asset,
    (amount)
    (symbol)
    )

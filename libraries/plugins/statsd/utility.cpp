@@ -1,6 +1,6 @@
-#include <creativecoin/plugins/statsd/utility.hpp>
+#include <crea/plugins/statsd/utility.hpp>
 
-namespace creativecoin { namespace plugins{ namespace statsd { namespace util {
+namespace crea { namespace plugins{ namespace statsd { namespace util {
 
 bool statsd_enabled()
 {
@@ -14,4 +14,4 @@ const statsd_plugin& get_statsd()
    return statsd;
 }
 
-} } } } // creativecoin::plugins::statsd::util
+} } } } // crea::plugins::statsd::util

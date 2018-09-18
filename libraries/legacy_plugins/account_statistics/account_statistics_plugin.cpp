@@ -1,11 +1,11 @@
-#include <creativecoin/account_statistics/account_statistics_api.hpp>
+#include <crea/account_statistics/account_statistics_api.hpp>
 
-#include <creativecoin/chain/account_object.hpp>
-#include <creativecoin/chain/comment_object.hpp>
+#include <crea/chain/account_object.hpp>
+#include <crea/chain/comment_object.hpp>
 
-#include <creativecoin/chain/database.hpp>
+#include <crea/chain/database.hpp>
 
-namespace creativecoin { namespace account_statistics {
+namespace crea { namespace account_statistics {
 
 namespace detail
 {
@@ -105,6 +105,6 @@ const flat_set< std::string >& account_statistics_plugin::get_tracked_accounts()
    return _my->_tracked_accounts;
 }
 
-} } // creativecoin::account_statistics
+} } // crea::account_statistics
 
-CREA_DEFINE_PLUGIN( account_statistics, creativecoin::account_statistics::account_statistics_plugin );
+CREA_DEFINE_PLUGIN( account_statistics, crea::account_statistics::account_statistics_plugin );

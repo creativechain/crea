@@ -1,8 +1,8 @@
-#include <creativecoin/plugins/condenser_api/condenser_api_plugin.hpp>
-#include <creativecoin/plugins/condenser_api/condenser_api.hpp>
-#include <creativecoin/plugins/chain/chain_plugin.hpp>
+#include <crea/plugins/condenser_api/condenser_api_plugin.hpp>
+#include <crea/plugins/condenser_api/condenser_api.hpp>
+#include <crea/plugins/chain/chain_plugin.hpp>
 
-namespace creativecoin { namespace plugins { namespace condenser_api {
+namespace crea { namespace plugins { namespace condenser_api {
 
 condenser_api_plugin::condenser_api_plugin() {}
 condenser_api_plugin::~condenser_api_plugin() {}
@@ -26,4 +26,4 @@ void condenser_api_plugin::plugin_startup()
 
 void condenser_api_plugin::plugin_shutdown() {}
 
-} } } // creativecoin::plugins::condenser_api
+} } } // crea::plugins::condenser_api

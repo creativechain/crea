@@ -1,12 +1,12 @@
 #pragma once
-#include <creativecoin/chain/creativecoin_object_types.hpp>
+#include <crea/chain/crea_object_types.hpp>
 
 #include <boost/multi_index/composite_key.hpp>
 
-namespace creativecoin { namespace plugins { namespace smt_test {
+namespace crea { namespace plugins { namespace smt_test {
 
 using namespace std;
-using namespace creativecoin::chain;
+using namespace crea::chain;
 
 #ifndef CREA_SMT_TEST_SPACE_ID
 #define CREA_SMT_TEST_SPACE_ID 13
@@ -57,9 +57,9 @@ typedef multi_index_container<
    allocator< smt_token_object >
 > smt_token_index;
 
-} } } // creativecoin::plugins::smt_test
+} } } // crea::plugins::smt_test
 
-FC_REFLECT( creativecoin::plugins::smt_test::smt_token_object,
+FC_REFLECT( crea::plugins::smt_test::smt_token_object,
    (id)
    (control_account)
    (decimal_places)
@@ -69,4 +69,4 @@ FC_REFLECT( creativecoin::plugins::smt_test::smt_token_object,
    (announced_launch_time)
    (launch_expiration_time)
    )
-CHAINBASE_SET_INDEX_TYPE( creativecoin::plugins::smt_test::smt_token_object, creativecoin::plugins::smt_test::smt_token_index )
+CHAINBASE_SET_INDEX_TYPE( crea::plugins::smt_test::smt_token_object, crea::plugins::smt_test::smt_token_index )

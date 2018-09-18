@@ -1,13 +1,13 @@
 #pragma once
-#include <creativecoin/protocol/authority.hpp>
+#include <crea/protocol/authority.hpp>
 #include <chainbase/chainbase.hpp>
 #include <boost/interprocess/managed_mapped_file.hpp>
 
-namespace creativecoin { namespace chain {
-   using creativecoin::protocol::authority;
-   using creativecoin::protocol::public_key_type;
-   using creativecoin::protocol::account_name_type;
-   using creativecoin::protocol::weight_type;
+namespace crea { namespace chain {
+   using crea::protocol::authority;
+   using crea::protocol::public_key_type;
+   using crea::protocol::account_name_type;
+   using crea::protocol::weight_type;
 
    using chainbase::t_flat_map;
    using chainbase::t_allocator_pair;
@@ -98,7 +98,7 @@ namespace creativecoin { namespace chain {
    bool operator == ( const authority& a, const shared_authority& b );
    bool operator == ( const shared_authority& a, const authority& b );
 
-} } //creativecoin::chain
+} } //crea::chain
 
-FC_REFLECT_TYPENAME( creativecoin::chain::shared_authority::account_authority_map)
-FC_REFLECT( creativecoin::chain::shared_authority, (weight_threshold)(account_auths)(key_auths) )
+FC_REFLECT_TYPENAME( crea::chain::shared_authority::account_authority_map)
+FC_REFLECT( crea::chain::shared_authority, (weight_threshold)(account_auths)(key_auths) )

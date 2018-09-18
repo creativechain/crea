@@ -1,20 +1,20 @@
 #pragma once
-#include <creativecoin/plugins/json_rpc/utility.hpp>
-#include <creativecoin/plugins/database_api/database_api_objects.hpp>
-#include <creativecoin/plugins/tags/tags_plugin.hpp>
+#include <crea/plugins/json_rpc/utility.hpp>
+#include <crea/plugins/database_api/database_api_objects.hpp>
+#include <crea/plugins/tags/tags_plugin.hpp>
 
-#include <creativecoin/protocol/types.hpp>
-#include <creativecoin/chain/database.hpp>
+#include <crea/protocol/types.hpp>
+#include <crea/chain/database.hpp>
 
 #include <fc/optional.hpp>
 #include <fc/variant.hpp>
 #include <fc/vector.hpp>
 
-namespace creativecoin { namespace plugins { namespace tags {
+namespace crea { namespace plugins { namespace tags {
 
-using creativecoin::protocol::share_type;
-using creativecoin::protocol::asset;
-using creativecoin::protocol::account_name_type;
+using crea::protocol::share_type;
+using crea::protocol::asset;
+using crea::protocol::account_name_type;
 using fc::time_point_sec;
 
 namespace detail { class tags_api_impl; }
@@ -51,7 +51,7 @@ struct vote_state
 
 struct discussion : public database_api::api_comment_object
 {
-   discussion( const creativecoin::chain::comment_object& o, const creativecoin::chain::database& db ) :
+   discussion( const crea::chain::comment_object& o, const crea::chain::database& db ) :
       database_api::api_comment_object( o, db ) {}
 
    discussion(){}
@@ -236,46 +236,46 @@ class tags_api
       std::unique_ptr< detail::tags_api_impl > my;
 };
 
-} } } // creativecoin::plugins::tags
+} } } // crea::plugins::tags
 
-FC_REFLECT( creativecoin::plugins::tags::api_tag_object,
+FC_REFLECT( crea::plugins::tags::api_tag_object,
             (name)(total_payouts)(net_votes)(top_posts)(comments)(trending) )
 
-FC_REFLECT( creativecoin::plugins::tags::vote_state,
+FC_REFLECT( crea::plugins::tags::vote_state,
             (voter)(weight)(rshares)(percent)(reputation)(time) )
 
-FC_REFLECT_DERIVED( creativecoin::plugins::tags::discussion, (creativecoin::plugins::database_api::api_comment_object),
+FC_REFLECT_DERIVED( crea::plugins::tags::discussion, (crea::plugins::database_api::api_comment_object),
             (url)(root_title)(pending_payout_value)(total_pending_payout_value)(active_votes)(replies)(author_reputation)(promoted)(body_length)(reblogged_by)(first_reblogged_by)(first_reblogged_on) )
 
-FC_REFLECT( creativecoin::plugins::tags::get_trending_tags_args,
+FC_REFLECT( crea::plugins::tags::get_trending_tags_args,
             (start_tag)(limit) )
 
-FC_REFLECT( creativecoin::plugins::tags::get_trending_tags_return,
+FC_REFLECT( crea::plugins::tags::get_trending_tags_return,
             (tags) )
 
-FC_REFLECT( creativecoin::plugins::tags::get_tags_used_by_author_args,
+FC_REFLECT( crea::plugins::tags::get_tags_used_by_author_args,
             (author) )
 
-FC_REFLECT( creativecoin::plugins::tags::tag_count_object,
+FC_REFLECT( crea::plugins::tags::tag_count_object,
             (tag)(count) )
 
-FC_REFLECT( creativecoin::plugins::tags::get_tags_used_by_author_return,
+FC_REFLECT( crea::plugins::tags::get_tags_used_by_author_return,
             (tags) )
 
-FC_REFLECT( creativecoin::plugins::tags::get_discussion_args,
+FC_REFLECT( crea::plugins::tags::get_discussion_args,
             (author)(permlink) )
 
-FC_REFLECT( creativecoin::plugins::tags::discussion_query,
+FC_REFLECT( crea::plugins::tags::discussion_query,
             (tag)(limit)(filter_tags)(select_authors)(select_tags)(truncate_body)(start_author)(start_permlink)(parent_author)(parent_permlink) )
 
-FC_REFLECT( creativecoin::plugins::tags::discussion_query_result,
+FC_REFLECT( crea::plugins::tags::discussion_query_result,
             (discussions) )
 
-FC_REFLECT( creativecoin::plugins::tags::get_replies_by_last_update_args,
+FC_REFLECT( crea::plugins::tags::get_replies_by_last_update_args,
             (start_parent_author)(start_permlink)(limit) )
 
-FC_REFLECT( creativecoin::plugins::tags::get_discussions_by_author_before_date_args,
+FC_REFLECT( crea::plugins::tags::get_discussions_by_author_before_date_args,
             (author)(start_permlink)(before_date)(limit) )
 
-FC_REFLECT( creativecoin::plugins::tags::get_active_votes_return,
+FC_REFLECT( crea::plugins::tags::get_active_votes_return,
             (votes) )

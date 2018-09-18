@@ -1,4 +1,4 @@
-file( GLOB HEADERS "include/creativecoin/plugins/chain_api/*.hpp" )
+file( GLOB HEADERS "include/crea/plugins/chain_api/*.hpp" )
 set( SOURCES chain_api.cpp chain_api_plugin.cpp )
 
 add_library( chain_api_plugin ${SOURCES} ${HEADERS} )

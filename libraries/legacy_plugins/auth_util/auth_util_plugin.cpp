@@ -1,11 +1,11 @@
 
 
-#include <creativecoin/plugins/auth_util/auth_util_api.hpp>
-#include <creativecoin/plugins/auth_util/auth_util_plugin.hpp>
+#include <crea/plugins/auth_util/auth_util_api.hpp>
+#include <crea/plugins/auth_util/auth_util_plugin.hpp>
 
 #include <string>
 
-namespace creativecoin { namespace plugin { namespace auth_util {
+namespace crea { namespace plugin { namespace auth_util {
 
 auth_util_plugin::auth_util_plugin( application* app ) : plugin( app ) {}
 auth_util_plugin::~auth_util_plugin() {}
@@ -28,6 +28,6 @@ void auth_util_plugin::plugin_shutdown()
 {
 }
 
-} } } // creativecoin::plugin::auth_util
+} } } // crea::plugin::auth_util
 
-CREA_DEFINE_PLUGIN( auth_util, creativecoin::plugin::auth_util::auth_util_plugin )
+CREA_DEFINE_PLUGIN( auth_util, crea::plugin::auth_util::auth_util_plugin )

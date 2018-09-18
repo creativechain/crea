@@ -8,7 +8,7 @@
 
 #include <fc/reflect/reflect.hpp>
 
-namespace creativecoin { namespace chain {
+namespace crea { namespace chain {
 
 struct rational_u64
 {
@@ -24,7 +24,7 @@ const std::vector< rational_u64 >& get_mm_ticks();
 
 } }
 
-FC_REFLECT( creativecoin::chain::rational_u64,
+FC_REFLECT( crea::chain::rational_u64,
    (numerator)
    (denominator)
    )

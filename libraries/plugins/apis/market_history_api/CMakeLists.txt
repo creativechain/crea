@@ -1,4 +1,4 @@
-file(GLOB HEADERS "include/creativecoin/plugins/market_history_api/*.hpp")
+file(GLOB HEADERS "include/crea/plugins/market_history_api/*.hpp")
 add_library( market_history_api_plugin
              market_history_api_plugin.cpp
              market_history_api.cpp

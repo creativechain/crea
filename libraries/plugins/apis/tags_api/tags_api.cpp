@@ -1,21 +1,21 @@
-#include <creativecoin/plugins/tags_api/tags_api_plugin.hpp>
-#include <creativecoin/plugins/tags_api/tags_api.hpp>
-#include <creativecoin/plugins/tags/tags_plugin.hpp>
-#include <creativecoin/plugins/follow_api/follow_api_plugin.hpp>
-#include <creativecoin/plugins/follow_api/follow_api.hpp>
+#include <crea/plugins/tags_api/tags_api_plugin.hpp>
+#include <crea/plugins/tags_api/tags_api.hpp>
+#include <crea/plugins/tags/tags_plugin.hpp>
+#include <crea/plugins/follow_api/follow_api_plugin.hpp>
+#include <crea/plugins/follow_api/follow_api.hpp>
 
-#include <creativecoin/chain/creativecoin_object_types.hpp>
-#include <creativecoin/chain/util/reward.hpp>
-#include <creativecoin/chain/util/uint256.hpp>
+#include <crea/chain/crea_object_types.hpp>
+#include <crea/chain/util/reward.hpp>
+#include <crea/chain/util/uint256.hpp>
 
-namespace creativecoin { namespace plugins { namespace tags {
+namespace crea { namespace plugins { namespace tags {
 
 namespace detail {
 
 class tags_api_impl
 {
    public:
-      tags_api_impl() : _db( appbase::app().get_plugin< creativecoin::plugins::chain::chain_plugin >().db() ) {}
+      tags_api_impl() : _db( appbase::app().get_plugin< crea::plugins::chain::chain_plugin >().db() ) {}
 
       DECLARE_API_IMPL(
          (get_trending_tags)
@@ -63,7 +63,7 @@ class tags_api_impl
       chain::comment_id_type get_parent( const discussion_query& q );
 
       chain::database& _db;
-      std::shared_ptr< creativecoin::plugins::follow::follow_api > _follow_api;
+      std::shared_ptr< crea::plugins::follow::follow_api > _follow_api;
 };
 
 DEFINE_API_IMPL( tags_api_impl, get_trending_tags )
@@ -549,7 +549,7 @@ void tags_api_impl::set_pending_payout( discussion& d )
    if( _db.has_hardfork( CREA_HARDFORK_0_17__774 ) )
       pot = _db.get_reward_fund( _db.get_comment( d.author, d.permlink ) ).reward_balance;
    else
-      pot = props.total_reward_fund_creativecoin;
+      pot = props.total_reward_fund_crea;
 
    if( !hist.current_median_history.is_null() ) pot = pot * hist.current_median_history;
 
@@ -744,10 +744,10 @@ void tags_api::set_pending_payout( discussion& d )
 
 void tags_api::api_startup()
 {
-   auto follow_api_plugin = appbase::app().find_plugin< creativecoin::plugins::follow::follow_api_plugin >();
+   auto follow_api_plugin = appbase::app().find_plugin< crea::plugins::follow::follow_api_plugin >();
 
    if( follow_api_plugin != nullptr )
       my->_follow_api = follow_api_plugin->api;
 }
 
-} } } // creativecoin::plugins::tags
+} } } // crea::plugins::tags

@@ -1,12 +1,12 @@
 #pragma once
-#include <creativecoin/protocol/exceptions.hpp>
-#include <creativecoin/protocol/operations.hpp>
+#include <crea/protocol/exceptions.hpp>
+#include <crea/protocol/operations.hpp>
 
-namespace creativecoin { namespace chain {
+namespace crea { namespace chain {
 
 class database;
 
-template< typename OperationType=creativecoin::protocol::operation >
+template< typename OperationType=crea::protocol::operation >
 class evaluator
 {
    public:
@@ -17,7 +17,7 @@ class evaluator
       virtual std::string get_name( const OperationType& op ) = 0;
 };
 
-template< typename EvaluatorType, typename OperationType=creativecoin::protocol::operation >
+template< typename EvaluatorType, typename OperationType=crea::protocol::operation >
 class evaluator_impl : public evaluator<OperationType>
 {
    public:
@@ -54,26 +54,26 @@ class evaluator_impl : public evaluator<OperationType>
 } }
 
 #define CREA_DEFINE_EVALUATOR( X ) \
-class X ## _evaluator : public creativecoin::chain::evaluator_impl< X ## _evaluator > \
+class X ## _evaluator : public crea::chain::evaluator_impl< X ## _evaluator > \
 {                                                                           \
    public:                                                                  \
       typedef X ## _operation operation_type;                               \
                                                                             \
       X ## _evaluator( database& db )                                       \
-         : creativecoin::chain::evaluator_impl< X ## _evaluator >( db )          \
+         : crea::chain::evaluator_impl< X ## _evaluator >( db )          \
       {}                                                                    \
                                                                             \
       void do_apply( const X ## _operation& o );                            \
 };
 
 #define CREA_DEFINE_PLUGIN_EVALUATOR( PLUGIN, OPERATION, X )               \
-class X ## _evaluator : public creativecoin::chain::evaluator_impl< X ## _evaluator, OPERATION > \
+class X ## _evaluator : public crea::chain::evaluator_impl< X ## _evaluator, OPERATION > \
 {                                                                           \
    public:                                                                  \
       typedef X ## _operation operation_type;                               \
                                                                             \
-      X ## _evaluator( creativecoin::chain::database& db, PLUGIN* plugin )       \
-         : creativecoin::chain::evaluator_impl< X ## _evaluator, OPERATION >( db ), \
+      X ## _evaluator( crea::chain::database& db, PLUGIN* plugin )       \
+         : crea::chain::evaluator_impl< X ## _evaluator, OPERATION >( db ), \
            _plugin( plugin )                                                \
       {}                                                                    \
                                                                             \

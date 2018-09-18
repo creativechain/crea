@@ -1,8 +1,8 @@
-#include <creativecoin/plugins/debug_node_api/debug_node_api_plugin.hpp>
-#include <creativecoin/plugins/debug_node_api/debug_node_api.hpp>
+#include <crea/plugins/debug_node_api/debug_node_api_plugin.hpp>
+#include <crea/plugins/debug_node_api/debug_node_api.hpp>
 
 
-namespace creativecoin { namespace plugins { namespace debug_node {
+namespace crea { namespace plugins { namespace debug_node {
 
 debug_node_api_plugin::debug_node_api_plugin() {}
 debug_node_api_plugin::~debug_node_api_plugin() {}
@@ -17,4 +17,4 @@ void debug_node_api_plugin::plugin_initialize( const variables_map& options )
 void debug_node_api_plugin::plugin_startup() {}
 void debug_node_api_plugin::plugin_shutdown() {}
 
-} } } // creativecoin::plugins::debug_node
+} } } // crea::plugins::debug_node

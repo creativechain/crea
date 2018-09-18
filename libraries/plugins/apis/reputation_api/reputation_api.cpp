@@ -1,16 +1,16 @@
-#include <creativecoin/plugins/reputation_api/reputation_api_plugin.hpp>
-#include <creativecoin/plugins/reputation_api/reputation_api.hpp>
+#include <crea/plugins/reputation_api/reputation_api_plugin.hpp>
+#include <crea/plugins/reputation_api/reputation_api.hpp>
 
-#include <creativecoin/plugins/reputation/reputation_objects.hpp>
+#include <crea/plugins/reputation/reputation_objects.hpp>
 
-namespace creativecoin { namespace plugins { namespace reputation {
+namespace crea { namespace plugins { namespace reputation {
 
 namespace detail {
 
 class reputation_api_impl
 {
    public:
-      reputation_api_impl() : _db( appbase::app().get_plugin< creativecoin::plugins::chain::chain_plugin >().db() ) {}
+      reputation_api_impl() : _db( appbase::app().get_plugin< crea::plugins::chain::chain_plugin >().db() ) {}
 
       DECLARE_API_IMPL(
          (get_account_reputations)
@@ -59,4 +59,4 @@ DEFINE_READ_APIS( reputation_api,
    (get_account_reputations)
 )
 
-} } } // creativecoin::plugins::reputation
+} } } // crea::plugins::reputation

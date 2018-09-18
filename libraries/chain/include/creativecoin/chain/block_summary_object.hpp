@@ -1,9 +1,9 @@
 #pragma once
-#include <creativecoin/chain/creativecoin_object_types.hpp>
+#include <crea/chain/crea_object_types.hpp>
 
-namespace creativecoin { namespace chain {
+namespace crea { namespace chain {
 
-   using creativecoin::protocol::block_id_type;
+   using crea::protocol::block_id_type;
 
    /**
     *  @brief tracks minimal information about past blocks to implement TaPOS
@@ -38,7 +38,7 @@ namespace creativecoin { namespace chain {
       allocator< block_summary_object >
    > block_summary_index;
 
-} } // creativecoin::chain
+} } // crea::chain
 
-FC_REFLECT( creativecoin::chain::block_summary_object, (id)(block_id) )
-CHAINBASE_SET_INDEX_TYPE( creativecoin::chain::block_summary_object, creativecoin::chain::block_summary_index )
+FC_REFLECT( crea::chain::block_summary_object, (id)(block_id) )
+CHAINBASE_SET_INDEX_TYPE( crea::chain::block_summary_object, crea::chain::block_summary_index )

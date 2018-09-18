@@ -1,8 +1,8 @@
 #pragma once
 
-#include <creativecoin/chain/evaluator.hpp>
+#include <crea/chain/evaluator.hpp>
 
-namespace creativecoin { namespace chain {
+namespace crea { namespace chain {
 
 template< typename OperationType >
 class evaluator_registry

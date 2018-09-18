@@ -1,8 +1,8 @@
-#include <creativecoin/plugins/tags_api/tags_api_plugin.hpp>
-#include <creativecoin/plugins/tags_api/tags_api.hpp>
+#include <crea/plugins/tags_api/tags_api_plugin.hpp>
+#include <crea/plugins/tags_api/tags_api.hpp>
 
 
-namespace creativecoin { namespace plugins { namespace tags {
+namespace crea { namespace plugins { namespace tags {
 
 tags_api_plugin::tags_api_plugin() {}
 tags_api_plugin::~tags_api_plugin() {}
@@ -17,4 +17,4 @@ void tags_api_plugin::plugin_initialize( const variables_map& options )
 void tags_api_plugin::plugin_startup() { api->api_startup(); }
 void tags_api_plugin::plugin_shutdown() {}
 
-} } } // creativecoin::plugins::tags
+} } } // crea::plugins::tags

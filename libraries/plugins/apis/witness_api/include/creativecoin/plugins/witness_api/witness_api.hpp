@@ -1,14 +1,14 @@
 #pragma once
-#include <creativecoin/plugins/json_rpc/utility.hpp>
-#include <creativecoin/plugins/witness/witness_objects.hpp>
+#include <crea/plugins/json_rpc/utility.hpp>
+#include <crea/plugins/witness/witness_objects.hpp>
 
-#include <creativecoin/protocol/types.hpp>
+#include <crea/protocol/types.hpp>
 
 #include <fc/optional.hpp>
 #include <fc/variant.hpp>
 #include <fc/vector.hpp>
 
-namespace creativecoin { namespace plugins { namespace witness {
+namespace crea { namespace plugins { namespace witness {
 
 namespace detail
 {
@@ -46,10 +46,10 @@ class witness_api
       std::unique_ptr< detail::witness_api_impl > my;
 };
 
-} } } // creativecoin::plugins::witness
+} } } // crea::plugins::witness
 
-FC_REFLECT( creativecoin::plugins::witness::get_account_bandwidth_args,
+FC_REFLECT( crea::plugins::witness::get_account_bandwidth_args,
             (account)(type) )
 
-FC_REFLECT( creativecoin::plugins::witness::get_account_bandwidth_return,
+FC_REFLECT( crea::plugins::witness::get_account_bandwidth_return,
             (bandwidth) )

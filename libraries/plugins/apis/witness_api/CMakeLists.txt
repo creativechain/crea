@@ -1,4 +1,4 @@
-file(GLOB HEADERS "include/creativecoin/plugins/witness_api/*.hpp")
+file(GLOB HEADERS "include/crea/plugins/witness_api/*.hpp")
 add_library( witness_api_plugin
              witness_api_plugin.cpp
              witness_api.cpp

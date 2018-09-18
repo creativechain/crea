@@ -1,12 +1,12 @@
 #pragma once
 
-#include <creativecoin/plugins/json_rpc/utility.hpp>
+#include <crea/plugins/json_rpc/utility.hpp>
 
-#include <creativecoin/plugins/block_api/block_api_args.hpp>
+#include <crea/plugins/block_api/block_api_args.hpp>
 
 #define BLOCK_API_SINGLE_QUERY_LIMIT 1000
 
-namespace creativecoin { namespace plugins { namespace block_api {
+namespace crea { namespace plugins { namespace block_api {
 
 class block_api_impl;
 
@@ -41,5 +41,5 @@ class block_api
       std::unique_ptr< block_api_impl > my;
 };
 
-} } } //creativecoin::plugins::block_api
+} } } //crea::plugins::block_api
 

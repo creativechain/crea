@@ -1,14 +1,14 @@
 #pragma once
-#include <creativecoin/chain/creativecoin_object_types.hpp>
+#include <crea/chain/crea_object_types.hpp>
 
 #include <boost/multi_index/composite_key.hpp>
 
 #include <fc/crypto/restartable_sha256.hpp>
 
-namespace creativecoin { namespace plugins { namespace block_log_info {
+namespace crea { namespace plugins { namespace block_log_info {
 
 using namespace std;
-using namespace creativecoin::chain;
+using namespace crea::chain;
 
 #ifndef CREA_BLOCK_LOG_INFO_SPACE_ID
 #define CREA_BLOCK_LOG_INFO_SPACE_ID 14
@@ -79,13 +79,13 @@ typedef multi_index_container<
    allocator< block_log_pending_message_object >
 > block_log_pending_message_index;
 
-} } } // creativecoin::plugins::block_log_info
+} } } // crea::plugins::block_log_info
 
 
-FC_REFLECT( creativecoin::plugins::block_log_info::block_log_hash_state_object, (id)(total_size)(rsha256)(last_interval) )
-CHAINBASE_SET_INDEX_TYPE( creativecoin::plugins::block_log_info::block_log_hash_state_object, creativecoin::plugins::block_log_info::block_log_hash_state_index )
+FC_REFLECT( crea::plugins::block_log_info::block_log_hash_state_object, (id)(total_size)(rsha256)(last_interval) )
+CHAINBASE_SET_INDEX_TYPE( crea::plugins::block_log_info::block_log_hash_state_object, crea::plugins::block_log_info::block_log_hash_state_index )
 
-FC_REFLECT( creativecoin::plugins::block_log_info::block_log_message_data, (block_num)(total_size)(current_interval)(rsha256) )
+FC_REFLECT( crea::plugins::block_log_info::block_log_message_data, (block_num)(total_size)(current_interval)(rsha256) )
 
-FC_REFLECT( creativecoin::plugins::block_log_info::block_log_pending_message_object, (id)(data) )
-CHAINBASE_SET_INDEX_TYPE( creativecoin::plugins::block_log_info::block_log_pending_message_object, creativecoin::plugins::block_log_info::block_log_pending_message_index )
+FC_REFLECT( crea::plugins::block_log_info::block_log_pending_message_object, (id)(data) )
+CHAINBASE_SET_INDEX_TYPE( crea::plugins::block_log_info::block_log_pending_message_object, crea::plugins::block_log_info::block_log_pending_message_index )

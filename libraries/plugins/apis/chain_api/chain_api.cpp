@@ -1,7 +1,7 @@
-#include <creativecoin/plugins/chain_api/chain_api_plugin.hpp>
-#include <creativecoin/plugins/chain_api/chain_api.hpp>
+#include <crea/plugins/chain_api/chain_api_plugin.hpp>
+#include <crea/plugins/chain_api/chain_api.hpp>
 
-namespace creativecoin { namespace plugins { namespace chain {
+namespace crea { namespace plugins { namespace chain {
 
 namespace detail {
 
@@ -86,4 +86,4 @@ DEFINE_LOCKLESS_APIS( chain_api,
    (push_transaction)
 )
 
-} } } //creativecoin::plugins::chain
+} } } //crea::plugins::chain

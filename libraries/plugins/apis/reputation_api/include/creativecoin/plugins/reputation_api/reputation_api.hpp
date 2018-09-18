@@ -1,17 +1,17 @@
 #pragma once
-#include <creativecoin/plugins/json_rpc/utility.hpp>
-#include <creativecoin/plugins/reputation/reputation_objects.hpp>
-#include <creativecoin/plugins/database_api/database_api_objects.hpp>
+#include <crea/plugins/json_rpc/utility.hpp>
+#include <crea/plugins/reputation/reputation_objects.hpp>
+#include <crea/plugins/database_api/database_api_objects.hpp>
 
-#include <creativecoin/protocol/types.hpp>
+#include <crea/protocol/types.hpp>
 
 #include <fc/optional.hpp>
 #include <fc/variant.hpp>
 #include <fc/vector.hpp>
 
-namespace creativecoin { namespace plugins { namespace reputation {
+namespace crea { namespace plugins { namespace reputation {
 
-using creativecoin::protocol::account_name_type;
+using crea::protocol::account_name_type;
 
 namespace detail
 {
@@ -21,7 +21,7 @@ namespace detail
 struct account_reputation
 {
    account_name_type             account;
-   creativecoin::protocol::share_type   reputation;
+   crea::protocol::share_type   reputation;
 };
 
 struct get_account_reputations_args
@@ -49,13 +49,13 @@ class reputation_api
       std::unique_ptr< detail::reputation_api_impl > my;
 };
 
-} } } // creativecoin::plugins::reputation
+} } } // crea::plugins::reputation
 
-FC_REFLECT( creativecoin::plugins::reputation::account_reputation,
+FC_REFLECT( crea::plugins::reputation::account_reputation,
             (account)(reputation) );
 
-FC_REFLECT( creativecoin::plugins::reputation::get_account_reputations_args,
+FC_REFLECT( crea::plugins::reputation::get_account_reputations_args,
             (account_lower_bound)(limit) );
 
-FC_REFLECT( creativecoin::plugins::reputation::get_account_reputations_return,
+FC_REFLECT( crea::plugins::reputation::get_account_reputations_return,
             (reputations) );

@@ -1,9 +1,9 @@
 #pragma once
 
-#include <creativecoin/protocol/authority.hpp>
-#include <creativecoin/protocol/types.hpp>
+#include <crea/protocol/authority.hpp>
+#include <crea/protocol/types.hpp>
 
-namespace creativecoin { namespace protocol {
+namespace crea { namespace protocol {
 
 typedef std::function<authority(const string&)> authority_getter;
 
@@ -35,4 +35,4 @@ struct sign_state
       uint32_t                         max_recursion = CREA_MAX_SIG_CHECK_DEPTH;
 };
 
-} } // creativecoin::protocol
+} } // crea::protocol

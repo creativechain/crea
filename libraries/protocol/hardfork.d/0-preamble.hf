@@ -9,7 +9,7 @@
 
 #pragma once
 
-#include <creativecoin/protocol/version.hpp>
+#include <crea/protocol/version.hpp>
 #include <set>
 
 #ifdef IS_TEST_NET

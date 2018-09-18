@@ -1,12 +1,12 @@
 #pragma once
-#include <creativecoin/chain/creativecoin_object_types.hpp>
+#include <crea/chain/crea_object_types.hpp>
 
 #include <boost/multi_index/composite_key.hpp>
 
-namespace creativecoin { namespace plugins { namespace account_by_key {
+namespace crea { namespace plugins { namespace account_by_key {
 
 using namespace std;
-using namespace creativecoin::chain;
+using namespace crea::chain;
 
 #ifndef CREA_ACCOUNT_BY_KEY_SPACE_ID
 #define CREA_ACCOUNT_BY_KEY_SPACE_ID 11
@@ -53,8 +53,8 @@ typedef multi_index_container<
    allocator< key_lookup_object >
 > key_lookup_index;
 
-} } } // creativecoin::plugins::account_by_key
+} } } // crea::plugins::account_by_key
 
 
-FC_REFLECT( creativecoin::plugins::account_by_key::key_lookup_object, (id)(key)(account) )
-CHAINBASE_SET_INDEX_TYPE( creativecoin::plugins::account_by_key::key_lookup_object, creativecoin::plugins::account_by_key::key_lookup_index )
+FC_REFLECT( crea::plugins::account_by_key::key_lookup_object, (id)(key)(account) )
+CHAINBASE_SET_INDEX_TYPE( crea::plugins::account_by_key::key_lookup_object, crea::plugins::account_by_key::key_lookup_index )

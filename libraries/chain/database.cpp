@@ -1,27 +1,27 @@
-#include <creativecoin/protocol/creativecoin_operations.hpp>
+#include <crea/protocol/crea_operations.hpp>
 
-#include <creativecoin/chain/block_summary_object.hpp>
-#include <creativecoin/chain/compound.hpp>
-#include <creativecoin/chain/custom_operation_interpreter.hpp>
-#include <creativecoin/chain/database.hpp>
-#include <creativecoin/chain/database_exceptions.hpp>
-#include <creativecoin/chain/db_with.hpp>
-#include <creativecoin/chain/evaluator_registry.hpp>
-#include <creativecoin/chain/global_property_object.hpp>
-#include <creativecoin/chain/history_object.hpp>
-#include <creativecoin/chain/index.hpp>
-#include <creativecoin/chain/smt_objects.hpp>
-#include <creativecoin/chain/creativecoin_evaluator.hpp>
-#include <creativecoin/chain/creativecoin_objects.hpp>
-#include <creativecoin/chain/transaction_object.hpp>
-#include <creativecoin/chain/shared_db_merkle.hpp>
-#include <creativecoin/chain/operation_notification.hpp>
-#include <creativecoin/chain/witness_schedule.hpp>
+#include <crea/chain/block_summary_object.hpp>
+#include <crea/chain/compound.hpp>
+#include <crea/chain/custom_operation_interpreter.hpp>
+#include <crea/chain/database.hpp>
+#include <crea/chain/database_exceptions.hpp>
+#include <crea/chain/db_with.hpp>
+#include <crea/chain/evaluator_registry.hpp>
+#include <crea/chain/global_property_object.hpp>
+#include <crea/chain/history_object.hpp>
+#include <crea/chain/index.hpp>
+#include <crea/chain/smt_objects.hpp>
+#include <crea/chain/crea_evaluator.hpp>
+#include <crea/chain/crea_objects.hpp>
+#include <crea/chain/transaction_object.hpp>
+#include <crea/chain/shared_db_merkle.hpp>
+#include <crea/chain/operation_notification.hpp>
+#include <crea/chain/witness_schedule.hpp>
 
-#include <creativecoin/chain/util/asset.hpp>
-#include <creativecoin/chain/util/reward.hpp>
-#include <creativecoin/chain/util/uint256.hpp>
-#include <creativecoin/chain/util/reward.hpp>
+#include <crea/chain/util/asset.hpp>
+#include <crea/chain/util/reward.hpp>
+#include <crea/chain/util/uint256.hpp>
+#include <crea/chain/util/reward.hpp>
 
 #include <fc/smart_ref_impl.hpp>
 #include <fc/uint128.hpp>
@@ -37,7 +37,7 @@
 #include <fstream>
 #include <functional>
 
-namespace creativecoin { namespace chain {
+namespace crea { namespace chain {
 
 struct object_schema_repr
 {
@@ -61,11 +61,11 @@ struct db_schema
 
 } }
 
-FC_REFLECT( creativecoin::chain::object_schema_repr, (space_type)(type) )
-FC_REFLECT( creativecoin::chain::operation_schema_repr, (id)(type) )
-FC_REFLECT( creativecoin::chain::db_schema, (types)(object_types)(operation_type)(custom_operation_types) )
+FC_REFLECT( crea::chain::object_schema_repr, (space_type)(type) )
+FC_REFLECT( crea::chain::operation_schema_repr, (id)(type) )
+FC_REFLECT( crea::chain::db_schema, (types)(object_types)(operation_type)(custom_operation_types) )
 
-namespace creativecoin { namespace chain {
+namespace crea { namespace chain {
 
 using boost::container::flat_set;
 
@@ -73,7 +73,7 @@ struct reward_fund_context
 {
    uint128_t   recent_claims = 0;
    asset       reward_balance = asset( 0, CREA_SYMBOL );
-   share_type  creativecoin_awarded = 0;
+   share_type  crea_awarded = 0;
 };
 
 class database_impl
@@ -398,12 +398,12 @@ std::vector< block_id_type > database::get_block_ids_on_fork( block_id_type head
 
 chain_id_type database::get_chain_id() const
 {
-   return creativecoin_chain_id;
+   return crea_chain_id;
 }
 
 void database::set_chain_id( const std::string& _chain_id_name )
 {
-   creativecoin_chain_id = generate_chain_id( _chain_id_name );
+   crea_chain_id = generate_chain_id( _chain_id_name );
 }
 
 void database::foreach_block(std::function<bool(const signed_block_header&, const signed_block&)> processor) const
@@ -1094,13 +1094,13 @@ uint32_t database::get_slot_at_time(fc::time_point_sec when)const
  *  Converts CREA into sbd and adds it to to_account while reducing the CREA supply
  *  by CREA and increasing the sbd supply by the specified amount.
  */
-std::pair< asset, asset > database::create_sbd( const account_object& to_account, asset creativecoin, bool to_reward_balance )
+std::pair< asset, asset > database::create_sbd( const account_object& to_account, asset crea, bool to_reward_balance )
 {
    std::pair< asset, asset > assets( asset( 0, CBD_SYMBOL ), asset( 0, CREA_SYMBOL ) );
 
    try
    {
-      if( creativecoin.amount == 0 )
+      if( crea.amount == 0 )
          return assets;
 
       const auto& median_price = get_feed_history().current_median_history;
@@ -1108,34 +1108,34 @@ std::pair< asset, asset > database::create_sbd( const account_object& to_account
 
       if( !median_price.is_null() )
       {
-         auto to_sbd = ( gpo.cbd_print_rate * creativecoin.amount ) / CREA_100_PERCENT;
-         auto to_creativecoin = creativecoin.amount - to_sbd;
+         auto to_sbd = ( gpo.cbd_print_rate * crea.amount ) / CREA_100_PERCENT;
+         auto to_crea = crea.amount - to_sbd;
 
          auto sbd = asset( to_sbd, CREA_SYMBOL ) * median_price;
 
          if( to_reward_balance )
          {
             adjust_reward_balance( to_account, sbd );
-            adjust_reward_balance( to_account, asset( to_creativecoin, CREA_SYMBOL ) );
+            adjust_reward_balance( to_account, asset( to_crea, CREA_SYMBOL ) );
          }
          else
          {
             adjust_balance( to_account, sbd );
-            adjust_balance( to_account, asset( to_creativecoin, CREA_SYMBOL ) );
+            adjust_balance( to_account, asset( to_crea, CREA_SYMBOL ) );
          }
 
          adjust_supply( asset( -to_sbd, CREA_SYMBOL ) );
          adjust_supply( sbd );
          assets.first = sbd;
-         assets.second = asset( to_creativecoin, CREA_SYMBOL );
+         assets.second = asset( to_crea, CREA_SYMBOL );
       }
       else
       {
-         adjust_balance( to_account, creativecoin );
-         assets.second = creativecoin;
+         adjust_balance( to_account, crea );
+         assets.second = crea;
       }
    }
-   FC_CAPTURE_LOG_AND_RETHROW( (to_account.name)(creativecoin) )
+   FC_CAPTURE_LOG_AND_RETHROW( (to_account.name)(crea) )
 
    return assets;
 }
@@ -1151,7 +1151,7 @@ asset database::create_vesting( const account_object& to_account, asset liquid, 
       auto calculate_new_vesting = [ liquid ] ( price vesting_share_price ) -> asset
          {
          /**
-          *  The ratio of total_vesting_shares / total_vesting_fund_creativecoin should not
+          *  The ratio of total_vesting_shares / total_vesting_fund_crea should not
           *  change as the result of the user adding funds
           *
           *  V / C  = (V+Vn) / (C+Cn)
@@ -1221,11 +1221,11 @@ asset database::create_vesting( const account_object& to_account, asset liquid, 
          if( to_reward_balance )
          {
             props.pending_rewarded_vesting_shares += new_vesting;
-            props.pending_rewarded_vesting_creativecoin += liquid;
+            props.pending_rewarded_vesting_crea += liquid;
          }
          else
          {
-            props.total_vesting_fund_creativecoin += liquid;
+            props.total_vesting_fund_crea += liquid;
             props.total_vesting_shares += new_vesting;
          }
       } );
@@ -1376,18 +1376,18 @@ void database::clear_null_account_balance()
    if( !has_hardfork( CREA_HARDFORK_0_14__327 ) ) return;
 
    const auto& null_account = get_account( CREA_NULL_ACCOUNT );
-   asset total_creativecoin( 0, CREA_SYMBOL );
+   asset total_crea( 0, CREA_SYMBOL );
    asset total_sbd( 0, CBD_SYMBOL );
 
    if( null_account.balance.amount > 0 )
    {
-      total_creativecoin += null_account.balance;
+      total_crea += null_account.balance;
       adjust_balance( null_account, -null_account.balance );
    }
 
    if( null_account.savings_balance.amount > 0 )
    {
-      total_creativecoin += null_account.savings_balance;
+      total_crea += null_account.savings_balance;
       adjust_savings_balance( null_account, -null_account.savings_balance );
    }
 
@@ -1406,12 +1406,12 @@ void database::clear_null_account_balance()
    if( null_account.vesting_shares.amount > 0 )
    {
       const auto& gpo = get_dynamic_global_properties();
-      auto converted_creativecoin = null_account.vesting_shares * gpo.get_vesting_share_price();
+      auto converted_crea = null_account.vesting_shares * gpo.get_vesting_share_price();
 
       modify( gpo, [&]( dynamic_global_property_object& g )
       {
          g.total_vesting_shares -= null_account.vesting_shares;
-         g.total_vesting_fund_creativecoin -= converted_creativecoin;
+         g.total_vesting_fund_crea -= converted_crea;
       });
 
       modify( null_account, [&]( account_object& a )
@@ -1419,13 +1419,13 @@ void database::clear_null_account_balance()
          a.vesting_shares.amount = 0;
       });
 
-      total_creativecoin += converted_creativecoin;
+      total_crea += converted_crea;
    }
 
-   if( null_account.reward_creativecoin_balance.amount > 0 )
+   if( null_account.reward_crea_balance.amount > 0 )
    {
-      total_creativecoin += null_account.reward_creativecoin_balance;
-      adjust_reward_balance( null_account, -null_account.reward_creativecoin_balance );
+      total_crea += null_account.reward_crea_balance;
+      adjust_reward_balance( null_account, -null_account.reward_crea_balance );
    }
 
    if( null_account.reward_cbd_balance.amount > 0 )
@@ -1438,23 +1438,23 @@ void database::clear_null_account_balance()
    {
       const auto& gpo = get_dynamic_global_properties();
 
-      total_creativecoin += null_account.reward_vesting_creativecoin;
+      total_crea += null_account.reward_vesting_crea;
 
       modify( gpo, [&]( dynamic_global_property_object& g )
       {
          g.pending_rewarded_vesting_shares -= null_account.reward_vesting_balance;
-         g.pending_rewarded_vesting_creativecoin -= null_account.reward_vesting_creativecoin;
+         g.pending_rewarded_vesting_crea -= null_account.reward_vesting_crea;
       });
 
       modify( null_account, [&]( account_object& a )
       {
-         a.reward_vesting_creativecoin.amount = 0;
+         a.reward_vesting_crea.amount = 0;
          a.reward_vesting_balance.amount = 0;
       });
    }
 
-   if( total_creativecoin.amount > 0 )
-      adjust_supply( -total_creativecoin );
+   if( total_crea.amount > 0 )
+      adjust_supply( -total_crea );
 
    if( total_sbd.amount > 0 )
       adjust_supply( -total_sbd );
@@ -1520,11 +1520,11 @@ void database::process_vesting_withdrawals()
       else
          to_withdraw = std::min( from_account.vesting_shares.amount, from_account.vesting_withdraw_rate.amount ).value;
 
-      share_type vests_deposited_as_creativecoin = 0;
+      share_type vests_deposited_as_crea = 0;
       share_type vests_deposited_as_vests = 0;
-      asset total_creativecoin_converted = asset( 0, CREA_SYMBOL );
+      asset total_crea_converted = asset( 0, CREA_SYMBOL );
 
-      // Do two passes, the first for vests, the second for creativecoin. Try to maintain as much accuracy for vests as possible.
+      // Do two passes, the first for vests, the second for crea. Try to maintain as much accuracy for vests as possible.
       for( auto itr = didx.upper_bound( boost::make_tuple( from_account.name, account_name_type() ) );
            itr != didx.end() && itr->from_account == from_account.name;
            ++itr )
@@ -1559,37 +1559,37 @@ void database::process_vesting_withdrawals()
             const auto& to_account = get< account_object, by_name >( itr->to_account );
 
             share_type to_deposit = ( ( fc::uint128_t ( to_withdraw.value ) * itr->percent ) / CREA_100_PERCENT ).to_uint64();
-            vests_deposited_as_creativecoin += to_deposit;
-            auto converted_creativecoin = asset( to_deposit, VESTS_SYMBOL ) * cprops.get_vesting_share_price();
-            total_creativecoin_converted += converted_creativecoin;
+            vests_deposited_as_crea += to_deposit;
+            auto converted_crea = asset( to_deposit, VESTS_SYMBOL ) * cprops.get_vesting_share_price();
+            total_crea_converted += converted_crea;
 
             if( to_deposit > 0 )
             {
                modify( to_account, [&]( account_object& a )
                {
-                  a.balance += converted_creativecoin;
+                  a.balance += converted_crea;
                });
 
                modify( cprops, [&]( dynamic_global_property_object& o )
                {
-                  o.total_vesting_fund_creativecoin -= converted_creativecoin;
+                  o.total_vesting_fund_crea -= converted_crea;
                   o.total_vesting_shares.amount -= to_deposit;
                });
 
-               push_virtual_operation( fill_vesting_withdraw_operation( from_account.name, to_account.name, asset( to_deposit, VESTS_SYMBOL), converted_creativecoin ) );
+               push_virtual_operation( fill_vesting_withdraw_operation( from_account.name, to_account.name, asset( to_deposit, VESTS_SYMBOL), converted_crea ) );
             }
          }
       }
 
-      share_type to_convert = to_withdraw - vests_deposited_as_creativecoin - vests_deposited_as_vests;
+      share_type to_convert = to_withdraw - vests_deposited_as_crea - vests_deposited_as_vests;
       FC_ASSERT( to_convert >= 0, "Deposited more vests than were supposed to be withdrawn" );
 
-      auto converted_creativecoin = asset( to_convert, VESTS_SYMBOL ) * cprops.get_vesting_share_price();
+      auto converted_crea = asset( to_convert, VESTS_SYMBOL ) * cprops.get_vesting_share_price();
 
       modify( from_account, [&]( account_object& a )
       {
          a.vesting_shares.amount -= to_withdraw;
-         a.balance += converted_creativecoin;
+         a.balance += converted_crea;
          a.withdrawn += to_withdraw;
 
          if( a.withdrawn >= a.to_withdraw || a.vesting_shares.amount == 0 )
@@ -1605,14 +1605,14 @@ void database::process_vesting_withdrawals()
 
       modify( cprops, [&]( dynamic_global_property_object& o )
       {
-         o.total_vesting_fund_creativecoin -= converted_creativecoin;
+         o.total_vesting_fund_crea -= converted_crea;
          o.total_vesting_shares.amount -= to_convert;
       });
 
       if( to_withdraw > 0 )
          adjust_proxied_witness_votes( from_account, -to_withdraw );
 
-      push_virtual_operation( fill_vesting_withdraw_operation( from_account.name, from_account.name, asset( to_convert, VESTS_SYMBOL ), converted_creativecoin ) );
+      push_virtual_operation( fill_vesting_withdraw_operation( from_account.name, from_account.name, asset( to_convert, VESTS_SYMBOL ), converted_crea ) );
    }
 }
 
@@ -1747,14 +1747,14 @@ share_type database::cashout_comment_helper( util::comment_reward_context& ctx, 
 
             author_tokens -= total_beneficiary;
 
-            auto cbd_creativecoin     = ( author_tokens * comment.percent_creativecoin_dollars ) / ( 2 * CREA_100_PERCENT ) ;
-            auto vesting_creativecoin = author_tokens - cbd_creativecoin;
+            auto cbd_crea     = ( author_tokens * comment.percent_crea_dollars ) / ( 2 * CREA_100_PERCENT ) ;
+            auto vesting_crea = author_tokens - cbd_crea;
 
             const auto& author = get_account( comment.author );
-            auto vest_created = create_vesting( author, asset( vesting_creativecoin, CREA_SYMBOL ), has_hardfork( CREA_HARDFORK_0_17__659 ) );
-            auto cbd_payout = create_sbd( author, asset( cbd_creativecoin, CREA_SYMBOL ), has_hardfork( CREA_HARDFORK_0_17__659 ) );
+            auto vest_created = create_vesting( author, asset( vesting_crea, CREA_SYMBOL ), has_hardfork( CREA_HARDFORK_0_17__659 ) );
+            auto cbd_payout = create_sbd( author, asset( cbd_crea, CREA_SYMBOL ), has_hardfork( CREA_HARDFORK_0_17__659 ) );
 
-            adjust_total_payout( comment, cbd_payout.first + to_sbd( cbd_payout.second + asset( vesting_creativecoin, CREA_SYMBOL ) ), to_sbd( asset( curation_tokens, CREA_SYMBOL ) ), to_sbd( asset( total_beneficiary, CREA_SYMBOL ) ) );
+            adjust_total_payout( comment, cbd_payout.first + to_sbd( cbd_payout.second + asset( vesting_crea, CREA_SYMBOL ) ), to_sbd( asset( curation_tokens, CREA_SYMBOL ) ), to_sbd( asset( total_beneficiary, CREA_SYMBOL ) ) );
 
             push_virtual_operation( author_reward_operation( comment.author, to_string( comment.permlink ), cbd_payout.first, cbd_payout.second, vest_created ) );
             push_virtual_operation( comment_reward_operation( comment.author, to_string( comment.permlink ), to_sbd( asset( claimed_reward, CREA_SYMBOL ) ) ) );
@@ -1843,10 +1843,10 @@ void database::process_comment_cashout()
 
    const auto& gpo = get_dynamic_global_properties();
    util::comment_reward_context ctx;
-   ctx.current_creativecoin_price = get_feed_history().current_median_history;
+   ctx.current_crea_price = get_feed_history().current_median_history;
 
    vector< reward_fund_context > funds;
-   vector< share_type > creativecoin_awarded;
+   vector< share_type > crea_awarded;
    const auto& reward_idx = get_index< reward_fund_index, by_id >();
 
    // Decay recent rshares of each fund
@@ -1916,11 +1916,11 @@ void database::process_comment_cashout()
       {
          auto fund_id = get_reward_fund( *current ).id._id;
          ctx.total_reward_shares2 = funds[ fund_id ].recent_claims;
-         ctx.total_reward_fund_creativecoin = funds[ fund_id ].reward_balance;
+         ctx.total_reward_fund_crea = funds[ fund_id ].reward_balance;
 
          bool forward_curation_remainder = !has_hardfork( CREA_HARDFORK_0_20__1877 );
 
-         funds[ fund_id ].creativecoin_awarded += cashout_comment_helper( ctx, *current, forward_curation_remainder );
+         funds[ fund_id ].crea_awarded += cashout_comment_helper( ctx, *current, forward_curation_remainder );
       }
       else
       {
@@ -1929,7 +1929,7 @@ void database::process_comment_cashout()
          {
             const auto& comment = *itr; ++itr;
             ctx.total_reward_shares2 = gpo.total_reward_shares2;
-            ctx.total_reward_fund_creativecoin = gpo.total_reward_fund_creativecoin;
+            ctx.total_reward_fund_crea = gpo.total_reward_fund_crea;
 
             auto reward = cashout_comment_helper( ctx, comment );
 
@@ -1937,7 +1937,7 @@ void database::process_comment_cashout()
             {
                modify( get_dynamic_global_properties(), [&]( dynamic_global_property_object& p )
                {
-                  p.total_reward_fund_creativecoin.amount -= reward;
+                  p.total_reward_fund_crea.amount -= reward;
                });
             }
          }
@@ -1954,14 +1954,14 @@ void database::process_comment_cashout()
          modify( get< reward_fund_object, by_id >( reward_fund_id_type( i ) ), [&]( reward_fund_object& rfo )
          {
             rfo.recent_claims = funds[ i ].recent_claims;
-            rfo.reward_balance -= asset( funds[ i ].creativecoin_awarded, CREA_SYMBOL );
+            rfo.reward_balance -= asset( funds[ i ].crea_awarded, CREA_SYMBOL );
          });
       }
    }
 }
 
 /**
- *  Overall the network has an inflation rate of 102% of virtual creativecoin per year
+ *  Overall the network has an inflation rate of 102% of virtual crea per year
  *  90% of inflation is directed to vesting shares
  *  10% of inflation is directed to subjective proof of work voting
  *  1% of inflation is directed to liquidity providers
@@ -1988,12 +1988,12 @@ void database::process_funds()
       // below subtraction cannot underflow int64_t because inflation_rate_adjustment is <2^32
       int64_t current_inflation_rate = std::max( start_inflation_rate - inflation_rate_adjustment, inflation_rate_floor );
 
-      auto new_creativecoin = ( props.virtual_supply.amount * current_inflation_rate ) / ( int64_t( CREA_100_PERCENT ) * int64_t( CREA_BLOCKS_PER_YEAR ) );
-      auto content_reward = ( new_creativecoin * CREA_CONTENT_REWARD_PERCENT ) / CREA_100_PERCENT;
+      auto new_crea = ( props.virtual_supply.amount * current_inflation_rate ) / ( int64_t( CREA_100_PERCENT ) * int64_t( CREA_BLOCKS_PER_YEAR ) );
+      auto content_reward = ( new_crea * CREA_CONTENT_REWARD_PERCENT ) / CREA_100_PERCENT;
       if( has_hardfork( CREA_HARDFORK_0_17__774 ) )
          content_reward = pay_reward_funds( content_reward ); /// 75% to content creator
-      auto vesting_reward = ( new_creativecoin * CREA_VESTING_FUND_PERCENT ) / CREA_100_PERCENT; /// 15% to vesting fund
-      auto witness_reward = new_creativecoin - content_reward - vesting_reward; /// Remaining 10% to witness pay
+      auto vesting_reward = ( new_crea * CREA_VESTING_FUND_PERCENT ) / CREA_100_PERCENT; /// 15% to vesting fund
+      auto witness_reward = new_crea - content_reward - vesting_reward; /// Remaining 10% to witness pay
 
       const auto& cwit = get_witness( props.current_witness );
       witness_reward *= CREA_MAX_WITNESSES;
@@ -2009,15 +2009,15 @@ void database::process_funds()
 
       witness_reward /= wso.witness_pay_normalization_factor;
 
-      new_creativecoin = content_reward + vesting_reward + witness_reward;
+      new_crea = content_reward + vesting_reward + witness_reward;
 
       modify( props, [&]( dynamic_global_property_object& p )
       {
-         p.total_vesting_fund_creativecoin += asset( vesting_reward, CREA_SYMBOL );
+         p.total_vesting_fund_crea += asset( vesting_reward, CREA_SYMBOL );
          if( !has_hardfork( CREA_HARDFORK_0_17__774 ) )
-            p.total_reward_fund_creativecoin  += asset( content_reward, CREA_SYMBOL );
-         p.current_supply           += asset( new_creativecoin, CREA_SYMBOL );
-         p.virtual_supply           += asset( new_creativecoin, CREA_SYMBOL );
+            p.total_reward_fund_crea  += asset( content_reward, CREA_SYMBOL );
+         p.current_supply           += asset( new_crea, CREA_SYMBOL );
+         p.virtual_supply           += asset( new_crea, CREA_SYMBOL );
       });
 
       const auto& producer_reward = create_vesting( get_account( cwit.owner ), asset( witness_reward, CREA_SYMBOL ) );
@@ -2040,8 +2040,8 @@ void database::process_funds()
 
       modify( props, [&]( dynamic_global_property_object& p )
       {
-          p.total_vesting_fund_creativecoin += vesting_reward;
-          p.total_reward_fund_creativecoin  += content_reward;
+          p.total_vesting_fund_crea += vesting_reward;
+          p.total_reward_fund_crea  += content_reward;
           p.current_supply += content_reward + witness_pay + vesting_reward;
           p.virtual_supply += content_reward + witness_pay + vesting_reward;
       } );
@@ -2072,7 +2072,7 @@ void database::process_savings_withdraws()
 #ifdef CREA_ENABLE_SMT
 
 template< typename T, bool ALLOW_REMOVE >
-void process_smt_objects_internal( database* db, creativecoin::chain::smt_phase phase )
+void process_smt_objects_internal( database* db, crea::chain::smt_phase phase )
 {
    FC_ASSERT( db != nullptr );
    const auto& idx = db->get_index< smt_event_token_index >().indices().get< T >();
@@ -2194,7 +2194,7 @@ void database::pay_liquidity_reward()
          adjust_balance( get(itr->owner), reward );
          modify( *itr, [&]( liquidity_reward_balance_object& obj )
          {
-            obj.creativecoin_volume = 0;
+            obj.crea_volume = 0;
             obj.cbd_volume   = 0;
             obj.last_update  = head_block_time();
             obj.weight = 0;
@@ -2241,7 +2241,7 @@ share_type database::pay_reward_funds( share_type reward )
 
 /**
  *  Iterates over all conversion requests with a conversion date before
- *  the head block time and then converts them to/from creativecoin/sbd at the
+ *  the head block time and then converts them to/from crea/sbd at the
  *  current median price feed history price times the premium
  */
 void database::process_conversions()
@@ -2255,7 +2255,7 @@ void database::process_conversions()
       return;
 
    asset net_sbd( 0, CBD_SYMBOL );
-   asset net_creativecoin( 0, CREA_SYMBOL );
+   asset net_crea( 0, CREA_SYMBOL );
 
    while( itr != request_by_date.end() && itr->conversion_date <= now )
    {
@@ -2264,7 +2264,7 @@ void database::process_conversions()
       adjust_balance( itr->owner, amount_to_issue );
 
       net_sbd   += itr->amount;
-      net_creativecoin += amount_to_issue;
+      net_crea += amount_to_issue;
 
       push_virtual_operation( fill_convert_request_operation ( itr->owner, itr->requestid, itr->amount, amount_to_issue ) );
 
@@ -2275,21 +2275,21 @@ void database::process_conversions()
    const auto& props = get_dynamic_global_properties();
    modify( props, [&]( dynamic_global_property_object& p )
    {
-       p.current_supply += net_creativecoin;
+       p.current_supply += net_crea;
        p.current_cbd_supply -= net_sbd;
-       p.virtual_supply += net_creativecoin;
+       p.virtual_supply += net_crea;
        p.virtual_supply -= net_sbd * get_feed_history().current_median_history;
    } );
 }
 
-asset database::to_sbd( const asset& creativecoin )const
+asset database::to_sbd( const asset& crea )const
 {
-   return util::to_sbd( get_feed_history().current_median_history, creativecoin );
+   return util::to_sbd( get_feed_history().current_median_history, crea );
 }
 
-asset database::to_creativecoin( const asset& sbd )const
+asset database::to_crea( const asset& sbd )const
 {
-   return util::to_creativecoin( get_feed_history().current_median_history, sbd );
+   return util::to_crea( get_feed_history().current_median_history, sbd );
 }
 
 void database::account_recovery_processing()
@@ -2340,7 +2340,7 @@ void database::expire_escrow_ratification()
       const auto& old_escrow = *escrow_itr;
       ++escrow_itr;
 
-      adjust_balance( old_escrow.from, old_escrow.creativecoin_balance );
+      adjust_balance( old_escrow.from, old_escrow.crea_balance );
       adjust_balance( old_escrow.from, old_escrow.cbd_balance );
       adjust_balance( old_escrow.from, old_escrow.pending_fee );
 
@@ -3101,11 +3101,11 @@ try {
       modify( get_feed_history(), [&]( feed_history_object& fho )
       {
          fho.price_history.push_back( median_feed );
-         size_t creativecoin_feed_history_window = CREA_FEED_HISTORY_WINDOW_PRE_HF_16;
+         size_t crea_feed_history_window = CREA_FEED_HISTORY_WINDOW_PRE_HF_16;
          if( has_hardfork( CREA_HARDFORK_0_16__551) )
-            creativecoin_feed_history_window = CREA_FEED_HISTORY_WINDOW;
+            crea_feed_history_window = CREA_FEED_HISTORY_WINDOW;
 
-         if( fho.price_history.size() > creativecoin_feed_history_window )
+         if( fho.price_history.size() > crea_feed_history_window )
             fho.price_history.pop_front();
 
          if( fho.price_history.size() )
@@ -3712,14 +3712,14 @@ void database::adjust_liquidity_reward( const account_object& owner, const asset
          if( head_block_time() - r.last_update >= CREA_LIQUIDITY_TIMEOUT_SEC )
          {
             r.cbd_volume = 0;
-            r.creativecoin_volume = 0;
+            r.crea_volume = 0;
             r.weight = 0;
          }
 
          if( is_sdb )
             r.cbd_volume += volume.amount.value;
          else
-            r.creativecoin_volume += volume.amount.value;
+            r.crea_volume += volume.amount.value;
 
          r.update_weight( has_hardfork( CREA_HARDFORK_0_10__141 ) );
          r.last_update = head_block_time();
@@ -3733,7 +3733,7 @@ void database::adjust_liquidity_reward( const account_object& owner, const asset
          if( is_sdb )
             r.cbd_volume = volume.amount.value;
          else
-            r.creativecoin_volume = volume.amount.value;
+            r.crea_volume = volume.amount.value;
 
          r.update_weight( has_hardfork( CREA_HARDFORK_0_9__141 ) );
          r.last_update = head_block_time();
@@ -3958,15 +3958,15 @@ void database::modify_reward_balance( const account_object& a, const asset& valu
          case CREA_ASSET_NUM_CREA:
             if( share_delta.amount.value == 0 )
             {
-               acnt.reward_creativecoin_balance += value_delta;
+               acnt.reward_crea_balance += value_delta;
                if( check_balance )
                {
-                  FC_ASSERT( acnt.reward_creativecoin_balance.amount.value >= 0, "Insufficient reward CREA funds" );
+                  FC_ASSERT( acnt.reward_crea_balance.amount.value >= 0, "Insufficient reward CREA funds" );
                }
             }
             else
             {
-               acnt.reward_vesting_creativecoin += value_delta;
+               acnt.reward_vesting_crea += value_delta;
                acnt.reward_vesting_balance += share_delta;
                if( check_balance )
                {
@@ -4204,7 +4204,7 @@ void database::adjust_supply( const asset& delta, bool adjust_vesting )
             asset new_vesting( (adjust_vesting && delta.amount > 0) ? delta.amount * 9 : 0, CREA_SYMBOL );
             props.current_supply += delta + new_vesting;
             props.virtual_supply += delta + new_vesting;
-            props.total_vesting_fund_creativecoin += new_vesting;
+            props.total_vesting_fund_crea += new_vesting;
             if( check_supply )
             {
                FC_ASSERT( props.current_supply.amount.value >= 0 );
@@ -4566,7 +4566,7 @@ void database::apply_hardfork( uint32_t hardfork )
                rfo.content_constant = CREA_CONTENT_CONSTANT_HF0;
                rfo.percent_curation_rewards = CREA_1_PERCENT * 25;
                rfo.percent_content_rewards = CREA_100_PERCENT;
-               rfo.reward_balance = gpo.total_reward_fund_creativecoin;
+               rfo.reward_balance = gpo.total_reward_fund_crea;
 #ifndef IS_TEST_NET
                rfo.recent_claims = CREA_HF_17_RECENT_CLAIMS;
 #endif
@@ -4580,7 +4580,7 @@ void database::apply_hardfork( uint32_t hardfork )
 
             modify( gpo, [&]( dynamic_global_property_object& g )
             {
-               g.total_reward_fund_creativecoin = asset( 0, CREA_SYMBOL );
+               g.total_reward_fund_crea = asset( 0, CREA_SYMBOL );
                g.total_reward_shares2 = 0;
             });
 
@@ -4735,7 +4735,7 @@ void database::validate_invariants()const
       asset total_supply = asset( 0, CREA_SYMBOL );
       asset total_sbd = asset( 0, CBD_SYMBOL );
       asset total_vesting = asset( 0, VESTS_SYMBOL );
-      asset pending_vesting_creativecoin = asset( 0, CREA_SYMBOL );
+      asset pending_vesting_crea = asset( 0, CREA_SYMBOL );
       share_type total_vsf_votes = share_type( 0 );
 
       auto gpo = get_dynamic_global_properties();
@@ -4749,13 +4749,13 @@ void database::validate_invariants()const
       {
          total_supply += itr->balance;
          total_supply += itr->savings_balance;
-         total_supply += itr->reward_creativecoin_balance;
+         total_supply += itr->reward_crea_balance;
          total_sbd += itr->cbd_balance;
          total_sbd += itr->savings_cbd_balance;
          total_sbd += itr->reward_cbd_balance;
          total_vesting += itr->vesting_shares;
          total_vesting += itr->reward_vesting_balance;
-         pending_vesting_creativecoin += itr->reward_vesting_creativecoin;
+         pending_vesting_crea += itr->reward_vesting_crea;
          total_vsf_votes += ( itr->proxy == CREA_PROXY_TO_SELF_ACCOUNT ?
                                  itr->witness_vote_weight() :
                                  ( CREA_MAX_PROXY_RECURSION_DEPTH > 0 ?
@@ -4793,7 +4793,7 @@ void database::validate_invariants()const
 
       for( auto itr = escrow_idx.begin(); itr != escrow_idx.end(); ++itr )
       {
-         total_supply += itr->creativecoin_balance;
+         total_supply += itr->crea_balance;
          total_sbd += itr->cbd_balance;
 
          if( itr->pending_fee.symbol == CREA_SYMBOL )
@@ -4823,13 +4823,13 @@ void database::validate_invariants()const
          total_supply += itr->reward_balance;
       }
 
-      total_supply += gpo.total_vesting_fund_creativecoin + gpo.total_reward_fund_creativecoin + gpo.pending_rewarded_vesting_creativecoin;
+      total_supply += gpo.total_vesting_fund_crea + gpo.total_reward_fund_crea + gpo.pending_rewarded_vesting_crea;
 
       FC_ASSERT( gpo.current_supply == total_supply, "", ("gpo.current_supply",gpo.current_supply)("total_supply",total_supply) );
       FC_ASSERT( gpo.current_cbd_supply == total_sbd, "", ("gpo.current_cbd_supply",gpo.current_cbd_supply)("total_sbd",total_sbd) );
       FC_ASSERT( gpo.total_vesting_shares + gpo.pending_rewarded_vesting_shares == total_vesting, "", ("gpo.total_vesting_shares",gpo.total_vesting_shares)("total_vesting",total_vesting) );
       FC_ASSERT( gpo.total_vesting_shares.amount == total_vsf_votes, "", ("total_vesting_shares",gpo.total_vesting_shares)("total_vsf_votes",total_vsf_votes) );
-      FC_ASSERT( gpo.pending_rewarded_vesting_creativecoin == pending_vesting_creativecoin, "", ("pending_rewarded_vesting_creativecoin",gpo.pending_rewarded_vesting_creativecoin)("pending_vesting_creativecoin", pending_vesting_creativecoin));
+      FC_ASSERT( gpo.pending_rewarded_vesting_crea == pending_vesting_crea, "", ("pending_rewarded_vesting_crea",gpo.pending_rewarded_vesting_crea)("pending_vesting_crea", pending_vesting_crea));
 
       FC_ASSERT( gpo.virtual_supply >= gpo.current_supply );
       if ( !get_feed_history().current_median_history.is_null() )
@@ -4891,7 +4891,7 @@ void database::validate_smt_invariants()const
             }
       });
 
-      // - Process reward balances, collecting SMT counterparts of 'reward_creativecoin_balance', 'reward_vesting_balance' & 'reward_vesting_creativecoin'.
+      // - Process reward balances, collecting SMT counterparts of 'reward_crea_balance', 'reward_vesting_balance' & 'reward_vesting_crea'.
       const auto& rewards_balance_idx = get_index< account_rewards_balance_index, by_id >();
       add_from_balance_index( rewards_balance_idx, [ &theMap ] ( const account_rewards_balance_object& rewards )
       {
@@ -4941,7 +4941,7 @@ void database::validate_smt_invariants()const
          asset total_liquid_supply = totalIt == theMap.end() ? asset(0, smt.liquid_symbol) :
             ( totalIt->second.liquid + totalIt->second.pending_liquid );
          total_liquid_supply += asset( smt.total_vesting_fund_smt, smt.liquid_symbol )
-                             /*+ gpo.total_reward_fund_creativecoin */
+                             /*+ gpo.total_reward_fund_crea */
                              + asset( smt.pending_rewarded_vesting_smt, smt.liquid_symbol );
 #pragma message( "TODO: Supplement ^ once SMT rewards are implemented" )
          FC_ASSERT( asset(smt.current_supply, smt.liquid_symbol) == total_liquid_supply,
@@ -5152,4 +5152,4 @@ vector< asset_symbol_type > database::get_smt_next_identifier()
 }
 #endif
 
-} } //creativecoin::chain
+} } //crea::chain

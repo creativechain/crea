@@ -6,7 +6,7 @@
 
 #define CREA_STATSD_PLUGIN_NAME "statsd"
 
-namespace creativecoin { namespace plugins { namespace statsd {
+namespace crea { namespace plugins { namespace statsd {
 
 using namespace appbase;
 
@@ -44,4 +44,4 @@ class statsd_plugin : public appbase::plugin< statsd_plugin >
       std::unique_ptr< detail::statsd_plugin_impl > my;
 };
 
-} } } // creativecoin::plugins::statsd
+} } } // crea::plugins::statsd

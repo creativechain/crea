@@ -1,7 +1,7 @@
 #pragma once
-#include <creativecoin/protocol/base.hpp>
+#include <crea/protocol/base.hpp>
 
-namespace creativecoin { namespace protocol {
+namespace crea { namespace protocol {
 
    struct block_header
    {
@@ -27,7 +27,7 @@ namespace creativecoin { namespace protocol {
    };
 
 
-} } // creativecoin::protocol
+} } // crea::protocol
 
-FC_REFLECT( creativecoin::protocol::block_header, (previous)(timestamp)(witness)(transaction_merkle_root)(extensions) )
-FC_REFLECT_DERIVED( creativecoin::protocol::signed_block_header, (creativecoin::protocol::block_header), (witness_signature) )
+FC_REFLECT( crea::protocol::block_header, (previous)(timestamp)(witness)(transaction_merkle_root)(extensions) )
+FC_REFLECT_DERIVED( crea::protocol::signed_block_header, (crea::protocol::block_header), (witness_signature) )

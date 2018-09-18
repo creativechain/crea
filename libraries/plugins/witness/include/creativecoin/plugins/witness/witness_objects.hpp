@@ -1,13 +1,13 @@
 #pragma once
 
-#include <creativecoin/chain/creativecoin_object_types.hpp>
+#include <crea/chain/crea_object_types.hpp>
 
 #include <boost/multi_index/composite_key.hpp>
 
-namespace creativecoin { namespace plugins{ namespace witness {
+namespace crea { namespace plugins{ namespace witness {
 
 using namespace std;
-using namespace creativecoin::chain;
+using namespace crea::chain;
 
 #ifndef CREA_WITNESS_SPACE_ID
 #define CREA_WITNESS_SPACE_ID 12
@@ -122,14 +122,14 @@ typedef multi_index_container <
    allocator< reserve_ratio_object >
 > reserve_ratio_index;
 
-} } } // creativecoin::plugins::witness
+} } } // crea::plugins::witness
 
-FC_REFLECT_ENUM( creativecoin::plugins::witness::bandwidth_type, (post)(forum)(market) )
+FC_REFLECT_ENUM( crea::plugins::witness::bandwidth_type, (post)(forum)(market) )
 
-FC_REFLECT( creativecoin::plugins::witness::account_bandwidth_object,
+FC_REFLECT( crea::plugins::witness::account_bandwidth_object,
             (id)(account)(type)(average_bandwidth)(lifetime_bandwidth)(last_bandwidth_update) )
-CHAINBASE_SET_INDEX_TYPE( creativecoin::plugins::witness::account_bandwidth_object, creativecoin::plugins::witness::account_bandwidth_index )
+CHAINBASE_SET_INDEX_TYPE( crea::plugins::witness::account_bandwidth_object, crea::plugins::witness::account_bandwidth_index )
 
-FC_REFLECT( creativecoin::plugins::witness::reserve_ratio_object,
+FC_REFLECT( crea::plugins::witness::reserve_ratio_object,
             (id)(average_block_size)(current_reserve_ratio)(max_virtual_bandwidth) )
-CHAINBASE_SET_INDEX_TYPE( creativecoin::plugins::witness::reserve_ratio_object, creativecoin::plugins::witness::reserve_ratio_index )
+CHAINBASE_SET_INDEX_TYPE( crea::plugins::witness::reserve_ratio_object, crea::plugins::witness::reserve_ratio_index )

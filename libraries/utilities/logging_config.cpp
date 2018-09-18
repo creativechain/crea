@@ -1,4 +1,4 @@
-#include <creativecoin/utilities/logging_config.hpp>
+#include <crea/utilities/logging_config.hpp>
 
 #include <fc/exception/exception.hpp>
 
@@ -8,7 +8,7 @@
 
 #include <vector>
 
-namespace creativecoin { namespace utilities {
+namespace crea { namespace utilities {
 
 using std::string;
 using std::vector;

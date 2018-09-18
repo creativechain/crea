@@ -27,8 +27,8 @@
 
 #include <fc/filesystem.hpp>
 
-namespace creativecoin { namespace utilities {
+namespace crea { namespace utilities {
 
 fc::path temp_directory_path();
 
-} } // creativecoin::utilities
+} } // crea::utilities

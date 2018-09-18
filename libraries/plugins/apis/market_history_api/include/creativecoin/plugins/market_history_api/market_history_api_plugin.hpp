@@ -1,13 +1,13 @@
 #pragma once
-#include <creativecoin/plugins/market_history/market_history_plugin.hpp>
-#include <creativecoin/plugins/json_rpc/json_rpc_plugin.hpp>
+#include <crea/plugins/market_history/market_history_plugin.hpp>
+#include <crea/plugins/json_rpc/json_rpc_plugin.hpp>
 
 #include <appbase/application.hpp>
 
 #define CREA_MARKET_HISTORY_API_PLUGIN_NAME "market_history_api"
 
 
-namespace creativecoin { namespace plugins { namespace market_history {
+namespace crea { namespace plugins { namespace market_history {
 
 using namespace appbase;
 
@@ -15,8 +15,8 @@ class market_history_api_plugin : public appbase::plugin< market_history_api_plu
 {
 public:
    APPBASE_PLUGIN_REQUIRES(
-      (creativecoin::plugins::market_history::market_history_plugin)
-      (creativecoin::plugins::json_rpc::json_rpc_plugin)
+      (crea::plugins::market_history::market_history_plugin)
+      (crea::plugins::json_rpc::json_rpc_plugin)
    )
 
    market_history_api_plugin();
@@ -33,4 +33,4 @@ public:
    std::shared_ptr< class market_history_api > api;
 };
 
-} } } // creativecoin::plugins::market_history
+} } } // crea::plugins::market_history

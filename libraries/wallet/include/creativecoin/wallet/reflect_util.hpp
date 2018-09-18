@@ -27,7 +27,7 @@
 // support the wallet, e.g. allow specifying operations by name
 // instead of ID.
 
-namespace creativecoin { namespace wallet {
+namespace crea { namespace wallet {
 
 struct static_variant_map
 {
@@ -40,7 +40,7 @@ namespace impl {
 std::string clean_name( const std::string& name )
 {
    std::string result;
-   const static std::string prefix = "creativecoin::protocol::";
+   const static std::string prefix = "crea::protocol::";
    const static std::string suffix = "_operation";
    // graphene::chain::.*_operation
    if(    (name.size() >= prefix.size() + suffix.size())
@@ -119,4 +119,4 @@ static_variant_map create_static_variant_map()
    return vtor.m;
 }
 
-} } // namespace creativecoin::wallet
+} } // namespace crea::wallet

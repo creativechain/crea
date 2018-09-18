@@ -1,9 +1,9 @@
 #pragma once
 #include <appbase/application.hpp>
 
-#include <creativecoin/plugins/chain/chain_plugin.hpp>
+#include <crea/plugins/chain/chain_plugin.hpp>
 
-namespace creativecoin { namespace plugins { namespace smt_test {
+namespace crea { namespace plugins { namespace smt_test {
 
 using namespace appbase;
 
@@ -15,7 +15,7 @@ class smt_test_plugin : public appbase::plugin< smt_test_plugin >
       smt_test_plugin();
       virtual ~smt_test_plugin();
 
-      APPBASE_PLUGIN_REQUIRES( (creativecoin::plugins::chain::chain_plugin) )
+      APPBASE_PLUGIN_REQUIRES( (crea::plugins::chain::chain_plugin) )
 
       static const std::string& name() { static std::string name = CREA_SMT_TEST_PLUGIN_NAME; return name; }
 
@@ -28,4 +28,4 @@ class smt_test_plugin : public appbase::plugin< smt_test_plugin >
       std::unique_ptr< class smt_test_plugin_impl > my;
 };
 
-} } } // creativecoin::plugins::smt_test
+} } } // crea::plugins::smt_test

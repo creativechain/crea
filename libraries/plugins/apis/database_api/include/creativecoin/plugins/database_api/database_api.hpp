@@ -1,13 +1,13 @@
 #pragma once
 
-#include <creativecoin/plugins/json_rpc/utility.hpp>
+#include <crea/plugins/json_rpc/utility.hpp>
 
-#include <creativecoin/plugins/database_api/database_api_args.hpp>
-#include <creativecoin/plugins/database_api/database_api_objects.hpp>
+#include <crea/plugins/database_api/database_api_args.hpp>
+#include <crea/plugins/database_api/database_api_objects.hpp>
 
 #define DATABASE_API_SINGLE_QUERY_LIMIT 1000
 
-namespace creativecoin { namespace plugins { namespace database_api {
+namespace crea { namespace plugins { namespace database_api {
 
 class database_api_impl;
 
@@ -144,5 +144,5 @@ class database_api
       std::unique_ptr< database_api_impl > my;
 };
 
-} } } //creativecoin::plugins::database_api
+} } } //crea::plugins::database_api
 

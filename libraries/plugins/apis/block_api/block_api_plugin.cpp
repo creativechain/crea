@@ -1,7 +1,7 @@
-#include <creativecoin/plugins/block_api/block_api.hpp>
-#include <creativecoin/plugins/block_api/block_api_plugin.hpp>
+#include <crea/plugins/block_api/block_api.hpp>
+#include <crea/plugins/block_api/block_api_plugin.hpp>
 
-namespace creativecoin { namespace plugins { namespace block_api {
+namespace crea { namespace plugins { namespace block_api {
 
 block_api_plugin::block_api_plugin() {}
 block_api_plugin::~block_api_plugin() {}
@@ -19,4 +19,4 @@ void block_api_plugin::plugin_startup() {}
 
 void block_api_plugin::plugin_shutdown() {}
 
-} } } // creativecoin::plugins::block_api
+} } } // crea::plugins::block_api

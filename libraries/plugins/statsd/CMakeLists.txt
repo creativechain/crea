@@ -1,4 +1,4 @@
-file(GLOB HEADERS "include/creativecoin/plugins/statsd/*.hpp")
+file(GLOB HEADERS "include/crea/plugins/statsd/*.hpp")
 
 add_library( statsd_plugin
              statsd_plugin.cpp

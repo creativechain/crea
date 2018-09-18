@@ -1,8 +1,8 @@
 
-#include <creativecoin/chain/util/advanced_benchmark_dumper.hpp>
+#include <crea/chain/util/advanced_benchmark_dumper.hpp>
 #include <chrono>
 
-namespace creativecoin { namespace chain { namespace util {
+namespace crea { namespace chain { namespace util {
 
    uint32_t advanced_benchmark_dumper::cnt = 0;
    std::string advanced_benchmark_dumper::virtual_operation_name = "virtual_operation";
@@ -79,4 +79,4 @@ namespace creativecoin { namespace chain { namespace util {
       dump_impl( rinfo, "r_" + file_name );
    }
 
-} } } // creativecoin::chain::util
+} } } // crea::chain::util

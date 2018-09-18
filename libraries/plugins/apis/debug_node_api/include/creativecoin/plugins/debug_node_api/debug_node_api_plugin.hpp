@@ -1,13 +1,13 @@
 #pragma once
-#include <creativecoin/plugins/debug_node/debug_node_plugin.hpp>
-#include <creativecoin/plugins/json_rpc/json_rpc_plugin.hpp>
+#include <crea/plugins/debug_node/debug_node_plugin.hpp>
+#include <crea/plugins/json_rpc/json_rpc_plugin.hpp>
 
 #include <appbase/application.hpp>
 
 #define CREA_DEBUG_NODE_API_PLUGIN_NAME "debug_node_api"
 
 
-namespace creativecoin { namespace plugins { namespace debug_node {
+namespace crea { namespace plugins { namespace debug_node {
 
 using namespace appbase;
 
@@ -15,8 +15,8 @@ class debug_node_api_plugin : public appbase::plugin< debug_node_api_plugin >
 {
 public:
    APPBASE_PLUGIN_REQUIRES(
-      (creativecoin::plugins::debug_node::debug_node_plugin)
-      (creativecoin::plugins::json_rpc::json_rpc_plugin)
+      (crea::plugins::debug_node::debug_node_plugin)
+      (crea::plugins::json_rpc::json_rpc_plugin)
    )
 
    debug_node_api_plugin();
@@ -33,4 +33,4 @@ public:
    std::shared_ptr< class debug_node_api > api;
 };
 
-} } } // creativecoin::plugins::debug_node
+} } } // crea::plugins::debug_node

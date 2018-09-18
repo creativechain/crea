@@ -1,14 +1,14 @@
 
-#include <creativecoin/chain/database.hpp>
-#include <creativecoin/chain/global_property_object.hpp>
+#include <crea/chain/database.hpp>
+#include <crea/chain/global_property_object.hpp>
 
-#include <creativecoin/plugins/block_info/block_info.hpp>
-#include <creativecoin/plugins/block_info/block_info_api.hpp>
-#include <creativecoin/plugins/block_info/block_info_plugin.hpp>
+#include <crea/plugins/block_info/block_info.hpp>
+#include <crea/plugins/block_info/block_info_api.hpp>
+#include <crea/plugins/block_info/block_info_plugin.hpp>
 
 #include <string>
 
-namespace creativecoin { namespace plugin { namespace block_info {
+namespace crea { namespace plugin { namespace block_info {
 
 block_info_plugin::block_info_plugin( application* app ) : plugin( app ) {}
 block_info_plugin::~block_info_plugin() {}
@@ -53,6 +53,6 @@ void block_info_plugin::on_applied_block( const chain::signed_block& b )
    return;
 }
 
-} } } // creativecoin::plugin::block_info
+} } } // crea::plugin::block_info
 
-CREA_DEFINE_PLUGIN( block_info, creativecoin::plugin::block_info::block_info_plugin )
+CREA_DEFINE_PLUGIN( block_info, crea::plugin::block_info::block_info_plugin )

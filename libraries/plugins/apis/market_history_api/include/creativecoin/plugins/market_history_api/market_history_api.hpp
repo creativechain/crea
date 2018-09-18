@@ -1,19 +1,19 @@
 #pragma once
-#include <creativecoin/plugins/json_rpc/utility.hpp>
-#include <creativecoin/plugins/market_history/market_history_plugin.hpp>
+#include <crea/plugins/json_rpc/utility.hpp>
+#include <crea/plugins/market_history/market_history_plugin.hpp>
 
-#include <creativecoin/protocol/types.hpp>
+#include <crea/protocol/types.hpp>
 
 #include <fc/optional.hpp>
 #include <fc/variant.hpp>
 #include <fc/vector.hpp>
 
 
-namespace creativecoin { namespace plugins { namespace market_history {
+namespace crea { namespace plugins { namespace market_history {
 
 
-using creativecoin::chain::share_type;
-using creativecoin::chain::asset;
+using crea::chain::share_type;
+using crea::chain::asset;
 using fc::time_point_sec;
 using json_rpc::void_type;
 
@@ -26,7 +26,7 @@ struct get_ticker_return
    double      lowest_ask = 0;
    double      highest_bid = 0;
    double      percent_change = 0;
-   asset       creativecoin_volume = asset( 0 , CREA_SYMBOL );
+   asset       crea_volume = asset( 0 , CREA_SYMBOL );
    asset       cbd_volume = asset( 0, CBD_SYMBOL );
 };
 
@@ -34,7 +34,7 @@ typedef void_type get_volume_args;
 
 struct get_volume_return
 {
-   asset       creativecoin_volume = asset( 0, CREA_SYMBOL );
+   asset       crea_volume = asset( 0, CREA_SYMBOL );
    asset       cbd_volume = asset( 0, CBD_SYMBOL );
 };
 
@@ -42,7 +42,7 @@ struct order
 {
    price          order_price;
    double         real_price;
-   share_type     creativecoin;
+   share_type     crea;
    share_type     sbd;
    time_point_sec created;
 };
@@ -127,40 +127,40 @@ class market_history_api
       std::unique_ptr< detail::market_history_api_impl > my;
 };
 
-} } } // creativecoin::plugins::market_history
+} } } // crea::plugins::market_history
 
-FC_REFLECT( creativecoin::plugins::market_history::get_ticker_return,
-            (latest)(lowest_ask)(highest_bid)(percent_change)(creativecoin_volume)(cbd_volume) )
+FC_REFLECT( crea::plugins::market_history::get_ticker_return,
+            (latest)(lowest_ask)(highest_bid)(percent_change)(crea_volume)(cbd_volume) )
 
-FC_REFLECT( creativecoin::plugins::market_history::get_volume_return,
-            (creativecoin_volume)(cbd_volume) )
+FC_REFLECT( crea::plugins::market_history::get_volume_return,
+            (crea_volume)(cbd_volume) )
 
-FC_REFLECT( creativecoin::plugins::market_history::order,
-            (order_price)(real_price)(creativecoin)(sbd)(created) )
+FC_REFLECT( crea::plugins::market_history::order,
+            (order_price)(real_price)(crea)(sbd)(created) )
 
-FC_REFLECT( creativecoin::plugins::market_history::get_order_book_args,
+FC_REFLECT( crea::plugins::market_history::get_order_book_args,
             (limit) )
 
-FC_REFLECT( creativecoin::plugins::market_history::get_order_book_return,
+FC_REFLECT( crea::plugins::market_history::get_order_book_return,
             (bids)(asks) )
 
-FC_REFLECT( creativecoin::plugins::market_history::market_trade,
+FC_REFLECT( crea::plugins::market_history::market_trade,
             (date)(current_pays)(open_pays) )
 
-FC_REFLECT( creativecoin::plugins::market_history::get_trade_history_args,
+FC_REFLECT( crea::plugins::market_history::get_trade_history_args,
             (start)(end)(limit) )
 
-FC_REFLECT( creativecoin::plugins::market_history::get_trade_history_return,
+FC_REFLECT( crea::plugins::market_history::get_trade_history_return,
             (trades) )
 
-FC_REFLECT( creativecoin::plugins::market_history::get_recent_trades_args,
+FC_REFLECT( crea::plugins::market_history::get_recent_trades_args,
             (limit) )
 
-FC_REFLECT( creativecoin::plugins::market_history::get_market_history_args,
+FC_REFLECT( crea::plugins::market_history::get_market_history_args,
             (bucket_seconds)(start)(end) )
 
-FC_REFLECT( creativecoin::plugins::market_history::get_market_history_return,
+FC_REFLECT( crea::plugins::market_history::get_market_history_return,
             (buckets) )
 
-FC_REFLECT( creativecoin::plugins::market_history::get_market_history_buckets_return,
+FC_REFLECT( crea::plugins::market_history::get_market_history_buckets_return,
             (bucket_sizes) )

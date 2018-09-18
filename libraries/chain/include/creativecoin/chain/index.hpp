@@ -1,8 +1,8 @@
 #pragma once
 
-#include <creativecoin/chain/database.hpp>
+#include <crea/chain/database.hpp>
 
-namespace creativecoin { namespace chain {
+namespace crea { namespace chain {
 
 template< typename MultiIndexType >
 void _add_index_impl( database& db )

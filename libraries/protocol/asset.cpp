@@ -1,4 +1,4 @@
-#include <creativecoin/protocol/asset.hpp>
+#include <crea/protocol/asset.hpp>
 
 #include <fc/io/json.hpp>
 
@@ -15,7 +15,7 @@ index : field
    7  : \0
 */
 
-namespace creativecoin { namespace protocol {
+namespace crea { namespace protocol {
 
 std::string asset_symbol_type::to_string()const
 {
@@ -380,10 +380,10 @@ DEFINE_PRICE_COMPARISON_OPERATOR( >= )
       } FC_CAPTURE_AND_RETHROW( (base)(quote) ) }
 
 
-} } // creativecoin::protocol
+} } // crea::protocol
 
 namespace fc {
-   void to_variant( const creativecoin::protocol::asset& var, fc::variant& vo )
+   void to_variant( const crea::protocol::asset& var, fc::variant& vo )
    {
       try
       {
@@ -394,7 +394,7 @@ namespace fc {
       } FC_CAPTURE_AND_RETHROW()
    }
 
-   void from_variant( const fc::variant& var, creativecoin::protocol::asset& vo )
+   void from_variant( const fc::variant& var, crea::protocol::asset& vo )
    {
       try
       {
@@ -408,7 +408,7 @@ namespace fc {
 
          FC_ASSERT( v_object.contains( "precision" ), "Precision field doesn't exist." );
          FC_ASSERT( v_object.contains( "nai" ), "NAI field doesn't exist." );
-         vo.symbol = creativecoin::protocol::asset_symbol_type::from_nai_string( v_object[ "nai" ].as< std::string >().c_str(), v_object[ "precision" ].as< uint8_t >() );
+         vo.symbol = crea::protocol::asset_symbol_type::from_nai_string( v_object[ "nai" ].as< std::string >().c_str(), v_object[ "precision" ].as< uint8_t >() );
       } FC_CAPTURE_AND_RETHROW()
    }
 }

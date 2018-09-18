@@ -1,4 +1,4 @@
-file(GLOB HEADERS "include/creativecoin/plugins/account_history_api/*.hpp")
+file(GLOB HEADERS "include/crea/plugins/account_history_api/*.hpp")
 add_library( account_history_api_plugin
              account_history_api_plugin.cpp
              account_history_api.cpp

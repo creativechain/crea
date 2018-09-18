@@ -1,6 +1,6 @@
-#include <creativecoin/chain/transaction_object.hpp>
+#include <crea/chain/transaction_object.hpp>
 
-namespace creativecoin { namespace chain {
+namespace crea { namespace chain {
 
 const object* transaction_index::create(const std::function<void (object*)>& constructor, object_id_type)
 {
@@ -69,4 +69,4 @@ const object*transaction_index::get(object_id_type id) const
    return &*itr;
 }
 
-} } // creativecoin::chain
+} } // crea::chain

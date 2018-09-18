@@ -1,20 +1,20 @@
-#include <creativecoin/plugins/market_history_api/market_history_api_plugin.hpp>
-#include <creativecoin/plugins/market_history_api/market_history_api.hpp>
+#include <crea/plugins/market_history_api/market_history_api_plugin.hpp>
+#include <crea/plugins/market_history_api/market_history_api.hpp>
 
-#include <creativecoin/chain/creativecoin_objects.hpp>
+#include <crea/chain/crea_objects.hpp>
 
 #define ASSET_TO_REAL( asset ) (double)( asset.amount.value )
 
-namespace creativecoin { namespace plugins { namespace market_history {
+namespace crea { namespace plugins { namespace market_history {
 
 namespace detail {
 
-using namespace creativecoin::plugins::market_history;
+using namespace crea::plugins::market_history;
 
 class market_history_api_impl
 {
    public:
-      market_history_api_impl() : _db( appbase::app().get_plugin< creativecoin::plugins::chain::chain_plugin >().db() ) {}
+      market_history_api_impl() : _db( appbase::app().get_plugin< crea::plugins::chain::chain_plugin >().db() ) {}
 
       DECLARE_API_IMPL(
          (get_ticker)
@@ -38,9 +38,9 @@ DEFINE_API_IMPL( market_history_api_impl, get_ticker )
 
    if( itr != bucket_idx.end() )
    {
-      auto open = ASSET_TO_REAL( asset( itr->non_creativecoin.open, CBD_SYMBOL ) ) / ASSET_TO_REAL( asset( itr->creativecoin.open, CREA_SYMBOL ) );
+      auto open = ASSET_TO_REAL( asset( itr->non_crea.open, CBD_SYMBOL ) ) / ASSET_TO_REAL( asset( itr->crea.open, CREA_SYMBOL ) );
       itr = bucket_idx.lower_bound( boost::make_tuple( 0, _db.head_block_time() ) );
-      result.latest = ASSET_TO_REAL( asset( itr->non_creativecoin.close, CBD_SYMBOL ) ) / ASSET_TO_REAL( asset( itr->creativecoin.close, CREA_SYMBOL ) );
+      result.latest = ASSET_TO_REAL( asset( itr->non_crea.close, CBD_SYMBOL ) ) / ASSET_TO_REAL( asset( itr->crea.close, CREA_SYMBOL ) );
       result.percent_change = ( (result.latest - open ) / open ) * 100;
    }
 
@@ -51,7 +51,7 @@ DEFINE_API_IMPL( market_history_api_impl, get_ticker )
       result.lowest_ask = orders.asks[0].real_price;
 
    auto volume = get_volume( get_volume_args() );
-   result.creativecoin_volume = volume.creativecoin_volume;
+   result.crea_volume = volume.crea_volume;
    result.cbd_volume = volume.cbd_volume;
 
    return result;
@@ -69,8 +69,8 @@ DEFINE_API_IMPL( market_history_api_impl, get_volume )
    uint32_t bucket_size = itr->seconds;
    do
    {
-      result.creativecoin_volume.amount += itr->creativecoin.volume;
-      result.cbd_volume.amount += itr->non_creativecoin.volume;
+      result.crea_volume.amount += itr->crea.volume;
+      result.cbd_volume.amount += itr->non_crea.volume;
 
       ++itr;
    } while( itr != bucket_idx.end() && itr->seconds == bucket_size );
@@ -92,7 +92,7 @@ DEFINE_API_IMPL( market_history_api_impl, get_order_book )
       order cur;
       cur.order_price = itr->sell_price;
       cur.real_price = ASSET_TO_REAL( itr->sell_price.base ) / ASSET_TO_REAL( itr->sell_price.quote );
-      cur.creativecoin = ( asset( itr->for_sale, CBD_SYMBOL ) * itr->sell_price ).amount;
+      cur.crea = ( asset( itr->for_sale, CBD_SYMBOL ) * itr->sell_price ).amount;
       cur.sbd = itr->for_sale;
       cur.created = itr->created;
       result.bids.push_back( cur );
@@ -106,7 +106,7 @@ DEFINE_API_IMPL( market_history_api_impl, get_order_book )
       order cur;
       cur.order_price = itr->sell_price;
       cur.real_price = ASSET_TO_REAL( itr->sell_price.quote ) / ASSET_TO_REAL( itr->sell_price.base );
-      cur.creativecoin = itr->for_sale;
+      cur.crea = itr->for_sale;
       cur.sbd = ( asset( itr->for_sale, CREA_SYMBOL ) * itr->sell_price ).amount;
       cur.created = itr->created;
       result.asks.push_back( cur );
@@ -178,7 +178,7 @@ DEFINE_API_IMPL( market_history_api_impl, get_market_history )
 DEFINE_API_IMPL( market_history_api_impl, get_market_history_buckets )
 {
    get_market_history_buckets_return result;
-   result.bucket_sizes = appbase::app().get_plugin< creativecoin::plugins::market_history::market_history_plugin >().get_tracked_buckets();
+   result.bucket_sizes = appbase::app().get_plugin< crea::plugins::market_history::market_history_plugin >().get_tracked_buckets();
    return result;
 }
 
@@ -202,4 +202,4 @@ DEFINE_READ_APIS( market_history_api,
    (get_market_history_buckets)
 )
 
-} } } // creativecoin::plugins::market_history
+} } } // crea::plugins::market_history

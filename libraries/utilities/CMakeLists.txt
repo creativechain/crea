@@ -7,7 +7,7 @@ if(NOT CREA_GIT_REVISION_DESCRIPTION)
     set(CREA_GIT_REVISION_DESCRIPTION "unknown")
 endif(NOT CREA_GIT_REVISION_DESCRIPTION)
 
-file(GLOB HEADERS "include/creativecoin/utilities/*.hpp")
+file(GLOB HEADERS "include/crea/utilities/*.hpp")
 
 set(sources
    benchmark_dumper.cpp
@@ -21,29 +21,29 @@ set(sources
 configure_file("${CMAKE_CURRENT_SOURCE_DIR}/git_revision.cpp.in" "${CMAKE_CURRENT_BINARY_DIR}/git_revision.cpp" @ONLY)
 list(APPEND sources "${CMAKE_CURRENT_BINARY_DIR}/git_revision.cpp")
 
-add_library( creativecoin_utilities
+add_library( crea_utilities
              ${sources}
              ${HEADERS} )
-target_link_libraries( creativecoin_utilities fc )
-target_include_directories( creativecoin_utilities
+target_link_libraries( crea_utilities fc )
+target_include_directories( crea_utilities
                             PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/include" )
 if (USE_PCH)
-  set_target_properties(creativecoin_utilities PROPERTIES COTIRE_ADD_UNITY_BUILD FALSE)
-  cotire(creativecoin_utilities)
+  set_target_properties(crea_utilities PROPERTIES COTIRE_ADD_UNITY_BUILD FALSE)
+  cotire(crea_utilities)
 endif(USE_PCH)
 
 if( CLANG_TIDY_EXE )
    set_target_properties(
-      creativecoin_utilities PROPERTIES
+      crea_utilities PROPERTIES
       CXX_CLANG_TIDY "${DO_CLANG_TIDY}"
    )
 endif( CLANG_TIDY_EXE )
 
 install( TARGETS
-   creativecoin_utilities
+   crea_utilities
 
    RUNTIME DESTINATION bin
    LIBRARY DESTINATION lib
    ARCHIVE DESTINATION lib
 )
-install( FILES ${HEADERS} DESTINATION "include/creativecoin/utilities" )
+install( FILES ${HEADERS} DESTINATION "include/crea/utilities" )

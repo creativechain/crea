@@ -1,9 +1,9 @@
 
 #pragma once
 
-#include <creativecoin/chain/creativecoin_object_types.hpp>
+#include <crea/chain/crea_object_types.hpp>
 
-namespace creativecoin { namespace plugin { namespace block_info {
+namespace crea { namespace plugin { namespace block_info {
 
 struct block_info
 {
@@ -22,7 +22,7 @@ struct block_with_info
 
 } } }
 
-FC_REFLECT( creativecoin::plugin::block_info::block_info,
+FC_REFLECT( crea::plugin::block_info::block_info,
    (block_id)
    (block_size)
    (aslot)
@@ -30,7 +30,7 @@ FC_REFLECT( creativecoin::plugin::block_info::block_info,
    (num_pow_witnesses)
    )
 
-FC_REFLECT( creativecoin::plugin::block_info::block_with_info,
+FC_REFLECT( crea::plugin::block_info::block_with_info,
    (block)
    (info)
    )

@@ -1,12 +1,12 @@
 #pragma once
 #include <appbase/application.hpp>
 
-#include <creativecoin/plugins/json_rpc/json_rpc_plugin.hpp>
-#include <creativecoin/plugins/json_rpc/utility.hpp>
+#include <crea/plugins/json_rpc/json_rpc_plugin.hpp>
+#include <crea/plugins/json_rpc/utility.hpp>
 
 #define CREA_TEST_API_PLUGIN_NAME "test_api"
 
-namespace creativecoin { namespace plugins { namespace test_api {
+namespace crea { namespace plugins { namespace test_api {
 
 using namespace appbase;
 
@@ -39,9 +39,9 @@ class test_api_plugin : public appbase::plugin< test_api_plugin >
       )
 };
 
-} } } // creativecoin::plugins::test_api
+} } } // crea::plugins::test_api
 
-FC_REFLECT( creativecoin::plugins::test_api::test_api_a_args, )
-FC_REFLECT( creativecoin::plugins::test_api::test_api_b_args, )
-FC_REFLECT( creativecoin::plugins::test_api::test_api_a_return, (value) )
-FC_REFLECT( creativecoin::plugins::test_api::test_api_b_return, (value) )
+FC_REFLECT( crea::plugins::test_api::test_api_a_args, )
+FC_REFLECT( crea::plugins::test_api::test_api_b_args, )
+FC_REFLECT( crea::plugins::test_api::test_api_a_return, (value) )
+FC_REFLECT( crea::plugins::test_api::test_api_b_return, (value) )

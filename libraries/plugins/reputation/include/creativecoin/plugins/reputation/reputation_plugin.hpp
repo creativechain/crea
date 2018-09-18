@@ -1,18 +1,18 @@
 #pragma once
-#include <creativecoin/plugins/chain/chain_plugin.hpp>
+#include <crea/plugins/chain/chain_plugin.hpp>
 
-#include <creativecoin/chain/generic_custom_operation_interpreter.hpp>
+#include <crea/chain/generic_custom_operation_interpreter.hpp>
 
 
 #define CREA_REPUTATION_PLUGIN_NAME "reputation"
 
 
-namespace creativecoin { namespace plugins{ namespace reputation {
+namespace crea { namespace plugins{ namespace reputation {
 
 namespace detail { class reputation_plugin_impl; }
 
 using namespace appbase;
-using creativecoin::chain::generic_custom_operation_interpreter;
+using crea::chain::generic_custom_operation_interpreter;
 
 class reputation_plugin : public appbase::plugin< reputation_plugin >
 {
@@ -20,7 +20,7 @@ class reputation_plugin : public appbase::plugin< reputation_plugin >
       reputation_plugin();
       virtual ~reputation_plugin();
 
-      APPBASE_PLUGIN_REQUIRES( (creativecoin::plugins::chain::chain_plugin) )
+      APPBASE_PLUGIN_REQUIRES( (crea::plugins::chain::chain_plugin) )
 
       static const std::string& name() { static std::string name = CREA_REPUTATION_PLUGIN_NAME; return name; }
 
@@ -35,4 +35,4 @@ class reputation_plugin : public appbase::plugin< reputation_plugin >
       std::unique_ptr< detail::reputation_plugin_impl > my;
 };
 
-} } } //creativecoin::reputation
+} } } //crea::reputation

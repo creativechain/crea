@@ -1,18 +1,18 @@
 #pragma once
-#include <creativecoin/plugins/json_rpc/json_rpc_plugin.hpp>
-#include <creativecoin/plugins/database_api/database_api_plugin.hpp>
-#include <creativecoin/plugins/block_api/block_api_plugin.hpp>
+#include <crea/plugins/json_rpc/json_rpc_plugin.hpp>
+#include <crea/plugins/database_api/database_api_plugin.hpp>
+#include <crea/plugins/block_api/block_api_plugin.hpp>
 
 #define CREA_CONDENSER_API_PLUGIN_NAME "condenser_api"
 
-namespace creativecoin { namespace plugins { namespace condenser_api {
+namespace crea { namespace plugins { namespace condenser_api {
 
 using namespace appbase;
 
 class condenser_api_plugin : public appbase::plugin< condenser_api_plugin >
 {
 public:
-   APPBASE_PLUGIN_REQUIRES( (creativecoin::plugins::json_rpc::json_rpc_plugin)(creativecoin::plugins::database_api::database_api_plugin) )
+   APPBASE_PLUGIN_REQUIRES( (crea::plugins::json_rpc::json_rpc_plugin)(crea::plugins::database_api::database_api_plugin) )
 
    condenser_api_plugin();
    virtual ~condenser_api_plugin();
@@ -28,4 +28,4 @@ public:
    std::shared_ptr< class condenser_api > api;
 };
 
-} } } // creativecoin::plugins::condenser_api
+} } } // crea::plugins::condenser_api

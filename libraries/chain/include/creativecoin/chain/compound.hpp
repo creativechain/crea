@@ -2,12 +2,12 @@
 
 #include <cstdint>
 
-#include <creativecoin/protocol/config.hpp>
-#include <creativecoin/protocol/types.hpp>
+#include <crea/protocol/config.hpp>
+#include <crea/protocol/types.hpp>
 
 #include <fc/uint128.hpp>
 
-namespace creativecoin { namespace protocol {
+namespace crea { namespace protocol {
 
 template< uint16_t percent, uint64_t multiply_constant, uint64_t shift_constant >
 share_type calc_percent_reward( share_type current_supply )

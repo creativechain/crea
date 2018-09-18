@@ -1,21 +1,21 @@
 #pragma once
-#include <creativecoin/protocol/base.hpp>
-#include <creativecoin/protocol/block_header.hpp>
-#include <creativecoin/protocol/asset.hpp>
+#include <crea/protocol/base.hpp>
+#include <crea/protocol/block_header.hpp>
+#include <crea/protocol/asset.hpp>
 
 #include <fc/utf8.hpp>
 
-namespace creativecoin { namespace protocol {
+namespace crea { namespace protocol {
 
    struct author_reward_operation : public virtual_operation {
       author_reward_operation(){}
       author_reward_operation( const account_name_type& a, const string& p, const asset& s, const asset& st, const asset& v )
-         :author(a), permlink(p), cbd_payout(s), creativecoin_payout(st), vesting_payout(v){}
+         :author(a), permlink(p), cbd_payout(s), crea_payout(st), vesting_payout(v){}
 
       account_name_type author;
       string            permlink;
       asset             cbd_payout;
-      asset             creativecoin_payout;
+      asset             crea_payout;
       asset             vesting_payout;
    };
 
@@ -176,20 +176,20 @@ namespace creativecoin { namespace protocol {
 
    };
 
-} } //creativecoin::protocol
+} } //crea::protocol
 
-FC_REFLECT( creativecoin::protocol::author_reward_operation, (author)(permlink)(cbd_payout)(creativecoin_payout)(vesting_payout) )
-FC_REFLECT( creativecoin::protocol::curation_reward_operation, (curator)(reward)(comment_author)(comment_permlink) )
-FC_REFLECT( creativecoin::protocol::comment_reward_operation, (author)(permlink)(payout) )
-FC_REFLECT( creativecoin::protocol::fill_convert_request_operation, (owner)(requestid)(amount_in)(amount_out) )
-FC_REFLECT( creativecoin::protocol::liquidity_reward_operation, (owner)(payout) )
-FC_REFLECT( creativecoin::protocol::interest_operation, (owner)(interest) )
-FC_REFLECT( creativecoin::protocol::fill_vesting_withdraw_operation, (from_account)(to_account)(withdrawn)(deposited) )
-FC_REFLECT( creativecoin::protocol::shutdown_witness_operation, (owner) )
-FC_REFLECT( creativecoin::protocol::fill_order_operation, (current_owner)(current_orderid)(current_pays)(open_owner)(open_orderid)(open_pays) )
-FC_REFLECT( creativecoin::protocol::fill_transfer_from_savings_operation, (from)(to)(amount)(request_id)(memo) )
-FC_REFLECT( creativecoin::protocol::hardfork_operation, (hardfork_id) )
-FC_REFLECT( creativecoin::protocol::comment_payout_update_operation, (author)(permlink) )
-FC_REFLECT( creativecoin::protocol::return_vesting_delegation_operation, (account)(vesting_shares) )
-FC_REFLECT( creativecoin::protocol::comment_benefactor_reward_operation, (benefactor)(author)(permlink)(reward) )
-FC_REFLECT( creativecoin::protocol::producer_reward_operation, (producer)(vesting_shares) )
+FC_REFLECT( crea::protocol::author_reward_operation, (author)(permlink)(cbd_payout)(crea_payout)(vesting_payout) )
+FC_REFLECT( crea::protocol::curation_reward_operation, (curator)(reward)(comment_author)(comment_permlink) )
+FC_REFLECT( crea::protocol::comment_reward_operation, (author)(permlink)(payout) )
+FC_REFLECT( crea::protocol::fill_convert_request_operation, (owner)(requestid)(amount_in)(amount_out) )
+FC_REFLECT( crea::protocol::liquidity_reward_operation, (owner)(payout) )
+FC_REFLECT( crea::protocol::interest_operation, (owner)(interest) )
+FC_REFLECT( crea::protocol::fill_vesting_withdraw_operation, (from_account)(to_account)(withdrawn)(deposited) )
+FC_REFLECT( crea::protocol::shutdown_witness_operation, (owner) )
+FC_REFLECT( crea::protocol::fill_order_operation, (current_owner)(current_orderid)(current_pays)(open_owner)(open_orderid)(open_pays) )
+FC_REFLECT( crea::protocol::fill_transfer_from_savings_operation, (from)(to)(amount)(request_id)(memo) )
+FC_REFLECT( crea::protocol::hardfork_operation, (hardfork_id) )
+FC_REFLECT( crea::protocol::comment_payout_update_operation, (author)(permlink) )
+FC_REFLECT( crea::protocol::return_vesting_delegation_operation, (account)(vesting_shares) )
+FC_REFLECT( crea::protocol::comment_benefactor_reward_operation, (benefactor)(author)(permlink)(reward) )
+FC_REFLECT( crea::protocol::producer_reward_operation, (producer)(vesting_shares) )

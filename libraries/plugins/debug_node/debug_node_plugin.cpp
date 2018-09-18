@@ -1,6 +1,6 @@
-#include <creativecoin/plugins/debug_node/debug_node_plugin.hpp>
+#include <crea/plugins/debug_node/debug_node_plugin.hpp>
 
-#include <creativecoin/chain/witness_objects.hpp>
+#include <crea/chain/witness_objects.hpp>
 
 #include <fc/io/buffered_iostream.hpp>
 #include <fc/io/fstream.hpp>
@@ -10,12 +10,12 @@
 #include <fc/thread/mutex.hpp>
 #include <fc/thread/scoped_lock.hpp>
 
-#include <creativecoin/utilities/key_conversion.hpp>
+#include <crea/utilities/key_conversion.hpp>
 
 #include <sstream>
 #include <string>
 
-namespace creativecoin { namespace plugins { namespace debug_node {
+namespace crea { namespace plugins { namespace debug_node {
 
 namespace detail {
 class debug_node_plugin_impl
@@ -205,7 +205,7 @@ void debug_node_plugin::debug_generate_blocks(
    chain::public_key_type debug_public_key;
    if( args.debug_key != "" )
    {
-      debug_private_key = creativecoin::utilities::wif_to_key( args.debug_key );
+      debug_private_key = crea::utilities::wif_to_key( args.debug_key );
       FC_ASSERT( debug_private_key.valid() );
       debug_public_key = debug_private_key->get_public_key();
    }
@@ -360,4 +360,4 @@ void debug_node_plugin::plugin_shutdown()
    return;
 }
 
-} } } // creativecoin::plugins::debug_node
+} } } // crea::plugins::debug_node

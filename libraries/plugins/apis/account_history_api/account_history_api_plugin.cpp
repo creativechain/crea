@@ -1,8 +1,8 @@
-#include <creativecoin/plugins/account_history_api/account_history_api_plugin.hpp>
-#include <creativecoin/plugins/account_history_api/account_history_api.hpp>
+#include <crea/plugins/account_history_api/account_history_api_plugin.hpp>
+#include <crea/plugins/account_history_api/account_history_api.hpp>
 
 
-namespace creativecoin { namespace plugins { namespace account_history {
+namespace crea { namespace plugins { namespace account_history {
 
 account_history_api_plugin::account_history_api_plugin() {}
 account_history_api_plugin::~account_history_api_plugin() {}
@@ -17,4 +17,4 @@ void account_history_api_plugin::plugin_initialize( const variables_map& options
 void account_history_api_plugin::plugin_startup() {}
 void account_history_api_plugin::plugin_shutdown() {}
 
-} } } // creativecoin::plugins::account_history
+} } } // crea::plugins::account_history

@@ -1,8 +1,8 @@
-#include <creativecoin/plugins/market_history_api/market_history_api_plugin.hpp>
-#include <creativecoin/plugins/market_history_api/market_history_api.hpp>
+#include <crea/plugins/market_history_api/market_history_api_plugin.hpp>
+#include <crea/plugins/market_history_api/market_history_api.hpp>
 
 
-namespace creativecoin { namespace plugins { namespace market_history {
+namespace crea { namespace plugins { namespace market_history {
 
 market_history_api_plugin::market_history_api_plugin() {}
 market_history_api_plugin::~market_history_api_plugin() {}
@@ -17,4 +17,4 @@ void market_history_api_plugin::plugin_initialize( const variables_map& options 
 void market_history_api_plugin::plugin_startup() {}
 void market_history_api_plugin::plugin_shutdown() {}
 
-} } } // creativecoin::plugins::market_history
+} } } // crea::plugins::market_history

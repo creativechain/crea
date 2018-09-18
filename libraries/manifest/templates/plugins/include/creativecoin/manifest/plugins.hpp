@@ -5,7 +5,7 @@
 #include <string>
 #include <vector>
 
-namespace creativecoin { namespace plugins {
+namespace crea { namespace plugins {
 
 void register_plugins();
 

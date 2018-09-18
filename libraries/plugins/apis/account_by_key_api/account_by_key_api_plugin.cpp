@@ -1,8 +1,8 @@
-#include <creativecoin/plugins/account_by_key_api/account_by_key_api_plugin.hpp>
-#include <creativecoin/plugins/account_by_key_api/account_by_key_api.hpp>
+#include <crea/plugins/account_by_key_api/account_by_key_api_plugin.hpp>
+#include <crea/plugins/account_by_key_api/account_by_key_api.hpp>
 
 
-namespace creativecoin { namespace plugins { namespace account_by_key {
+namespace crea { namespace plugins { namespace account_by_key {
 
 account_by_key_api_plugin::account_by_key_api_plugin() {}
 account_by_key_api_plugin::~account_by_key_api_plugin() {}
@@ -17,4 +17,4 @@ void account_by_key_api_plugin::plugin_initialize( const variables_map& options 
 void account_by_key_api_plugin::plugin_startup() {}
 void account_by_key_api_plugin::plugin_shutdown() {}
 
-} } } // creativecoin::plugins::account_by_key
+} } } // crea::plugins::account_by_key

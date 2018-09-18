@@ -1,8 +1,8 @@
-#include <creativecoin/plugins/test_api/test_api_plugin.hpp>
+#include <crea/plugins/test_api/test_api_plugin.hpp>
 
 #include <fc/log/logger_config.hpp>
 
-namespace creativecoin { namespace plugins { namespace test_api {
+namespace crea { namespace plugins { namespace test_api {
 
 test_api_plugin::test_api_plugin() {}
 test_api_plugin::~test_api_plugin() {}
@@ -31,4 +31,4 @@ test_api_b_return test_api_plugin::test_api_b( const test_api_b_args& args, bool
    return result;
 }
 
-} } } // creativecoin::plugins::test_api
+} } } // crea::plugins::test_api

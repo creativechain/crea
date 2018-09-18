@@ -1,9 +1,9 @@
-file(GLOB HEADERS "include/creativecoin/chain_plugin/*.hpp")
+file(GLOB HEADERS "include/crea/chain_plugin/*.hpp")
 add_library( chain_plugin
              chain_plugin.cpp
              ${HEADERS} )
 
-target_link_libraries( chain_plugin creativecoin_chain appbase creativecoin_utilities statsd_plugin )
+target_link_libraries( chain_plugin crea_chain appbase crea_utilities statsd_plugin )
 target_include_directories( chain_plugin PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/include" )
 
 if( CLANG_TIDY_EXE )
@@ -20,4 +20,4 @@ install( TARGETS
    LIBRARY DESTINATION lib
    ARCHIVE DESTINATION lib
 )
-install( FILES ${HEADERS} DESTINATION "include/creativecoin/chain_plugin" )
+install( FILES ${HEADERS} DESTINATION "include/crea/chain_plugin" )

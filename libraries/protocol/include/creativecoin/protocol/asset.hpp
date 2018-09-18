@@ -1,9 +1,9 @@
 #pragma once
-#include <creativecoin/protocol/types.hpp>
-#include <creativecoin/protocol/config.hpp>
-#include <creativecoin/protocol/asset_symbol.hpp>
+#include <crea/protocol/types.hpp>
+#include <crea/protocol/config.hpp>
+#include <crea/protocol/asset_symbol.hpp>
 
-namespace creativecoin { namespace protocol {
+namespace crea { namespace protocol {
 
    struct asset
    {
@@ -148,12 +148,12 @@ namespace creativecoin { namespace protocol {
    bool  operator != ( const price& a, const price& b );
    asset operator *  ( const asset& a, const price& b );
 
-} } // creativecoin::protocol
+} } // crea::protocol
 
 namespace fc {
-    void to_variant( const creativecoin::protocol::asset& var,  fc::variant& vo );
-    void from_variant( const fc::variant& var,  creativecoin::protocol::asset& vo );
+    void to_variant( const crea::protocol::asset& var,  fc::variant& vo );
+    void from_variant( const fc::variant& var,  crea::protocol::asset& vo );
 }
 
-FC_REFLECT( creativecoin::protocol::asset, (amount)(symbol) )
-FC_REFLECT( creativecoin::protocol::price, (base)(quote) )
+FC_REFLECT( crea::protocol::asset, (amount)(symbol) )
+FC_REFLECT( crea::protocol::price, (base)(quote) )

@@ -24,7 +24,7 @@
 #pragma once
 
 #include <graphene/net/config.hpp>
-#include <creativecoin/protocol/block.hpp>
+#include <crea/protocol/block.hpp>
 
 #include <fc/crypto/ripemd160.hpp>
 #include <fc/crypto/elliptic.hpp>
@@ -40,10 +40,10 @@
 #include <vector>
 
 namespace graphene { namespace net {
-  using creativecoin::protocol::signed_transaction;
-  using creativecoin::protocol::block_id_type;
-  using creativecoin::protocol::transaction_id_type;
-  using creativecoin::protocol::signed_block;
+  using crea::protocol::signed_transaction;
+  using crea::protocol::block_id_type;
+  using crea::protocol::transaction_id_type;
+  using crea::protocol::signed_block;
 
   typedef fc::ecc::public_key_data node_id_t;
   typedef fc::ripemd160 item_hash_t;

@@ -1,11 +1,11 @@
-#include <creativecoin/protocol/version.hpp>
+#include <crea/protocol/version.hpp>
 
 #include <fc/exception/exception.hpp>
 #include <fc/variant.hpp>
 
 #include <sstream>
 
-namespace creativecoin { namespace protocol {
+namespace crea { namespace protocol {
 
 /* Quick conversion utilities from http://joelverhagen.com/blog/2010/11/convert-an-int-to-a-string-and-vice-versa-in-c/ */
 inline int string_to_int( fc::string input )
@@ -42,16 +42,16 @@ version::operator fc::string()const
    return s.str();
 }
 
-} } // creativecoin::protocol
+} } // crea::protocol
 
 namespace fc
 {
-   void to_variant( const creativecoin::protocol::version& v, variant& var )
+   void to_variant( const crea::protocol::version& v, variant& var )
    {
       var = fc::string( v );
    }
 
-   void from_variant( const variant& var, creativecoin::protocol::version& v )
+   void from_variant( const variant& var, crea::protocol::version& v )
    {
       uint32_t major = 0, hardfork = 0, revision = 0;
       char dot_a = 0, dot_b = 0;
@@ -69,14 +69,14 @@ namespace fc
       v.v_num = 0 | ( major << 24 ) | ( hardfork << 16 ) | revision;
    }
 
-   void to_variant( const creativecoin::protocol::hardfork_version& hv, variant& var )
+   void to_variant( const crea::protocol::hardfork_version& hv, variant& var )
    {
-      to_variant( (const creativecoin::protocol::version&) hv, var );
+      to_variant( (const crea::protocol::version&) hv, var );
    }
 
-   void from_variant( const variant& var, creativecoin::protocol::hardfork_version& hv )
+   void from_variant( const variant& var, crea::protocol::hardfork_version& hv )
    {
-      creativecoin::protocol::version ver;
+      crea::protocol::version ver;
       from_variant( var, ver );
       hv.v_num = ver.v_num & 0xffff0000;
    }

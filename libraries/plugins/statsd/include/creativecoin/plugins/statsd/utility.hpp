@@ -1,12 +1,12 @@
 #pragma once
-#include <creativecoin/plugins/statsd/statsd_plugin.hpp>
+#include <crea/plugins/statsd/statsd_plugin.hpp>
 
 #include <fc/optional.hpp>
 #include <fc/time.hpp>
 
-namespace creativecoin { namespace plugins { namespace statsd { namespace util {
+namespace crea { namespace plugins { namespace statsd { namespace util {
 
-using creativecoin::plugins::statsd::statsd_plugin;
+using crea::plugins::statsd::statsd_plugin;
 
 bool statsd_enabled();
 const statsd_plugin& get_statsd();
@@ -54,46 +54,46 @@ inline uint32_t timing_helper( const fc::time_point& time ) { return time.time_s
 inline uint32_t timing_helper( const fc::time_point_sec& time ) { return time.sec_since_epoch() * 1000; }
 inline uint32_t timing_helper( uint32_t time ) { return time; }
 
-} } } } // creativecoin::plugins::statsd::util
+} } } } // crea::plugins::statsd::util
 
 #define STATSD_INCREMENT( NAMESPACE, STAT, KEY, FREQ )   \
-if( creativecoin::plugins::statsd::util::statsd_enabled() )     \
+if( crea::plugins::statsd::util::statsd_enabled() )     \
 {                                                        \
-   creativecoin::plugins::statsd::util::get_statsd().increment( \
+   crea::plugins::statsd::util::get_statsd().increment( \
       #NAMESPACE, #STAT, #KEY, FREQ                      \
    );                                                    \
 }
 
 #define STATSD_DECREMENT( NAMESPACE, STAT, KEY, FREQ )   \
-if( creativecoin::plugins::statsd::util::statsd_enabled() )     \
+if( crea::plugins::statsd::util::statsd_enabled() )     \
 {                                                        \
-   creativecoin::plugins::statsd::util::get_statsd().decrement( \
+   crea::plugins::statsd::util::get_statsd().decrement( \
       #NAMESPACE, #STAT, #KEY, FREQ                      \
    );                                                    \
 }
 
 #define STATSD_COUNT( NAMESPACE, STAT, KEY, VAL, FREQ )  \
-if( creativecoin::plugins::statsd::util::statsd_enabled() )     \
+if( crea::plugins::statsd::util::statsd_enabled() )     \
 {                                                        \
-   creativecoin::plugins::statsd::util::get_statsd().count(     \
+   crea::plugins::statsd::util::get_statsd().count(     \
       #NAMESPACE, #STAT, #KEY, VAL, FREQ                 \
    );                                                    \
 }
 
 #define STATSD_GAUGE( NAMESPACE, STAT, KEY, VAL, FREQ )  \
-if( creativecoin::plugins::statsd::util::statsd_enabled() )     \
+if( crea::plugins::statsd::util::statsd_enabled() )     \
 {                                                        \
-   creativecoin::plugins::statsd::util::get_statsd().gauge(     \
+   crea::plugins::statsd::util::get_statsd().gauge(     \
       #NAMESPACE, #STAT, #KEY, VAL, FREQ                 \
    );                                                    \
 }
 
 #define STATSD_START_TIMER( NAMESPACE, STAT, KEY, FREQ )                                              \
-fc::optional< creativecoin::plugins::statsd::util::statsd_timer_helper > NAMESPACE ## STAT ## KEY ## _timer; \
-if( creativecoin::plugins::statsd::util::statsd_enabled() )                                                  \
+fc::optional< crea::plugins::statsd::util::statsd_timer_helper > NAMESPACE ## STAT ## KEY ## _timer; \
+if( crea::plugins::statsd::util::statsd_enabled() )                                                  \
 {                                                                                                     \
-   NAMESPACE ## STAT ## KEY ## _timer = creativecoin::plugins::statsd::util::statsd_timer_helper(            \
-      #NAMESPACE, #STAT, #KEY, FREQ, creativecoin::plugins::statsd::util::get_statsd()                       \
+   NAMESPACE ## STAT ## KEY ## _timer = crea::plugins::statsd::util::statsd_timer_helper(            \
+      #NAMESPACE, #STAT, #KEY, FREQ, crea::plugins::statsd::util::get_statsd()                       \
    );                                                                                                 \
 }
 
@@ -101,11 +101,11 @@ if( creativecoin::plugins::statsd::util::statsd_enabled() )                     
    NAMESPACE ## STAT ## KEY ## _timer.reset();
 
 #define STATSD_TIMER( NAMESPACE, STAT, KEY, VAL, FREQ )  \
-if( creativecoin::plugins::statsd::util::statsd_enabled() )     \
+if( crea::plugins::statsd::util::statsd_enabled() )     \
 {                                                        \
-   creativecoin::plugins::statsd::util::get_statsd().timing(    \
+   crea::plugins::statsd::util::get_statsd().timing(    \
       NAMESPACE, STAT, KEY,                              \
-      creativecoin::plugins::statsd::util::timing_helper( VAL ),\
+      crea::plugins::statsd::util::timing_helper( VAL ),\
       FREQ                                               \
    );                                                    \
 }

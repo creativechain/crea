@@ -1,11 +1,11 @@
 #pragma once
 
-#include <creativecoin/chain/creativecoin_object_types.hpp>
-#include <creativecoin/protocol/smt_operations.hpp>
+#include <crea/chain/crea_object_types.hpp>
+#include <crea/protocol/smt_operations.hpp>
 
 #ifdef CREA_ENABLE_SMT
 
-namespace creativecoin { namespace chain {
+namespace crea { namespace chain {
 
 /**
  * Class responsible for holding regular (i.e. non-reward) balance of SMT for given account.
@@ -75,9 +75,9 @@ public:
    id_type             id;
    /// Name of the account, the balance is held for.
    account_name_type   owner;
-   asset               pending_liquid;          /// 'reward_creativecoin_balance' for pending CREA
+   asset               pending_liquid;          /// 'reward_crea_balance' for pending CREA
    asset               pending_vesting_shares;  /// 'reward_vesting_balance' for pending VESTS
-   asset               pending_vesting_value;   /// 'reward_vesting_creativecoin' for pending VESTS
+   asset               pending_vesting_value;   /// 'reward_vesting_crea' for pending VESTS
 
    /** Set of simple methods that allow unification of
     *  regular and rewards balance manipulation code.
@@ -142,16 +142,16 @@ typedef multi_index_container <
    allocator< account_rewards_balance_object >
 > account_rewards_balance_index;
 
-} } // namespace creativecoin::chain
+} } // namespace crea::chain
 
-FC_REFLECT( creativecoin::chain::account_regular_balance_object,
+FC_REFLECT( crea::chain::account_regular_balance_object,
    (id)
    (owner)
    (liquid)
    (vesting)
 )
 
-FC_REFLECT( creativecoin::chain::account_rewards_balance_object,
+FC_REFLECT( crea::chain::account_rewards_balance_object,
    (id)
    (owner)
    (pending_liquid)
@@ -159,7 +159,7 @@ FC_REFLECT( creativecoin::chain::account_rewards_balance_object,
    (pending_vesting_value)
 )
 
-CHAINBASE_SET_INDEX_TYPE( creativecoin::chain::account_regular_balance_object, creativecoin::chain::account_regular_balance_index )
-CHAINBASE_SET_INDEX_TYPE( creativecoin::chain::account_rewards_balance_object, creativecoin::chain::account_rewards_balance_index )
+CHAINBASE_SET_INDEX_TYPE( crea::chain::account_regular_balance_object, crea::chain::account_regular_balance_index )
+CHAINBASE_SET_INDEX_TYPE( crea::chain::account_rewards_balance_object, crea::chain::account_rewards_balance_index )
 
 #endif

@@ -1,8 +1,8 @@
 #pragma once
 
-#include <creativecoin/protocol/base.hpp>
-#include <creativecoin/protocol/asset.hpp>
-#include <creativecoin/protocol/misc_utilities.hpp>
+#include <crea/protocol/base.hpp>
+#include <crea/protocol/asset.hpp>
+#include <crea/protocol/misc_utilities.hpp>
 
 #ifdef CREA_ENABLE_SMT
 
@@ -13,7 +13,7 @@
 #define SMT_MIN_SATURATION_CREA_UNITS 1000
 #define SMT_MIN_SOFT_CAP_CREA_UNITS   1000
 
-namespace creativecoin { namespace protocol {
+namespace crea { namespace protocol {
 
 /**
  * Base of all smt operations issued by token creator, holding what's needed by all of them.
@@ -64,10 +64,10 @@ struct smt_create_operation : public smt_base_operation
 
 struct smt_generation_unit
 {
-   flat_map< account_name_type, uint16_t >        creativecoin_unit;
+   flat_map< account_name_type, uint16_t >        crea_unit;
    flat_map< account_name_type, uint16_t >        token_unit;
 
-   uint32_t creativecoin_unit_sum()const;
+   uint32_t crea_unit_sum()const;
    uint32_t token_unit_sum()const;
 
    void validate()const;
@@ -107,8 +107,8 @@ struct smt_capped_generation_policy
    smt_generation_unit pre_soft_cap_unit;
    smt_generation_unit post_soft_cap_unit;
 
-   smt_cap_commitment  min_creativecoin_units_commitment;
-   smt_cap_commitment  hard_cap_creativecoin_units_commitment;
+   smt_cap_commitment  min_crea_units_commitment;
+   smt_cap_commitment  hard_cap_crea_units_commitment;
 
    uint16_t            soft_cap_percent = 0;
 
@@ -273,27 +273,27 @@ struct smt_set_runtime_parameters_operation : public smt_base_operation
 } }
 
 FC_REFLECT(
-   creativecoin::protocol::smt_base_operation,
+   crea::protocol::smt_base_operation,
    (control_account)
    (symbol)
 )
 
 FC_REFLECT(
-   creativecoin::protocol::smt_executor_base_operation,
+   crea::protocol::smt_executor_base_operation,
    (executor)
    (symbol)
 )
 
 FC_REFLECT_DERIVED(
-   creativecoin::protocol::smt_create_operation,
-   (creativecoin::protocol::smt_base_operation),
+   crea::protocol::smt_create_operation,
+   (crea::protocol::smt_base_operation),
    (smt_creation_fee)
    (extensions)
 )
 
 FC_REFLECT_DERIVED(
-   creativecoin::protocol::smt_setup_operation,
-   (creativecoin::protocol::smt_base_operation),
+   crea::protocol::smt_setup_operation,
+   (crea::protocol::smt_base_operation),
    (decimal_places)
    (max_supply)
    (initial_generation_policy)
@@ -305,37 +305,37 @@ FC_REFLECT_DERIVED(
    )
 
 FC_REFLECT(
-   creativecoin::protocol::smt_generation_unit,
-   (creativecoin_unit)
+   crea::protocol::smt_generation_unit,
+   (crea_unit)
    (token_unit)
    )
 
 FC_REFLECT(
-   creativecoin::protocol::smt_cap_commitment,
+   crea::protocol::smt_cap_commitment,
    (lower_bound)
    (upper_bound)
    (hash)
    )
 
 FC_REFLECT(
-   creativecoin::protocol::smt_revealed_cap,
+   crea::protocol::smt_revealed_cap,
    (amount)
    (nonce)
    )
 
 FC_REFLECT_DERIVED(
-   creativecoin::protocol::smt_cap_reveal_operation,
-   (creativecoin::protocol::smt_base_operation),
+   crea::protocol::smt_cap_reveal_operation,
+   (crea::protocol::smt_base_operation),
    (cap)
    (extensions)
    )
 
 FC_REFLECT(
-   creativecoin::protocol::smt_capped_generation_policy,
+   crea::protocol::smt_capped_generation_policy,
    (pre_soft_cap_unit)
    (post_soft_cap_unit)
-   (min_creativecoin_units_commitment)
-   (hard_cap_creativecoin_units_commitment)
+   (min_crea_units_commitment)
+   (hard_cap_crea_units_commitment)
    (soft_cap_percent)
    (min_unit_ratio)
    (max_unit_ratio)
@@ -343,8 +343,8 @@ FC_REFLECT(
    )
 
 FC_REFLECT_DERIVED(
-   creativecoin::protocol::smt_refund_operation,
-   (creativecoin::protocol::smt_executor_base_operation),
+   crea::protocol::smt_refund_operation,
+   (crea::protocol::smt_executor_base_operation),
    (contributor)
    (contribution_id)
    (amount)
@@ -352,13 +352,13 @@ FC_REFLECT_DERIVED(
    )
 
 FC_REFLECT(
-   creativecoin::protocol::smt_emissions_unit,
+   crea::protocol::smt_emissions_unit,
    (token_unit)
    )
 
 FC_REFLECT_DERIVED(
-   creativecoin::protocol::smt_setup_emissions_operation,
-   (creativecoin::protocol::smt_base_operation),
+   crea::protocol::smt_setup_emissions_operation,
+   (crea::protocol::smt_base_operation),
    (schedule_time)
    (emissions_unit)
    (interval_seconds)
@@ -374,31 +374,31 @@ FC_REFLECT_DERIVED(
    )
 
 FC_REFLECT(
-   creativecoin::protocol::smt_param_allow_vesting,
+   crea::protocol::smt_param_allow_vesting,
    (value)
    )
 
 FC_REFLECT(
-   creativecoin::protocol::smt_param_allow_voting,
+   crea::protocol::smt_param_allow_voting,
    (value)
    )
 
-FC_REFLECT_TYPENAME( creativecoin::protocol::smt_setup_parameter )
+FC_REFLECT_TYPENAME( crea::protocol::smt_setup_parameter )
 
 FC_REFLECT(
-   creativecoin::protocol::smt_param_windows_v1,
+   crea::protocol::smt_param_windows_v1,
    (cashout_window_seconds)
    (reverse_auction_window_seconds)
    )
 
 FC_REFLECT(
-   creativecoin::protocol::smt_param_vote_regeneration_period_seconds_v1,
+   crea::protocol::smt_param_vote_regeneration_period_seconds_v1,
    (vote_regeneration_period_seconds)
    (votes_per_regeneration_period)
    )
 
 FC_REFLECT(
-   creativecoin::protocol::smt_param_rewards_v1,
+   crea::protocol::smt_param_rewards_v1,
    (content_constant)
    (percent_curation_rewards)
    (percent_content_rewards)
@@ -407,19 +407,19 @@ FC_REFLECT(
    )
 
 FC_REFLECT_TYPENAME(
-   creativecoin::protocol::smt_runtime_parameter
+   crea::protocol::smt_runtime_parameter
    )
 
 FC_REFLECT_DERIVED(
-   creativecoin::protocol::smt_set_setup_parameters_operation,
-   (creativecoin::protocol::smt_base_operation),
+   crea::protocol::smt_set_setup_parameters_operation,
+   (crea::protocol::smt_base_operation),
    (setup_parameters)
    (extensions)
    )
 
 FC_REFLECT_DERIVED(
-   creativecoin::protocol::smt_set_runtime_parameters_operation,
-   (creativecoin::protocol::smt_base_operation),
+   crea::protocol::smt_set_runtime_parameters_operation,
+   (crea::protocol::smt_base_operation),
    (runtime_parameters)
    (extensions)
    )

@@ -1,21 +1,21 @@
-#include <creativecoin/plugins/condenser_api/condenser_api.hpp>
-#include <creativecoin/plugins/condenser_api/condenser_api_plugin.hpp>
+#include <crea/plugins/condenser_api/condenser_api.hpp>
+#include <crea/plugins/condenser_api/condenser_api_plugin.hpp>
 
-#include <creativecoin/plugins/database_api/database_api_plugin.hpp>
-#include <creativecoin/plugins/block_api/block_api_plugin.hpp>
-#include <creativecoin/plugins/account_history_api/account_history_api_plugin.hpp>
-#include <creativecoin/plugins/account_by_key_api/account_by_key_api_plugin.hpp>
-#include <creativecoin/plugins/network_broadcast_api/network_broadcast_api_plugin.hpp>
-#include <creativecoin/plugins/tags_api/tags_api_plugin.hpp>
-#include <creativecoin/plugins/follow_api/follow_api_plugin.hpp>
-#include <creativecoin/plugins/reputation_api/reputation_api_plugin.hpp>
-#include <creativecoin/plugins/market_history_api/market_history_api_plugin.hpp>
-#include <creativecoin/plugins/witness_api/witness_api_plugin.hpp>
+#include <crea/plugins/database_api/database_api_plugin.hpp>
+#include <crea/plugins/block_api/block_api_plugin.hpp>
+#include <crea/plugins/account_history_api/account_history_api_plugin.hpp>
+#include <crea/plugins/account_by_key_api/account_by_key_api_plugin.hpp>
+#include <crea/plugins/network_broadcast_api/network_broadcast_api_plugin.hpp>
+#include <crea/plugins/tags_api/tags_api_plugin.hpp>
+#include <crea/plugins/follow_api/follow_api_plugin.hpp>
+#include <crea/plugins/reputation_api/reputation_api_plugin.hpp>
+#include <crea/plugins/market_history_api/market_history_api_plugin.hpp>
+#include <crea/plugins/witness_api/witness_api_plugin.hpp>
 
-#include <creativecoin/utilities/git_revision.hpp>
+#include <crea/utilities/git_revision.hpp>
 
-#include <creativecoin/chain/util/reward.hpp>
-#include <creativecoin/chain/util/uint256.hpp>
+#include <crea/chain/util/reward.hpp>
+#include <crea/chain/util/uint256.hpp>
 
 #include <fc/git_revision.hpp>
 
@@ -28,7 +28,7 @@
 #define CHECK_ARG_SIZE( s ) \
    FC_ASSERT( args.size() == s, "Expected #s argument(s), was ${n}", ("n", args.size()) );
 
-namespace creativecoin { namespace plugins { namespace condenser_api {
+namespace crea { namespace plugins { namespace condenser_api {
 
 namespace detail
 {
@@ -38,12 +38,12 @@ namespace detail
    {
       public:
          condenser_api_impl() :
-            _chain( appbase::app().get_plugin< creativecoin::plugins::chain::chain_plugin >() ),
+            _chain( appbase::app().get_plugin< crea::plugins::chain::chain_plugin >() ),
             _db( _chain.db() )
          {
             _on_post_apply_block_conn = _db.add_post_apply_block_handler(
                [&]( const block_notification& note ){ on_post_apply_block( note.block ); },
-               appbase::app().get_plugin< creativecoin::plugins::condenser_api::condenser_api_plugin >(),
+               appbase::app().get_plugin< crea::plugins::condenser_api::condenser_api_plugin >(),
                0 );
          }
 
@@ -141,7 +141,7 @@ namespace detail
 
          void on_post_apply_block( const signed_block& b );
 
-         creativecoin::plugins::chain::chain_plugin&                              _chain;
+         crea::plugins::chain::chain_plugin&                              _chain;
 
          chain::database&                                                  _db;
 
@@ -170,7 +170,7 @@ namespace detail
       return get_version_return
       (
          fc::string( CREA_BLOCKCHAIN_VERSION ),
-         fc::string( creativecoin::utilities::git_revision_sha ),
+         fc::string( crea::utilities::git_revision_sha ),
          fc::string( fc::git_revision_sha )
       );
    }
@@ -2002,7 +2002,7 @@ namespace detail
       if( _db.has_hardfork( CREA_HARDFORK_0_17__774 ) )
          pot = _db.get_reward_fund( _db.get_comment( d.author, d.permlink ) ).reward_balance;
       else
-         pot = props.total_reward_fund_creativecoin;
+         pot = props.total_reward_fund_crea;
 
       if( !hist.current_median_history.is_null() ) pot = pot * hist.current_median_history;
 
@@ -2266,4 +2266,4 @@ DEFINE_READ_APIS( condenser_api,
    (get_market_history)
 )
 
-} } } // creativecoin::plugins::condenser_api
+} } } // crea::plugins::condenser_api

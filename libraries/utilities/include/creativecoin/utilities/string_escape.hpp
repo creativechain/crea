@@ -25,8 +25,8 @@
 
 #include <string>
 
-namespace creativecoin { namespace utilities {
+namespace crea { namespace utilities {
 
   std::string escape_string_for_c_source_code(const std::string& input);
 
-} } // end namespace creativecoin::utilities
+} } // end namespace crea::utilities

@@ -1,16 +1,16 @@
-file(GLOB HEADERS "include/creativecoin/blockchain_statistics/*.hpp")
+file(GLOB HEADERS "include/crea/blockchain_statistics/*.hpp")
 
-add_library( creativecoin_blockchain_statistics
+add_library( crea_blockchain_statistics
              blockchain_statistics_plugin.cpp
              blockchain_statistics_api.cpp
            )
 
-target_link_libraries( creativecoin_blockchain_statistics creativecoin_chain creativecoin_protocol creativecoin_app )
-target_include_directories( creativecoin_blockchain_statistics
+target_link_libraries( crea_blockchain_statistics crea_chain crea_protocol crea_app )
+target_include_directories( crea_blockchain_statistics
                             PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/include" )
 
 install( TARGETS
-   creativecoin_blockchain_statistics
+   crea_blockchain_statistics
 
    RUNTIME DESTINATION bin
    LIBRARY DESTINATION lib

@@ -1,11 +1,11 @@
 #include <appbase/application.hpp>
 
-#include <creativecoin/plugins/block_api/block_api.hpp>
-#include <creativecoin/plugins/block_api/block_api_plugin.hpp>
+#include <crea/plugins/block_api/block_api.hpp>
+#include <crea/plugins/block_api/block_api_plugin.hpp>
 
-#include <creativecoin/protocol/get_config.hpp>
+#include <crea/protocol/get_config.hpp>
 
-namespace creativecoin { namespace plugins { namespace block_api {
+namespace crea { namespace plugins { namespace block_api {
 
 class block_api_impl
 {
@@ -36,7 +36,7 @@ block_api::block_api()
 block_api::~block_api() {}
 
 block_api_impl::block_api_impl()
-   : _db( appbase::app().get_plugin< creativecoin::plugins::chain::chain_plugin >().db() ) {}
+   : _db( appbase::app().get_plugin< crea::plugins::chain::chain_plugin >().db() ) {}
 
 block_api_impl::~block_api_impl() {}
 
@@ -73,4 +73,4 @@ DEFINE_READ_APIS( block_api,
    (get_block)
 )
 
-} } } // creativecoin::plugins::block_api
+} } } // crea::plugins::block_api

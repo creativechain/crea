@@ -1,15 +1,15 @@
 #pragma once
 
-#include <creativecoin/protocol/types.hpp>
-#include <creativecoin/chain/creativecoin_object_types.hpp>
-#include <creativecoin/chain/database.hpp>
+#include <crea/protocol/types.hpp>
+#include <crea/chain/crea_object_types.hpp>
+#include <crea/chain/database.hpp>
 
-namespace creativecoin { namespace plugins{ namespace follow {
+namespace crea { namespace plugins{ namespace follow {
 
-using namespace creativecoin::chain;
-using creativecoin::chain::database;
+using namespace crea::chain;
+using crea::chain::database;
  
-using creativecoin::protocol::account_name_type;
+using crea::protocol::account_name_type;
 
 class performance_impl;
 
@@ -133,4 +133,4 @@ class performance
       }
 };
 
-} } } //creativecoin::follow
+} } } //crea::follow

@@ -1,24 +1,24 @@
-#include <creativecoin/plugins/reputation/reputation_plugin.hpp>
-#include <creativecoin/plugins/reputation/reputation_objects.hpp>
+#include <crea/plugins/reputation/reputation_plugin.hpp>
+#include <crea/plugins/reputation/reputation_objects.hpp>
 
-#include <creativecoin/chain/util/impacted.hpp>
+#include <crea/chain/util/impacted.hpp>
 
-#include <creativecoin/protocol/config.hpp>
+#include <crea/protocol/config.hpp>
 
-#include <creativecoin/chain/database.hpp>
-#include <creativecoin/chain/index.hpp>
-#include <creativecoin/chain/operation_notification.hpp>
-#include <creativecoin/chain/account_object.hpp>
-#include <creativecoin/chain/comment_object.hpp>
+#include <crea/chain/database.hpp>
+#include <crea/chain/index.hpp>
+#include <crea/chain/operation_notification.hpp>
+#include <crea/chain/account_object.hpp>
+#include <crea/chain/comment_object.hpp>
 
 #include <fc/smart_ref_impl.hpp>
 #include <fc/thread/thread.hpp>
 
 #include <memory>
 
-namespace creativecoin { namespace plugins { namespace reputation {
+namespace crea { namespace plugins { namespace reputation {
 
-using namespace creativecoin::protocol;
+using namespace crea::protocol;
 
 namespace detail {
 
@@ -26,7 +26,7 @@ class reputation_plugin_impl
 {
    public:
       reputation_plugin_impl( reputation_plugin& _plugin ) :
-         _db( appbase::app().get_plugin< creativecoin::plugins::chain::chain_plugin >().db() ),
+         _db( appbase::app().get_plugin< crea::plugins::chain::chain_plugin >().db() ),
          _self( _plugin ) {}
       ~reputation_plugin_impl() {}
 
@@ -216,4 +216,4 @@ void reputation_plugin::plugin_shutdown()
    chain::util::disconnect_signal( my->_post_apply_operation_conn );
 }
 
-} } } // creativecoin::plugins::reputation
+} } } // crea::plugins::reputation

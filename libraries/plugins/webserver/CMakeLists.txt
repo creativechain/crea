@@ -1,4 +1,4 @@
-file(GLOB HEADERS "include/creativecoin/plugins/webserver/*.hpp")
+file(GLOB HEADERS "include/crea/plugins/webserver/*.hpp")
 
 add_library( webserver_plugin
              webserver_plugin.cpp

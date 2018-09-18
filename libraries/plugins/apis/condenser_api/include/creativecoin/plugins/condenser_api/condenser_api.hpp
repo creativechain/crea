@@ -1,24 +1,24 @@
 #pragma once
 
-#include <creativecoin/plugins/database_api/database_api.hpp>
-#include <creativecoin/plugins/block_api/block_api.hpp>
-#include <creativecoin/plugins/account_history_api/account_history_api.hpp>
-#include <creativecoin/plugins/account_by_key_api/account_by_key_api.hpp>
-#include <creativecoin/plugins/network_broadcast_api/network_broadcast_api.hpp>
-#include <creativecoin/plugins/tags_api/tags_api.hpp>
-#include <creativecoin/plugins/follow_api/follow_api.hpp>
-#include <creativecoin/plugins/reputation_api/reputation_api.hpp>
-#include <creativecoin/plugins/market_history_api/market_history_api.hpp>
-#include <creativecoin/plugins/witness_api/witness_api.hpp>
+#include <crea/plugins/database_api/database_api.hpp>
+#include <crea/plugins/block_api/block_api.hpp>
+#include <crea/plugins/account_history_api/account_history_api.hpp>
+#include <crea/plugins/account_by_key_api/account_by_key_api.hpp>
+#include <crea/plugins/network_broadcast_api/network_broadcast_api.hpp>
+#include <crea/plugins/tags_api/tags_api.hpp>
+#include <crea/plugins/follow_api/follow_api.hpp>
+#include <crea/plugins/reputation_api/reputation_api.hpp>
+#include <crea/plugins/market_history_api/market_history_api.hpp>
+#include <crea/plugins/witness_api/witness_api.hpp>
 
-#include <creativecoin/plugins/condenser_api/condenser_api_legacy_objects.hpp>
+#include <crea/plugins/condenser_api/condenser_api_legacy_objects.hpp>
 
 #include <fc/optional.hpp>
 #include <fc/variant.hpp>
 #include <fc/vector.hpp>
 #include <fc/api.hpp>
 
-namespace creativecoin { namespace plugins { namespace condenser_api {
+namespace crea { namespace plugins { namespace condenser_api {
 
 using std::vector;
 using fc::variant;
@@ -130,9 +130,9 @@ struct api_account_object
       savings_cbd_last_interest_payment( a.savings_cbd_last_interest_payment ),
       savings_withdraw_requests( a.savings_withdraw_requests ),
       reward_cbd_balance( legacy_asset::from_asset( a.reward_cbd_balance ) ),
-      reward_creativecoin_balance( legacy_asset::from_asset( a.reward_creativecoin_balance ) ),
+      reward_crea_balance( legacy_asset::from_asset( a.reward_crea_balance ) ),
       reward_vesting_balance( legacy_asset::from_asset( a.reward_vesting_balance ) ),
-      reward_vesting_creativecoin( legacy_asset::from_asset( a.reward_vesting_creativecoin ) ),
+      reward_vesting_crea( legacy_asset::from_asset( a.reward_vesting_crea ) ),
       curation_rewards( a.curation_rewards ),
       posting_rewards( a.posting_rewards ),
       vesting_shares( legacy_asset::from_asset( a.vesting_shares ) ),
@@ -195,9 +195,9 @@ struct api_account_object
    uint8_t           savings_withdraw_requests = 0;
 
    legacy_asset      reward_cbd_balance;
-   legacy_asset      reward_creativecoin_balance;
+   legacy_asset      reward_crea_balance;
    legacy_asset      reward_vesting_balance;
-   legacy_asset      reward_vesting_creativecoin;
+   legacy_asset      reward_vesting_crea;
 
    share_type        curation_rewards;
    share_type        posting_rewards;
@@ -232,7 +232,7 @@ struct extended_account : public api_account_object
    share_type                                               lifetime_market_bandwidth;
    time_point_sec                                           last_market_bandwidth_update;
 
-   legacy_asset                                             vesting_balance;  /// convert vesting_shares to vesting creativecoin
+   legacy_asset                                             vesting_balance;  /// convert vesting_shares to vesting crea
    share_type                                               reputation = 0;
    map< uint64_t, api_operation_object >   transfer_history; /// transfer to/from vesting
    map< uint64_t, api_operation_object >   market_history;   /// limit order / cancel / fill
@@ -284,7 +284,7 @@ struct api_comment_object
       root_author( c.root_author ),
       root_permlink( c.root_permlink ),
       max_accepted_payout( legacy_asset::from_asset( c.max_accepted_payout ) ),
-      percent_creativecoin_dollars( c.percent_creativecoin_dollars ),
+      percent_crea_dollars( c.percent_crea_dollars ),
       allow_replies( c.allow_replies ),
       allow_votes( c.allow_votes ),
       allow_curation_rewards( c.allow_curation_rewards )
@@ -337,7 +337,7 @@ struct api_comment_object
    string            root_permlink;
 
    legacy_asset      max_accepted_payout;
-   uint16_t          percent_creativecoin_dollars = 0;
+   uint16_t          percent_crea_dollars = 0;
    bool              allow_replies = false;
    bool              allow_votes = false;
    bool              allow_curation_rewards = false;
@@ -359,12 +359,12 @@ struct extended_dynamic_global_properties
       confidential_supply( legacy_asset::from_asset( o.confidential_supply ) ),
       current_cbd_supply( legacy_asset::from_asset( o.current_cbd_supply ) ),
       confidential_cbd_supply( legacy_asset::from_asset( o.confidential_cbd_supply ) ),
-      total_vesting_fund_creativecoin( legacy_asset::from_asset( o.total_vesting_fund_creativecoin ) ),
+      total_vesting_fund_crea( legacy_asset::from_asset( o.total_vesting_fund_crea ) ),
       total_vesting_shares( legacy_asset::from_asset( o.total_vesting_shares ) ),
-      total_reward_fund_creativecoin( legacy_asset::from_asset( o.total_reward_fund_creativecoin ) ),
+      total_reward_fund_crea( legacy_asset::from_asset( o.total_reward_fund_crea ) ),
       total_reward_shares2( o.total_reward_shares2 ),
       pending_rewarded_vesting_shares( legacy_asset::from_asset( o.pending_rewarded_vesting_shares ) ),
-      pending_rewarded_vesting_creativecoin( legacy_asset::from_asset( o.pending_rewarded_vesting_creativecoin ) ),
+      pending_rewarded_vesting_crea( legacy_asset::from_asset( o.pending_rewarded_vesting_crea ) ),
       cbd_interest_rate( o.cbd_interest_rate ),
       cbd_print_rate( o.cbd_print_rate ),
       maximum_block_size( o.maximum_block_size ),
@@ -389,12 +389,12 @@ struct extended_dynamic_global_properties
    legacy_asset      confidential_supply;
    legacy_asset      current_cbd_supply;
    legacy_asset      confidential_cbd_supply;
-   legacy_asset      total_vesting_fund_creativecoin;
+   legacy_asset      total_vesting_fund_crea;
    legacy_asset      total_vesting_shares;
-   legacy_asset      total_reward_fund_creativecoin;
+   legacy_asset      total_reward_fund_crea;
    fc::uint128       total_reward_shares2;
    legacy_asset      pending_rewarded_vesting_shares;
-   legacy_asset      pending_rewarded_vesting_creativecoin;
+   legacy_asset      pending_rewarded_vesting_crea;
 
    uint16_t          cbd_interest_rate = 0;
    uint16_t          cbd_print_rate = CREA_100_PERCENT;
@@ -557,7 +557,7 @@ struct api_escrow_object
       ratification_deadline( e.ratification_deadline ),
       escrow_expiration( e.escrow_expiration ),
       cbd_balance( legacy_asset::from_asset( e.cbd_balance ) ),
-      creativecoin_balance( legacy_asset::from_asset( e.creativecoin_balance ) ),
+      crea_balance( legacy_asset::from_asset( e.crea_balance ) ),
       pending_fee( legacy_asset::from_asset( e.pending_fee ) ),
       to_approved( e.to_approved ),
       disputed( e.disputed ),
@@ -572,7 +572,7 @@ struct api_escrow_object
    time_point_sec    ratification_deadline;
    time_point_sec    escrow_expiration;
    legacy_asset      cbd_balance;
-   legacy_asset      creativecoin_balance;
+   legacy_asset      crea_balance;
    legacy_asset      pending_fee;
    bool              to_approved = false;
    bool              disputed = false;
@@ -772,10 +772,10 @@ struct get_version_return
 {
    get_version_return() {}
    get_version_return( fc::string bc_v, fc::string s_v, fc::string fc_v )
-      :blockchain_version( bc_v ), creativecoin_revision( s_v ), fc_revision( fc_v ) {}
+      :blockchain_version( bc_v ), crea_revision( s_v ), fc_revision( fc_v ) {}
 
    fc::string blockchain_version;
-   fc::string creativecoin_revision;
+   fc::string crea_revision;
    fc::string fc_revision;
 };
 
@@ -843,7 +843,7 @@ struct ticker
       lowest_ask( t.lowest_ask ),
       highest_bid( t.highest_bid ),
       percent_change( t.percent_change ),
-      creativecoin_volume( legacy_asset::from_asset( t.creativecoin_volume ) ),
+      crea_volume( legacy_asset::from_asset( t.crea_volume ) ),
       cbd_volume( legacy_asset::from_asset( t.cbd_volume ) )
    {}
 
@@ -851,7 +851,7 @@ struct ticker
    double         lowest_ask = 0;
    double         highest_bid = 0;
    double         percent_change = 0;
-   legacy_asset   creativecoin_volume;
+   legacy_asset   crea_volume;
    legacy_asset   cbd_volume;
 };
 
@@ -859,11 +859,11 @@ struct volume
 {
    volume() {}
    volume( const market_history::get_volume_return& v ) :
-      creativecoin_volume( legacy_asset::from_asset( v.creativecoin_volume ) ),
+      crea_volume( legacy_asset::from_asset( v.crea_volume ) ),
       cbd_volume( legacy_asset::from_asset( v.cbd_volume ) )
    {}
 
-   legacy_asset   creativecoin_volume;
+   legacy_asset   crea_volume;
    legacy_asset   cbd_volume;
 };
 
@@ -873,14 +873,14 @@ struct order
    order( const market_history::order& o ) :
       order_price( o.order_price ),
       real_price( o.real_price ),
-      creativecoin( o.creativecoin ),
+      crea( o.crea ),
       sbd( o.sbd ),
       created( o.created )
    {}
 
    legacy_price   order_price;
    double         real_price;
-   share_type     creativecoin;
+   share_type     crea;
    share_type     sbd;
    time_point_sec created;
 };
@@ -1104,24 +1104,24 @@ public:
       std::unique_ptr< detail::condenser_api_impl > my;
 };
 
-} } } // creativecoin::plugins::condenser_api
+} } } // crea::plugins::condenser_api
 
-FC_REFLECT( creativecoin::plugins::condenser_api::discussion_index,
+FC_REFLECT( crea::plugins::condenser_api::discussion_index,
             (category)(trending)(payout)(payout_comments)(trending30)(updated)(created)(responses)(active)(votes)(maturing)(best)(hot)(promoted)(cashout) )
 
-FC_REFLECT( creativecoin::plugins::condenser_api::api_tag_object,
+FC_REFLECT( crea::plugins::condenser_api::api_tag_object,
             (name)(total_payouts)(net_votes)(top_posts)(comments)(trending) )
 
-FC_REFLECT( creativecoin::plugins::condenser_api::state,
+FC_REFLECT( crea::plugins::condenser_api::state,
             (current_route)(props)(tag_idx)(tags)(content)(accounts)(witnesses)(discussion_idx)(witness_schedule)(feed_price)(error) )
 
-FC_REFLECT( creativecoin::plugins::condenser_api::api_limit_order_object,
+FC_REFLECT( crea::plugins::condenser_api::api_limit_order_object,
             (id)(created)(expiration)(seller)(orderid)(for_sale)(sell_price)(real_price)(rewarded) )
 
-FC_REFLECT( creativecoin::plugins::condenser_api::api_operation_object,
+FC_REFLECT( crea::plugins::condenser_api::api_operation_object,
              (trx_id)(block)(trx_in_block)(op_in_trx)(virtual_op)(timestamp)(op) )
 
-FC_REFLECT( creativecoin::plugins::condenser_api::api_account_object,
+FC_REFLECT( crea::plugins::condenser_api::api_account_object,
              (id)(name)(owner)(active)(posting)(memo_key)(json_metadata)(proxy)(last_owner_update)(last_account_update)
              (created)(mined)
              (recovery_account)(last_account_recovery)(reset_account)
@@ -1130,7 +1130,7 @@ FC_REFLECT( creativecoin::plugins::condenser_api::api_account_object,
              (savings_balance)
              (cbd_balance)(cbd_seconds)(cbd_seconds_last_update)(cbd_last_interest_payment)
              (savings_cbd_balance)(savings_cbd_seconds)(savings_cbd_seconds_last_update)(savings_cbd_last_interest_payment)(savings_withdraw_requests)
-             (reward_cbd_balance)(reward_creativecoin_balance)(reward_vesting_balance)(reward_vesting_creativecoin)
+             (reward_cbd_balance)(reward_crea_balance)(reward_vesting_balance)(reward_vesting_crea)
              (vesting_shares)(delegated_vesting_shares)(received_vesting_shares)(vesting_withdraw_rate)(next_vesting_withdrawal)(withdrawn)(to_withdraw)(withdraw_routes)
              (curation_rewards)
              (posting_rewards)
@@ -1138,11 +1138,11 @@ FC_REFLECT( creativecoin::plugins::condenser_api::api_account_object,
              (last_post)(last_root_post)
           )
 
-FC_REFLECT_DERIVED( creativecoin::plugins::condenser_api::extended_account, (creativecoin::plugins::condenser_api::api_account_object),
+FC_REFLECT_DERIVED( crea::plugins::condenser_api::extended_account, (crea::plugins::condenser_api::api_account_object),
             (average_bandwidth)(lifetime_bandwidth)(last_bandwidth_update)(average_market_bandwidth)(lifetime_market_bandwidth)(last_market_bandwidth_update)
             (vesting_balance)(reputation)(transfer_history)(market_history)(post_history)(vote_history)(other_history)(witness_votes)(tags_usage)(guest_bloggers)(open_orders)(comments)(feed)(blog)(recent_replies)(recommended) )
 
-FC_REFLECT( creativecoin::plugins::condenser_api::api_comment_object,
+FC_REFLECT( crea::plugins::condenser_api::api_comment_object,
              (id)(author)(permlink)
              (category)(parent_author)(parent_permlink)
              (title)(body)(json_metadata)(last_update)(created)(active)(last_payout)
@@ -1151,21 +1151,21 @@ FC_REFLECT( creativecoin::plugins::condenser_api::api_comment_object,
              (children_abs_rshares)(cashout_time)(max_cashout_time)
              (total_vote_weight)(reward_weight)(total_payout_value)(curator_payout_value)(author_rewards)(net_votes)
              (root_author)(root_permlink)
-             (max_accepted_payout)(percent_creativecoin_dollars)(allow_replies)(allow_votes)(allow_curation_rewards)
+             (max_accepted_payout)(percent_crea_dollars)(allow_replies)(allow_votes)(allow_curation_rewards)
              (beneficiaries)
           )
 
-FC_REFLECT( creativecoin::plugins::condenser_api::extended_dynamic_global_properties,
+FC_REFLECT( crea::plugins::condenser_api::extended_dynamic_global_properties,
             (head_block_number)(head_block_id)(time)
             (current_witness)(total_pow)(num_pow_witnesses)
             (virtual_supply)(current_supply)(confidential_supply)(current_cbd_supply)(confidential_cbd_supply)
-            (total_vesting_fund_creativecoin)(total_vesting_shares)
-            (total_reward_fund_creativecoin)(total_reward_shares2)(pending_rewarded_vesting_shares)(pending_rewarded_vesting_creativecoin)
+            (total_vesting_fund_crea)(total_vesting_shares)
+            (total_reward_fund_crea)(total_reward_shares2)(pending_rewarded_vesting_shares)(pending_rewarded_vesting_crea)
             (cbd_interest_rate)(cbd_print_rate)
             (maximum_block_size)(current_aslot)(recent_slots_filled)(participation_count)(last_irreversible_block_num)(vote_power_reserve_rate)
             (average_block_size)(current_reserve_ratio)(max_virtual_bandwidth) )
 
-FC_REFLECT( creativecoin::plugins::condenser_api::api_witness_object,
+FC_REFLECT( crea::plugins::condenser_api::api_witness_object,
              (id)
              (owner)
              (created)
@@ -1178,7 +1178,7 @@ FC_REFLECT( creativecoin::plugins::condenser_api::api_witness_object,
              (hardfork_version_vote)(hardfork_time_vote)
           )
 
-FC_REFLECT( creativecoin::plugins::condenser_api::api_witness_schedule_object,
+FC_REFLECT( crea::plugins::condenser_api::api_witness_schedule_object,
              (id)
              (current_virtual_time)
              (next_shuffle_block_num)
@@ -1196,13 +1196,13 @@ FC_REFLECT( creativecoin::plugins::condenser_api::api_witness_schedule_object,
              (hardfork_required_witnesses)
           )
 
-FC_REFLECT( creativecoin::plugins::condenser_api::api_feed_history_object,
+FC_REFLECT( crea::plugins::condenser_api::api_feed_history_object,
              (id)
              (current_median_history)
              (price_history)
           )
 
-FC_REFLECT( creativecoin::plugins::condenser_api::api_reward_fund_object,
+FC_REFLECT( crea::plugins::condenser_api::api_reward_fund_object,
             (id)
             (name)
             (reward_balance)
@@ -1215,13 +1215,13 @@ FC_REFLECT( creativecoin::plugins::condenser_api::api_reward_fund_object,
             (curation_reward_curve)
          )
 
-FC_REFLECT( creativecoin::plugins::condenser_api::api_escrow_object,
+FC_REFLECT( crea::plugins::condenser_api::api_escrow_object,
              (id)(escrow_id)(from)(to)(agent)
              (ratification_deadline)(escrow_expiration)
-             (cbd_balance)(creativecoin_balance)(pending_fee)
+             (cbd_balance)(crea_balance)(pending_fee)
              (to_approved)(agent_approved)(disputed) )
 
-FC_REFLECT( creativecoin::plugins::condenser_api::api_savings_withdraw_object,
+FC_REFLECT( crea::plugins::condenser_api::api_savings_withdraw_object,
              (id)
              (from)
              (to)
@@ -1231,54 +1231,54 @@ FC_REFLECT( creativecoin::plugins::condenser_api::api_savings_withdraw_object,
              (complete)
           )
 
-FC_REFLECT( creativecoin::plugins::condenser_api::api_vesting_delegation_object,
+FC_REFLECT( crea::plugins::condenser_api::api_vesting_delegation_object,
             (id)(delegator)(delegatee)(vesting_shares)(min_delegation_time) )
 
-FC_REFLECT( creativecoin::plugins::condenser_api::api_vesting_delegation_expiration_object,
+FC_REFLECT( crea::plugins::condenser_api::api_vesting_delegation_expiration_object,
             (id)(delegator)(vesting_shares)(expiration) )
 
-FC_REFLECT( creativecoin::plugins::condenser_api::api_convert_request_object,
+FC_REFLECT( crea::plugins::condenser_api::api_convert_request_object,
              (id)(owner)(requestid)(amount)(conversion_date) )
 
-FC_REFLECT_DERIVED( creativecoin::plugins::condenser_api::discussion, (creativecoin::plugins::condenser_api::api_comment_object),
+FC_REFLECT_DERIVED( crea::plugins::condenser_api::discussion, (crea::plugins::condenser_api::api_comment_object),
              (url)(root_title)(pending_payout_value)(total_pending_payout_value)
              (active_votes)(replies)(author_reputation)(promoted)
              (body_length)(reblogged_by)(first_reblogged_by)(first_reblogged_on)
           )
 
-FC_REFLECT( creativecoin::plugins::condenser_api::scheduled_hardfork,
+FC_REFLECT( crea::plugins::condenser_api::scheduled_hardfork,
             (hf_version)(live_time) )
 
-FC_REFLECT( creativecoin::plugins::condenser_api::account_vote,
+FC_REFLECT( crea::plugins::condenser_api::account_vote,
             (authorperm)(weight)(rshares)(percent)(time) )
 
-FC_REFLECT( creativecoin::plugins::condenser_api::tag_index, (trending) )
+FC_REFLECT( crea::plugins::condenser_api::tag_index, (trending) )
 
-FC_REFLECT_ENUM( creativecoin::plugins::condenser_api::withdraw_route_type, (incoming)(outgoing)(all) )
+FC_REFLECT_ENUM( crea::plugins::condenser_api::withdraw_route_type, (incoming)(outgoing)(all) )
 
-FC_REFLECT( creativecoin::plugins::condenser_api::get_version_return,
-            (blockchain_version)(creativecoin_revision)(fc_revision) )
+FC_REFLECT( crea::plugins::condenser_api::get_version_return,
+            (blockchain_version)(crea_revision)(fc_revision) )
 
-FC_REFLECT( creativecoin::plugins::condenser_api::broadcast_transaction_synchronous_return,
+FC_REFLECT( crea::plugins::condenser_api::broadcast_transaction_synchronous_return,
             (id)(block_num)(trx_num)(expired) )
 
-FC_REFLECT( creativecoin::plugins::condenser_api::comment_feed_entry,
+FC_REFLECT( crea::plugins::condenser_api::comment_feed_entry,
             (comment)(reblog_by)(reblog_on)(entry_id) )
 
-FC_REFLECT( creativecoin::plugins::condenser_api::comment_blog_entry,
+FC_REFLECT( crea::plugins::condenser_api::comment_blog_entry,
             (comment)(blog)(reblog_on)(entry_id) )
 
-FC_REFLECT( creativecoin::plugins::condenser_api::ticker,
-            (latest)(lowest_ask)(highest_bid)(percent_change)(creativecoin_volume)(cbd_volume) )
+FC_REFLECT( crea::plugins::condenser_api::ticker,
+            (latest)(lowest_ask)(highest_bid)(percent_change)(crea_volume)(cbd_volume) )
 
-FC_REFLECT( creativecoin::plugins::condenser_api::volume,
-            (creativecoin_volume)(cbd_volume) )
+FC_REFLECT( crea::plugins::condenser_api::volume,
+            (crea_volume)(cbd_volume) )
 
-FC_REFLECT( creativecoin::plugins::condenser_api::order,
-            (order_price)(real_price)(creativecoin)(sbd)(created) )
+FC_REFLECT( crea::plugins::condenser_api::order,
+            (order_price)(real_price)(crea)(sbd)(created) )
 
-FC_REFLECT( creativecoin::plugins::condenser_api::order_book,
+FC_REFLECT( crea::plugins::condenser_api::order_book,
             (bids)(asks) )
 
-FC_REFLECT( creativecoin::plugins::condenser_api::market_trade,
+FC_REFLECT( crea::plugins::condenser_api::market_trade,
             (date)(current_pays)(open_pays) )

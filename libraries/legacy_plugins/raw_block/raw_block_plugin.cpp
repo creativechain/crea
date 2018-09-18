@@ -1,11 +1,11 @@
 
 
-#include <creativecoin/plugins/raw_block/raw_block_api.hpp>
-#include <creativecoin/plugins/raw_block/raw_block_plugin.hpp>
+#include <crea/plugins/raw_block/raw_block_api.hpp>
+#include <crea/plugins/raw_block/raw_block_plugin.hpp>
 
 #include <string>
 
-namespace creativecoin { namespace plugin { namespace raw_block {
+namespace crea { namespace plugin { namespace raw_block {
 
 raw_block_plugin::raw_block_plugin( application* app ) : plugin( app ) {}
 raw_block_plugin::~raw_block_plugin() {}
@@ -28,6 +28,6 @@ void raw_block_plugin::plugin_shutdown()
 {
 }
 
-} } } // creativecoin::plugin::raw_block
+} } } // crea::plugin::raw_block
 
-CREA_DEFINE_PLUGIN( raw_block, creativecoin::plugin::raw_block::raw_block_plugin )
+CREA_DEFINE_PLUGIN( raw_block, crea::plugin::raw_block::raw_block_plugin )

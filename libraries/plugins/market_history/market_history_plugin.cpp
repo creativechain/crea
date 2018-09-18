@@ -1,22 +1,22 @@
-#include <creativecoin/plugins/market_history/market_history_plugin.hpp>
+#include <crea/plugins/market_history/market_history_plugin.hpp>
 
-#include <creativecoin/chain/database.hpp>
-#include <creativecoin/chain/index.hpp>
-#include <creativecoin/chain/operation_notification.hpp>
+#include <crea/chain/database.hpp>
+#include <crea/chain/index.hpp>
+#include <crea/chain/operation_notification.hpp>
 
 #include <fc/io/json.hpp>
 
-namespace creativecoin { namespace plugins { namespace market_history {
+namespace crea { namespace plugins { namespace market_history {
 
 namespace detail {
 
-using creativecoin::protocol::fill_order_operation;
+using crea::protocol::fill_order_operation;
 
 class market_history_plugin_impl
 {
    public:
       market_history_plugin_impl() :
-         _db( appbase::app().get_plugin< creativecoin::plugins::chain::chain_plugin >().db() ) {}
+         _db( appbase::app().get_plugin< crea::plugins::chain::chain_plugin >().db() ) {}
       virtual ~market_history_plugin_impl() {}
 
       /**
@@ -63,11 +63,11 @@ void market_history_plugin_impl::on_post_apply_operation( const operation_notifi
                b.open = open;
                b.seconds = bucket;
 
-               b.creativecoin.fill( ( op.open_pays.symbol == CREA_SYMBOL ) ? op.open_pays.amount : op.current_pays.amount );
+               b.crea.fill( ( op.open_pays.symbol == CREA_SYMBOL ) ? op.open_pays.amount : op.current_pays.amount );
 #ifdef CREA_ENABLE_SMT
                   b.symbol = ( op.open_pays.symbol == CREA_SYMBOL ) ? op.current_pays.symbol : op.open_pays.symbol;
 #endif
-                  b.non_creativecoin.fill( ( op.open_pays.symbol == CREA_SYMBOL ) ? op.current_pays.amount : op.open_pays.amount );
+                  b.non_crea.fill( ( op.open_pays.symbol == CREA_SYMBOL ) ? op.current_pays.amount : op.open_pays.amount );
             });
          }
          else
@@ -79,46 +79,46 @@ void market_history_plugin_impl::on_post_apply_operation( const operation_notifi
 #endif
                if( op.open_pays.symbol == CREA_SYMBOL )
                {
-                  b.creativecoin.volume += op.open_pays.amount;
-                  b.creativecoin.close = op.open_pays.amount;
+                  b.crea.volume += op.open_pays.amount;
+                  b.crea.close = op.open_pays.amount;
 
-                  b.non_creativecoin.volume += op.current_pays.amount;
-                  b.non_creativecoin.close = op.current_pays.amount;
+                  b.non_crea.volume += op.current_pays.amount;
+                  b.non_crea.close = op.current_pays.amount;
 
                   if( b.high() < price( op.current_pays, op.open_pays ) )
                   {
-                     b.creativecoin.high = op.open_pays.amount;
+                     b.crea.high = op.open_pays.amount;
 
-                     b.non_creativecoin.high = op.current_pays.amount;
+                     b.non_crea.high = op.current_pays.amount;
                   }
 
                   if( b.low() > price( op.current_pays, op.open_pays ) )
                   {
-                     b.creativecoin.low = op.open_pays.amount;
+                     b.crea.low = op.open_pays.amount;
 
-                     b.non_creativecoin.low = op.current_pays.amount;
+                     b.non_crea.low = op.current_pays.amount;
                   }
                }
                else
                {
-                  b.creativecoin.volume += op.current_pays.amount;
-                  b.creativecoin.close = op.current_pays.amount;
+                  b.crea.volume += op.current_pays.amount;
+                  b.crea.close = op.current_pays.amount;
 
-                  b.non_creativecoin.volume += op.open_pays.amount;
-                  b.non_creativecoin.close = op.open_pays.amount;
+                  b.non_crea.volume += op.open_pays.amount;
+                  b.non_crea.close = op.open_pays.amount;
 
                   if( b.high() < price( op.open_pays, op.current_pays ) )
                   {
-                     b.creativecoin.high = op.current_pays.amount;
+                     b.crea.high = op.current_pays.amount;
 
-                     b.non_creativecoin.high = op.open_pays.amount;
+                     b.non_crea.high = op.open_pays.amount;
                   }
 
                   if( b.low() > price( op.open_pays, op.current_pays ) )
                   {
-                     b.creativecoin.low = op.current_pays.amount;
+                     b.crea.low = op.current_pays.amount;
 
-                     b.non_creativecoin.low = op.open_pays.amount;
+                     b.non_crea.low = op.open_pays.amount;
                   }
                }
             });
@@ -201,4 +201,4 @@ uint32_t market_history_plugin::get_max_history_per_bucket() const
    return my->_maximum_history_per_bucket_size;
 }
 
-} } } // creativecoin::plugins::market_history
+} } } // crea::plugins::market_history

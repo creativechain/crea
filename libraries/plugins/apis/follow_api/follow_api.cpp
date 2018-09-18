@@ -1,9 +1,9 @@
-#include <creativecoin/plugins/follow_api/follow_api_plugin.hpp>
-#include <creativecoin/plugins/follow_api/follow_api.hpp>
+#include <crea/plugins/follow_api/follow_api_plugin.hpp>
+#include <crea/plugins/follow_api/follow_api.hpp>
 
-#include <creativecoin/plugins/follow/follow_objects.hpp>
+#include <crea/plugins/follow/follow_objects.hpp>
 
-namespace creativecoin { namespace plugins { namespace follow {
+namespace crea { namespace plugins { namespace follow {
 
 namespace detail {
 
@@ -18,7 +18,7 @@ inline void set_what( vector< follow::follow_type >& what, uint16_t bitmask )
 class follow_api_impl
 {
    public:
-      follow_api_impl() : _db( appbase::app().get_plugin< creativecoin::plugins::chain::chain_plugin >().db() ) {}
+      follow_api_impl() : _db( appbase::app().get_plugin< crea::plugins::chain::chain_plugin >().db() ) {}
 
       DECLARE_API_IMPL(
          (get_followers)
@@ -314,4 +314,4 @@ DEFINE_READ_APIS( follow_api,
    (get_blog_authors)
 )
 
-} } } // creativecoin::plugins::follow
+} } } // crea::plugins::follow

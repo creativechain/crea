@@ -1,7 +1,7 @@
-#include <creativecoin/plugins/network_broadcast_api/network_broadcast_api_plugin.hpp>
-#include <creativecoin/plugins/network_broadcast_api/network_broadcast_api.hpp>
+#include <crea/plugins/network_broadcast_api/network_broadcast_api_plugin.hpp>
+#include <crea/plugins/network_broadcast_api/network_broadcast_api.hpp>
 
-namespace creativecoin { namespace plugins { namespace network_broadcast_api {
+namespace crea { namespace plugins { namespace network_broadcast_api {
 
 network_broadcast_api_plugin::network_broadcast_api_plugin() {}
 network_broadcast_api_plugin::~network_broadcast_api_plugin() {}
@@ -16,4 +16,4 @@ void network_broadcast_api_plugin::plugin_initialize( const variables_map& optio
 void network_broadcast_api_plugin::plugin_startup() {}
 void network_broadcast_api_plugin::plugin_shutdown() {}
 
-} } } // creativecoin::plugins::test_api
+} } } // crea::plugins::test_api

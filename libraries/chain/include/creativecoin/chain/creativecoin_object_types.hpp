@@ -6,12 +6,12 @@
 
 #include <chainbase/chainbase.hpp>
 
-#include <creativecoin/protocol/types.hpp>
-#include <creativecoin/protocol/authority.hpp>
+#include <crea/protocol/types.hpp>
+#include <crea/protocol/authority.hpp>
 
-#include <creativecoin/chain/buffer_type.hpp>
+#include <crea/chain/buffer_type.hpp>
 
-namespace creativecoin { namespace chain {
+namespace crea { namespace chain {
 
 using namespace boost::multi_index;
 
@@ -21,11 +21,11 @@ using chainbase::object;
 using chainbase::oid;
 using chainbase::allocator;
 
-using creativecoin::protocol::block_id_type;
-using creativecoin::protocol::transaction_id_type;
-using creativecoin::protocol::chain_id_type;
-using creativecoin::protocol::account_name_type;
-using creativecoin::protocol::share_type;
+using crea::protocol::block_id_type;
+using crea::protocol::transaction_id_type;
+using crea::protocol::chain_id_type;
+using crea::protocol::account_name_type;
+using crea::protocol::share_type;
 
 using chainbase::shared_string;
 
@@ -156,17 +156,17 @@ enum bandwidth_type
    market   ///< Rate limiting for all other actions
 };
 
-} } //creativecoin::chain
+} } //crea::chain
 
 namespace fc
 {
    class variant;
-   inline void to_variant( const creativecoin::chain::shared_string& s, variant& var )
+   inline void to_variant( const crea::chain::shared_string& s, variant& var )
    {
-      var = fc::string( creativecoin::chain::to_string( s ) );
+      var = fc::string( crea::chain::to_string( s ) );
    }
 
-   inline void from_variant( const variant& var, creativecoin::chain::shared_string& s )
+   inline void from_variant( const variant& var, crea::chain::shared_string& s )
    {
       auto str = var.as_string();
       s.assign( str.begin(), str.end() );
@@ -196,7 +196,7 @@ namespace fc
       }
 #ifndef ENABLE_STD_ALLOCATOR
       template< typename T >
-      inline T unpack_from_vector( const creativecoin::chain::buffer_type& s )
+      inline T unpack_from_vector( const crea::chain::buffer_type& s )
       { try  {
          T tmp;
          if( s.size() ) {
@@ -209,7 +209,7 @@ namespace fc
    }
 }
 
-FC_REFLECT_ENUM( creativecoin::chain::object_type,
+FC_REFLECT_ENUM( crea::chain::object_type,
                  (dynamic_global_property_object_type)
                  (account_object_type)
                  (account_authority_object_type)
@@ -249,7 +249,7 @@ FC_REFLECT_ENUM( creativecoin::chain::object_type,
                )
 
 #ifndef ENABLE_STD_ALLOCATOR
-FC_REFLECT_TYPENAME( creativecoin::chain::shared_string )
+FC_REFLECT_TYPENAME( crea::chain::shared_string )
 #endif
 
-FC_REFLECT_ENUM( creativecoin::chain::bandwidth_type, (post)(forum)(market) )
+FC_REFLECT_ENUM( crea::chain::bandwidth_type, (post)(forum)(market) )

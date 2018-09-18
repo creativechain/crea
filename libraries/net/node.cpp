@@ -80,8 +80,8 @@
 #include <graphene/net/config.hpp>
 #include <graphene/net/exceptions.hpp>
 
-#include <creativecoin/protocol/config.hpp>
-#include <creativecoin/plugins/statsd/utility.hpp>
+#include <crea/protocol/config.hpp>
+#include <crea/plugins/statsd/utility.hpp>
 
 #include <fc/git_revision.hpp>
 
@@ -353,7 +353,7 @@ namespace graphene { namespace net {
 
       fc::variant_object get_call_statistics();
 
-      creativecoin::protocol::chain_id_type get_chain_id() const override;
+      crea::protocol::chain_id_type get_chain_id() const override;
       bool has_item( const net::item_id& id ) override;
       void handle_message( const message& ) override;
       bool handle_block( const graphene::net::block_message& block_message, bool sync_mode, std::vector<fc::uint160_t>& contained_transaction_message_ids ) override;
@@ -1915,7 +1915,7 @@ namespace graphene { namespace net {
       if (user_data.contains("last_known_fork_block_number"))
         originating_peer->last_known_fork_block_number = user_data["last_known_fork_block_number"].as<uint32_t>();
       if (user_data.contains("chain_id"))
-        originating_peer->chain_id = user_data["chain_id"].as<creativecoin::protocol::chain_id_type>();
+        originating_peer->chain_id = user_data["chain_id"].as<crea::protocol::chain_id_type>();
     }
 
     void node_impl::on_hello_message( peer_connection* originating_peer, const hello_message& hello_message_received )
@@ -5573,7 +5573,7 @@ namespace graphene { namespace net {
 */
 #endif
 
-    creativecoin::protocol::chain_id_type statistics_gathering_node_delegate_wrapper::get_chain_id() const
+    crea::protocol::chain_id_type statistics_gathering_node_delegate_wrapper::get_chain_id() const
     {
       INVOKE_AND_COLLECT_STATISTICS(get_chain_id);
     }

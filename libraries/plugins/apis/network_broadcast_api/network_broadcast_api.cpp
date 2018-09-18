@@ -1,10 +1,10 @@
 
-#include <creativecoin/plugins/network_broadcast_api/network_broadcast_api.hpp>
-#include <creativecoin/plugins/network_broadcast_api/network_broadcast_api_plugin.hpp>
+#include <crea/plugins/network_broadcast_api/network_broadcast_api.hpp>
+#include <crea/plugins/network_broadcast_api/network_broadcast_api_plugin.hpp>
 
 #include <appbase/application.hpp>
 
-namespace creativecoin { namespace plugins { namespace network_broadcast_api {
+namespace crea { namespace plugins { namespace network_broadcast_api {
 
 namespace detail
 {
@@ -12,8 +12,8 @@ namespace detail
    {
       public:
          network_broadcast_api_impl() :
-            _p2p( appbase::app().get_plugin< creativecoin::plugins::p2p::p2p_plugin >() ),
-            _chain( appbase::app().get_plugin< creativecoin::plugins::chain::chain_plugin >() )
+            _p2p( appbase::app().get_plugin< crea::plugins::p2p::p2p_plugin >() ),
+            _chain( appbase::app().get_plugin< crea::plugins::chain::chain_plugin >() )
          {}
 
          DECLARE_API_IMPL(
@@ -23,8 +23,8 @@ namespace detail
 
          bool check_max_block_age( int32_t max_block_age ) const;
 
-         creativecoin::plugins::p2p::p2p_plugin&                      _p2p;
-         creativecoin::plugins::chain::chain_plugin&                  _chain;
+         crea::plugins::p2p::p2p_plugin&                      _p2p;
+         crea::plugins::chain::chain_plugin&                  _chain;
    };
 
    DEFINE_API_IMPL( network_broadcast_api_impl, broadcast_transaction )
@@ -71,4 +71,4 @@ DEFINE_LOCKLESS_APIS( network_broadcast_api,
    (broadcast_block)
 )
 
-} } } // creativecoin::plugins::network_broadcast_api
+} } } // crea::plugins::network_broadcast_api

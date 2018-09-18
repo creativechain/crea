@@ -31,7 +31,7 @@
 
 #include <fc/exception/exception.hpp>
 
-namespace creativecoin { namespace wallet {
+namespace crea { namespace wallet {
 
    struct method_description
    {
@@ -74,4 +74,4 @@ namespace creativecoin { namespace wallet {
       }
    };
 
-} } // end namespace creativecoin::wallet
+} } // end namespace crea::wallet

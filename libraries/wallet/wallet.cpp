@@ -1,14 +1,14 @@
-#include <creativecoin/utilities/git_revision.hpp>
-#include <creativecoin/utilities/key_conversion.hpp>
-#include <creativecoin/utilities/words.hpp>
+#include <crea/utilities/git_revision.hpp>
+#include <crea/utilities/key_conversion.hpp>
+#include <crea/utilities/words.hpp>
 
-#include <creativecoin/protocol/base.hpp>
-#include <creativecoin/wallet/wallet.hpp>
-#include <creativecoin/wallet/api_documentation.hpp>
-#include <creativecoin/wallet/reflect_util.hpp>
-#include <creativecoin/wallet/remote_node_api.hpp>
+#include <crea/protocol/base.hpp>
+#include <crea/wallet/wallet.hpp>
+#include <crea/wallet/api_documentation.hpp>
+#include <crea/wallet/reflect_util.hpp>
+#include <crea/wallet/remote_node_api.hpp>
 
-#include <creativecoin/plugins/follow/follow_operations.hpp>
+#include <crea/plugins/follow/follow_operations.hpp>
 
 #include <algorithm>
 #include <cctype>
@@ -59,9 +59,9 @@
 
 #define BRAIN_KEY_WORD_COUNT 16
 
-namespace creativecoin { namespace wallet {
+namespace crea { namespace wallet {
 
-using creativecoin::plugins::condenser_api::legacy_asset;
+using crea::plugins::condenser_api::legacy_asset;
 
 namespace detail {
 
@@ -219,14 +219,14 @@ class wallet_api_impl
 
 public:
    wallet_api& self;
-   wallet_api_impl( wallet_api& s, const wallet_data& initial_data, const creativecoin::protocol::chain_id_type& _creativecoin_chain_id, fc::api< remote_node_api > rapi )
+   wallet_api_impl( wallet_api& s, const wallet_data& initial_data, const crea::protocol::chain_id_type& _crea_chain_id, fc::api< remote_node_api > rapi )
       : self( s ),
         _remote_api( rapi )
    {
       init_prototype_ops();
 
       _wallet.ws_server = initial_data.ws_server;
-      creativecoin_chain_id = _creativecoin_chain_id;
+      crea_chain_id = _crea_chain_id;
    }
    virtual ~wallet_api_impl()
    {}
@@ -301,7 +301,7 @@ public:
 
    variant_object about() const
    {
-      string client_version( creativecoin::utilities::git_revision_description );
+      string client_version( crea::utilities::git_revision_description );
       const size_t pos = client_version.find( '/' );
       if( pos != string::npos && client_version.size() > pos )
          client_version = client_version.substr( pos + 1 );
@@ -309,8 +309,8 @@ public:
       fc::mutable_variant_object result;
       result["blockchain_version"]       = CREA_BLOCKCHAIN_VERSION;
       result["client_version"]           = client_version;
-      result["creativecoin_revision"]           = creativecoin::utilities::git_revision_sha;
-      result["creativecoin_revision_age"]       = fc::get_approximate_relative_time_string( fc::time_point_sec( creativecoin::utilities::git_revision_unix_timestamp ) );
+      result["crea_revision"]           = crea::utilities::git_revision_sha;
+      result["crea_revision_age"]       = fc::get_approximate_relative_time_string( fc::time_point_sec( crea::utilities::git_revision_unix_timestamp ) );
       result["fc_revision"]              = fc::git_revision_sha;
       result["fc_revision_age"]          = fc::get_approximate_relative_time_string( fc::time_point_sec( fc::git_revision_unix_timestamp ) );
       result["compile_date"]             = "compiled on " __DATE__ " at " __TIME__;
@@ -333,7 +333,7 @@ public:
       {
          auto v = _remote_api->get_version();
          result["server_blockchain_version"] = v.blockchain_version;
-         result["server_creativecoin_revision"] = v.creativecoin_revision;
+         result["server_crea_revision"] = v.crea_revision;
          result["server_fc_revision"] = v.fc_revision;
       }
       catch( fc::exception& )
@@ -386,7 +386,7 @@ public:
       fc::optional<fc::ecc::private_key> optional_private_key = wif_to_key(wif_key);
       if (!optional_private_key)
          FC_THROW("Invalid private key");
-      creativecoin::chain::public_key_type wif_pub_key = optional_private_key->get_public_key();
+      crea::chain::public_key_type wif_pub_key = optional_private_key->get_public_key();
 
       _keys[wif_pub_key] = wif_key;
       return true;
@@ -457,7 +457,7 @@ public:
       for (int key_index = 0; ; ++key_index)
       {
          fc::ecc::private_key derived_private_key = derive_private_key(key_to_wif(parent_key), key_index);
-         creativecoin::chain::public_key_type derived_public_key = derived_private_key.get_public_key();
+         crea::chain::public_key_type derived_public_key = derived_private_key.get_public_key();
          if( _keys.find(derived_public_key) == _keys.end() )
          {
             if (number_of_consecutive_unused_keys)
@@ -493,9 +493,9 @@ public:
          int memo_key_index = find_first_unused_derived_key_index(active_privkey);
          fc::ecc::private_key memo_privkey = derive_private_key( key_to_wif(active_privkey), memo_key_index);
 
-         creativecoin::chain::public_key_type owner_pubkey = owner_privkey.get_public_key();
-         creativecoin::chain::public_key_type active_pubkey = active_privkey.get_public_key();
-         creativecoin::chain::public_key_type memo_pubkey = memo_privkey.get_public_key();
+         crea::chain::public_key_type owner_pubkey = owner_privkey.get_public_key();
+         crea::chain::public_key_type active_pubkey = active_privkey.get_public_key();
+         crea::chain::public_key_type memo_pubkey = memo_privkey.get_public_key();
 
          account_create_operation account_create_op;
 
@@ -675,7 +675,7 @@ public:
       }
 
       auto minimal_signing_keys = tx.minimize_required_signatures(
-         creativecoin_chain_id,
+         crea_chain_id,
          available_keys,
          [&]( const string& account_name ) -> const authority&
          { return (get_account_from_lut( account_name ).active); },
@@ -690,7 +690,7 @@ public:
       {
          auto it = available_private_keys.find(k);
          FC_ASSERT( it != available_private_keys.end() );
-         tx.sign( it->second, creativecoin_chain_id );
+         tx.sign( it->second, crea_chain_id );
       }
 
       if( broadcast )
@@ -729,11 +729,11 @@ public:
          std::stringstream out;
 
          auto accounts = result.as<vector<condenser_api::api_account_object>>();
-         asset total_creativecoin;
+         asset total_crea;
          asset total_vest(0, VESTS_SYMBOL );
          asset total_sbd(0, CBD_SYMBOL );
          for( const auto& a : accounts ) {
-            total_creativecoin += a.balance.to_asset();
+            total_crea += a.balance.to_asset();
             total_vest  += a.vesting_shares.to_asset();
             total_sbd  += a.cbd_balance.to_asset();
             out << std::left << std::setw( 17 ) << std::string(a.name)
@@ -743,7 +743,7 @@ public:
          }
          out << "-------------------------------------------------------------------------\n";
             out << std::left << std::setw( 17 ) << "TOTAL"
-                << std::right << std::setw(18) << legacy_asset::from_asset(total_creativecoin).to_string() <<" "
+                << std::right << std::setw(18) << legacy_asset::from_asset(total_crea).to_string() <<" "
                 << std::right << std::setw(26) << legacy_asset::from_asset(total_vest).to_string() <<" "
                 << std::right << std::setw(16) << legacy_asset::from_asset(total_sbd).to_string() <<"\n";
          return out.str();
@@ -817,7 +817,7 @@ public:
                ss
                   << ' ' << setw( spacing ) << legacy_asset::from_asset( bid_sum ).to_string()
                   << ' ' << setw( spacing ) << legacy_asset::from_asset( asset( orders.bids[i].sbd, CBD_SYMBOL ) ).to_string()
-                  << ' ' << setw( spacing ) << legacy_asset::from_asset( asset( orders.bids[i].creativecoin, CREA_SYMBOL ) ).to_string()
+                  << ' ' << setw( spacing ) << legacy_asset::from_asset( asset( orders.bids[i].crea, CREA_SYMBOL ) ).to_string()
                   << ' ' << setw( spacing ) << orders.bids[i].real_price;
             }
             else
@@ -831,7 +831,7 @@ public:
             {
                ask_sum += asset( orders.asks[i].sbd, CBD_SYMBOL );
                ss << ' ' << setw( spacing ) << orders.asks[i].real_price
-                  << ' ' << setw( spacing ) << legacy_asset::from_asset( asset( orders.asks[i].creativecoin, CREA_SYMBOL ) ).to_string()
+                  << ' ' << setw( spacing ) << legacy_asset::from_asset( asset( orders.asks[i].crea, CREA_SYMBOL ) ).to_string()
                   << ' ' << setw( spacing ) << legacy_asset::from_asset( asset( orders.asks[i].sbd, CBD_SYMBOL ) ).to_string()
                   << ' ' << setw( spacing ) << legacy_asset::from_asset( ask_sum ).to_string();
             }
@@ -880,7 +880,7 @@ public:
 
    string                                  _wallet_filename;
    wallet_data                             _wallet;
-   creativecoin::protocol::chain_id_type          creativecoin_chain_id;
+   crea::protocol::chain_id_type          crea_chain_id;
 
    map<public_key_type,string>             _keys;
    fc::sha512                              _checksum;
@@ -897,14 +897,14 @@ public:
    const string _wallet_filename_extension = ".wallet";
 };
 
-} } } // creativecoin::wallet::detail
+} } } // crea::wallet::detail
 
 
 
-namespace creativecoin { namespace wallet {
+namespace crea { namespace wallet {
 
-wallet_api::wallet_api(const wallet_data& initial_data, const creativecoin::protocol::chain_id_type& _creativecoin_chain_id, fc::api< remote_node_api > rapi)
-   : my(new detail::wallet_api_impl(*this, initial_data, _creativecoin_chain_id, rapi))
+wallet_api::wallet_api(const wallet_data& initial_data, const crea::protocol::chain_id_type& _crea_chain_id, fc::api< remote_node_api > rapi)
+   : my(new detail::wallet_api_impl(*this, initial_data, _crea_chain_id, rapi))
 {}
 
 wallet_api::~wallet_api(){}
@@ -973,11 +973,11 @@ brain_key_info wallet_api::suggest_brain_key()const
 
    for( int i=0; i<BRAIN_KEY_WORD_COUNT; i++ )
    {
-      fc::bigint choice = entropy % creativecoin::words::word_list_size;
-      entropy /= creativecoin::words::word_list_size;
+      fc::bigint choice = entropy % crea::words::word_list_size;
+      entropy /= crea::words::word_list_size;
       if( i > 0 )
          brain_key += " ";
-      brain_key += creativecoin::words::word_list[ choice.to_int64() ];
+      brain_key += crea::words::word_list[ choice.to_int64() ];
    }
 
    brain_key = normalize_brain_key(brain_key);
@@ -1227,7 +1227,7 @@ condenser_api::legacy_signed_transaction wallet_api::create_account_with_keys(
  */
 condenser_api::legacy_signed_transaction wallet_api::create_account_with_keys_delegated(
    string creator,
-   condenser_api::legacy_asset creativecoin_fee,
+   condenser_api::legacy_asset crea_fee,
    condenser_api::legacy_asset delegated_vests,
    string new_account_name,
    string json_meta,
@@ -1246,7 +1246,7 @@ condenser_api::legacy_signed_transaction wallet_api::create_account_with_keys_de
    op.posting = authority( 1, posting, 1 );
    op.memo_key = memo;
    op.json_metadata = json_meta;
-   op.fee = creativecoin_fee.to_asset();
+   op.fee = crea_fee.to_asset();
    op.delegation = delegated_vests.to_asset();
 
    signed_transaction tx;
@@ -1643,7 +1643,7 @@ condenser_api::legacy_signed_transaction wallet_api::create_account(
  */
 condenser_api::legacy_signed_transaction wallet_api::create_account_delegated(
    string creator,
-   condenser_api::legacy_asset creativecoin_fee,
+   condenser_api::legacy_asset crea_fee,
    condenser_api::legacy_asset delegated_vests,
    string new_account_name,
    string json_meta,
@@ -1658,7 +1658,7 @@ condenser_api::legacy_signed_transaction wallet_api::create_account_delegated(
    import_key( active.wif_priv_key );
    import_key( posting.wif_priv_key );
    import_key( memo.wif_priv_key );
-   return create_account_with_keys_delegated( creator, creativecoin_fee, delegated_vests, new_account_name, json_meta,  owner.pub_key, active.pub_key, posting.pub_key, memo.pub_key, broadcast );
+   return create_account_with_keys_delegated( creator, crea_fee, delegated_vests, new_account_name, json_meta,  owner.pub_key, active.pub_key, posting.pub_key, memo.pub_key, broadcast );
 } FC_CAPTURE_AND_RETHROW( (creator)(new_account_name)(json_meta) ) }
 
 
@@ -1837,7 +1837,7 @@ condenser_api::legacy_signed_transaction wallet_api::escrow_transfer(
    string agent,
    uint32_t escrow_id,
    condenser_api::legacy_asset cbd_amount,
-   condenser_api::legacy_asset creativecoin_amount,
+   condenser_api::legacy_asset crea_amount,
    condenser_api::legacy_asset fee,
    time_point_sec ratification_deadline,
    time_point_sec escrow_expiration,
@@ -1851,7 +1851,7 @@ condenser_api::legacy_signed_transaction wallet_api::escrow_transfer(
    op.agent = agent;
    op.escrow_id = escrow_id;
    op.cbd_amount = cbd_amount.to_asset();
-   op.creativecoin_amount = creativecoin_amount.to_asset();
+   op.crea_amount = crea_amount.to_asset();
    op.fee = fee.to_asset();
    op.ratification_deadline = ratification_deadline;
    op.escrow_expiration = escrow_expiration;
@@ -1919,7 +1919,7 @@ condenser_api::legacy_signed_transaction wallet_api::escrow_release(
    string receiver,
    uint32_t escrow_id,
    condenser_api::legacy_asset cbd_amount,
-   condenser_api::legacy_asset creativecoin_amount,
+   condenser_api::legacy_asset crea_amount,
    bool broadcast )
 {
    FC_ASSERT( !is_locked() );
@@ -1931,7 +1931,7 @@ condenser_api::legacy_signed_transaction wallet_api::escrow_release(
    op.receiver = receiver;
    op.escrow_id = escrow_id;
    op.cbd_amount = cbd_amount.to_asset();
-   op.creativecoin_amount = creativecoin_amount.to_asset();
+   op.crea_amount = crea_amount.to_asset();
 
    signed_transaction tx;
    tx.operations.push_back( op );
@@ -2169,7 +2169,7 @@ condenser_api::legacy_signed_transaction wallet_api::decline_voting_rights(
 
 condenser_api::legacy_signed_transaction wallet_api::claim_reward_balance(
    string account,
-   condenser_api::legacy_asset reward_creativecoin,
+   condenser_api::legacy_asset reward_crea,
    condenser_api::legacy_asset reward_sbd,
    condenser_api::legacy_asset reward_vests,
    bool broadcast )
@@ -2177,7 +2177,7 @@ condenser_api::legacy_signed_transaction wallet_api::claim_reward_balance(
    FC_ASSERT( !is_locked() );
    claim_reward_balance_operation op;
    op.account = account;
-   op.reward_creativecoin = reward_creativecoin.to_asset();
+   op.reward_crea = reward_crea.to_asset();
    op.reward_sbd = reward_sbd.to_asset();
    op.reward_vests = reward_vests.to_asset();
 
@@ -2370,4 +2370,4 @@ condenser_api::legacy_signed_transaction wallet_api::follow( string follower, st
    return my->sign_transaction( trx, broadcast );
 }
 
-} } // creativecoin::wallet
+} } // crea::wallet

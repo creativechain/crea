@@ -1,12 +1,12 @@
 #pragma once
-#include <creativecoin/chain/creativecoin_object_types.hpp>
+#include <crea/chain/crea_object_types.hpp>
 
 #include <boost/multi_index/composite_key.hpp>
 
-namespace creativecoin { namespace plugins { namespace follow {
+namespace crea { namespace plugins { namespace follow {
 
 using namespace std;
-using namespace creativecoin::chain;
+using namespace crea::chain;
 
 using chainbase::t_vector;
 
@@ -100,12 +100,12 @@ class blog_object : public object< blog_object_type, blog_object >
 typedef oid< blog_object > blog_id_type;
 
 /**
- *  This index is maintained to get an idea of which authors are recreativecoined by a particular blogger and
+ *  This index is maintained to get an idea of which authors are recreaed by a particular blogger and
  *  how frequnetly. It is designed to give an overview of the type of people a blogger sponsors as well
  *  as to enable generation of filter set for a blog list.
  *
  *  Give me the top authors promoted by this blog
- *  Give me all blog posts by [authors] that were recreativecoined by this blog
+ *  Give me all blog posts by [authors] that were recreaed by this blog
  */
 class blog_author_stats_object : public object< blog_author_stats_object_type, blog_author_stats_object >
 {
@@ -284,36 +284,36 @@ typedef multi_index_container<
    allocator< follow_count_object >
 > follow_count_index;
 
-} } } // creativecoin::plugins::follow
+} } } // crea::plugins::follow
 
-FC_REFLECT_ENUM( creativecoin::plugins::follow::follow_type, (undefined)(blog)(ignore) )
+FC_REFLECT_ENUM( crea::plugins::follow::follow_type, (undefined)(blog)(ignore) )
 
-FC_REFLECT( creativecoin::plugins::follow::follow_object, (id)(follower)(following)(what) )
-CHAINBASE_SET_INDEX_TYPE( creativecoin::plugins::follow::follow_object, creativecoin::plugins::follow::follow_index )
+FC_REFLECT( crea::plugins::follow::follow_object, (id)(follower)(following)(what) )
+CHAINBASE_SET_INDEX_TYPE( crea::plugins::follow::follow_object, crea::plugins::follow::follow_index )
 
-FC_REFLECT( creativecoin::plugins::follow::feed_object, (id)(account)(first_reblogged_by)(first_reblogged_on)(reblogged_by)(comment)(account_feed_id) )
-CHAINBASE_SET_INDEX_TYPE( creativecoin::plugins::follow::feed_object, creativecoin::plugins::follow::feed_index )
+FC_REFLECT( crea::plugins::follow::feed_object, (id)(account)(first_reblogged_by)(first_reblogged_on)(reblogged_by)(comment)(account_feed_id) )
+CHAINBASE_SET_INDEX_TYPE( crea::plugins::follow::feed_object, crea::plugins::follow::feed_index )
 
-FC_REFLECT( creativecoin::plugins::follow::blog_object, (id)(account)(comment)(reblogged_on)(blog_feed_id) )
-CHAINBASE_SET_INDEX_TYPE( creativecoin::plugins::follow::blog_object, creativecoin::plugins::follow::blog_index )
+FC_REFLECT( crea::plugins::follow::blog_object, (id)(account)(comment)(reblogged_on)(blog_feed_id) )
+CHAINBASE_SET_INDEX_TYPE( crea::plugins::follow::blog_object, crea::plugins::follow::blog_index )
 
-FC_REFLECT( creativecoin::plugins::follow::reputation_object, (id)(account)(reputation) )
-CHAINBASE_SET_INDEX_TYPE( creativecoin::plugins::follow::reputation_object, creativecoin::plugins::follow::reputation_index )
+FC_REFLECT( crea::plugins::follow::reputation_object, (id)(account)(reputation) )
+CHAINBASE_SET_INDEX_TYPE( crea::plugins::follow::reputation_object, crea::plugins::follow::reputation_index )
 
-FC_REFLECT( creativecoin::plugins::follow::follow_count_object, (id)(account)(follower_count)(following_count) )
-CHAINBASE_SET_INDEX_TYPE( creativecoin::plugins::follow::follow_count_object, creativecoin::plugins::follow::follow_count_index )
+FC_REFLECT( crea::plugins::follow::follow_count_object, (id)(account)(follower_count)(following_count) )
+CHAINBASE_SET_INDEX_TYPE( crea::plugins::follow::follow_count_object, crea::plugins::follow::follow_count_index )
 
-FC_REFLECT( creativecoin::plugins::follow::blog_author_stats_object, (id)(blogger)(guest)(count) )
-CHAINBASE_SET_INDEX_TYPE( creativecoin::plugins::follow::blog_author_stats_object, creativecoin::plugins::follow::blog_author_stats_index );
+FC_REFLECT( crea::plugins::follow::blog_author_stats_object, (id)(blogger)(guest)(count) )
+CHAINBASE_SET_INDEX_TYPE( crea::plugins::follow::blog_author_stats_object, crea::plugins::follow::blog_author_stats_index );
 
 namespace helpers
 {
    template <>
-   class index_statistic_provider<creativecoin::plugins::follow::feed_index>
+   class index_statistic_provider<crea::plugins::follow::feed_index>
    {
    public:
-      typedef creativecoin::plugins::follow::feed_index IndexType;
-      typedef typename creativecoin::plugins::follow::feed_object::t_reblogged_by_container t_reblogged_by_container;
+      typedef crea::plugins::follow::feed_index IndexType;
+      typedef typename crea::plugins::follow::feed_object::t_reblogged_by_container t_reblogged_by_container;
 
       index_statistic_info gather_statistics(const IndexType& index, bool onlyStaticInfo) const
       {

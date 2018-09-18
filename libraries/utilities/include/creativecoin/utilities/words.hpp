@@ -23,7 +23,7 @@
  */
 #pragma once
 
-namespace creativecoin { namespace words {
+namespace crea { namespace words {
 
 typedef const char* const_char_ptr;
 extern const const_char_ptr word_list[];

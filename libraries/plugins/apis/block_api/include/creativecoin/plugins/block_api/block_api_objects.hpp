@@ -1,17 +1,17 @@
 #pragma once
-#include <creativecoin/chain/account_object.hpp>
-#include <creativecoin/chain/block_summary_object.hpp>
-#include <creativecoin/chain/comment_object.hpp>
-#include <creativecoin/chain/global_property_object.hpp>
-#include <creativecoin/chain/history_object.hpp>
-#include <creativecoin/chain/creativecoin_objects.hpp>
-#include <creativecoin/chain/transaction_object.hpp>
-#include <creativecoin/chain/witness_objects.hpp>
-#include <creativecoin/chain/database.hpp>
+#include <crea/chain/account_object.hpp>
+#include <crea/chain/block_summary_object.hpp>
+#include <crea/chain/comment_object.hpp>
+#include <crea/chain/global_property_object.hpp>
+#include <crea/chain/history_object.hpp>
+#include <crea/chain/crea_objects.hpp>
+#include <crea/chain/transaction_object.hpp>
+#include <crea/chain/witness_objects.hpp>
+#include <crea/chain/database.hpp>
 
-namespace creativecoin { namespace plugins { namespace block_api {
+namespace crea { namespace plugins { namespace block_api {
 
-using namespace creativecoin::chain;
+using namespace crea::chain;
 
 struct api_signed_block_object : public signed_block
 {
@@ -30,9 +30,9 @@ struct api_signed_block_object : public signed_block
    vector< transaction_id_type > transaction_ids;
 };
 
-} } } // creativecoin::plugins::database_api
+} } } // crea::plugins::database_api
 
-FC_REFLECT_DERIVED( creativecoin::plugins::block_api::api_signed_block_object, (creativecoin::protocol::signed_block),
+FC_REFLECT_DERIVED( crea::plugins::block_api::api_signed_block_object, (crea::protocol::signed_block),
                      (block_id)
                      (signing_key)
                      (transaction_ids)

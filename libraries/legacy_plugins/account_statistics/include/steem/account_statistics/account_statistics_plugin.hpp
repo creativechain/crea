@@ -1,4 +1,4 @@
-#include <creativecoin/app/plugin.hpp>
+#include <crea/app/plugin.hpp>
 
 #include <boost/multi_index/composite_key.hpp>
 
@@ -20,7 +20,7 @@
 #define CREA_ACCOUNT_STATISTICS_PLUGIN_NAME "account_stats"
 #endif
 
-namespace creativecoin { namespace account_statistics {
+namespace crea { namespace account_statistics {
 
 using namespace chain;
 using app::application;
@@ -65,42 +65,42 @@ struct account_stats_bucket_object : public object< account_stats_bucket_object_
    uint32_t             author_reward_payouts = 0;                ///< Number of author reward payouts
    share_type           author_rewards_sbd = 0;                   ///< CBD paid for author rewards
    share_type           author_rewards_vests = 0;                 ///< VESTS paid for author rewards
-   share_type           author_rewards_total_creativecoin_value = 0;     ///< CREA Value of author rewards
+   share_type           author_rewards_total_crea_value = 0;     ///< CREA Value of author rewards
    share_type           author_rewards_payout_cbd_value = 0;      ///< CBD Value of author rewards at time of payout
    uint32_t             curation_reward_payouts = 0;              ///< Number of curation reward payouts.
    share_type           curation_rewards_vests = 0;               ///< VESTS paid for curation rewards
-   share_type           curation_rewards_creativecoin_value = 0;         ///< CREA Value of curation rewards
+   share_type           curation_rewards_crea_value = 0;         ///< CREA Value of curation rewards
    share_type           curation_rewards_payout_cbd_value = 0;    ///< CBD Value of curation rewards at time of payout
    uint32_t             liquidity_reward_payouts = 0;             ///< Number of liquidity reward payouts
    share_type           liquidity_rewards = 0;                    ///< Amount of CREA paid as liquidity rewards
    uint32_t             transfers_to = 0;                         ///< Account to account transfers to this account
    uint32_t             transfers_from = 0;                       ///< Account to account transfers from this account
-   share_type           creativecoin_sent = 0;                           ///< CREA sent from this account
-   share_type           creativecoin_received = 0;                       ///< CREA received by this account
+   share_type           crea_sent = 0;                           ///< CREA sent from this account
+   share_type           crea_received = 0;                       ///< CREA received by this account
    share_type           cbd_sent = 0;                             ///< CBD sent from this account
    share_type           cbd_received = 0;                         ///< CBD received by this account
    uint32_t             cbd_interest_payments = 0;                ///< Number of times interest was paid to CBD
    share_type           cbd_paid_as_interest = 0;                 ///< Amount of CBD paid as interest
    uint32_t             transfers_to_vesting = 0;                 ///< Transfers to vesting by this account. Note: Transfer to vesting from A to B counts as a transfer from A to B followed by a vesting deposit by B.
-   share_type           creativecoin_vested = 0;                         ///< CREA vested by the account
+   share_type           crea_vested = 0;                         ///< CREA vested by the account
    share_type           new_vests = 0;                            ///< New VESTS by vesting transfers
    uint32_t             new_vesting_withdrawal_requests = 0;      ///< New vesting withdrawal requests
    uint32_t             modified_vesting_withdrawal_requests = 0; ///< Changes to vesting withdraw requests
    uint32_t             vesting_withdrawals_processed = 0;        ///< Vesting withdrawals processed for this account
    uint32_t             finished_vesting_withdrawals = 0;         ///< Processed vesting withdrawals that are now finished
    share_type           vests_withdrawn = 0;                      ///< VESTS withdrawn from the account
-   share_type           creativecoin_received_from_withdrawls = 0;       ///< CREA received from this account's vesting withdrawals
-   share_type           creativecoin_received_from_routes = 0;           ///< CREA received from another account's vesting withdrawals
+   share_type           crea_received_from_withdrawls = 0;       ///< CREA received from this account's vesting withdrawals
+   share_type           crea_received_from_routes = 0;           ///< CREA received from another account's vesting withdrawals
    share_type           vests_received_from_routes = 0;           ///< VESTS received from another account's vesting withdrawals
    uint32_t             cbd_conversion_requests_created = 0;      ///< CBD conversion requests created
    share_type           cbd_to_be_converted = 0;                  ///< Amount of CBD to be converted
    uint32_t             cbd_conversion_requests_filled = 0;       ///< CBD conversion requests filled
-   share_type           creativecoin_converted = 0;                      ///< Amount of CREA that was converted
+   share_type           crea_converted = 0;                      ///< Amount of CREA that was converted
    uint32_t             limit_orders_created = 0;                 ///< Limit orders created by this account
    uint32_t             limit_orders_filled = 0;                  ///< Limit orders filled by this account
    uint32_t             limit_orders_cancelled = 0;               ///< Limit orders cancelled by this account
-   share_type           limit_order_creativecoin_paid = 0;               ///< CREA paid by limit orders
-   share_type           limit_order_creativecoin_received = 0;           ///< CREA received from limit orders
+   share_type           limit_order_crea_paid = 0;               ///< CREA paid by limit orders
+   share_type           limit_order_crea_received = 0;           ///< CREA received from limit orders
    share_type           limit_order_cbd_paid = 0;                 ///< CBD paid by limit orders
    share_type           limit_order_cbd_received = 0;             ///< CBD received by limit orders
    uint32_t             total_pow = 0;                            ///< POW completed
@@ -135,7 +135,7 @@ namespace detail
    class account_statistics_plugin_impl;
 }
 
-class account_statistics_plugin : public creativecoin::app::plugin
+class account_statistics_plugin : public crea::app::plugin
 {
    public:
       account_statistics_plugin( application* app );
@@ -157,9 +157,9 @@ class account_statistics_plugin : public creativecoin::app::plugin
       std::unique_ptr< detail::account_statistics_plugin_impl > _my;
 };
 
-} } // creativecoin::account_statistics
+} } // crea::account_statistics
 
-FC_REFLECT( creativecoin::account_statistics::account_stats_bucket_object,
+FC_REFLECT( crea::account_statistics::account_stats_bucket_object,
    (id)
    (open)
    (seconds)
@@ -183,51 +183,51 @@ FC_REFLECT( creativecoin::account_statistics::account_stats_bucket_object,
    (author_reward_payouts)
    (author_rewards_sbd)
    (author_rewards_vests)
-   (author_rewards_total_creativecoin_value)
+   (author_rewards_total_crea_value)
    (author_rewards_payout_cbd_value)
    (curation_reward_payouts)
    (curation_rewards_vests)
-   (curation_rewards_creativecoin_value)
+   (curation_rewards_crea_value)
    (curation_rewards_payout_cbd_value)
    (liquidity_reward_payouts)
    (liquidity_rewards)
    (transfers_to)
    (transfers_from)
-   (creativecoin_sent)
-   (creativecoin_received)
+   (crea_sent)
+   (crea_received)
    (cbd_sent)
    (cbd_received)
    (cbd_interest_payments)
    (cbd_paid_as_interest)
    (transfers_to_vesting)
-   (creativecoin_vested)
+   (crea_vested)
    (new_vests)
    (new_vesting_withdrawal_requests)
    (modified_vesting_withdrawal_requests)
    (vesting_withdrawals_processed)
    (finished_vesting_withdrawals)
    (vests_withdrawn)
-   (creativecoin_received_from_withdrawls)
-   (creativecoin_received_from_routes)
+   (crea_received_from_withdrawls)
+   (crea_received_from_routes)
    (vests_received_from_routes)
    (cbd_conversion_requests_created)
    (cbd_to_be_converted)
    (cbd_conversion_requests_filled)
-   (creativecoin_converted)
+   (crea_converted)
    (limit_orders_created)
    (limit_orders_filled)
    (limit_orders_cancelled)
-   (limit_order_creativecoin_paid)
-   (limit_order_creativecoin_received)
+   (limit_order_crea_paid)
+   (limit_order_crea_received)
    (limit_order_cbd_paid)
    (limit_order_cbd_received)
    (total_pow)
    (estimated_hashpower)
 )
-//SET_INDEX_TYPE( creativecoin::account_statistics::account_stats_bucket_object,)
+//SET_INDEX_TYPE( crea::account_statistics::account_stats_bucket_object,)
 
 FC_REFLECT(
-   creativecoin::account_statistics::account_activity_bucket_object,
+   crea::account_statistics::account_activity_bucket_object,
    (id)
    (open)
    (seconds)

@@ -1,10 +1,10 @@
 #pragma once
 
-#include <creativecoin/protocol/types.hpp>
+#include <crea/protocol/types.hpp>
 
 #include <fc/uint128.hpp>
 
-namespace creativecoin { namespace chain { namespace util {
+namespace crea { namespace chain { namespace util {
 
 inline u256 to256( const fc::uint128& t )
 {

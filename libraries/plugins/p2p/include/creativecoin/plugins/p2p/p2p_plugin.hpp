@@ -1,12 +1,12 @@
 #pragma once
 
-#include <creativecoin/plugins/chain/chain_plugin.hpp>
+#include <crea/plugins/chain/chain_plugin.hpp>
 
 #include <appbase/application.hpp>
 
 #define CREA_P2P_PLUGIN_NAME "p2p"
 
-namespace creativecoin { namespace plugins { namespace p2p {
+namespace crea { namespace plugins { namespace p2p {
 namespace bpo = boost::program_options;
 
 namespace detail { class p2p_plugin_impl; }
@@ -27,12 +27,12 @@ public:
    virtual void plugin_startup() override;
    virtual void plugin_shutdown() override;
 
-   void broadcast_block( const creativecoin::protocol::signed_block& block );
-   void broadcast_transaction( const creativecoin::protocol::signed_transaction& tx );
+   void broadcast_block( const crea::protocol::signed_block& block );
+   void broadcast_transaction( const crea::protocol::signed_transaction& tx );
    void set_block_production( bool producing_blocks );
 
 private:
    std::unique_ptr< detail::p2p_plugin_impl > my;
 };
 
-} } } // creativecoin::plugins::p2p
+} } } // crea::plugins::p2p

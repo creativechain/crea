@@ -1,18 +1,18 @@
-#include <creativecoin/plugins/debug_node_api/debug_node_api_plugin.hpp>
-#include <creativecoin/plugins/debug_node_api/debug_node_api.hpp>
+#include <crea/plugins/debug_node_api/debug_node_api_plugin.hpp>
+#include <crea/plugins/debug_node_api/debug_node_api.hpp>
 
 #include <fc/filesystem.hpp>
 #include <fc/optional.hpp>
 #include <fc/variant_object.hpp>
 
-#include <creativecoin/chain/block_log.hpp>
-#include <creativecoin/chain/account_object.hpp>
-#include <creativecoin/chain/database.hpp>
-#include <creativecoin/chain/witness_objects.hpp>
+#include <crea/chain/block_log.hpp>
+#include <crea/chain/account_object.hpp>
+#include <crea/chain/database.hpp>
+#include <crea/chain/witness_objects.hpp>
 
-#include <creativecoin/utilities/key_conversion.hpp>
+#include <crea/utilities/key_conversion.hpp>
 
-namespace creativecoin { namespace plugins { namespace debug_node {
+namespace crea { namespace plugins { namespace debug_node {
 
 namespace detail {
 
@@ -171,4 +171,4 @@ DEFINE_LOCKLESS_APIS( debug_node_api,
    (debug_get_json_schema)
 )
 
-} } } // creativecoin::plugins::debug_node
+} } } // crea::plugins::debug_node

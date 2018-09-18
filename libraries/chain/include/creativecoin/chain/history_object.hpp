@@ -1,17 +1,17 @@
 #pragma once
 
-#include <creativecoin/protocol/authority.hpp>
-#include <creativecoin/protocol/operations.hpp>
-#include <creativecoin/protocol/creativecoin_operations.hpp>
+#include <crea/protocol/authority.hpp>
+#include <crea/protocol/operations.hpp>
+#include <crea/protocol/crea_operations.hpp>
 
-#include <creativecoin/chain/buffer_type.hpp>
-#include <creativecoin/chain/creativecoin_object_types.hpp>
-#include <creativecoin/chain/witness_objects.hpp>
+#include <crea/chain/buffer_type.hpp>
+#include <crea/chain/crea_object_types.hpp>
+#include <crea/chain/witness_objects.hpp>
 
 #include <boost/multi_index/composite_key.hpp>
 
 
-namespace creativecoin { namespace chain {
+namespace crea { namespace chain {
 
    class operation_object : public object< operation_object_type, operation_object >
    {
@@ -92,20 +92,20 @@ namespace creativecoin { namespace chain {
    > account_history_index;
 } }
 
-FC_REFLECT( creativecoin::chain::operation_object, (id)(trx_id)(block)(trx_in_block)(op_in_trx)(virtual_op)(timestamp)(serialized_op) )
-CHAINBASE_SET_INDEX_TYPE( creativecoin::chain::operation_object, creativecoin::chain::operation_index )
+FC_REFLECT( crea::chain::operation_object, (id)(trx_id)(block)(trx_in_block)(op_in_trx)(virtual_op)(timestamp)(serialized_op) )
+CHAINBASE_SET_INDEX_TYPE( crea::chain::operation_object, crea::chain::operation_index )
 
-FC_REFLECT( creativecoin::chain::account_history_object, (id)(account)(sequence)(op) )
+FC_REFLECT( crea::chain::account_history_object, (id)(account)(sequence)(op) )
 
-CHAINBASE_SET_INDEX_TYPE( creativecoin::chain::account_history_object, creativecoin::chain::account_history_index )
+CHAINBASE_SET_INDEX_TYPE( crea::chain::account_history_object, crea::chain::account_history_index )
 
 namespace helpers
 {
    template <>
-   class index_statistic_provider<creativecoin::chain::operation_index>
+   class index_statistic_provider<crea::chain::operation_index>
    {
    public:
-      typedef creativecoin::chain::operation_index IndexType;
+      typedef crea::chain::operation_index IndexType;
 
       index_statistic_info gather_statistics(const IndexType& index, bool onlyStaticInfo) const
       {
@@ -116,7 +116,7 @@ namespace helpers
          {
             for(const auto& o : index)
                info._item_additional_allocation +=
-                  o.serialized_op.capacity()*sizeof(creativecoin::chain::buffer_type::value_type);
+                  o.serialized_op.capacity()*sizeof(crea::chain::buffer_type::value_type);
          }
 
          return info;
@@ -124,10 +124,10 @@ namespace helpers
    };
 
    template <>
-   class index_statistic_provider<creativecoin::chain::account_history_index>
+   class index_statistic_provider<crea::chain::account_history_index>
    {
    public:
-      typedef creativecoin::chain::account_history_index IndexType;
+      typedef crea::chain::account_history_index IndexType;
 
       index_statistic_info gather_statistics(const IndexType& index, bool onlyStaticInfo) const
       {
@@ -138,7 +138,7 @@ namespace helpers
          {
             //for(const auto& o : index)
             //   info._item_additional_allocation += o.get_ops().capacity()*
-            //      sizeof(creativecoin::chain::account_history_object::operation_container::value_type);
+            //      sizeof(crea::chain::account_history_object::operation_container::value_type);
          }
 
          return info;

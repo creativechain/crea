@@ -1,18 +1,18 @@
 #pragma once
 
-#include <creativecoin/protocol/block.hpp>
+#include <crea/protocol/block.hpp>
 
-namespace creativecoin { namespace chain {
+namespace crea { namespace chain {
 
 struct transaction_notification
 {
-   transaction_notification( const creativecoin::protocol::signed_transaction& tx ) : transaction(tx)
+   transaction_notification( const crea::protocol::signed_transaction& tx ) : transaction(tx)
    {
       transaction_id = tx.id();
    }
 
-   creativecoin::protocol::transaction_id_type          transaction_id;
-   const creativecoin::protocol::signed_transaction&    transaction;
+   crea::protocol::transaction_id_type          transaction_id;
+   const crea::protocol::signed_transaction&    transaction;
 };
 
 } }

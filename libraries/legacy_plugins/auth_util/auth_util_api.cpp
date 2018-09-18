@@ -1,19 +1,19 @@
 
-#include <creativecoin/app/api_context.hpp>
-#include <creativecoin/app/application.hpp>
+#include <crea/app/api_context.hpp>
+#include <crea/app/application.hpp>
 
-#include <creativecoin/protocol/authority.hpp>
-#include <creativecoin/protocol/sign_state.hpp>
+#include <crea/protocol/authority.hpp>
+#include <crea/protocol/sign_state.hpp>
 
-#include <creativecoin/chain/account_object.hpp>
-#include <creativecoin/chain/database.hpp>
+#include <crea/chain/account_object.hpp>
+#include <crea/chain/database.hpp>
 
-#include <creativecoin/plugins/auth_util/auth_util_api.hpp>
-#include <creativecoin/plugins/auth_util/auth_util_plugin.hpp>
+#include <crea/plugins/auth_util/auth_util_api.hpp>
+#include <crea/plugins/auth_util/auth_util_plugin.hpp>
 
 #include <fc/container/flat.hpp>
 
-namespace creativecoin { namespace plugin { namespace auth_util {
+namespace crea { namespace plugin { namespace auth_util {
 
 using boost::container::flat_set;
 
@@ -22,18 +22,18 @@ namespace detail {
 class auth_util_api_impl
 {
    public:
-      auth_util_api_impl( creativecoin::app::application& _app );
+      auth_util_api_impl( crea::app::application& _app );
       void check_authority_signature( const check_authority_signature_params& args, check_authority_signature_result& result );
 
-      std::shared_ptr< creativecoin::plugin::auth_util::auth_util_plugin > get_plugin();
+      std::shared_ptr< crea::plugin::auth_util::auth_util_plugin > get_plugin();
 
-      creativecoin::app::application& app;
+      crea::app::application& app;
 };
 
-auth_util_api_impl::auth_util_api_impl( creativecoin::app::application& _app ) : app( _app )
+auth_util_api_impl::auth_util_api_impl( crea::app::application& _app ) : app( _app )
 {}
 
-std::shared_ptr< creativecoin::plugin::auth_util::auth_util_plugin > auth_util_api_impl::get_plugin()
+std::shared_ptr< crea::plugin::auth_util::auth_util_plugin > auth_util_api_impl::get_plugin()
 {
    return app.get_plugin< auth_util_plugin >( "auth_util" );
 }
@@ -80,7 +80,7 @@ void auth_util_api_impl::check_authority_signature( const check_authority_signat
 
 } // detail
 
-auth_util_api::auth_util_api( const creativecoin::app::api_context& ctx )
+auth_util_api::auth_util_api( const crea::app::api_context& ctx )
 {
    my = std::make_shared< detail::auth_util_api_impl >(ctx.app);
 }
@@ -94,4 +94,4 @@ check_authority_signature_result auth_util_api::check_authority_signature( check
    return result;
 }
 
-} } } // creativecoin::plugin::auth_util
+} } } // crea::plugin::auth_util

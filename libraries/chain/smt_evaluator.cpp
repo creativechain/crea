@@ -1,16 +1,16 @@
 
-#include <creativecoin/chain/creativecoin_evaluator.hpp>
-#include <creativecoin/chain/database.hpp>
-#include <creativecoin/chain/creativecoin_objects.hpp>
-#include <creativecoin/chain/smt_objects.hpp>
+#include <crea/chain/crea_evaluator.hpp>
+#include <crea/chain/database.hpp>
+#include <crea/chain/crea_objects.hpp>
+#include <crea/chain/smt_objects.hpp>
 
-#include <creativecoin/chain/util/reward.hpp>
+#include <crea/chain/util/reward.hpp>
 
-#include <creativecoin/protocol/smt_operations.hpp>
+#include <crea/protocol/smt_operations.hpp>
 
-#include <creativecoin/protocol/smt_operations.hpp>
+#include <crea/protocol/smt_operations.hpp>
 #ifdef CREA_ENABLE_SMT
-namespace creativecoin { namespace chain {
+namespace crea { namespace chain {
 
 namespace {
 
@@ -99,7 +99,7 @@ void smt_create_evaluator::do_apply( const smt_create_operation& o )
       }
       else
       {
-         effective_elevation_fee = _db.to_creativecoin( o.smt_creation_fee );
+         effective_elevation_fee = _db.to_crea( o.smt_creation_fee );
       }
    }
 
@@ -201,28 +201,28 @@ void smt_cap_reveal_evaluator::do_apply( const smt_cap_reveal_operation& o )
 
    // As there's no information in cap reveal operation about which cap it reveals,
    // we'll check both, unless they are already revealed.
-   FC_ASSERT( smt.creativecoin_units_min_cap < 0 || smt.creativecoin_units_hard_cap < 0, "Both min cap and max hard cap have already been revealed" );
+   FC_ASSERT( smt.crea_units_min_cap < 0 || smt.crea_units_hard_cap < 0, "Both min cap and max hard cap have already been revealed" );
 
-   if( smt.creativecoin_units_min_cap < 0 )
+   if( smt.crea_units_min_cap < 0 )
       try
       {
-         o.cap.validate( smt.capped_generation_policy.min_creativecoin_units_commitment );
+         o.cap.validate( smt.capped_generation_policy.min_crea_units_commitment );
          _db.modify( smt, [&]( smt_token_object& smt_object )
          {
-            smt_object.creativecoin_units_min_cap = o.cap.amount;
+            smt_object.crea_units_min_cap = o.cap.amount;
          });
          return;
       }
       catch( const fc::exception& e )
       {
-         if( smt.creativecoin_units_hard_cap >= 0 )
+         if( smt.crea_units_hard_cap >= 0 )
             throw;
       }
 
-   o.cap.validate( smt.capped_generation_policy.hard_cap_creativecoin_units_commitment );
+   o.cap.validate( smt.capped_generation_policy.hard_cap_crea_units_commitment );
    _db.modify( smt, [&]( smt_token_object& smt_object )
    {
-      smt_object.creativecoin_units_hard_cap = o.cap.amount;
+      smt_object.crea_units_hard_cap = o.cap.amount;
    });
 }
 

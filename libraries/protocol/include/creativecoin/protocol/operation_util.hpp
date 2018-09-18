@@ -1,7 +1,7 @@
 
 #pragma once
 
-#include <creativecoin/protocol/authority.hpp>
+#include <crea/protocol/authority.hpp>
 
 #include <fc/variant.hpp>
 
@@ -10,7 +10,7 @@
 #include <string>
 #include <vector>
 
-namespace creativecoin { namespace protocol {
+namespace crea { namespace protocol {
 
 struct get_required_auth_visitor
 {
@@ -44,7 +44,7 @@ struct get_required_auth_visitor
    }
 };
 
-} } // creativecoin::protocol
+} } // crea::protocol
 
 //
 // Place CREA_DECLARE_OPERATION_TYPE in a .hpp file to declare
@@ -52,7 +52,7 @@ struct get_required_auth_visitor
 //
 #define CREA_DECLARE_OPERATION_TYPE( OperationType )                            \
                                                                                  \
-namespace creativecoin { namespace protocol {                                           \
+namespace crea { namespace protocol {                                           \
                                                                                  \
 void operation_validate( const OperationType& o );                               \
 void operation_get_required_authorities( const OperationType& op,                \
@@ -61,4 +61,4 @@ void operation_get_required_authorities( const OperationType& op,               
                                          flat_set< account_name_type >& posting, \
                                          vector< authority >& other );           \
                                                                                  \
-} } /* creativecoin::protocol */
+} } /* crea::protocol */

@@ -23,10 +23,10 @@
  */
 #include <iomanip>
 #include <boost/algorithm/string/join.hpp>
-#include <creativecoin/wallet/wallet.hpp>
-#include <creativecoin/wallet/api_documentation.hpp>
+#include <crea/wallet/wallet.hpp>
+#include <crea/wallet/api_documentation.hpp>
 
-namespace creativecoin { namespace wallet {
+namespace crea { namespace wallet {
    namespace detail {
       namespace
       {
@@ -88,4 +88,4 @@ namespace creativecoin { namespace wallet {
                 std::inserter(method_descriptions, method_descriptions.end()));
    }
 
-} } // end namespace creativecoin::wallet
+} } // end namespace crea::wallet

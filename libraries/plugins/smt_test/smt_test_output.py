@@ -7,20 +7,20 @@ import sys
 
 argv = list(sys.argv)
 
-creativecoind = None
-i_creativecoind = -1
+cread = None
+i_cread = -1
 for i, a in enumerate(argv):
-    if a.startswith("--creativecoind="):
-        _, creativecoind = a.split("=", 1)
-        i_creativecoind = i
+    if a.startswith("--cread="):
+        _, cread = a.split("=", 1)
+        i_cread = i
 
-if creativecoind is None:
-    sys.stderr.write("missing --creativecoind argument\n")
+if cread is None:
+    sys.stderr.write("missing --cread argument\n")
     sys.exit(1)
 
-del argv[i_creativecoind]
+del argv[i_cread]
 
-with subprocess.Popen( [creativecoind] + argv[1:], stdout=subprocess.PIPE, stderr=subprocess.STDOUT ) as outproc:
+with subprocess.Popen( [cread] + argv[1:], stdout=subprocess.PIPE, stderr=subprocess.STDOUT ) as outproc:
     while True:
         line = outproc.stdout.readline()
         line = line.decode("utf-8")

@@ -1,10 +1,10 @@
 #pragma once
 
-#include <creativecoin/protocol/version.hpp>
+#include <crea/protocol/version.hpp>
 
-#include <creativecoin/chain/creativecoin_object_types.hpp>
+#include <crea/chain/crea_object_types.hpp>
 
-namespace creativecoin { namespace chain {
+namespace crea { namespace chain {
 
    using chainbase::t_vector;
 
@@ -37,9 +37,9 @@ namespace creativecoin { namespace chain {
       allocator< hardfork_property_object >
    > hardfork_property_index;
 
-} } // creativecoin::chain
+} } // crea::chain
 
-FC_REFLECT( creativecoin::chain::hardfork_property_object,
+FC_REFLECT( crea::chain::hardfork_property_object,
    (id)(processed_hardforks)(last_hardfork)(current_hardfork_version)
    (next_hardfork)(next_hardfork_time) )
-CHAINBASE_SET_INDEX_TYPE( creativecoin::chain::hardfork_property_object, creativecoin::chain::hardfork_property_index )
+CHAINBASE_SET_INDEX_TYPE( crea::chain::hardfork_property_object, crea::chain::hardfork_property_index )

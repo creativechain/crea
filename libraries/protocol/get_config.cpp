@@ -1,10 +1,10 @@
-#include <creativecoin/protocol/get_config.hpp>
-#include <creativecoin/protocol/config.hpp>
-#include <creativecoin/protocol/asset.hpp>
-#include <creativecoin/protocol/types.hpp>
-#include <creativecoin/protocol/version.hpp>
+#include <crea/protocol/get_config.hpp>
+#include <crea/protocol/config.hpp>
+#include <crea/protocol/asset.hpp>
+#include <crea/protocol/types.hpp>
+#include <crea/protocol/version.hpp>
 
-namespace creativecoin { namespace protocol {
+namespace crea { namespace protocol {
 
 fc::variant_object get_config()
 {
@@ -194,4 +194,4 @@ fc::variant_object get_config()
    return result;
 }
 
-} } // creativecoin::protocol
+} } // crea::protocol

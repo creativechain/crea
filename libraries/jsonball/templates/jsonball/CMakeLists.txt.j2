@@ -1,15 +1,15 @@
 
-add_library( creativecoin_jsonball
+add_library( crea_jsonball
    mm_ticks.cpp
-   ${CMAKE_CURRENT_SOURCE_DIR}/include/creativecoin/jsonball/jsonball.hpp
+   ${CMAKE_CURRENT_SOURCE_DIR}/include/crea/jsonball/jsonball.hpp
 )
 
-target_link_libraries( creativecoin_jsonball fc )
+target_link_libraries( crea_jsonball fc )
 
-target_include_directories( creativecoin_jsonball PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/include" )
+target_include_directories( crea_jsonball PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/include" )
 
 INSTALL( TARGETS
-   creativecoin_jsonball
+   crea_jsonball
 
    RUNTIME DESTINATION bin
    LIBRARY DESTINATION lib

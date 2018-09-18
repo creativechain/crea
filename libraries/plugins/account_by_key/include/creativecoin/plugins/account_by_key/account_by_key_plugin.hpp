@@ -1,9 +1,9 @@
 #pragma once
 #include <appbase/application.hpp>
 
-#include <creativecoin/plugins/chain/chain_plugin.hpp>
+#include <crea/plugins/chain/chain_plugin.hpp>
 
-namespace creativecoin { namespace plugins { namespace account_by_key {
+namespace crea { namespace plugins { namespace account_by_key {
 
 namespace detail { class account_by_key_plugin_impl; }
 
@@ -17,7 +17,7 @@ class account_by_key_plugin : public appbase::plugin< account_by_key_plugin >
       account_by_key_plugin();
       virtual ~account_by_key_plugin();
 
-      APPBASE_PLUGIN_REQUIRES( (creativecoin::plugins::chain::chain_plugin) )
+      APPBASE_PLUGIN_REQUIRES( (crea::plugins::chain::chain_plugin) )
 
       static const std::string& name() { static std::string name = CREA_ACCOUNT_BY_KEY_PLUGIN_NAME; return name; }
 
@@ -30,4 +30,4 @@ class account_by_key_plugin : public appbase::plugin< account_by_key_plugin >
       std::unique_ptr< detail::account_by_key_plugin_impl > my;
 };
 
-} } } // creativecoin::plugins::account_by_key
+} } } // crea::plugins::account_by_key

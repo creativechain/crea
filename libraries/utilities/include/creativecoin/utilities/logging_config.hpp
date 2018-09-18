@@ -10,7 +10,7 @@
 
 #include <boost/program_options.hpp>
 
-namespace creativecoin { namespace utilities {
+namespace crea { namespace utilities {
 
 struct console_appender_args
 {
@@ -35,8 +35,8 @@ void set_logging_program_options( boost::program_options::options_description& o
 
 fc::optional<fc::logging_config> load_logging_config( const boost::program_options::variables_map& args, const boost::filesystem::path& pwd );
 
-} } // creativecoin::utilities
+} } // crea::utilities
 
-FC_REFLECT( creativecoin::utilities::console_appender_args, (appender)(stream) )
-FC_REFLECT( creativecoin::utilities::file_appender_args, (appender)(file) )
-FC_REFLECT( creativecoin::utilities::logger_args, (name)(level)(appender) )
+FC_REFLECT( crea::utilities::console_appender_args, (appender)(stream) )
+FC_REFLECT( crea::utilities::file_appender_args, (appender)(file) )
+FC_REFLECT( crea::utilities::logger_args, (name)(level)(appender) )

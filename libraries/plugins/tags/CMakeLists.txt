@@ -1,9 +1,9 @@
-file(GLOB HEADERS "include/creativecoin/plugins/tags/*.hpp")
+file(GLOB HEADERS "include/crea/plugins/tags/*.hpp")
 
 add_library( tags_plugin
              tags_plugin.cpp )
 
-target_link_libraries( tags_plugin chain_plugin creativecoin_protocol appbase )
+target_link_libraries( tags_plugin chain_plugin crea_protocol appbase )
 target_include_directories( tags_plugin
                             PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/include" )
 

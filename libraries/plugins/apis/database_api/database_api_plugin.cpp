@@ -1,7 +1,7 @@
-#include <creativecoin/plugins/database_api/database_api.hpp>
-#include <creativecoin/plugins/database_api/database_api_plugin.hpp>
+#include <crea/plugins/database_api/database_api.hpp>
+#include <crea/plugins/database_api/database_api_plugin.hpp>
 
-namespace creativecoin { namespace plugins { namespace database_api {
+namespace crea { namespace plugins { namespace database_api {
 
 database_api_plugin::database_api_plugin() {}
 database_api_plugin::~database_api_plugin() {}
@@ -19,4 +19,4 @@ void database_api_plugin::plugin_startup() {}
 
 void database_api_plugin::plugin_shutdown() {}
 
-} } } // creativecoin::plugins::database_api
+} } } // crea::plugins::database_api

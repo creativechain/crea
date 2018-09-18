@@ -23,15 +23,15 @@
  */
 #pragma once
 
-#include <creativecoin/app/plugin.hpp>
-#include <creativecoin/chain/creativecoin_objects.hpp>
+#include <crea/app/plugin.hpp>
+#include <crea/chain/crea_objects.hpp>
 
-namespace creativecoin { namespace delayed_node {
+namespace crea { namespace delayed_node {
 namespace detail { struct delayed_node_plugin_impl; }
 
 using app::application;
 
-class delayed_node_plugin : public creativecoin::app::plugin
+class delayed_node_plugin : public crea::app::plugin
 {
    std::unique_ptr<detail::delayed_node_plugin_impl> my;
 public:
@@ -51,5 +51,5 @@ protected:
    void sync_with_trusted_node();
 };
 
-} } //creativecoin::account_history
+} } //crea::account_history
 

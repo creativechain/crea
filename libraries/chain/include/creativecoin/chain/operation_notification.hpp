@@ -1,10 +1,10 @@
 #pragma once
 
-#include <creativecoin/protocol/operations.hpp>
+#include <crea/protocol/operations.hpp>
 
-#include <creativecoin/chain/creativecoin_object_types.hpp>
+#include <crea/chain/crea_object_types.hpp>
 
-namespace creativecoin { namespace chain {
+namespace crea { namespace chain {
 
 struct operation_notification
 {

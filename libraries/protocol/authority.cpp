@@ -1,6 +1,6 @@
-#include <creativecoin/protocol/authority.hpp>
+#include <crea/protocol/authority.hpp>
 
-namespace creativecoin { namespace protocol {
+namespace crea { namespace protocol {
 
 // authority methods
 void authority::add_authority( const public_key_type& k, weight_type w )
@@ -116,4 +116,4 @@ bool operator == ( const authority& a, const authority& b )
             ( a.key_auths      == b.key_auths );
 }
 
-} } // creativecoin::protocol
+} } // crea::protocol

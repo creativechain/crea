@@ -1,9 +1,9 @@
-#include <creativecoin/protocol/block.hpp>
+#include <crea/protocol/block.hpp>
 #include <fc/io/raw.hpp>
 #include <fc/bitutil.hpp>
 #include <algorithm>
 
-namespace creativecoin { namespace protocol {
+namespace crea { namespace protocol {
    digest_type block_header::digest()const
    {
       return digest_type::hash(*this);
@@ -66,4 +66,4 @@ namespace creativecoin { namespace protocol {
       return checksum_type::hash( ids[0] );
    }
 
-} } // creativecoin::protocol
+} } // crea::protocol

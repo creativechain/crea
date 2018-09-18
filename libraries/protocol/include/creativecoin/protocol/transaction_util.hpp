@@ -1,8 +1,8 @@
 #pragma once
-#include <creativecoin/protocol/sign_state.hpp>
-#include <creativecoin/protocol/exceptions.hpp>
+#include <crea/protocol/sign_state.hpp>
+#include <crea/protocol/exceptions.hpp>
 
-namespace creativecoin { namespace protocol {
+namespace crea { namespace protocol {
 
 template< typename AuthContainerType >
 void verify_authority( const vector<AuthContainerType>& auth_containers, const flat_set<public_key_type>& sigs,
@@ -96,4 +96,4 @@ void verify_authority( const vector<AuthContainerType>& auth_containers, const f
       );
 } FC_CAPTURE_AND_RETHROW( (auth_containers)(sigs) ) }
 
-} } // creativecoin::protocol
+} } // crea::protocol

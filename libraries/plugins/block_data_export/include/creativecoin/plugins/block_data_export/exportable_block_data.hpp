@@ -6,7 +6,7 @@ namespace fc {
 class variant;
 }
 
-namespace creativecoin { namespace plugins { namespace block_data_export {
+namespace crea { namespace plugins { namespace block_data_export {
 
 class exportable_block_data
 {
@@ -21,7 +21,7 @@ class exportable_block_data
 
 namespace fc {
 
-inline void to_variant( const creativecoin::plugins::block_data_export::exportable_block_data& ebd, fc::variant& v )
+inline void to_variant( const crea::plugins::block_data_export::exportable_block_data& ebd, fc::variant& v )
 {
    ebd.to_variant( v );
 }

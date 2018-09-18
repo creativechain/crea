@@ -1,13 +1,13 @@
-#include <creativecoin/plugins/condenser_api/condenser_api_legacy_objects.hpp>
+#include <crea/plugins/condenser_api/condenser_api_legacy_objects.hpp>
 
 namespace fc {
 
-void to_variant( const creativecoin::plugins::condenser_api::legacy_block_header_extensions& sv, fc::variant& v )
+void to_variant( const crea::plugins::condenser_api::legacy_block_header_extensions& sv, fc::variant& v )
 {
    old_sv_to_variant( sv, v );
 }
 
-void from_variant( const fc::variant& v, creativecoin::plugins::condenser_api::legacy_block_header_extensions& sv )
+void from_variant( const fc::variant& v, crea::plugins::condenser_api::legacy_block_header_extensions& sv )
 {
    old_sv_from_variant( v, sv );
 }

@@ -1,11 +1,11 @@
 #pragma once
 
-#include <creativecoin/chain/creativecoin_object_types.hpp>
-#include <creativecoin/protocol/smt_operations.hpp>
+#include <crea/chain/crea_object_types.hpp>
+#include <crea/protocol/smt_operations.hpp>
 
 #ifdef CREA_ENABLE_SMT
 
-namespace creativecoin { namespace chain {
+namespace crea { namespace chain {
 
 enum class smt_phase : uint8_t
 {
@@ -29,7 +29,7 @@ public:
 
    struct smt_market_maker_state
    {
-      asset    creativecoin_balance;
+      asset    crea_balance;
       asset    token_balance;
       uint32_t reserve_ratio = 0;
    };
@@ -106,7 +106,7 @@ public:
 
    /// smt_setup_emissions
    time_point_sec       schedule_time = CREA_GENESIS_TIME;
-   creativecoin::protocol::
+   crea::protocol::
    smt_emissions_unit   emissions_unit;
    uint32_t             interval_seconds = 0;
    uint32_t             interval_count = 0;
@@ -120,7 +120,7 @@ public:
 
    ///parameters for 'smt_setup_operation'
    int64_t                       max_supply = 0;
-   creativecoin::protocol::
+   crea::protocol::
    smt_capped_generation_policy  capped_generation_policy;
    time_point_sec                generation_begin_time;
    time_point_sec                generation_end_time;
@@ -128,8 +128,8 @@ public:
    time_point_sec                launch_expiration_time;
 
    // smt_cap_reveal
-   share_type  creativecoin_units_min_cap = -1;
-   share_type  creativecoin_units_hard_cap = -1;
+   share_type  crea_units_min_cap = -1;
+   share_type  crea_units_hard_cap = -1;
 };
 
 class smt_event_token_object : public object< smt_event_token_object_type, smt_event_token_object >
@@ -229,9 +229,9 @@ typedef multi_index_container <
    allocator< smt_event_token_object >
 > smt_event_token_index;
 
-} } // namespace creativecoin::chain
+} } // namespace crea::chain
 
-FC_REFLECT_ENUM( creativecoin::chain::smt_phase,
+FC_REFLECT_ENUM( crea::chain::smt_phase,
                   (account_elevated)
                   (setup_completed)
                   (contribution_begin_time_completed)
@@ -241,13 +241,13 @@ FC_REFLECT_ENUM( creativecoin::chain::smt_phase,
                   (launch_success)
 )
 
-FC_REFLECT( creativecoin::chain::smt_token_object::smt_market_maker_state,
-   (creativecoin_balance)
+FC_REFLECT( crea::chain::smt_token_object::smt_market_maker_state,
+   (crea_balance)
    (token_balance)
    (reserve_ratio)
 )
 
-FC_REFLECT( creativecoin::chain::smt_token_object,
+FC_REFLECT( crea::chain::smt_token_object,
    (id)
    (liquid_symbol)
    (control_account)
@@ -277,11 +277,11 @@ FC_REFLECT( creativecoin::chain::smt_token_object,
    (generation_end_time)
    (announced_launch_time)
    (launch_expiration_time)
-   (creativecoin_units_min_cap)
-   (creativecoin_units_hard_cap)
+   (crea_units_min_cap)
+   (crea_units_hard_cap)
 )
 
-FC_REFLECT( creativecoin::chain::smt_event_token_object,
+FC_REFLECT( crea::chain::smt_event_token_object,
    (id)
    (parent)
    (phase)
@@ -291,7 +291,7 @@ FC_REFLECT( creativecoin::chain::smt_event_token_object,
    (launch_expiration_time)
 )
 
-CHAINBASE_SET_INDEX_TYPE( creativecoin::chain::smt_token_object, creativecoin::chain::smt_token_index )
-CHAINBASE_SET_INDEX_TYPE( creativecoin::chain::smt_event_token_object, creativecoin::chain::smt_event_token_index )
+CHAINBASE_SET_INDEX_TYPE( crea::chain::smt_token_object, crea::chain::smt_token_index )
+CHAINBASE_SET_INDEX_TYPE( crea::chain::smt_event_token_object, crea::chain::smt_event_token_index )
 
 #endif

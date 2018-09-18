@@ -1,14 +1,14 @@
 #pragma once
-#include <creativecoin/protocol/base.hpp>
+#include <crea/protocol/base.hpp>
 
-#include <creativecoin/chain/evaluator.hpp>
+#include <crea/chain/evaluator.hpp>
 
 
-namespace creativecoin { namespace plugins { namespace follow {
+namespace crea { namespace plugins { namespace follow {
 
 using namespace std;
-using creativecoin::protocol::account_name_type;
-using creativecoin::protocol::base_operation;
+using crea::protocol::account_name_type;
+using crea::protocol::base_operation;
 
 class follow_plugin;
 
@@ -42,11 +42,11 @@ typedef fc::static_variant<
 CREA_DEFINE_PLUGIN_EVALUATOR( follow_plugin, follow_plugin_operation, follow );
 CREA_DEFINE_PLUGIN_EVALUATOR( follow_plugin, follow_plugin_operation, reblog );
 
-} } } // creativecoin::plugins::follow
+} } } // crea::plugins::follow
 
-FC_REFLECT( creativecoin::plugins::follow::follow_operation, (follower)(following)(what) )
-FC_REFLECT( creativecoin::plugins::follow::reblog_operation, (account)(author)(permlink) )
+FC_REFLECT( crea::plugins::follow::follow_operation, (follower)(following)(what) )
+FC_REFLECT( crea::plugins::follow::reblog_operation, (account)(author)(permlink) )
 
-CREA_DECLARE_OPERATION_TYPE( creativecoin::plugins::follow::follow_plugin_operation )
+CREA_DECLARE_OPERATION_TYPE( crea::plugins::follow::follow_plugin_operation )
 
-FC_REFLECT_TYPENAME( creativecoin::plugins::follow::follow_plugin_operation )
+FC_REFLECT_TYPENAME( crea::plugins::follow::follow_plugin_operation )

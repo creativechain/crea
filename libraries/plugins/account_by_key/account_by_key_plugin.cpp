@@ -1,12 +1,12 @@
-#include <creativecoin/plugins/account_by_key/account_by_key_plugin.hpp>
-#include <creativecoin/plugins/account_by_key/account_by_key_objects.hpp>
+#include <crea/plugins/account_by_key/account_by_key_plugin.hpp>
+#include <crea/plugins/account_by_key/account_by_key_objects.hpp>
 
-#include <creativecoin/chain/account_object.hpp>
-#include <creativecoin/chain/database.hpp>
-#include <creativecoin/chain/index.hpp>
-#include <creativecoin/chain/operation_notification.hpp>
+#include <crea/chain/account_object.hpp>
+#include <crea/chain/database.hpp>
+#include <crea/chain/index.hpp>
+#include <crea/chain/operation_notification.hpp>
 
-namespace creativecoin { namespace plugins { namespace account_by_key {
+namespace crea { namespace plugins { namespace account_by_key {
 
 namespace detail {
 
@@ -14,7 +14,7 @@ class account_by_key_plugin_impl
 {
    public:
       account_by_key_plugin_impl( account_by_key_plugin& _plugin ) :
-         _db( appbase::app().get_plugin< creativecoin::plugins::chain::chain_plugin >().db() ),
+         _db( appbase::app().get_plugin< crea::plugins::chain::chain_plugin >().db() ),
          _self( _plugin ) {}
 
       void on_pre_apply_operation( const operation_notification& note );
@@ -247,7 +247,7 @@ void account_by_key_plugin::plugin_initialize( const boost::program_options::var
    try
    {
       ilog( "Initializing account_by_key plugin" );
-      chain::database& db = appbase::app().get_plugin< creativecoin::plugins::chain::chain_plugin >().db();
+      chain::database& db = appbase::app().get_plugin< crea::plugins::chain::chain_plugin >().db();
 
       my->_pre_apply_operation_conn = db.add_pre_apply_operation_handler( [&]( const operation_notification& note ){ my->on_pre_apply_operation( note ); }, *this, 0 );
       my->_post_apply_operation_conn = db.add_post_apply_operation_handler( [&]( const operation_notification& note ){ my->on_post_apply_operation( note ); }, *this, 0 );
@@ -265,4 +265,4 @@ void account_by_key_plugin::plugin_shutdown()
    chain::util::disconnect_signal( my->_post_apply_operation_conn );
 }
 
-} } } // creativecoin::plugins::account_by_key
+} } } // crea::plugins::account_by_key

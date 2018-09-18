@@ -1,7 +1,7 @@
 #pragma once
-#include <creativecoin/app/plugin.hpp>
+#include <crea/app/plugin.hpp>
 
-#include <creativecoin/chain/creativecoin_object_types.hpp>
+#include <crea/chain/crea_object_types.hpp>
 
 #include <boost/multi_index/composite_key.hpp>
 
@@ -23,9 +23,9 @@
 #define CREA_BLOCKCHAIN_STATISTICS_PLUGIN_NAME "chain_stats"
 #endif
 
-namespace creativecoin { namespace blockchain_statistics {
+namespace crea { namespace blockchain_statistics {
 
-using namespace creativecoin::chain;
+using namespace crea::chain;
 using app::application;
 
 enum blockchain_statistics_object_type
@@ -38,7 +38,7 @@ namespace detail
    class blockchain_statistics_plugin_impl;
 }
 
-class blockchain_statistics_plugin : public creativecoin::app::plugin
+class blockchain_statistics_plugin : public crea::app::plugin
 {
    public:
       blockchain_statistics_plugin( application* app );
@@ -76,7 +76,7 @@ struct bucket_object : public object< bucket_object_type, bucket_object >
    uint32_t             operations = 0;                              ///< Operations evaluated
    uint32_t             transactions = 0;                            ///< Transactions processed
    uint32_t             transfers = 0;                               ///< Account to account transfers
-   share_type           creativecoin_transferred = 0;                       ///< CREA transferred from account to account
+   share_type           crea_transferred = 0;                       ///< CREA transferred from account to account
    share_type           cbd_transferred = 0;                         ///< CBD transferred from account to account
    share_type           cbd_paid_as_interest = 0;                    ///< CBD paid as interest
    uint32_t             paid_accounts_created = 0;                   ///< Accounts created with fee
@@ -97,7 +97,7 @@ struct bucket_object : public object< bucket_object_type, bucket_object >
    share_type           vests_paid_to_curators = 0;                  ///< Ammount of VESTS paid to curators
    share_type           liquidity_rewards_paid = 0;                  ///< Ammount of CREA paid to market makers
    uint32_t             transfers_to_vesting = 0;                    ///< Transfers of CREA into VESTS
-   share_type           creativecoin_vested = 0;                            ///< Ammount of CREA vested
+   share_type           crea_vested = 0;                            ///< Ammount of CREA vested
    uint32_t             new_vesting_withdrawal_requests = 0;         ///< New vesting withdrawal requests
    uint32_t             modified_vesting_withdrawal_requests = 0;    ///< Changes to vesting withdrawal requests
    share_type           vesting_withdraw_rate_delta = 0;
@@ -108,7 +108,7 @@ struct bucket_object : public object< bucket_object_type, bucket_object >
    uint32_t             cbd_conversion_requests_created = 0;         ///< CBD conversion requests created
    share_type           cbd_to_be_converted = 0;                     ///< Amount of CBD to be converted
    uint32_t             cbd_conversion_requests_filled = 0;          ///< CBD conversion requests filled
-   share_type           creativecoin_converted = 0;                         ///< Amount of CREA that was converted
+   share_type           crea_converted = 0;                         ///< Amount of CREA that was converted
    uint32_t             limit_orders_created = 0;                    ///< Limit orders created
    uint32_t             limit_orders_filled = 0;                     ///< Limit orders filled
    uint32_t             limit_orders_cancelled = 0;                  ///< Limit orders cancelled
@@ -134,9 +134,9 @@ typedef multi_index_container<
    allocator< bucket_object >
 > bucket_index;
 
-} } // creativecoin::blockchain_statistics
+} } // crea::blockchain_statistics
 
-FC_REFLECT( creativecoin::blockchain_statistics::bucket_object,
+FC_REFLECT( crea::blockchain_statistics::bucket_object,
    (id)
    (open)
    (seconds)
@@ -145,7 +145,7 @@ FC_REFLECT( creativecoin::blockchain_statistics::bucket_object,
    (operations)
    (transactions)
    (transfers)
-   (creativecoin_transferred)
+   (crea_transferred)
    (cbd_transferred)
    (cbd_paid_as_interest)
    (paid_accounts_created)
@@ -166,7 +166,7 @@ FC_REFLECT( creativecoin::blockchain_statistics::bucket_object,
    (vests_paid_to_curators)
    (liquidity_rewards_paid)
    (transfers_to_vesting)
-   (creativecoin_vested)
+   (crea_vested)
    (new_vesting_withdrawal_requests)
    (modified_vesting_withdrawal_requests)
    (vesting_withdraw_rate_delta)
@@ -177,11 +177,11 @@ FC_REFLECT( creativecoin::blockchain_statistics::bucket_object,
    (cbd_conversion_requests_created)
    (cbd_to_be_converted)
    (cbd_conversion_requests_filled)
-   (creativecoin_converted)
+   (crea_converted)
    (limit_orders_created)
    (limit_orders_filled)
    (limit_orders_cancelled)
    (total_pow)
    (estimated_hashpower)
 )
-CHAINBASE_SET_INDEX_TYPE( creativecoin::blockchain_statistics::bucket_object, creativecoin::blockchain_statistics::bucket_index )
+CHAINBASE_SET_INDEX_TYPE( crea::blockchain_statistics::bucket_object, crea::blockchain_statistics::bucket_index )

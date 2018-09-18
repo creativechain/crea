@@ -1,7 +1,7 @@
 
-#include <creativecoin/utilities/benchmark_dumper.hpp>
+#include <crea/utilities/benchmark_dumper.hpp>
 
-namespace creativecoin { namespace utilities {
+namespace crea { namespace utilities {
 
 #define PROC_STATUS_LINE_LENGTH 1028
 

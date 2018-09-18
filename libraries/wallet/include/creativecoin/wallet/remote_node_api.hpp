@@ -1,7 +1,7 @@
 #pragma once
-#include <creativecoin/plugins/condenser_api/condenser_api.hpp>
+#include <crea/plugins/condenser_api/condenser_api.hpp>
 
-namespace creativecoin { namespace wallet {
+namespace crea { namespace wallet {
 
 using std::vector;
 using fc::variant;
@@ -111,7 +111,7 @@ struct remote_node_api
 
 } }
 
-FC_API( creativecoin::wallet::remote_node_api,
+FC_API( crea::wallet::remote_node_api,
         (get_version)
         (get_trending_tags)
         (get_state)

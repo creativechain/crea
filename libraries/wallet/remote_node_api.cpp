@@ -1,6 +1,6 @@
-#include<creativecoin/wallet/remote_node_api.hpp>
+#include<crea/wallet/remote_node_api.hpp>
 
-namespace creativecoin { namespace wallet{
+namespace crea { namespace wallet{
 
 // This class exists only to provide method signature information to fc::api, not to execute calls.
 

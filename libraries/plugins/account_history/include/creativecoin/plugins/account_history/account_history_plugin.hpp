@@ -1,14 +1,14 @@
 #pragma once
-#include <creativecoin/plugins/chain/chain_plugin.hpp>
+#include <crea/plugins/chain/chain_plugin.hpp>
 
 #define CREA_ACCOUNT_HISTORY_PLUGIN_NAME "account_history"
 
-namespace creativecoin { namespace plugins { namespace account_history {
+namespace crea { namespace plugins { namespace account_history {
 
 namespace detail { class account_history_plugin_impl; }
 
 using namespace appbase;
-using creativecoin::protocol::account_name_type;
+using crea::protocol::account_name_type;
 
 //
 // Plugins should #define their SPACE_ID's so plugins with
@@ -34,7 +34,7 @@ class account_history_plugin : public plugin< account_history_plugin >
       account_history_plugin();
       virtual ~account_history_plugin();
 
-      APPBASE_PLUGIN_REQUIRES( (creativecoin::plugins::chain::chain_plugin) )
+      APPBASE_PLUGIN_REQUIRES( (crea::plugins::chain::chain_plugin) )
 
       static const std::string& name() { static std::string name = CREA_ACCOUNT_HISTORY_PLUGIN_NAME; return name; }
 
@@ -51,5 +51,5 @@ class account_history_plugin : public plugin< account_history_plugin >
       std::unique_ptr< detail::account_history_plugin_impl > my;
 };
 
-} } } //creativecoin::plugins::account_history
+} } } //crea::plugins::account_history
 

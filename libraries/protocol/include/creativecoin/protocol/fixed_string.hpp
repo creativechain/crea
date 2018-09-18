@@ -5,7 +5,7 @@
 
 #include <boost/endian/conversion.hpp>
 
-#include <creativecoin/protocol/types_fwd.hpp>
+#include <crea/protocol/types_fwd.hpp>
 
 // These overloads need to be defined before the implementation in fixed_string
 namespace fc
@@ -56,7 +56,7 @@ namespace fc
    }
 }
 
-namespace creativecoin { namespace protocol {
+namespace crea { namespace protocol {
 
 /**
  * This class is an in-place memory allocation of a fixed length character string.
@@ -157,18 +157,18 @@ struct fixed_string_impl_for_size< 32 >
 template< size_t N >
 using fixed_string = typename fixed_string_impl_for_size<N>::t;
 
-} } // creativecoin::protocol
+} } // crea::protocol
 
 namespace fc { namespace raw {
 
    template< typename Stream, typename Storage >
-   inline void pack( Stream& s, const creativecoin::protocol::fixed_string_impl< Storage >& u )
+   inline void pack( Stream& s, const crea::protocol::fixed_string_impl< Storage >& u )
    {
       pack( s, std::string( u ) );
    }
 
    template< typename Stream, typename Storage >
-   inline void unpack( Stream& s, creativecoin::protocol::fixed_string_impl< Storage >& u )
+   inline void unpack( Stream& s, crea::protocol::fixed_string_impl< Storage >& u )
    {
       std::string str;
       unpack( s, str );
@@ -177,8 +177,8 @@ namespace fc { namespace raw {
 
 } // raw
    template< typename Storage >
-   void to_variant(   const creativecoin::protocol::fixed_string_impl< Storage >& s, variant& v ) { v = std::string( s ); }
+   void to_variant(   const crea::protocol::fixed_string_impl< Storage >& s, variant& v ) { v = std::string( s ); }
 
    template< typename Storage >
-   void from_variant( const variant& v, creativecoin::protocol::fixed_string_impl< Storage >& s ) { s = v.as_string(); }
+   void from_variant( const variant& v, crea::protocol::fixed_string_impl< Storage >& s ) { s = v.as_string(); }
 } // fc

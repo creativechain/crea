@@ -1,8 +1,8 @@
-#include <creativecoin/plugins/reputation_api/reputation_api_plugin.hpp>
-#include <creativecoin/plugins/reputation_api/reputation_api.hpp>
+#include <crea/plugins/reputation_api/reputation_api_plugin.hpp>
+#include <crea/plugins/reputation_api/reputation_api.hpp>
 
 
-namespace creativecoin { namespace plugins { namespace reputation {
+namespace crea { namespace plugins { namespace reputation {
 
 reputation_api_plugin::reputation_api_plugin() {}
 reputation_api_plugin::~reputation_api_plugin() {}
@@ -17,4 +17,4 @@ void reputation_api_plugin::plugin_initialize( const variables_map& options )
 void reputation_api_plugin::plugin_startup() {}
 void reputation_api_plugin::plugin_shutdown() {}
 
-} } } // creativecoin::plugins::reputation
+} } } // crea::plugins::reputation

@@ -1,13 +1,13 @@
 #pragma once
-#include <creativecoin/plugins/witness/witness_plugin.hpp>
-#include <creativecoin/plugins/json_rpc/json_rpc_plugin.hpp>
+#include <crea/plugins/witness/witness_plugin.hpp>
+#include <crea/plugins/json_rpc/json_rpc_plugin.hpp>
 
 #include <appbase/application.hpp>
 
 #define CREA_WITNESS_API_PLUGIN_NAME "witness_api"
 
 
-namespace creativecoin { namespace plugins { namespace witness {
+namespace crea { namespace plugins { namespace witness {
 
 using namespace appbase;
 
@@ -15,8 +15,8 @@ class witness_api_plugin : public appbase::plugin< witness_api_plugin >
 {
 public:
    APPBASE_PLUGIN_REQUIRES(
-      (creativecoin::plugins::witness::witness_plugin)
-      (creativecoin::plugins::json_rpc::json_rpc_plugin)
+      (crea::plugins::witness::witness_plugin)
+      (crea::plugins::json_rpc::json_rpc_plugin)
    )
 
    witness_api_plugin();
@@ -33,4 +33,4 @@ public:
    std::shared_ptr< class witness_api > api;
 };
 
-} } } // creativecoin::plugins::witness
+} } } // crea::plugins::witness

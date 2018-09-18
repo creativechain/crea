@@ -1,11 +1,11 @@
-file(GLOB HEADERS "include/creativecoin/delayed_node/*.hpp")
+file(GLOB HEADERS "include/crea/delayed_node/*.hpp")
 
-add_library( creativecoin_delayed_node
+add_library( crea_delayed_node
              delayed_node_plugin.cpp
            )
 
-target_link_libraries( creativecoin_delayed_node creativecoin_chain creativecoin_protocol creativecoin_app )
-target_include_directories( creativecoin_delayed_node
+target_link_libraries( crea_delayed_node crea_chain crea_protocol crea_app )
+target_include_directories( crea_delayed_node
                             PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/include" )
 
 if(MSVC)
@@ -13,7 +13,7 @@ if(MSVC)
 endif(MSVC)
 
 install( TARGETS
-   creativecoin_delayed_node
+   crea_delayed_node
 
    RUNTIME DESTINATION bin
    LIBRARY DESTINATION lib

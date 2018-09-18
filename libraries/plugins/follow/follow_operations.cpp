@@ -1,8 +1,8 @@
-#include <creativecoin/plugins/follow/follow_operations.hpp>
+#include <crea/plugins/follow/follow_operations.hpp>
 
-#include <creativecoin/protocol/operation_util_impl.hpp>
+#include <crea/protocol/operation_util_impl.hpp>
 
-namespace creativecoin { namespace plugins{ namespace follow {
+namespace crea { namespace plugins{ namespace follow {
 
 void follow_operation::validate()const
 {
@@ -14,6 +14,6 @@ void reblog_operation::validate()const
    FC_ASSERT( account != author, "You cannot reblog your own content" );
 }
 
-} } } //creativecoin::plugins::follow
+} } } //crea::plugins::follow
 
-CREA_DEFINE_OPERATION_TYPE( creativecoin::plugins::follow::follow_plugin_operation )
+CREA_DEFINE_OPERATION_TYPE( crea::plugins::follow::follow_plugin_operation )

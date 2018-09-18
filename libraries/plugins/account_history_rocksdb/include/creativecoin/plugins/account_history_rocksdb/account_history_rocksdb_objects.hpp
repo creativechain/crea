@@ -1,6 +1,6 @@
 #pragma once
 
-#include <creativecoin/chain/creativecoin_object_types.hpp>
+#include <crea/chain/crea_object_types.hpp>
 
 #include <boost/multi_index/composite_key.hpp>
 
@@ -8,9 +8,9 @@
 #define CREA_ACCOUNT_HISTORY_ROCKSDB_SPACE_ID 15
 #endif
 
-namespace creativecoin { namespace plugins { namespace account_history_rocksdb {
+namespace crea { namespace plugins { namespace account_history_rocksdb {
 
-using namespace creativecoin::chain;
+using namespace crea::chain;
 
 typedef std::vector<char> serialize_buffer_t;
 
@@ -92,9 +92,9 @@ typedef multi_index_container<
       allocator< volatile_operation_object >
    > volatile_operation_index;
 
-} } } // creativecoin::plugins::account_history_rocksdb
+} } } // crea::plugins::account_history_rocksdb
 
-FC_REFLECT( creativecoin::plugins::account_history_rocksdb::volatile_operation_object, (id)(trx_id)(block)(trx_in_block)(op_in_trx)(virtual_op)(timestamp)(serialized_op)(impacted) )
-CHAINBASE_SET_INDEX_TYPE( creativecoin::plugins::account_history_rocksdb::volatile_operation_object, creativecoin::plugins::account_history_rocksdb::volatile_operation_index )
+FC_REFLECT( crea::plugins::account_history_rocksdb::volatile_operation_object, (id)(trx_id)(block)(trx_in_block)(op_in_trx)(virtual_op)(timestamp)(serialized_op)(impacted) )
+CHAINBASE_SET_INDEX_TYPE( crea::plugins::account_history_rocksdb::volatile_operation_object, crea::plugins::account_history_rocksdb::volatile_operation_index )
 
-FC_REFLECT( creativecoin::plugins::account_history_rocksdb::rocksdb_operation_object, (id)(trx_id)(block)(trx_in_block)(op_in_trx)(virtual_op)(timestamp)(serialized_op) )
+FC_REFLECT( crea::plugins::account_history_rocksdb::rocksdb_operation_object, (id)(trx_id)(block)(trx_in_block)(op_in_trx)(virtual_op)(timestamp)(serialized_op) )

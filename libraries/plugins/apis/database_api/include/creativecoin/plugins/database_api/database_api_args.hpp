@@ -1,13 +1,13 @@
 #pragma once
-#include <creativecoin/plugins/database_api/database_api_objects.hpp>
+#include <crea/plugins/database_api/database_api_objects.hpp>
 
-#include <creativecoin/protocol/types.hpp>
-#include <creativecoin/protocol/transaction.hpp>
-#include <creativecoin/protocol/block_header.hpp>
+#include <crea/protocol/types.hpp>
+#include <crea/protocol/transaction.hpp>
+#include <crea/protocol/block_header.hpp>
 
-#include <creativecoin/plugins/json_rpc/utility.hpp>
+#include <crea/plugins/json_rpc/utility.hpp>
 
-namespace creativecoin { namespace plugins { namespace database_api {
+namespace crea { namespace plugins { namespace database_api {
 
 using protocol::account_name_type;
 using protocol::signed_transaction;
@@ -565,9 +565,9 @@ struct get_smt_next_identifier_return
 };
 #endif
 
-} } } // creativecoin::database_api
+} } } // crea::database_api
 
-FC_REFLECT_ENUM( creativecoin::plugins::database_api::sort_order_type,
+FC_REFLECT_ENUM( crea::plugins::database_api::sort_order_type,
    (by_name)
    (by_proxy)
    (by_next_vesting_withdrawal)
@@ -597,184 +597,184 @@ FC_REFLECT_ENUM( creativecoin::plugins::database_api::sort_order_type,
    (by_voter_comment)
    (by_price) )
 
-FC_REFLECT( creativecoin::plugins::database_api::get_reward_funds_return,
+FC_REFLECT( crea::plugins::database_api::get_reward_funds_return,
    (funds) )
 
-FC_REFLECT( creativecoin::plugins::database_api::list_witnesses_args,
+FC_REFLECT( crea::plugins::database_api::list_witnesses_args,
    (start)(limit)(order) )
 
-FC_REFLECT( creativecoin::plugins::database_api::list_witnesses_return,
+FC_REFLECT( crea::plugins::database_api::list_witnesses_return,
    (witnesses) )
 
-FC_REFLECT( creativecoin::plugins::database_api::find_witnesses_args,
+FC_REFLECT( crea::plugins::database_api::find_witnesses_args,
    (owners) )
 
-FC_REFLECT( creativecoin::plugins::database_api::list_witness_votes_args,
+FC_REFLECT( crea::plugins::database_api::list_witness_votes_args,
    (start)(limit)(order) )
 
-FC_REFLECT( creativecoin::plugins::database_api::list_witness_votes_return,
+FC_REFLECT( crea::plugins::database_api::list_witness_votes_return,
    (votes) )
 
-FC_REFLECT( creativecoin::plugins::database_api::get_active_witnesses_return,
+FC_REFLECT( crea::plugins::database_api::get_active_witnesses_return,
    (witnesses) )
 
-FC_REFLECT( creativecoin::plugins::database_api::list_accounts_args,
+FC_REFLECT( crea::plugins::database_api::list_accounts_args,
    (start)(limit)(order) )
 
-FC_REFLECT( creativecoin::plugins::database_api::list_accounts_return,
+FC_REFLECT( crea::plugins::database_api::list_accounts_return,
    (accounts) )
 
-FC_REFLECT( creativecoin::plugins::database_api::find_accounts_args,
+FC_REFLECT( crea::plugins::database_api::find_accounts_args,
    (accounts) )
 
-FC_REFLECT( creativecoin::plugins::database_api::list_owner_histories_args,
+FC_REFLECT( crea::plugins::database_api::list_owner_histories_args,
    (start)(limit) )
 
-FC_REFLECT( creativecoin::plugins::database_api::list_owner_histories_return,
+FC_REFLECT( crea::plugins::database_api::list_owner_histories_return,
    (owner_auths) )
 
-FC_REFLECT( creativecoin::plugins::database_api::find_owner_histories_args,
+FC_REFLECT( crea::plugins::database_api::find_owner_histories_args,
    (owner) )
 
-FC_REFLECT( creativecoin::plugins::database_api::list_account_recovery_requests_args,
+FC_REFLECT( crea::plugins::database_api::list_account_recovery_requests_args,
    (start)(limit)(order) )
 
-FC_REFLECT( creativecoin::plugins::database_api::list_account_recovery_requests_return,
+FC_REFLECT( crea::plugins::database_api::list_account_recovery_requests_return,
    (requests) )
 
-FC_REFLECT( creativecoin::plugins::database_api::find_account_recovery_requests_args,
+FC_REFLECT( crea::plugins::database_api::find_account_recovery_requests_args,
    (accounts) )
 
-FC_REFLECT( creativecoin::plugins::database_api::list_change_recovery_account_requests_args,
+FC_REFLECT( crea::plugins::database_api::list_change_recovery_account_requests_args,
    (start)(limit)(order) )
 
 FC_REFLECT(
-   creativecoin::plugins::database_api::list_change_recovery_account_requests_return,
+   crea::plugins::database_api::list_change_recovery_account_requests_return,
    (requests) )
 
-FC_REFLECT( creativecoin::plugins::database_api::find_change_recovery_account_requests_args,
+FC_REFLECT( crea::plugins::database_api::find_change_recovery_account_requests_args,
    (accounts) )
 
-FC_REFLECT( creativecoin::plugins::database_api::list_escrows_args,
+FC_REFLECT( crea::plugins::database_api::list_escrows_args,
    (start)(limit)(order) )
 
-FC_REFLECT( creativecoin::plugins::database_api::list_escrows_return,
+FC_REFLECT( crea::plugins::database_api::list_escrows_return,
    (escrows) )
 
-FC_REFLECT( creativecoin::plugins::database_api::find_escrows_args,
+FC_REFLECT( crea::plugins::database_api::find_escrows_args,
    (from) )
 
-FC_REFLECT( creativecoin::plugins::database_api::list_withdraw_vesting_routes_args,
+FC_REFLECT( crea::plugins::database_api::list_withdraw_vesting_routes_args,
    (start)(limit)(order) )
 
-FC_REFLECT( creativecoin::plugins::database_api::list_withdraw_vesting_routes_return,
+FC_REFLECT( crea::plugins::database_api::list_withdraw_vesting_routes_return,
    (routes) )
 
-FC_REFLECT( creativecoin::plugins::database_api::find_withdraw_vesting_routes_args,
+FC_REFLECT( crea::plugins::database_api::find_withdraw_vesting_routes_args,
    (account)(order) )
 
-FC_REFLECT( creativecoin::plugins::database_api::list_savings_withdrawals_args,
+FC_REFLECT( crea::plugins::database_api::list_savings_withdrawals_args,
    (start)(limit)(order) )
 
-FC_REFLECT( creativecoin::plugins::database_api::list_savings_withdrawals_return,
+FC_REFLECT( crea::plugins::database_api::list_savings_withdrawals_return,
    (withdrawals) )
 
-FC_REFLECT( creativecoin::plugins::database_api::find_savings_withdrawals_args,
+FC_REFLECT( crea::plugins::database_api::find_savings_withdrawals_args,
    (account) )
 
-FC_REFLECT( creativecoin::plugins::database_api::list_vesting_delegations_args,
+FC_REFLECT( crea::plugins::database_api::list_vesting_delegations_args,
    (start)(limit)(order) )
 
-FC_REFLECT( creativecoin::plugins::database_api::list_vesting_delegations_return,
+FC_REFLECT( crea::plugins::database_api::list_vesting_delegations_return,
    (delegations) )
 
-FC_REFLECT( creativecoin::plugins::database_api::find_vesting_delegations_args,
+FC_REFLECT( crea::plugins::database_api::find_vesting_delegations_args,
    (account) )
 
-FC_REFLECT( creativecoin::plugins::database_api::list_vesting_delegation_expirations_args,
+FC_REFLECT( crea::plugins::database_api::list_vesting_delegation_expirations_args,
    (start)(limit)(order) )
 
-FC_REFLECT( creativecoin::plugins::database_api::list_vesting_delegation_expirations_return,
+FC_REFLECT( crea::plugins::database_api::list_vesting_delegation_expirations_return,
    (delegations) )
 
-FC_REFLECT( creativecoin::plugins::database_api::find_vesting_delegation_expirations_args,
+FC_REFLECT( crea::plugins::database_api::find_vesting_delegation_expirations_args,
    (account) )
 
-FC_REFLECT( creativecoin::plugins::database_api::list_cbd_conversion_requests_args,
+FC_REFLECT( crea::plugins::database_api::list_cbd_conversion_requests_args,
    (start)(limit)(order) )
 
-FC_REFLECT( creativecoin::plugins::database_api::list_cbd_conversion_requests_return,
+FC_REFLECT( crea::plugins::database_api::list_cbd_conversion_requests_return,
    (requests) )
 
-FC_REFLECT( creativecoin::plugins::database_api::find_cbd_conversion_requests_args,
+FC_REFLECT( crea::plugins::database_api::find_cbd_conversion_requests_args,
    (account) )
 
-FC_REFLECT( creativecoin::plugins::database_api::list_decline_voting_rights_requests_args,
+FC_REFLECT( crea::plugins::database_api::list_decline_voting_rights_requests_args,
    (start)(limit)(order) )
 
-FC_REFLECT( creativecoin::plugins::database_api::list_decline_voting_rights_requests_return,
+FC_REFLECT( crea::plugins::database_api::list_decline_voting_rights_requests_return,
    (requests) )
 
-FC_REFLECT( creativecoin::plugins::database_api::find_decline_voting_rights_requests_args,
+FC_REFLECT( crea::plugins::database_api::find_decline_voting_rights_requests_args,
    (accounts) )
 
-FC_REFLECT( creativecoin::plugins::database_api::list_comments_args,
+FC_REFLECT( crea::plugins::database_api::list_comments_args,
    (start)(limit)(order) )
 
-FC_REFLECT( creativecoin::plugins::database_api::list_comments_return,
+FC_REFLECT( crea::plugins::database_api::list_comments_return,
    (comments) )
 
-FC_REFLECT( creativecoin::plugins::database_api::find_comments_args,
+FC_REFLECT( crea::plugins::database_api::find_comments_args,
    (comments) )
 
-FC_REFLECT( creativecoin::plugins::database_api::list_votes_args,
+FC_REFLECT( crea::plugins::database_api::list_votes_args,
    (start)(limit)(order) )
 
-FC_REFLECT( creativecoin::plugins::database_api::list_votes_return,
+FC_REFLECT( crea::plugins::database_api::list_votes_return,
    (votes) )
 
-FC_REFLECT( creativecoin::plugins::database_api::find_votes_args,
+FC_REFLECT( crea::plugins::database_api::find_votes_args,
    (author)(permlink) )
 
-FC_REFLECT( creativecoin::plugins::database_api::list_limit_orders_args,
+FC_REFLECT( crea::plugins::database_api::list_limit_orders_args,
    (start)(limit)(order) )
 
-FC_REFLECT( creativecoin::plugins::database_api::list_limit_orders_return,
+FC_REFLECT( crea::plugins::database_api::list_limit_orders_return,
    (orders) )
 
-FC_REFLECT( creativecoin::plugins::database_api::find_limit_orders_args,
+FC_REFLECT( crea::plugins::database_api::find_limit_orders_args,
    (account) )
 
-FC_REFLECT( creativecoin::plugins::database_api::get_order_book_args,
+FC_REFLECT( crea::plugins::database_api::get_order_book_args,
    (limit) )
 
-FC_REFLECT( creativecoin::plugins::database_api::get_transaction_hex_args,
+FC_REFLECT( crea::plugins::database_api::get_transaction_hex_args,
    (trx) )
 
-FC_REFLECT( creativecoin::plugins::database_api::get_transaction_hex_return,
+FC_REFLECT( crea::plugins::database_api::get_transaction_hex_return,
    (hex) )
 
-FC_REFLECT( creativecoin::plugins::database_api::get_required_signatures_args,
+FC_REFLECT( crea::plugins::database_api::get_required_signatures_args,
    (trx)
    (available_keys) )
 
-FC_REFLECT( creativecoin::plugins::database_api::get_required_signatures_return,
+FC_REFLECT( crea::plugins::database_api::get_required_signatures_return,
    (keys) )
 
-FC_REFLECT( creativecoin::plugins::database_api::get_potential_signatures_args,
+FC_REFLECT( crea::plugins::database_api::get_potential_signatures_args,
    (trx) )
 
-FC_REFLECT( creativecoin::plugins::database_api::verify_authority_args,
+FC_REFLECT( crea::plugins::database_api::verify_authority_args,
    (trx) )
 
-FC_REFLECT( creativecoin::plugins::database_api::verify_authority_return,
+FC_REFLECT( crea::plugins::database_api::verify_authority_return,
    (valid) )
 
-FC_REFLECT( creativecoin::plugins::database_api::verify_account_authority_args,
+FC_REFLECT( crea::plugins::database_api::verify_account_authority_args,
    (account)
    (signers) )
 
-FC_REFLECT( creativecoin::plugins::database_api::verify_signatures_args,
+FC_REFLECT( crea::plugins::database_api::verify_signatures_args,
    (hash)
    (signatures)
    (required_owner)
@@ -782,10 +782,10 @@ FC_REFLECT( creativecoin::plugins::database_api::verify_signatures_args,
    (required_posting)
    (required_other) )
 
-FC_REFLECT( creativecoin::plugins::database_api::verify_signatures_return,
+FC_REFLECT( crea::plugins::database_api::verify_signatures_return,
    (valid) )
 
 #ifdef CREA_ENABLE_SMT
-FC_REFLECT( creativecoin::plugins::database_api::get_smt_next_identifier_return,
+FC_REFLECT( crea::plugins::database_api::get_smt_next_identifier_return,
    (nais) )
 #endif

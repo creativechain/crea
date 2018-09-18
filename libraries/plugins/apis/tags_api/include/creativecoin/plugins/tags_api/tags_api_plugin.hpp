@@ -1,13 +1,13 @@
 #pragma once
-#include <creativecoin/plugins/tags/tags_plugin.hpp>
-#include <creativecoin/plugins/json_rpc/json_rpc_plugin.hpp>
+#include <crea/plugins/tags/tags_plugin.hpp>
+#include <crea/plugins/json_rpc/json_rpc_plugin.hpp>
 
 #include <appbase/application.hpp>
 
 #define CREA_TAGS_API_PLUGIN_NAME "tags_api"
 
 
-namespace creativecoin { namespace plugins { namespace tags {
+namespace crea { namespace plugins { namespace tags {
 
 using namespace appbase;
 
@@ -15,8 +15,8 @@ class tags_api_plugin : public appbase::plugin< tags_api_plugin >
 {
 public:
    APPBASE_PLUGIN_REQUIRES(
-      (creativecoin::plugins::tags::tags_plugin)
-      (creativecoin::plugins::json_rpc::json_rpc_plugin)
+      (crea::plugins::tags::tags_plugin)
+      (crea::plugins::json_rpc::json_rpc_plugin)
    )
 
    tags_api_plugin();
@@ -33,4 +33,4 @@ public:
    std::shared_ptr< class tags_api > api;
 };
 
-} } } // creativecoin::plugins::tags
+} } } // crea::plugins::tags

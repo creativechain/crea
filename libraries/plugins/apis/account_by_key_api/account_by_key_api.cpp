@@ -1,16 +1,16 @@
-#include <creativecoin/plugins/account_by_key_api/account_by_key_api_plugin.hpp>
-#include <creativecoin/plugins/account_by_key_api/account_by_key_api.hpp>
+#include <crea/plugins/account_by_key_api/account_by_key_api_plugin.hpp>
+#include <crea/plugins/account_by_key_api/account_by_key_api.hpp>
 
-#include <creativecoin/plugins/account_by_key/account_by_key_objects.hpp>
+#include <crea/plugins/account_by_key/account_by_key_objects.hpp>
 
-namespace creativecoin { namespace plugins { namespace account_by_key {
+namespace crea { namespace plugins { namespace account_by_key {
 
 namespace detail {
 
 class account_by_key_api_impl
 {
    public:
-      account_by_key_api_impl() : _db( appbase::app().get_plugin< creativecoin::plugins::chain::chain_plugin >().db() ) {}
+      account_by_key_api_impl() : _db( appbase::app().get_plugin< crea::plugins::chain::chain_plugin >().db() ) {}
 
       get_key_references_return get_key_references( const get_key_references_args& args )const;
 
@@ -26,7 +26,7 @@ get_key_references_return account_by_key_api_impl::get_key_references( const get
 
    for( auto& key : args.keys )
    {
-      std::vector< creativecoin::protocol::account_name_type > result;
+      std::vector< crea::protocol::account_name_type > result;
       auto lookup_itr = key_idx.lower_bound( key );
 
       while( lookup_itr != key_idx.end() && lookup_itr->key == key )
@@ -52,4 +52,4 @@ account_by_key_api::~account_by_key_api() {}
 
 DEFINE_READ_APIS( account_by_key_api, (get_key_references) )
 
-} } } // creativecoin::plugins::account_by_key
+} } } // crea::plugins::account_by_key

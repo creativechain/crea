@@ -1,13 +1,13 @@
 #include <appbase/application.hpp>
 
-#include <creativecoin/plugins/database_api/database_api.hpp>
-#include <creativecoin/plugins/database_api/database_api_plugin.hpp>
+#include <crea/plugins/database_api/database_api.hpp>
+#include <crea/plugins/database_api/database_api_plugin.hpp>
 
-#include <creativecoin/protocol/get_config.hpp>
-#include <creativecoin/protocol/exceptions.hpp>
-#include <creativecoin/protocol/transaction_util.hpp>
+#include <crea/protocol/get_config.hpp>
+#include <crea/protocol/exceptions.hpp>
+#include <crea/protocol/transaction_util.hpp>
 
-namespace creativecoin { namespace plugins { namespace database_api {
+namespace crea { namespace plugins { namespace database_api {
 
 class database_api_impl
 {
@@ -103,7 +103,7 @@ database_api::database_api()
 database_api::~database_api() {}
 
 database_api_impl::database_api_impl()
-   : _db( appbase::app().get_plugin< creativecoin::plugins::chain::chain_plugin >().db() ) {}
+   : _db( appbase::app().get_plugin< crea::plugins::chain::chain_plugin >().db() ) {}
 
 database_api_impl::~database_api_impl() {}
 
@@ -116,7 +116,7 @@ database_api_impl::~database_api_impl() {}
 
 DEFINE_API_IMPL( database_api_impl, get_config )
 {
-   return creativecoin::protocol::get_config();
+   return crea::protocol::get_config();
 }
 
 DEFINE_API_IMPL( database_api_impl, get_dynamic_global_properties )
@@ -1282,7 +1282,7 @@ DEFINE_API_IMPL( database_api_impl, get_order_book )
       cur.real_price  = 0.0;
       // cur.real_price  = (cur.order_price).to_real();
       cur.sbd = itr->for_sale;
-      cur.creativecoin = ( asset( itr->for_sale, CBD_SYMBOL ) * cur.order_price ).amount;
+      cur.crea = ( asset( itr->for_sale, CBD_SYMBOL ) * cur.order_price ).amount;
       cur.created = itr->created;
       result.bids.push_back( cur );
       ++sell_itr;
@@ -1294,7 +1294,7 @@ DEFINE_API_IMPL( database_api_impl, get_order_book )
       cur.order_price = itr->sell_price;
       cur.real_price = 0.0;
       // cur.real_price  = (~cur.order_price).to_real();
-      cur.creativecoin   = itr->for_sale;
+      cur.crea   = itr->for_sale;
       cur.sbd     = ( asset( itr->for_sale, CREA_SYMBOL ) * cur.order_price ).amount;
       cur.created = itr->created;
       result.asks.push_back( cur );
@@ -1406,7 +1406,7 @@ DEFINE_API_IMPL( database_api_impl, verify_signatures )
    // verify authority throws on failure, catch and return false
    try
    {
-      creativecoin::protocol::verify_authority< verify_signatures_args >(
+      crea::protocol::verify_authority< verify_signatures_args >(
          { args },
          sig_keys,
          [this]( const string& name ) { return authority( _db.get< chain::account_authority_object, chain::by_account >( name ).owner ); },
@@ -1487,4 +1487,4 @@ DEFINE_READ_APIS( database_api,
 #endif
 )
 
-} } } // creativecoin::plugins::database_api
+} } } // crea::plugins::database_api

@@ -1,4 +1,4 @@
-#include <creativecoin/chain/block_log.hpp>
+#include <crea/chain/block_log.hpp>
 #include <fstream>
 #include <fc/io/raw.hpp>
 
@@ -9,7 +9,7 @@
 #define LOG_READ  (std::ios::in | std::ios::binary)
 #define LOG_WRITE (std::ios::out | std::ios::binary | std::ios::app)
 
-namespace creativecoin { namespace chain {
+namespace crea { namespace chain {
 
    typedef boost::interprocess::scoped_lock< boost::mutex > scoped_lock;
 
@@ -382,4 +382,4 @@ namespace creativecoin { namespace chain {
    {
       my->use_locking = true;
    }
-} } // creativecoin::chain
+} } // crea::chain

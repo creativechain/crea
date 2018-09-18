@@ -1,13 +1,13 @@
 #pragma once
-#include <creativecoin/protocol/base.hpp>
-#include <creativecoin/protocol/block_header.hpp>
-#include <creativecoin/protocol/asset.hpp>
-#include <creativecoin/protocol/validation.hpp>
-#include <creativecoin/protocol/legacy_asset.hpp>
+#include <crea/protocol/base.hpp>
+#include <crea/protocol/block_header.hpp>
+#include <crea/protocol/asset.hpp>
+#include <crea/protocol/validation.hpp>
+#include <crea/protocol/legacy_asset.hpp>
 
 #include <fc/crypto/equihash.hpp>
 
-namespace creativecoin { namespace protocol {
+namespace crea { namespace protocol {
 
    struct account_create_operation : public base_operation
    {
@@ -113,7 +113,7 @@ namespace creativecoin { namespace protocol {
 
    /** Allows to store all SMT tokens being allowed to use during voting process.
     *  Maps asset symbol (SMT) to the vote info.
-    *  @see SMT spec for details: https://github.com/creativecoin/smt-whitepaper/blob/master/smt-manual/manual.md
+    *  @see SMT spec for details: https://github.com/crea/smt-whitepaper/blob/master/smt-manual/manual.md
     */
    struct allowed_vote_assets
    {
@@ -183,7 +183,7 @@ namespace creativecoin { namespace protocol {
     *  operation allows authors to update properties associated with their post.
     *
     *  The max_accepted_payout may be decreased, but never increased.
-    *  The percent_creativecoin_dollars may be decreased, but never increased
+    *  The percent_crea_dollars may be decreased, but never increased
     *
     */
    struct comment_options_operation : public base_operation
@@ -192,7 +192,7 @@ namespace creativecoin { namespace protocol {
       string            permlink;
 
       asset             max_accepted_payout    = asset( 1000000000, CBD_SYMBOL );       /// CBD value of the maximum payout this post will receive
-      uint16_t          percent_creativecoin_dollars  = CREA_100_PERCENT; /// the percent of Creativecoin Dollars to key, unkept amounts will be received as Creativecoin Power
+      uint16_t          percent_crea_dollars  = CREA_100_PERCENT; /// the percent of Creativecoin Dollars to key, unkept amounts will be received as Creativecoin Power
       bool              allow_votes            = true;      /// allows a post to receive votes;
       bool              allow_curation_rewards = true; /// allows voters to recieve curation rewards. Rewards return to reward fund.
       comment_options_extensions_type extensions;
@@ -300,7 +300,7 @@ namespace creativecoin { namespace protocol {
       uint32_t          escrow_id = 30;
 
       asset             cbd_amount = asset( 0, CBD_SYMBOL );
-      asset             creativecoin_amount = asset( 0, CREA_SYMBOL );
+      asset             crea_amount = asset( 0, CREA_SYMBOL );
       asset             fee;
 
       time_point_sec    ratification_deadline;
@@ -372,7 +372,7 @@ namespace creativecoin { namespace protocol {
 
       uint32_t          escrow_id = 30;
       asset             cbd_amount = asset( 0, CBD_SYMBOL ); ///< the amount of sbd to release
-      asset             creativecoin_amount = asset( 0, CREA_SYMBOL ); ///< the amount of creativecoin to release
+      asset             crea_amount = asset( 0, CREA_SYMBOL ); ///< the amount of crea to release
 
       void validate()const;
       void get_required_active_authorities( flat_set<account_name_type>& a )const{ a.insert(who); }
@@ -421,7 +421,7 @@ namespace creativecoin { namespace protocol {
     * request for the funds to be transferred directly to another account's
     * balance rather than the withdrawing account. In addition, those funds
     * can be immediately vested again, circumventing the conversion from
-    * vests to creativecoin and back, guaranteeing they maintain their value.
+    * vests to crea and back, guaranteeing they maintain their value.
     */
    struct set_withdraw_vesting_route_operation : public base_operation
    {
@@ -448,7 +448,7 @@ namespace creativecoin { namespace protocol {
        *  fee requires all accounts to have some kind of commitment to the network that includes the
        *  ability to vote and make transactions.
        */
-      legacy_creativecoin_asset account_creation_fee = legacy_creativecoin_asset::from_amount( CREA_MIN_ACCOUNT_CREATION_FEE );
+      legacy_crea_asset account_creation_fee = legacy_crea_asset::from_amount( CREA_MIN_ACCOUNT_CREATION_FEE );
 
       /**
        *  This witnesses vote for the maximum_block_size which is used by the network
@@ -599,7 +599,7 @@ namespace creativecoin { namespace protocol {
 
    /**
     *  Feeds can only be published by the top N witnesses which are included in every round and are
-    *  used to define the exchange rate between creativecoin and the dollar.
+    *  used to define the exchange rate between crea and the dollar.
     */
    struct feed_publish_operation : public base_operation
    {
@@ -780,7 +780,7 @@ namespace creativecoin { namespace protocol {
     *
     * Users not in the ACTIVE witness set should not have to worry about their
     * key getting compromised and being used to produced multiple blocks so
-    * the attacker can report it and steel their vesting creativecoin.
+    * the attacker can report it and steel their vesting crea.
     *
     * The result of the operation is to transfer the full VESTING CREA balance
     * of the block producer to the reporter.
@@ -1005,7 +1005,7 @@ namespace creativecoin { namespace protocol {
    struct claim_reward_balance_operation : public base_operation
    {
       account_name_type account;
-      asset             reward_creativecoin;
+      asset             reward_crea;
       asset             reward_sbd;
       asset             reward_vests;
 
@@ -1050,35 +1050,35 @@ namespace creativecoin { namespace protocol {
       void get_required_active_authorities( flat_set< account_name_type >& a ) const { a.insert( delegator ); }
       void validate() const;
    };
-} } // creativecoin::protocol
+} } // crea::protocol
 
 
-FC_REFLECT( creativecoin::protocol::transfer_to_savings_operation, (from)(to)(amount)(memo) )
-FC_REFLECT( creativecoin::protocol::transfer_from_savings_operation, (from)(request_id)(to)(amount)(memo) )
-FC_REFLECT( creativecoin::protocol::cancel_transfer_from_savings_operation, (from)(request_id) )
+FC_REFLECT( crea::protocol::transfer_to_savings_operation, (from)(to)(amount)(memo) )
+FC_REFLECT( crea::protocol::transfer_from_savings_operation, (from)(request_id)(to)(amount)(memo) )
+FC_REFLECT( crea::protocol::cancel_transfer_from_savings_operation, (from)(request_id) )
 
-FC_REFLECT( creativecoin::protocol::reset_account_operation, (reset_account)(account_to_reset)(new_owner_authority) )
-FC_REFLECT( creativecoin::protocol::set_reset_account_operation, (account)(current_reset_account)(reset_account) )
+FC_REFLECT( crea::protocol::reset_account_operation, (reset_account)(account_to_reset)(new_owner_authority) )
+FC_REFLECT( crea::protocol::set_reset_account_operation, (account)(current_reset_account)(reset_account) )
 
 
-FC_REFLECT( creativecoin::protocol::report_over_production_operation, (reporter)(first_block)(second_block) )
-FC_REFLECT( creativecoin::protocol::convert_operation, (owner)(requestid)(amount) )
-FC_REFLECT( creativecoin::protocol::feed_publish_operation, (publisher)(exchange_rate) )
-FC_REFLECT( creativecoin::protocol::pow, (worker)(input)(signature)(work) )
-FC_REFLECT( creativecoin::protocol::pow2, (input)(pow_summary) )
-FC_REFLECT( creativecoin::protocol::pow2_input, (worker_account)(prev_block)(nonce) )
-FC_REFLECT( creativecoin::protocol::equihash_pow, (input)(proof)(prev_block)(pow_summary) )
-FC_REFLECT( creativecoin::protocol::legacy_chain_properties,
+FC_REFLECT( crea::protocol::report_over_production_operation, (reporter)(first_block)(second_block) )
+FC_REFLECT( crea::protocol::convert_operation, (owner)(requestid)(amount) )
+FC_REFLECT( crea::protocol::feed_publish_operation, (publisher)(exchange_rate) )
+FC_REFLECT( crea::protocol::pow, (worker)(input)(signature)(work) )
+FC_REFLECT( crea::protocol::pow2, (input)(pow_summary) )
+FC_REFLECT( crea::protocol::pow2_input, (worker_account)(prev_block)(nonce) )
+FC_REFLECT( crea::protocol::equihash_pow, (input)(proof)(prev_block)(pow_summary) )
+FC_REFLECT( crea::protocol::legacy_chain_properties,
             (account_creation_fee)
             (maximum_block_size)
             (cbd_interest_rate)
           )
 
-FC_REFLECT_TYPENAME( creativecoin::protocol::pow2_work )
-FC_REFLECT( creativecoin::protocol::pow_operation, (worker_account)(block_id)(nonce)(work)(props) )
-FC_REFLECT( creativecoin::protocol::pow2_operation, (work)(new_owner_key)(props) )
+FC_REFLECT_TYPENAME( crea::protocol::pow2_work )
+FC_REFLECT( crea::protocol::pow_operation, (worker_account)(block_id)(nonce)(work)(props) )
+FC_REFLECT( crea::protocol::pow2_operation, (work)(new_owner_key)(props) )
 
-FC_REFLECT( creativecoin::protocol::account_create_operation,
+FC_REFLECT( crea::protocol::account_create_operation,
             (fee)
             (creator)
             (new_account_name)
@@ -1088,7 +1088,7 @@ FC_REFLECT( creativecoin::protocol::account_create_operation,
             (memo_key)
             (json_metadata) )
 
-FC_REFLECT( creativecoin::protocol::account_create_with_delegation_operation,
+FC_REFLECT( crea::protocol::account_create_with_delegation_operation,
             (fee)
             (delegation)
             (creator)
@@ -1100,7 +1100,7 @@ FC_REFLECT( creativecoin::protocol::account_create_with_delegation_operation,
             (json_metadata)
             (extensions) )
 
-FC_REFLECT( creativecoin::protocol::account_update_operation,
+FC_REFLECT( crea::protocol::account_update_operation,
             (account)
             (owner)
             (active)
@@ -1108,48 +1108,48 @@ FC_REFLECT( creativecoin::protocol::account_update_operation,
             (memo_key)
             (json_metadata) )
 
-FC_REFLECT( creativecoin::protocol::transfer_operation, (from)(to)(amount)(memo) )
-FC_REFLECT( creativecoin::protocol::transfer_to_vesting_operation, (from)(to)(amount) )
-FC_REFLECT( creativecoin::protocol::withdraw_vesting_operation, (account)(vesting_shares) )
-FC_REFLECT( creativecoin::protocol::set_withdraw_vesting_route_operation, (from_account)(to_account)(percent)(auto_vest) )
-FC_REFLECT( creativecoin::protocol::witness_update_operation, (owner)(url)(block_signing_key)(props)(fee) )
-FC_REFLECT( creativecoin::protocol::witness_set_properties_operation, (owner)(props)(extensions) )
-FC_REFLECT( creativecoin::protocol::account_witness_vote_operation, (account)(witness)(approve) )
-FC_REFLECT( creativecoin::protocol::account_witness_proxy_operation, (account)(proxy) )
-FC_REFLECT( creativecoin::protocol::comment_operation, (parent_author)(parent_permlink)(author)(permlink)(title)(body)(json_metadata) )
-FC_REFLECT( creativecoin::protocol::vote_operation, (voter)(author)(permlink)(weight) )
-FC_REFLECT( creativecoin::protocol::custom_operation, (required_auths)(id)(data) )
-FC_REFLECT( creativecoin::protocol::custom_json_operation, (required_auths)(required_posting_auths)(id)(json) )
-FC_REFLECT( creativecoin::protocol::custom_binary_operation, (required_owner_auths)(required_active_auths)(required_posting_auths)(required_auths)(id)(data) )
-FC_REFLECT( creativecoin::protocol::limit_order_create_operation, (owner)(orderid)(amount_to_sell)(min_to_receive)(fill_or_kill)(expiration) )
-FC_REFLECT( creativecoin::protocol::limit_order_create2_operation, (owner)(orderid)(amount_to_sell)(exchange_rate)(fill_or_kill)(expiration) )
-FC_REFLECT( creativecoin::protocol::limit_order_cancel_operation, (owner)(orderid) )
+FC_REFLECT( crea::protocol::transfer_operation, (from)(to)(amount)(memo) )
+FC_REFLECT( crea::protocol::transfer_to_vesting_operation, (from)(to)(amount) )
+FC_REFLECT( crea::protocol::withdraw_vesting_operation, (account)(vesting_shares) )
+FC_REFLECT( crea::protocol::set_withdraw_vesting_route_operation, (from_account)(to_account)(percent)(auto_vest) )
+FC_REFLECT( crea::protocol::witness_update_operation, (owner)(url)(block_signing_key)(props)(fee) )
+FC_REFLECT( crea::protocol::witness_set_properties_operation, (owner)(props)(extensions) )
+FC_REFLECT( crea::protocol::account_witness_vote_operation, (account)(witness)(approve) )
+FC_REFLECT( crea::protocol::account_witness_proxy_operation, (account)(proxy) )
+FC_REFLECT( crea::protocol::comment_operation, (parent_author)(parent_permlink)(author)(permlink)(title)(body)(json_metadata) )
+FC_REFLECT( crea::protocol::vote_operation, (voter)(author)(permlink)(weight) )
+FC_REFLECT( crea::protocol::custom_operation, (required_auths)(id)(data) )
+FC_REFLECT( crea::protocol::custom_json_operation, (required_auths)(required_posting_auths)(id)(json) )
+FC_REFLECT( crea::protocol::custom_binary_operation, (required_owner_auths)(required_active_auths)(required_posting_auths)(required_auths)(id)(data) )
+FC_REFLECT( crea::protocol::limit_order_create_operation, (owner)(orderid)(amount_to_sell)(min_to_receive)(fill_or_kill)(expiration) )
+FC_REFLECT( crea::protocol::limit_order_create2_operation, (owner)(orderid)(amount_to_sell)(exchange_rate)(fill_or_kill)(expiration) )
+FC_REFLECT( crea::protocol::limit_order_cancel_operation, (owner)(orderid) )
 
-FC_REFLECT( creativecoin::protocol::delete_comment_operation, (author)(permlink) );
+FC_REFLECT( crea::protocol::delete_comment_operation, (author)(permlink) );
 
-FC_REFLECT( creativecoin::protocol::beneficiary_route_type, (account)(weight) )
-FC_REFLECT( creativecoin::protocol::comment_payout_beneficiaries, (beneficiaries) )
+FC_REFLECT( crea::protocol::beneficiary_route_type, (account)(weight) )
+FC_REFLECT( crea::protocol::comment_payout_beneficiaries, (beneficiaries) )
 
 #ifdef CREA_ENABLE_SMT
-FC_REFLECT( creativecoin::protocol::votable_asset_info_v1, (max_accepted_payout)(allow_curation_rewards) )
-FC_REFLECT( creativecoin::protocol::allowed_vote_assets, (votable_assets) )
+FC_REFLECT( crea::protocol::votable_asset_info_v1, (max_accepted_payout)(allow_curation_rewards) )
+FC_REFLECT( crea::protocol::allowed_vote_assets, (votable_assets) )
 #endif
 
-FC_REFLECT_TYPENAME( creativecoin::protocol::comment_options_extension )
-FC_REFLECT( creativecoin::protocol::comment_options_operation, (author)(permlink)(max_accepted_payout)(percent_creativecoin_dollars)(allow_votes)(allow_curation_rewards)(extensions) )
+FC_REFLECT_TYPENAME( crea::protocol::comment_options_extension )
+FC_REFLECT( crea::protocol::comment_options_operation, (author)(permlink)(max_accepted_payout)(percent_crea_dollars)(allow_votes)(allow_curation_rewards)(extensions) )
 
-FC_REFLECT( creativecoin::protocol::escrow_transfer_operation, (from)(to)(cbd_amount)(creativecoin_amount)(escrow_id)(agent)(fee)(json_meta)(ratification_deadline)(escrow_expiration) );
-FC_REFLECT( creativecoin::protocol::escrow_approve_operation, (from)(to)(agent)(who)(escrow_id)(approve) );
-FC_REFLECT( creativecoin::protocol::escrow_dispute_operation, (from)(to)(agent)(who)(escrow_id) );
-FC_REFLECT( creativecoin::protocol::escrow_release_operation, (from)(to)(agent)(who)(receiver)(escrow_id)(cbd_amount)(creativecoin_amount) );
-FC_REFLECT( creativecoin::protocol::claim_account_operation, (creator)(fee)(extensions) );
-FC_REFLECT( creativecoin::protocol::create_claimed_account_operation, (creator)(new_account_name)(owner)(active)(posting)(memo_key)(json_metadata)(extensions) );
-FC_REFLECT( creativecoin::protocol::request_account_recovery_operation, (recovery_account)(account_to_recover)(new_owner_authority)(extensions) );
-FC_REFLECT( creativecoin::protocol::recover_account_operation, (account_to_recover)(new_owner_authority)(recent_owner_authority)(extensions) );
-FC_REFLECT( creativecoin::protocol::change_recovery_account_operation, (account_to_recover)(new_recovery_account)(extensions) );
-FC_REFLECT( creativecoin::protocol::decline_voting_rights_operation, (account)(decline) );
-FC_REFLECT( creativecoin::protocol::claim_reward_balance_operation, (account)(reward_creativecoin)(reward_sbd)(reward_vests) )
+FC_REFLECT( crea::protocol::escrow_transfer_operation, (from)(to)(cbd_amount)(crea_amount)(escrow_id)(agent)(fee)(json_meta)(ratification_deadline)(escrow_expiration) );
+FC_REFLECT( crea::protocol::escrow_approve_operation, (from)(to)(agent)(who)(escrow_id)(approve) );
+FC_REFLECT( crea::protocol::escrow_dispute_operation, (from)(to)(agent)(who)(escrow_id) );
+FC_REFLECT( crea::protocol::escrow_release_operation, (from)(to)(agent)(who)(receiver)(escrow_id)(cbd_amount)(crea_amount) );
+FC_REFLECT( crea::protocol::claim_account_operation, (creator)(fee)(extensions) );
+FC_REFLECT( crea::protocol::create_claimed_account_operation, (creator)(new_account_name)(owner)(active)(posting)(memo_key)(json_metadata)(extensions) );
+FC_REFLECT( crea::protocol::request_account_recovery_operation, (recovery_account)(account_to_recover)(new_owner_authority)(extensions) );
+FC_REFLECT( crea::protocol::recover_account_operation, (account_to_recover)(new_owner_authority)(recent_owner_authority)(extensions) );
+FC_REFLECT( crea::protocol::change_recovery_account_operation, (account_to_recover)(new_recovery_account)(extensions) );
+FC_REFLECT( crea::protocol::decline_voting_rights_operation, (account)(decline) );
+FC_REFLECT( crea::protocol::claim_reward_balance_operation, (account)(reward_crea)(reward_sbd)(reward_vests) )
 #ifdef CREA_ENABLE_SMT
-FC_REFLECT( creativecoin::protocol::claim_reward_balance2_operation, (account)(extensions)(reward_tokens) )
+FC_REFLECT( crea::protocol::claim_reward_balance2_operation, (account)(extensions)(reward_tokens) )
 #endif
-FC_REFLECT( creativecoin::protocol::delegate_vesting_shares_operation, (delegator)(delegatee)(vesting_shares) );
+FC_REFLECT( crea::protocol::delegate_vesting_shares_operation, (delegator)(delegatee)(vesting_shares) );

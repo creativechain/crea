@@ -1,21 +1,21 @@
 #pragma once
 
-#include <creativecoin/protocol/authority.hpp>
-#include <creativecoin/protocol/creativecoin_operations.hpp>
+#include <crea/protocol/authority.hpp>
+#include <crea/protocol/crea_operations.hpp>
 
-#include <creativecoin/chain/creativecoin_object_types.hpp>
+#include <crea/chain/crea_object_types.hpp>
 
 #include <boost/multi_index/composite_key.hpp>
 
-namespace creativecoin { namespace chain {
+namespace crea { namespace chain {
 
-   using creativecoin::protocol::digest_type;
-   using creativecoin::protocol::public_key_type;
-   using creativecoin::protocol::version;
-   using creativecoin::protocol::hardfork_version;
-   using creativecoin::protocol::price;
-   using creativecoin::protocol::asset;
-   using creativecoin::protocol::asset_symbol_type;
+   using crea::protocol::digest_type;
+   using crea::protocol::public_key_type;
+   using crea::protocol::version;
+   using crea::protocol::hardfork_version;
+   using crea::protocol::price;
+   using crea::protocol::asset;
+   using crea::protocol::asset_symbol_type;
 
    /**
     * Witnesses must vote on how to set certain chain properties to ensure a smooth
@@ -257,16 +257,16 @@ namespace creativecoin { namespace chain {
 
 } }
 
-FC_REFLECT_ENUM( creativecoin::chain::witness_object::witness_schedule_type, (top19)(timeshare)(miner)(none) )
+FC_REFLECT_ENUM( crea::chain::witness_object::witness_schedule_type, (top19)(timeshare)(miner)(none) )
 
-FC_REFLECT( creativecoin::chain::chain_properties,
+FC_REFLECT( crea::chain::chain_properties,
              (account_creation_fee)
              (maximum_block_size)
              (cbd_interest_rate)
              (account_subsidy_limit)
           )
 
-FC_REFLECT( creativecoin::chain::witness_object,
+FC_REFLECT( crea::chain::witness_object,
              (id)
              (owner)
              (created)
@@ -278,12 +278,12 @@ FC_REFLECT( creativecoin::chain::witness_object,
              (running_version)
              (hardfork_version_vote)(hardfork_time_vote)
           )
-CHAINBASE_SET_INDEX_TYPE( creativecoin::chain::witness_object, creativecoin::chain::witness_index )
+CHAINBASE_SET_INDEX_TYPE( crea::chain::witness_object, crea::chain::witness_index )
 
-FC_REFLECT( creativecoin::chain::witness_vote_object, (id)(witness)(account) )
-CHAINBASE_SET_INDEX_TYPE( creativecoin::chain::witness_vote_object, creativecoin::chain::witness_vote_index )
+FC_REFLECT( crea::chain::witness_vote_object, (id)(witness)(account) )
+CHAINBASE_SET_INDEX_TYPE( crea::chain::witness_vote_object, crea::chain::witness_vote_index )
 
-FC_REFLECT( creativecoin::chain::witness_schedule_object,
+FC_REFLECT( crea::chain::witness_schedule_object,
              (id)(current_virtual_time)(next_shuffle_block_num)(current_shuffled_witnesses)(num_scheduled_witnesses)
              (top19_weight)(timeshare_weight)(miner_weight)(witness_pay_normalization_factor)
              (median_props)(majority_version)
@@ -292,4 +292,4 @@ FC_REFLECT( creativecoin::chain::witness_schedule_object,
              (max_runner_witnesses)
              (hardfork_required_witnesses)
           )
-CHAINBASE_SET_INDEX_TYPE( creativecoin::chain::witness_schedule_object, creativecoin::chain::witness_schedule_index )
+CHAINBASE_SET_INDEX_TYPE( crea::chain::witness_schedule_object, crea::chain::witness_schedule_index )

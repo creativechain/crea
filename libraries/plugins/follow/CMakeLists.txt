@@ -1,4 +1,4 @@
-file(GLOB HEADERS "include/creativecoin/plugins/follow/*.hpp")
+file(GLOB HEADERS "include/crea/plugins/follow/*.hpp")
 
 add_library( follow_plugin
              follow_plugin.cpp

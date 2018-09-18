@@ -1,9 +1,9 @@
 #pragma once
-#include <creativecoin/protocol/types_fwd.hpp>
-#include <creativecoin/protocol/config.hpp>
+#include <crea/protocol/types_fwd.hpp>
+#include <crea/protocol/config.hpp>
 
-#include <creativecoin/protocol/asset_symbol.hpp>
-#include <creativecoin/protocol/fixed_string.hpp>
+#include <crea/protocol/asset_symbol.hpp>
+#include <crea/protocol/fixed_string.hpp>
 
 #include <fc/container/flat_fwd.hpp>
 #include <fc/io/varint.hpp>
@@ -29,7 +29,7 @@
 #include <deque>
 #include <cstdint>
 
-namespace creativecoin {
+namespace crea {
 
    using                                    fc::uint128_t;
    typedef boost::multiprecision::uint256_t u256;
@@ -104,7 +104,7 @@ namespace creativecoin {
             friend bool operator != ( const public_key_type& p1, const public_key_type& p2);
       };
 
-      #define CREA_INIT_PUBLIC_KEY (creativecoin::protocol::public_key_type(CREA_INIT_PUBLIC_KEY_STR))
+      #define CREA_INIT_PUBLIC_KEY (crea::protocol::public_key_type(CREA_INIT_PUBLIC_KEY_STR))
 
       struct extended_public_key_type
       {
@@ -152,25 +152,25 @@ namespace creativecoin {
 
       chain_id_type generate_chain_id( const std::string& chain_id_name );
 
-} }  // creativecoin::protocol
+} }  // crea::protocol
 
 namespace fc
 {
-    void to_variant( const creativecoin::protocol::public_key_type& var,  fc::variant& vo );
-    void from_variant( const fc::variant& var,  creativecoin::protocol::public_key_type& vo );
-    void to_variant( const creativecoin::protocol::extended_public_key_type& var, fc::variant& vo );
-    void from_variant( const fc::variant& var, creativecoin::protocol::extended_public_key_type& vo );
-    void to_variant( const creativecoin::protocol::extended_private_key_type& var, fc::variant& vo );
-    void from_variant( const fc::variant& var, creativecoin::protocol::extended_private_key_type& vo );
+    void to_variant( const crea::protocol::public_key_type& var,  fc::variant& vo );
+    void from_variant( const fc::variant& var,  crea::protocol::public_key_type& vo );
+    void to_variant( const crea::protocol::extended_public_key_type& var, fc::variant& vo );
+    void from_variant( const fc::variant& var, crea::protocol::extended_public_key_type& vo );
+    void to_variant( const crea::protocol::extended_private_key_type& var, fc::variant& vo );
+    void from_variant( const fc::variant& var, crea::protocol::extended_private_key_type& vo );
 }
 
-FC_REFLECT( creativecoin::protocol::public_key_type, (key_data) )
-FC_REFLECT( creativecoin::protocol::public_key_type::binary_key, (data)(check) )
-FC_REFLECT( creativecoin::protocol::extended_public_key_type, (key_data) )
-FC_REFLECT( creativecoin::protocol::extended_public_key_type::binary_key, (check)(data) )
-FC_REFLECT( creativecoin::protocol::extended_private_key_type, (key_data) )
-FC_REFLECT( creativecoin::protocol::extended_private_key_type::binary_key, (check)(data) )
+FC_REFLECT( crea::protocol::public_key_type, (key_data) )
+FC_REFLECT( crea::protocol::public_key_type::binary_key, (data)(check) )
+FC_REFLECT( crea::protocol::extended_public_key_type, (key_data) )
+FC_REFLECT( crea::protocol::extended_public_key_type::binary_key, (check)(data) )
+FC_REFLECT( crea::protocol::extended_private_key_type, (key_data) )
+FC_REFLECT( crea::protocol::extended_private_key_type::binary_key, (check)(data) )
 
-FC_REFLECT_TYPENAME( creativecoin::protocol::share_type )
+FC_REFLECT_TYPENAME( crea::protocol::share_type )
 
-FC_REFLECT( creativecoin::void_t, )
+FC_REFLECT( crea::void_t, )

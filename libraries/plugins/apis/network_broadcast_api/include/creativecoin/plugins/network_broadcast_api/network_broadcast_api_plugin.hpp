@@ -1,13 +1,13 @@
 #pragma once
-#include <creativecoin/plugins/json_rpc/json_rpc_plugin.hpp>
-#include <creativecoin/plugins/chain/chain_plugin.hpp>
-#include <creativecoin/plugins/p2p/p2p_plugin.hpp>
+#include <crea/plugins/json_rpc/json_rpc_plugin.hpp>
+#include <crea/plugins/chain/chain_plugin.hpp>
+#include <crea/plugins/p2p/p2p_plugin.hpp>
 
 #include <appbase/application.hpp>
 
 #define CREA_NETWORK_BROADCAST_API_PLUGIN_NAME "network_broadcast_api"
 
-namespace creativecoin { namespace plugins { namespace network_broadcast_api {
+namespace crea { namespace plugins { namespace network_broadcast_api {
 
 using namespace appbase;
 
@@ -15,9 +15,9 @@ class network_broadcast_api_plugin : public appbase::plugin< network_broadcast_a
 {
 public:
    APPBASE_PLUGIN_REQUIRES(
-      (creativecoin::plugins::json_rpc::json_rpc_plugin)
-      (creativecoin::plugins::chain::chain_plugin)
-      (creativecoin::plugins::p2p::p2p_plugin)
+      (crea::plugins::json_rpc::json_rpc_plugin)
+      (crea::plugins::chain::chain_plugin)
+      (crea::plugins::p2p::p2p_plugin)
    )
 
    network_broadcast_api_plugin();
@@ -33,4 +33,4 @@ public:
    std::shared_ptr< class network_broadcast_api > api;
 };
 
-} } } // creativecoin::plugins::network_broadcast_api
+} } } // crea::plugins::network_broadcast_api

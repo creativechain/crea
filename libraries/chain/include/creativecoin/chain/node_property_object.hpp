@@ -1,6 +1,6 @@
 #pragma once
 
-namespace creativecoin { namespace chain {
+namespace crea { namespace chain {
 
    /**
     * @brief Contains per-node database configuration.
@@ -20,4 +20,4 @@ namespace creativecoin { namespace chain {
 
          uint32_t skip_flags = 0;
    };
-} } // creativecoin::chain
+} } // crea::chain

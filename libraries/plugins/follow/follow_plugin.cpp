@@ -1,26 +1,26 @@
-#include <creativecoin/plugins/follow/follow_plugin.hpp>
-#include <creativecoin/plugins/follow/follow_objects.hpp>
-#include <creativecoin/plugins/follow/follow_operations.hpp>
-#include <creativecoin/plugins/follow/inc_performance.hpp>
+#include <crea/plugins/follow/follow_plugin.hpp>
+#include <crea/plugins/follow/follow_objects.hpp>
+#include <crea/plugins/follow/follow_operations.hpp>
+#include <crea/plugins/follow/inc_performance.hpp>
 
-#include <creativecoin/chain/util/impacted.hpp>
+#include <crea/chain/util/impacted.hpp>
 
-#include <creativecoin/protocol/config.hpp>
+#include <crea/protocol/config.hpp>
 
-#include <creativecoin/chain/database.hpp>
-#include <creativecoin/chain/index.hpp>
-#include <creativecoin/chain/operation_notification.hpp>
-#include <creativecoin/chain/account_object.hpp>
-#include <creativecoin/chain/comment_object.hpp>
+#include <crea/chain/database.hpp>
+#include <crea/chain/index.hpp>
+#include <crea/chain/operation_notification.hpp>
+#include <crea/chain/account_object.hpp>
+#include <crea/chain/comment_object.hpp>
 
 #include <fc/smart_ref_impl.hpp>
 #include <fc/thread/thread.hpp>
 
 #include <memory>
 
-namespace creativecoin { namespace plugins { namespace follow {
+namespace crea { namespace plugins { namespace follow {
 
-using namespace creativecoin::protocol;
+using namespace crea::protocol;
 
 namespace detail {
 
@@ -28,7 +28,7 @@ class follow_plugin_impl
 {
    public:
       follow_plugin_impl( follow_plugin& _plugin ) :
-         _db( appbase::app().get_plugin< creativecoin::plugins::chain::chain_plugin >().db() ),
+         _db( appbase::app().get_plugin< crea::plugins::chain::chain_plugin >().db() ),
          _self( _plugin ) {}
       ~follow_plugin_impl() {}
 
@@ -340,7 +340,7 @@ void follow_plugin::plugin_initialize( const boost::program_options::variables_m
       my = std::make_unique< detail::follow_plugin_impl >( *this );
 
       // Each plugin needs its own evaluator registry.
-      _custom_operation_interpreter = std::make_shared< generic_custom_operation_interpreter< creativecoin::plugins::follow::follow_plugin_operation > >( my->_db );
+      _custom_operation_interpreter = std::make_shared< generic_custom_operation_interpreter< crea::plugins::follow::follow_plugin_operation > >( my->_db );
 
       // Add each operation evaluator to the registry
       _custom_operation_interpreter->register_evaluator< follow_evaluator >( this );
@@ -381,4 +381,4 @@ void follow_plugin::plugin_shutdown()
    chain::util::disconnect_signal( my->_post_apply_operation_conn );
 }
 
-} } } // creativecoin::plugins::follow
+} } } // crea::plugins::follow

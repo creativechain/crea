@@ -1,12 +1,12 @@
-#include <creativecoin/plugins/follow/follow_plugin.hpp>
-#include <creativecoin/plugins/follow/follow_operations.hpp>
-#include <creativecoin/plugins/follow/follow_objects.hpp>
-#include <creativecoin/plugins/follow/inc_performance.hpp>
+#include <crea/plugins/follow/follow_plugin.hpp>
+#include <crea/plugins/follow/follow_operations.hpp>
+#include <crea/plugins/follow/follow_objects.hpp>
+#include <crea/plugins/follow/inc_performance.hpp>
 
-#include <creativecoin/chain/account_object.hpp>
-#include <creativecoin/chain/comment_object.hpp>
+#include <crea/chain/account_object.hpp>
+#include <crea/chain/comment_object.hpp>
 
-namespace creativecoin { namespace plugins { namespace follow {
+namespace crea { namespace plugins { namespace follow {
 
 void follow_evaluator::do_apply( const follow_operation& o )
 {
@@ -216,4 +216,4 @@ void reblog_evaluator::do_apply( const reblog_operation& o )
    FC_CAPTURE_AND_RETHROW( (o) )
 }
 
-} } } // creativecoin::follow
+} } } // crea::follow

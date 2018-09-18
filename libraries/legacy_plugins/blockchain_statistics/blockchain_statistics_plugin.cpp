@@ -1,20 +1,20 @@
-#include <creativecoin/blockchain_statistics/blockchain_statistics_api.hpp>
+#include <crea/blockchain_statistics/blockchain_statistics_api.hpp>
 
-#include <creativecoin/app/impacted.hpp>
-#include <creativecoin/chain/account_object.hpp>
-#include <creativecoin/chain/comment_object.hpp>
-#include <creativecoin/chain/history_object.hpp>
+#include <crea/app/impacted.hpp>
+#include <crea/chain/account_object.hpp>
+#include <crea/chain/comment_object.hpp>
+#include <crea/chain/history_object.hpp>
 
-#include <creativecoin/chain/database.hpp>
-#include <creativecoin/chain/index.hpp>
-#include <creativecoin/chain/operation_notification.hpp>
+#include <crea/chain/database.hpp>
+#include <crea/chain/index.hpp>
+#include <crea/chain/operation_notification.hpp>
 
-namespace creativecoin { namespace blockchain_statistics {
+namespace crea { namespace blockchain_statistics {
 
 namespace detail
 {
 
-using namespace creativecoin::protocol;
+using namespace crea::protocol;
 
 class blockchain_statistics_plugin_impl
 {
@@ -54,7 +54,7 @@ struct operation_process
          b.transfers++;
 
          if( op.amount.symbol == CREA_SYMBOL )
-            b.creativecoin_transferred += op.amount.amount;
+            b.crea_transferred += op.amount.amount;
          else
             b.cbd_transferred += op.amount.amount;
       });
@@ -180,7 +180,7 @@ struct operation_process
       _db.modify( _bucket, [&]( bucket_object& b )
       {
          b.transfers_to_vesting++;
-         b.creativecoin_vested += op.amount.amount;
+         b.crea_vested += op.amount.amount;
       });
    }
 
@@ -239,7 +239,7 @@ struct operation_process
       _db.modify( _bucket, [&]( bucket_object& b )
       {
          b.cbd_conversion_requests_filled++;
-         b.creativecoin_converted += op.amount_out.amount;
+         b.crea_converted += op.amount_out.amount;
       });
    }
 };
@@ -468,6 +468,6 @@ uint32_t blockchain_statistics_plugin::get_max_history_per_bucket() const
    return _my->_maximum_history_per_bucket_size;
 }
 
-} } // creativecoin::blockchain_statistics
+} } // crea::blockchain_statistics
 
-CREA_DEFINE_PLUGIN( blockchain_statistics, creativecoin::blockchain_statistics::blockchain_statistics_plugin );
+CREA_DEFINE_PLUGIN( blockchain_statistics, crea::blockchain_statistics::blockchain_statistics_plugin );

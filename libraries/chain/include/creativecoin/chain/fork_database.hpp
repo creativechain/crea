@@ -1,5 +1,5 @@
 #pragma once
-#include <creativecoin/protocol/block.hpp>
+#include <crea/protocol/block.hpp>
 
 #include <boost/multi_index_container.hpp>
 #include <boost/multi_index/member.hpp>
@@ -8,12 +8,12 @@
 #include <boost/multi_index/mem_fun.hpp>
 
 
-namespace creativecoin { namespace chain {
+namespace crea { namespace chain {
    using boost::multi_index_container;
    using namespace boost::multi_index;
 
-   using creativecoin::protocol::signed_block;
-   using creativecoin::protocol::block_id_type;
+   using crea::protocol::signed_block;
+   using crea::protocol::block_id_type;
 
    struct fork_item
    {
@@ -104,4 +104,4 @@ namespace creativecoin { namespace chain {
          shared_ptr<fork_item>    _head;
    };
 
-} } // creativecoin::chain
+} } // crea::chain

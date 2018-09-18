@@ -1,15 +1,15 @@
 
 #pragma once
 
-#include <creativecoin/chain/creativecoin_object_types.hpp>
+#include <crea/chain/crea_object_types.hpp>
 
 #include <fc/api.hpp>
 
-namespace creativecoin { namespace app {
+namespace crea { namespace app {
    struct api_context;
 } }
 
-namespace creativecoin { namespace plugin { namespace raw_block {
+namespace crea { namespace plugin { namespace raw_block {
 
 namespace detail {
 class raw_block_api_impl;
@@ -31,7 +31,7 @@ struct get_raw_block_result
 class raw_block_api
 {
    public:
-      raw_block_api( const creativecoin::app::api_context& ctx );
+      raw_block_api( const crea::app::api_context& ctx );
 
       void on_api_startup();
 
@@ -44,18 +44,18 @@ class raw_block_api
 
 } } }
 
-FC_REFLECT( creativecoin::plugin::raw_block::get_raw_block_args,
+FC_REFLECT( crea::plugin::raw_block::get_raw_block_args,
    (block_num)
    )
 
-FC_REFLECT( creativecoin::plugin::raw_block::get_raw_block_result,
+FC_REFLECT( crea::plugin::raw_block::get_raw_block_result,
    (block_id)
    (previous)
    (timestamp)
    (raw_block)
    )
 
-FC_API( creativecoin::plugin::raw_block::raw_block_api,
+FC_API( crea::plugin::raw_block::raw_block_api,
    (get_raw_block)
    (push_raw_block)
    )

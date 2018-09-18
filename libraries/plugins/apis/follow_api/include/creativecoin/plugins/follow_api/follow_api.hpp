@@ -1,19 +1,19 @@
 #pragma once
-#include <creativecoin/plugins/json_rpc/utility.hpp>
-#include <creativecoin/plugins/follow/follow_objects.hpp>
-#include <creativecoin/plugins/database_api/database_api_objects.hpp>
-#include <creativecoin/plugins/reputation_api/reputation_api.hpp>
+#include <crea/plugins/json_rpc/utility.hpp>
+#include <crea/plugins/follow/follow_objects.hpp>
+#include <crea/plugins/database_api/database_api_objects.hpp>
+#include <crea/plugins/reputation_api/reputation_api.hpp>
 
-#include <creativecoin/protocol/types.hpp>
+#include <crea/protocol/types.hpp>
 
 #include <fc/optional.hpp>
 #include <fc/variant.hpp>
 #include <fc/vector.hpp>
 
-namespace creativecoin { namespace plugins { namespace follow {
+namespace crea { namespace plugins { namespace follow {
 
-using creativecoin::protocol::account_name_type;
-using creativecoin::plugins::reputation::account_reputation;
+using crea::protocol::account_name_type;
+using crea::plugins::reputation::account_reputation;
 
 namespace detail
 {
@@ -188,64 +188,64 @@ class follow_api
       std::unique_ptr< detail::follow_api_impl > my;
 };
 
-} } } // creativecoin::plugins::follow
+} } } // crea::plugins::follow
 
-FC_REFLECT( creativecoin::plugins::follow::feed_entry,
+FC_REFLECT( crea::plugins::follow::feed_entry,
             (author)(permlink)(reblog_by)(reblog_on)(entry_id) );
 
-FC_REFLECT( creativecoin::plugins::follow::comment_feed_entry,
+FC_REFLECT( crea::plugins::follow::comment_feed_entry,
             (comment)(reblog_by)(reblog_on)(entry_id) );
 
-FC_REFLECT( creativecoin::plugins::follow::blog_entry,
+FC_REFLECT( crea::plugins::follow::blog_entry,
             (author)(permlink)(blog)(reblog_on)(entry_id) );
 
-FC_REFLECT( creativecoin::plugins::follow::comment_blog_entry,
+FC_REFLECT( crea::plugins::follow::comment_blog_entry,
             (comment)(blog)(reblog_on)(entry_id) );
 
-FC_REFLECT( creativecoin::plugins::follow::api_follow_object,
+FC_REFLECT( crea::plugins::follow::api_follow_object,
             (follower)(following)(what) );
 
-FC_REFLECT( creativecoin::plugins::follow::reblog_count,
+FC_REFLECT( crea::plugins::follow::reblog_count,
             (author)(count) );
 
-FC_REFLECT( creativecoin::plugins::follow::get_followers_args,
+FC_REFLECT( crea::plugins::follow::get_followers_args,
             (account)(start)(type)(limit) );
 
-FC_REFLECT( creativecoin::plugins::follow::get_followers_return,
+FC_REFLECT( crea::plugins::follow::get_followers_return,
             (followers) );
 
-FC_REFLECT( creativecoin::plugins::follow::get_following_return,
+FC_REFLECT( crea::plugins::follow::get_following_return,
             (following) );
 
-FC_REFLECT( creativecoin::plugins::follow::get_follow_count_args,
+FC_REFLECT( crea::plugins::follow::get_follow_count_args,
             (account) );
 
-FC_REFLECT( creativecoin::plugins::follow::get_follow_count_return,
+FC_REFLECT( crea::plugins::follow::get_follow_count_return,
             (account)(follower_count)(following_count) );
 
-FC_REFLECT( creativecoin::plugins::follow::get_feed_entries_args,
+FC_REFLECT( crea::plugins::follow::get_feed_entries_args,
             (account)(start_entry_id)(limit) );
 
-FC_REFLECT( creativecoin::plugins::follow::get_feed_entries_return,
+FC_REFLECT( crea::plugins::follow::get_feed_entries_return,
             (feed) );
 
-FC_REFLECT( creativecoin::plugins::follow::get_feed_return,
+FC_REFLECT( crea::plugins::follow::get_feed_return,
             (feed) );
 
-FC_REFLECT( creativecoin::plugins::follow::get_blog_entries_return,
+FC_REFLECT( crea::plugins::follow::get_blog_entries_return,
             (blog) );
 
-FC_REFLECT( creativecoin::plugins::follow::get_blog_return,
+FC_REFLECT( crea::plugins::follow::get_blog_return,
             (blog) );
 
-FC_REFLECT( creativecoin::plugins::follow::get_reblogged_by_args,
+FC_REFLECT( crea::plugins::follow::get_reblogged_by_args,
             (author)(permlink) );
 
-FC_REFLECT( creativecoin::plugins::follow::get_reblogged_by_return,
+FC_REFLECT( crea::plugins::follow::get_reblogged_by_return,
             (accounts) );
 
-FC_REFLECT( creativecoin::plugins::follow::get_blog_authors_args,
+FC_REFLECT( crea::plugins::follow::get_blog_authors_args,
             (blog_account) );
 
-FC_REFLECT( creativecoin::plugins::follow::get_blog_authors_return,
+FC_REFLECT( crea::plugins::follow::get_blog_authors_return,
             (blog_authors) );

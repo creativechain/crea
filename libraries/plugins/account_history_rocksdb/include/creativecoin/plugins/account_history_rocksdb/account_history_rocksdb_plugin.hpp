@@ -1,14 +1,14 @@
 #pragma once
-#include <creativecoin/plugins/account_history_rocksdb/account_history_rocksdb_objects.hpp>
+#include <crea/plugins/account_history_rocksdb/account_history_rocksdb_objects.hpp>
 
-#include <creativecoin/plugins/chain/chain_plugin.hpp>
+#include <crea/plugins/chain/chain_plugin.hpp>
 
 #include <appbase/application.hpp>
 
 #include <functional>
 #include <memory>
 
-namespace creativecoin {
+namespace crea {
 
 namespace plugins { namespace account_history_rocksdb {
 
@@ -19,7 +19,7 @@ namespace bfs = boost::filesystem;
 class account_history_rocksdb_plugin final : public appbase::plugin< account_history_rocksdb_plugin >
 {
 public:
-   APPBASE_PLUGIN_REQUIRES((creativecoin::plugins::chain::chain_plugin))
+   APPBASE_PLUGIN_REQUIRES((crea::plugins::chain::chain_plugin))
 
    account_history_rocksdb_plugin();
    virtual ~account_history_rocksdb_plugin();
@@ -52,4 +52,4 @@ private:
 };
 
 
-} } } // creativecoin::plugins::account_history_rocksdb
+} } } // crea::plugins::account_history_rocksdb

@@ -1,12 +1,12 @@
 
 #pragma once
 
-#include <creativecoin/schema/abstract_schema.hpp>
-#include <creativecoin/schema/schema_impl.hpp>
+#include <crea/schema/abstract_schema.hpp>
+#include <crea/schema/schema_impl.hpp>
 
 #include <boost/container/flat_set.hpp>
 
-namespace creativecoin { namespace schema { namespace detail {
+namespace crea { namespace schema { namespace detail {
 
 //////////////////////////////////////////////
 // flat_set                                 //

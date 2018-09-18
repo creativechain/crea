@@ -1,20 +1,20 @@
 #pragma once
-#include <creativecoin/plugins/follow/follow_operations.hpp>
+#include <crea/plugins/follow/follow_operations.hpp>
 
-#include <creativecoin/plugins/chain/chain_plugin.hpp>
+#include <crea/plugins/chain/chain_plugin.hpp>
 
-#include <creativecoin/chain/generic_custom_operation_interpreter.hpp>
+#include <crea/chain/generic_custom_operation_interpreter.hpp>
 
 
 #define CREA_FOLLOW_PLUGIN_NAME "follow"
 
 
-namespace creativecoin { namespace plugins{ namespace follow {
+namespace crea { namespace plugins{ namespace follow {
 
 namespace detail { class follow_plugin_impl; }
 
 using namespace appbase;
-using creativecoin::chain::generic_custom_operation_interpreter;
+using crea::chain::generic_custom_operation_interpreter;
 
 class follow_plugin : public appbase::plugin< follow_plugin >
 {
@@ -22,7 +22,7 @@ class follow_plugin : public appbase::plugin< follow_plugin >
       follow_plugin();
       virtual ~follow_plugin();
 
-      APPBASE_PLUGIN_REQUIRES( (creativecoin::plugins::chain::chain_plugin) )
+      APPBASE_PLUGIN_REQUIRES( (crea::plugins::chain::chain_plugin) )
 
       static const std::string& name() { static std::string name = CREA_FOLLOW_PLUGIN_NAME; return name; }
 
@@ -42,4 +42,4 @@ class follow_plugin : public appbase::plugin< follow_plugin >
       std::unique_ptr< detail::follow_plugin_impl > my;
 };
 
-} } } //creativecoin::follow
+} } } //crea::follow

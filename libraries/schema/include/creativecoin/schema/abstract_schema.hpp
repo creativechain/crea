@@ -6,7 +6,7 @@
 
 #include <fc/reflect/reflect.hpp>
 
-namespace creativecoin { namespace schema {
+namespace crea { namespace schema {
 
 struct abstract_schema
 {
@@ -52,4 +52,4 @@ std::shared_ptr< abstract_schema > get_schema_for_type()
 
 void add_dependent_schemas( std::vector< std::shared_ptr< abstract_schema > >& schema_list );
 
-} } // creativecoin::schema
+} } // crea::schema

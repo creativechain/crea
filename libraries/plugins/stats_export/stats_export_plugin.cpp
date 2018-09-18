@@ -1,33 +1,33 @@
 
-#include <creativecoin/plugins/block_data_export/block_data_export_plugin.hpp>
-#include <creativecoin/plugins/block_data_export/exportable_block_data.hpp>
+#include <crea/plugins/block_data_export/block_data_export_plugin.hpp>
+#include <crea/plugins/block_data_export/exportable_block_data.hpp>
 
-#include <creativecoin/plugins/stats_export/stats_export_plugin.hpp>
+#include <crea/plugins/stats_export/stats_export_plugin.hpp>
 
-#include <creativecoin/chain/account_object.hpp>
-#include <creativecoin/chain/database.hpp>
-#include <creativecoin/chain/global_property_object.hpp>
-#include <creativecoin/chain/index.hpp>
-#include <creativecoin/chain/operation_notification.hpp>
+#include <crea/chain/account_object.hpp>
+#include <crea/chain/database.hpp>
+#include <crea/chain/global_property_object.hpp>
+#include <crea/chain/index.hpp>
+#include <crea/chain/operation_notification.hpp>
 
 #include <fstream>
 #include <iostream>
 #include <sstream>
 
-namespace creativecoin { namespace plugins { namespace stats_export {
+namespace crea { namespace plugins { namespace stats_export {
 
-using creativecoin::chain::block_notification;
-using creativecoin::chain::database;
-using creativecoin::chain::dynamic_global_property_object;
+using crea::chain::block_notification;
+using crea::chain::database;
+using crea::chain::dynamic_global_property_object;
 
-using creativecoin::protocol::account_name_type;
-using creativecoin::protocol::authority;
-using creativecoin::protocol::signed_transaction;
+using crea::protocol::account_name_type;
+using crea::protocol::authority;
+using crea::protocol::signed_transaction;
 
-using creativecoin::plugins::block_data_export::block_data_export_plugin;
-using creativecoin::plugins::block_data_export::exportable_block_data;
+using crea::plugins::block_data_export::block_data_export_plugin;
+using crea::plugins::block_data_export::exportable_block_data;
 
-using creativecoin::plugins::chain::chain_plugin;
+using crea::plugins::chain::chain_plugin;
 
 namespace detail {
 
@@ -56,10 +56,10 @@ class api_stats_export_data_object
 
 } } } }
 
-FC_REFLECT( creativecoin::plugins::stats_export::detail::api_stats_transaction_data_object, (user)(size) )
-FC_REFLECT( creativecoin::plugins::stats_export::detail::api_stats_export_data_object, (global_properties)(transaction_stats)(free_memory) )
+FC_REFLECT( crea::plugins::stats_export::detail::api_stats_transaction_data_object, (user)(size) )
+FC_REFLECT( crea::plugins::stats_export::detail::api_stats_export_data_object, (global_properties)(transaction_stats)(free_memory) )
 
-namespace creativecoin { namespace plugins { namespace stats_export { namespace detail {
+namespace crea { namespace plugins { namespace stats_export { namespace detail {
 
 class stats_export_plugin_impl
 {
@@ -153,4 +153,4 @@ void stats_export_plugin::plugin_shutdown()
    chain::util::disconnect_signal( my->_post_apply_block_conn );
 }
 
-} } } // creativecoin::plugins::stats_export
+} } } // crea::plugins::stats_export

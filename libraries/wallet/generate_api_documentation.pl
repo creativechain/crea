@@ -13,10 +13,10 @@ my $outFile = new IO::File($outputFileName, "w")
 my $fileHeader = <<'END';
 /** GENERATED FILE **/
 #include <set>
-#include <creativecoin/wallet/api_documentation.hpp>
-#include <creativecoin/wallet/wallet.hpp>
+#include <crea/wallet/api_documentation.hpp>
+#include <crea/wallet/wallet.hpp>
 
-namespace creativecoin { namespace wallet {
+namespace crea { namespace wallet {
    namespace detail
    {
       struct api_method_name_collector_visitor
@@ -38,7 +38,7 @@ $outFile->print($fileHeader);
 
 for my $class (@{$doxydocs->{classes}})
 {
-  if ($class->{name} eq 'creativecoin::wallet::wallet_api')
+  if ($class->{name} eq 'crea::wallet::wallet_api')
   {
     for my $member (@{$class->{public_methods}->{members}})
     {
@@ -84,7 +84,7 @@ my $fileFooter = <<'END';
           ++iter;
    }
 
-} } // end namespace creativecoin::wallet
+} } // end namespace crea::wallet
 END
 $outFile->print($fileFooter);
 $outFile->close();

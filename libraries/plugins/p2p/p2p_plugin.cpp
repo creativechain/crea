@@ -1,10 +1,10 @@
-#include <creativecoin/plugins/p2p/p2p_plugin.hpp>
-#include <creativecoin/plugins/p2p/p2p_default_seeds.hpp>
+#include <crea/plugins/p2p/p2p_plugin.hpp>
+#include <crea/plugins/p2p/p2p_default_seeds.hpp>
 
 #include <graphene/net/node.hpp>
 #include <graphene/net/exceptions.hpp>
 
-#include <creativecoin/chain/database_exceptions.hpp>
+#include <crea/chain/database_exceptions.hpp>
 
 #include <fc/network/ip.hpp>
 #include <fc/network/resolve.hpp>
@@ -24,7 +24,7 @@
 using std::string;
 using std::vector;
 
-namespace creativecoin { namespace plugins { namespace p2p {
+namespace crea { namespace plugins { namespace p2p {
 
 using appbase::app;
 
@@ -34,10 +34,10 @@ using graphene::net::message;
 using graphene::net::block_message;
 using graphene::net::trx_message;
 
-using creativecoin::protocol::block_header;
-using creativecoin::protocol::signed_block_header;
-using creativecoin::protocol::signed_block;
-using creativecoin::protocol::block_id_type;
+using crea::protocol::block_header;
+using crea::protocol::signed_block_header;
+using crea::protocol::signed_block;
+using crea::protocol::block_id_type;
 
 namespace detail {
 
@@ -85,7 +85,7 @@ public:
    virtual ~p2p_plugin_impl() {}
 
    bool is_included_block(const block_id_type& block_id);
-   virtual creativecoin::protocol::chain_id_type get_chain_id() const override;
+   virtual crea::protocol::chain_id_type get_chain_id() const override;
 
    // node_delegate interface
    virtual bool has_item( const graphene::net::item_id& ) override;
@@ -341,7 +341,7 @@ graphene::net::message p2p_plugin_impl::get_item( const graphene::net::item_id& 
    });
 } FC_CAPTURE_AND_RETHROW( (id) ) }
 
-creativecoin::protocol::chain_id_type p2p_plugin_impl::get_chain_id() const
+crea::protocol::chain_id_type p2p_plugin_impl::get_chain_id() const
 {
    return chain.db().get_chain_id();
 }
@@ -741,13 +741,13 @@ void p2p_plugin::plugin_shutdown() {
    my->node.reset();
 }
 
-void p2p_plugin::broadcast_block( const creativecoin::protocol::signed_block& block )
+void p2p_plugin::broadcast_block( const crea::protocol::signed_block& block )
 {
    ulog("Broadcasting block #${n}", ("n", block.block_num()));
    my->node->broadcast( graphene::net::block_message( block ) );
 }
 
-void p2p_plugin::broadcast_transaction( const creativecoin::protocol::signed_transaction& tx )
+void p2p_plugin::broadcast_transaction( const crea::protocol::signed_transaction& tx )
 {
    ulog("Broadcasting tx #${n}", ("id", tx.id()));
    my->node->broadcast( graphene::net::trx_message( tx ) );
@@ -758,4 +758,4 @@ void p2p_plugin::set_block_production( bool producing_blocks )
    my->block_producer = producing_blocks;
 }
 
-} } } // namespace creativecoin::plugins::p2p
+} } } // namespace crea::plugins::p2p

@@ -3,13 +3,13 @@
 
 #include <fc/api.hpp>
 
-#include <creativecoin/plugins/block_info/block_info.hpp>
+#include <crea/plugins/block_info/block_info.hpp>
 
-namespace creativecoin { namespace app {
+namespace crea { namespace app {
    struct api_context;
 } }
 
-namespace creativecoin { namespace plugin { namespace block_info {
+namespace crea { namespace plugin { namespace block_info {
 
 namespace detail {
 class block_info_api_impl;
@@ -24,7 +24,7 @@ struct get_block_info_args
 class block_info_api
 {
    public:
-      block_info_api( const creativecoin::app::api_context& ctx );
+      block_info_api( const crea::app::api_context& ctx );
 
       void on_api_startup();
 
@@ -37,12 +37,12 @@ class block_info_api
 
 } } }
 
-FC_REFLECT( creativecoin::plugin::block_info::get_block_info_args,
+FC_REFLECT( crea::plugin::block_info::get_block_info_args,
    (start_block_num)
    (count)
    )
 
-FC_API( creativecoin::plugin::block_info::block_info_api,
+FC_API( crea::plugin::block_info::block_info_api,
    (get_block_info)
    (get_blocks_with_info)
    )

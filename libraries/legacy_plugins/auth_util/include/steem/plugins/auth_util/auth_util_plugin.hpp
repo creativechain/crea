@@ -1,13 +1,13 @@
 
 #pragma once
 
-#include <creativecoin/app/plugin.hpp>
+#include <crea/app/plugin.hpp>
 
-namespace creativecoin { namespace plugin { namespace auth_util {
+namespace crea { namespace plugin { namespace auth_util {
 
-using creativecoin::app::application;
+using crea::app::application;
 
-class auth_util_plugin : public creativecoin::app::plugin
+class auth_util_plugin : public crea::app::plugin
 {
    public:
       auth_util_plugin( application* app ) ;

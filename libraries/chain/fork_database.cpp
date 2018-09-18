@@ -1,8 +1,8 @@
-#include <creativecoin/chain/fork_database.hpp>
+#include <crea/chain/fork_database.hpp>
 
-#include <creativecoin/chain/database_exceptions.hpp>
+#include <crea/chain/database_exceptions.hpp>
 
-namespace creativecoin { namespace chain {
+namespace crea { namespace chain {
 
 fork_database::fork_database()
 {
@@ -240,4 +240,4 @@ void fork_database::remove(block_id_type id)
    _index.get<block_id>().erase(id);
 }
 
-} } // creativecoin::chain
+} } // crea::chain

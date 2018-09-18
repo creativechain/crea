@@ -1,22 +1,22 @@
-#include <creativecoin/plugins/smt_test/smt_test_plugin.hpp>
-#include <creativecoin/plugins/smt_test/smt_test_objects.hpp>
+#include <crea/plugins/smt_test/smt_test_plugin.hpp>
+#include <crea/plugins/smt_test/smt_test_objects.hpp>
 
-#include <creativecoin/chain/account_object.hpp>
-#include <creativecoin/chain/database.hpp>
-#include <creativecoin/chain/index.hpp>
-#include <creativecoin/chain/operation_notification.hpp>
+#include <crea/chain/account_object.hpp>
+#include <crea/chain/database.hpp>
+#include <crea/chain/index.hpp>
+#include <crea/chain/operation_notification.hpp>
 
-#include <creativecoin/protocol/smt_operations.hpp>
+#include <crea/protocol/smt_operations.hpp>
 
-namespace creativecoin { namespace plugins { namespace smt_test {
+namespace crea { namespace plugins { namespace smt_test {
 
-using namespace creativecoin::protocol;
+using namespace crea::protocol;
 
 class smt_test_plugin_impl
 {
    public:
       smt_test_plugin_impl( smt_test_plugin& _plugin ) :
-         _db( appbase::app().get_plugin< creativecoin::plugins::chain::chain_plugin >().db() ),
+         _db( appbase::app().get_plugin< crea::plugins::chain::chain_plugin >().db() ),
          _self( _plugin ) {}
 
       void on_pre_apply_operation( const operation_notification& op_obj );
@@ -73,25 +73,25 @@ void test_alpha()
    smt_capped_generation_policy gpolicy;
    uint64_t max_supply = CREA_MAX_SHARE_SUPPLY / 6000;
 
-   // set creativecoin unit, total is 100 CREA-satoshis = 0.1 CREA
-   gpolicy.pre_soft_cap_unit.creativecoin_unit.emplace( "founder_a",   7 );
-   gpolicy.pre_soft_cap_unit.creativecoin_unit.emplace( "founder_b",  23 );
-   gpolicy.pre_soft_cap_unit.creativecoin_unit.emplace( "founder_c",  70 );
+   // set crea unit, total is 100 CREA-satoshis = 0.1 CREA
+   gpolicy.pre_soft_cap_unit.crea_unit.emplace( "founder_a",   7 );
+   gpolicy.pre_soft_cap_unit.crea_unit.emplace( "founder_b",  23 );
+   gpolicy.pre_soft_cap_unit.crea_unit.emplace( "founder_c",  70 );
 
    // set token unit, total is 6 token-satoshis = 0.0006 ALPHA
    gpolicy.pre_soft_cap_unit.token_unit.emplace( "$from", 5 );
    gpolicy.pre_soft_cap_unit.token_unit.emplace( "founder_d", 1 );
 
    // no soft cap -> no soft cap unit
-   gpolicy.post_soft_cap_unit.creativecoin_unit.clear();
+   gpolicy.post_soft_cap_unit.crea_unit.clear();
    gpolicy.post_soft_cap_unit.token_unit.clear();
 
-   gpolicy.min_creativecoin_units_commitment.fillin_nonhidden_value( 1 );
-   gpolicy.hard_cap_creativecoin_units_commitment.fillin_nonhidden_value( max_supply );
+   gpolicy.min_crea_units_commitment.fillin_nonhidden_value( 1 );
+   gpolicy.hard_cap_crea_units_commitment.fillin_nonhidden_value( max_supply );
 
    gpolicy.soft_cap_percent = CREA_100_PERCENT;
 
-   // .0006 ALPHA / 0.1 CREA -> 1000 token-units / creativecoin-unit
+   // .0006 ALPHA / 0.1 CREA -> 1000 token-units / crea-unit
    gpolicy.min_unit_ratio = 1000;
    gpolicy.max_unit_ratio = 1000;
 
@@ -128,9 +128,9 @@ void test_beta()
 
    smt_capped_generation_policy gpolicy;
 
-   // set creativecoin unit, total is 100 CREA-satoshis = 0.1 CREA
-   gpolicy.pre_soft_cap_unit.creativecoin_unit.emplace( "fred"  , 3 );
-   gpolicy.pre_soft_cap_unit.creativecoin_unit.emplace( "george", 2 );
+   // set crea unit, total is 100 CREA-satoshis = 0.1 CREA
+   gpolicy.pre_soft_cap_unit.crea_unit.emplace( "fred"  , 3 );
+   gpolicy.pre_soft_cap_unit.crea_unit.emplace( "george", 2 );
 
    // set token unit, total is 6 token-satoshis = 0.0006 ALPHA
    gpolicy.pre_soft_cap_unit.token_unit.emplace( "$from" , 7 );
@@ -138,15 +138,15 @@ void test_beta()
    gpolicy.pre_soft_cap_unit.token_unit.emplace( "henry" , 2 );
 
    // no soft cap -> no soft cap unit
-   gpolicy.post_soft_cap_unit.creativecoin_unit.clear();
+   gpolicy.post_soft_cap_unit.crea_unit.clear();
    gpolicy.post_soft_cap_unit.token_unit.clear();
 
-   gpolicy.min_creativecoin_units_commitment.fillin_nonhidden_value( 5000000 );
-   gpolicy.hard_cap_creativecoin_units_commitment.fillin_nonhidden_value( 30000000 );
+   gpolicy.min_crea_units_commitment.fillin_nonhidden_value( 5000000 );
+   gpolicy.hard_cap_crea_units_commitment.fillin_nonhidden_value( 30000000 );
 
    gpolicy.soft_cap_percent = CREA_100_PERCENT;
 
-   // .0006 ALPHA / 0.1 CREA -> 1000 token-units / creativecoin-unit
+   // .0006 ALPHA / 0.1 CREA -> 1000 token-units / crea-unit
    gpolicy.min_unit_ratio = 50;
    gpolicy.max_unit_ratio = 100;
 
@@ -182,18 +182,18 @@ void test_delta()
 
    smt_capped_generation_policy gpolicy;
 
-   // set creativecoin unit, total is 1 CREA-satoshi = 0.001 CREA
-   gpolicy.pre_soft_cap_unit.creativecoin_unit.emplace( "founder", 1 );
+   // set crea unit, total is 1 CREA-satoshi = 0.001 CREA
+   gpolicy.pre_soft_cap_unit.crea_unit.emplace( "founder", 1 );
 
    // set token unit, total is 10,000 token-satoshis = 0.10000 DELTA
    gpolicy.pre_soft_cap_unit.token_unit.emplace( "founder" , 10000 );
 
    // no soft cap -> no soft cap unit
-   gpolicy.post_soft_cap_unit.creativecoin_unit.clear();
+   gpolicy.post_soft_cap_unit.crea_unit.clear();
    gpolicy.post_soft_cap_unit.token_unit.clear();
 
-   gpolicy.min_creativecoin_units_commitment.fillin_nonhidden_value(      10000000 );
-   gpolicy.hard_cap_creativecoin_units_commitment.fillin_nonhidden_value( 10000000 );
+   gpolicy.min_crea_units_commitment.fillin_nonhidden_value(      10000000 );
+   gpolicy.hard_cap_crea_units_commitment.fillin_nonhidden_value( 10000000 );
 
    gpolicy.soft_cap_percent = CREA_100_PERCENT;
 
@@ -261,7 +261,7 @@ void smt_test_plugin::plugin_initialize( const boost::program_options::variables
    try
    {
       ilog( "Initializing smt_test plugin" );
-      chain::database& db = appbase::app().get_plugin< creativecoin::plugins::chain::chain_plugin >().db();
+      chain::database& db = appbase::app().get_plugin< crea::plugins::chain::chain_plugin >().db();
 
       db.add_pre_apply_operation_handler( [&]( const operation_notification& note ){ my->on_pre_apply_operation( note ); }, *this, 0 );
       db.add_post_apply_operation_handler( [&]( const operation_notification& note ){ my->on_post_apply_operation( note ); }, *this, 0 );
@@ -275,4 +275,4 @@ void smt_test_plugin::plugin_startup() {}
 
 void smt_test_plugin::plugin_shutdown() {}
 
-} } } // creativecoin::plugins::smt_test
+} } } // crea::plugins::smt_test

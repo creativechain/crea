@@ -1,12 +1,12 @@
-#include <creativecoin/plugins/tags/tags_plugin.hpp>
+#include <crea/plugins/tags/tags_plugin.hpp>
 
-#include <creativecoin/protocol/config.hpp>
+#include <crea/protocol/config.hpp>
 
-#include <creativecoin/chain/database.hpp>
-#include <creativecoin/chain/index.hpp>
-#include <creativecoin/chain/operation_notification.hpp>
-#include <creativecoin/chain/account_object.hpp>
-#include <creativecoin/chain/comment_object.hpp>
+#include <crea/chain/database.hpp>
+#include <crea/chain/index.hpp>
+#include <crea/chain/operation_notification.hpp>
+#include <crea/chain/account_object.hpp>
+#include <crea/chain/comment_object.hpp>
 
 #include <fc/smart_ref_impl.hpp>
 #include <fc/thread/thread.hpp>
@@ -16,7 +16,7 @@
 #include <boost/range/iterator_range.hpp>
 #include <boost/algorithm/string.hpp>
 
-namespace creativecoin { namespace plugins { namespace tags {
+namespace crea { namespace plugins { namespace tags {
 
 /**
  * https://medium.com/hacking-and-gonzo/how-reddit-ranking-algorithms-work-ef111e33d0d9#.lcbj6auuw
@@ -48,7 +48,7 @@ inline double calculate_trending( const share_type& score, const time_point_sec&
 
 namespace detail {
 
-using namespace creativecoin::protocol;
+using namespace crea::protocol;
 
 class tags_plugin_impl
 {
@@ -77,7 +77,7 @@ class tags_plugin_impl
 };
 
 tags_plugin_impl::tags_plugin_impl() :
-   _db( appbase::app().get_plugin< creativecoin::plugins::chain::chain_plugin >().db() ) {}
+   _db( appbase::app().get_plugin< crea::plugins::chain::chain_plugin >().db() ) {}
 
 tags_plugin_impl::~tags_plugin_impl() {}
 
@@ -549,4 +549,4 @@ void tags_plugin::plugin_startup()
    chain::util::disconnect_signal( my->_post_apply_operation_conn );
 }
 
-} } } /// creativecoin::plugins::tags
+} } } /// crea::plugins::tags

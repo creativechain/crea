@@ -2,8 +2,8 @@
 
 #include <fc/variant_object.hpp>
 
-namespace creativecoin { namespace protocol {
+namespace crea { namespace protocol {
 
 fc::variant_object get_config();
 
-} } // creativecoin::protocol
+} } // crea::protocol

@@ -1,6 +1,6 @@
 #pragma once
 
-namespace creativecoin { namespace chain {
+namespace crea { namespace chain {
 
 class database;
 

@@ -23,15 +23,15 @@
  */
 #pragma once
 
-#include <creativecoin/app/plugin.hpp>
-#include <creativecoin/chain/database.hpp>
+#include <crea/app/plugin.hpp>
+#include <crea/chain/database.hpp>
 
 #include <boost/multi_index/composite_key.hpp>
 
 #include <fc/thread/future.hpp>
 #include <fc/api.hpp>
 
-namespace creativecoin { namespace private_message {
+namespace crea { namespace private_message {
 using namespace chain;
 using app::application;
 
@@ -167,7 +167,7 @@ typedef multi_index_container<
  *   by the posting key.
  *
  */
-class private_message_plugin : public creativecoin::app::plugin
+class private_message_plugin : public crea::app::plugin
 {
    public:
       private_message_plugin( application* app );
@@ -206,15 +206,15 @@ class private_message_api : public std::enable_shared_from_this<private_message_
       app::application* _app = nullptr;
 };
 
-} } //creativecoin::private_message
+} } //crea::private_message
 
-FC_API( creativecoin::private_message::private_message_api, (get_inbox)(get_outbox) );
+FC_API( crea::private_message::private_message_api, (get_inbox)(get_outbox) );
 
-FC_REFLECT( creativecoin::private_message::message_body, (thread_start)(subject)(body)(json_meta)(cc) );
+FC_REFLECT( crea::private_message::message_body, (thread_start)(subject)(body)(json_meta)(cc) );
 
-FC_REFLECT( creativecoin::private_message::message_object, (id)(from)(to)(from_memo_key)(to_memo_key)(sent_time)(receive_time)(checksum)(encrypted_message) );
-CHAINBASE_SET_INDEX_TYPE( creativecoin::private_message::message_object, creativecoin::private_message::message_index );
+FC_REFLECT( crea::private_message::message_object, (id)(from)(to)(from_memo_key)(to_memo_key)(sent_time)(receive_time)(checksum)(encrypted_message) );
+CHAINBASE_SET_INDEX_TYPE( crea::private_message::message_object, crea::private_message::message_index );
 
-FC_REFLECT( creativecoin::private_message::message_api_obj, (id)(from)(to)(from_memo_key)(to_memo_key)(sent_time)(receive_time)(checksum)(encrypted_message) );
+FC_REFLECT( crea::private_message::message_api_obj, (id)(from)(to)(from_memo_key)(to_memo_key)(sent_time)(receive_time)(checksum)(encrypted_message) );
 
-FC_REFLECT_DERIVED( creativecoin::private_message::extended_message_object, (creativecoin::private_message::message_api_obj), (message) );
+FC_REFLECT_DERIVED( crea::private_message::extended_message_object, (crea::private_message::message_api_obj), (message) );

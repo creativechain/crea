@@ -1,15 +1,15 @@
 #pragma once
 
-#include <creativecoin/plugins/chain/chain_plugin.hpp>
+#include <crea/plugins/chain/chain_plugin.hpp>
 
-#include <creativecoin/chain/comment_object.hpp>
+#include <crea/chain/comment_object.hpp>
 
 #include <boost/multi_index/composite_key.hpp>
 
 
-namespace creativecoin { namespace plugins { namespace tags {
+namespace crea { namespace plugins { namespace tags {
 
-using namespace creativecoin::chain;
+using namespace crea::chain;
 using namespace boost::multi_index;
 
 using namespace appbase;
@@ -345,7 +345,7 @@ class tags_plugin : public plugin< tags_plugin >
       tags_plugin();
       virtual ~tags_plugin();
 
-      APPBASE_PLUGIN_REQUIRES( (creativecoin::plugins::chain::chain_plugin) )
+      APPBASE_PLUGIN_REQUIRES( (crea::plugins::chain::chain_plugin) )
 
       static const std::string& name() { static std::string name = CREA_TAGS_PLUGIN_NAME; return name; }
 
@@ -382,17 +382,17 @@ class tag_api : public std::enable_shared_from_this<tag_api> {
 */
 
 
-} } } //creativecoin::plugins::tags
+} } } //crea::plugins::tags
 
-FC_REFLECT( creativecoin::plugins::tags::tag_object,
+FC_REFLECT( crea::plugins::tags::tag_object,
    (id)(tag)(created)(active)(cashout)(net_rshares)(net_votes)(hot)(trending)(promoted_balance)(children)(author)(parent)(comment) )
-CHAINBASE_SET_INDEX_TYPE( creativecoin::plugins::tags::tag_object, creativecoin::plugins::tags::tag_index )
+CHAINBASE_SET_INDEX_TYPE( crea::plugins::tags::tag_object, crea::plugins::tags::tag_index )
 
-FC_REFLECT( creativecoin::plugins::tags::tag_stats_object,
+FC_REFLECT( crea::plugins::tags::tag_stats_object,
    (id)(tag)(total_payout)(net_votes)(top_posts)(comments)(total_trending) );
-CHAINBASE_SET_INDEX_TYPE( creativecoin::plugins::tags::tag_stats_object, creativecoin::plugins::tags::tag_stats_index )
+CHAINBASE_SET_INDEX_TYPE( crea::plugins::tags::tag_stats_object, crea::plugins::tags::tag_stats_index )
 
-FC_REFLECT( creativecoin::plugins::tags::comment_metadata, (tags) );
+FC_REFLECT( crea::plugins::tags::comment_metadata, (tags) );
 
-FC_REFLECT( creativecoin::plugins::tags::author_tag_stats_object, (id)(author)(tag)(total_posts)(total_rewards) )
-CHAINBASE_SET_INDEX_TYPE( creativecoin::plugins::tags::author_tag_stats_object, creativecoin::plugins::tags::author_tag_stats_index )
+FC_REFLECT( crea::plugins::tags::author_tag_stats_object, (id)(author)(tag)(total_posts)(total_rewards) )
+CHAINBASE_SET_INDEX_TYPE( crea::plugins::tags::author_tag_stats_object, crea::plugins::tags::author_tag_stats_index )

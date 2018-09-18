@@ -1,13 +1,13 @@
-file(GLOB HEADERS "include/creativecoin/schema/*.hpp")
-add_library( creativecoin_schema schema.cpp ${HEADERS} )
-target_link_libraries( creativecoin_schema fc )
-target_include_directories( creativecoin_schema PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/include" )
+file(GLOB HEADERS "include/crea/schema/*.hpp")
+add_library( crea_schema schema.cpp ${HEADERS} )
+target_link_libraries( crea_schema fc )
+target_include_directories( crea_schema PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/include" )
 
 install( TARGETS
-   creativecoin_schema
+   crea_schema
 
    RUNTIME DESTINATION bin
    LIBRARY DESTINATION lib
    ARCHIVE DESTINATION lib
 )
-install( FILES ${HEADERS} DESTINATION "include/creativecoin/schema" )
+install( FILES ${HEADERS} DESTINATION "include/crea/schema" )

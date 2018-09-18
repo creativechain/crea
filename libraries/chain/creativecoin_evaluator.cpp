@@ -1,11 +1,11 @@
-#include <creativecoin/chain/creativecoin_evaluator.hpp>
-#include <creativecoin/chain/database.hpp>
-#include <creativecoin/chain/custom_operation_interpreter.hpp>
-#include <creativecoin/chain/creativecoin_objects.hpp>
-#include <creativecoin/chain/witness_objects.hpp>
-#include <creativecoin/chain/block_summary_object.hpp>
+#include <crea/chain/crea_evaluator.hpp>
+#include <crea/chain/database.hpp>
+#include <crea/chain/custom_operation_interpreter.hpp>
+#include <crea/chain/crea_objects.hpp>
+#include <crea/chain/witness_objects.hpp>
+#include <crea/chain/block_summary_object.hpp>
 
-#include <creativecoin/chain/util/reward.hpp>
+#include <crea/chain/util/reward.hpp>
 
 #include <fc/macros.hpp>
 
@@ -41,7 +41,7 @@ std::string wstring_to_utf8(const std::wstring& str)
 
 #include <limits>
 
-namespace creativecoin { namespace chain {
+namespace crea { namespace chain {
    using fc::uint128_t;
 
 inline void validate_permlink_0_1( const string& permlink )
@@ -267,7 +267,7 @@ void initialize_account_object( account_object& acc, const account_name_type& na
    }
    else
    {
-      acc.recovery_account = "creativecoin";
+      acc.recovery_account = "crea";
    }
 }
 
@@ -570,11 +570,11 @@ void comment_options_evaluator::do_apply( const comment_options_operation& o )
    FC_ASSERT( comment.allow_curation_rewards >= o.allow_curation_rewards, "Curation rewards cannot be re-enabled." );
    FC_ASSERT( comment.allow_votes >= o.allow_votes, "Voting cannot be re-enabled." );
    FC_ASSERT( comment.max_accepted_payout >= o.max_accepted_payout, "A comment cannot accept a greater payout." );
-   FC_ASSERT( comment.percent_creativecoin_dollars >= o.percent_creativecoin_dollars, "A comment cannot accept a greater percent CBD." );
+   FC_ASSERT( comment.percent_crea_dollars >= o.percent_crea_dollars, "A comment cannot accept a greater percent CBD." );
 
    _db.modify( comment, [&]( comment_object& c ) {
        c.max_accepted_payout   = o.max_accepted_payout;
-       c.percent_creativecoin_dollars = o.percent_creativecoin_dollars;
+       c.percent_crea_dollars = o.percent_crea_dollars;
        c.allow_votes           = o.allow_votes;
        c.allow_curation_rewards = o.allow_curation_rewards;
    });
@@ -818,17 +818,17 @@ void escrow_transfer_evaluator::do_apply( const escrow_transfer_operation& o )
       FC_ASSERT( o.ratification_deadline > _db.head_block_time(), "The escorw ratification deadline must be after head block time." );
       FC_ASSERT( o.escrow_expiration > _db.head_block_time(), "The escrow expiration must be after head block time." );
 
-      asset creativecoin_spent = o.creativecoin_amount;
+      asset crea_spent = o.crea_amount;
       asset cbd_spent = o.cbd_amount;
       if( o.fee.symbol == CREA_SYMBOL )
-         creativecoin_spent += o.fee;
+         crea_spent += o.fee;
       else
          cbd_spent += o.fee;
 
-      FC_ASSERT( from_account.balance >= creativecoin_spent, "Account cannot cover CREA costs of escrow. Required: ${r} Available: ${a}", ("r",creativecoin_spent)("a",from_account.balance) );
+      FC_ASSERT( from_account.balance >= crea_spent, "Account cannot cover CREA costs of escrow. Required: ${r} Available: ${a}", ("r",crea_spent)("a",from_account.balance) );
       FC_ASSERT( from_account.cbd_balance >= cbd_spent, "Account cannot cover CBD costs of escrow. Required: ${r} Available: ${a}", ("r",cbd_spent)("a",from_account.cbd_balance) );
 
-      _db.adjust_balance( from_account, -creativecoin_spent );
+      _db.adjust_balance( from_account, -crea_spent );
       _db.adjust_balance( from_account, -cbd_spent );
 
       _db.create<escrow_object>([&]( escrow_object& esc )
@@ -840,7 +840,7 @@ void escrow_transfer_evaluator::do_apply( const escrow_transfer_operation& o )
          esc.ratification_deadline  = o.ratification_deadline;
          esc.escrow_expiration      = o.escrow_expiration;
          esc.cbd_balance            = o.cbd_amount;
-         esc.creativecoin_balance          = o.creativecoin_amount;
+         esc.crea_balance          = o.crea_amount;
          esc.pending_fee            = o.fee;
       });
    }
@@ -887,7 +887,7 @@ void escrow_approve_evaluator::do_apply( const escrow_approve_operation& o )
 
       if( reject_escrow )
       {
-         _db.adjust_balance( o.from, escrow.creativecoin_balance );
+         _db.adjust_balance( o.from, escrow.crea_balance );
          _db.adjust_balance( o.from, escrow.cbd_balance );
          _db.adjust_balance( o.from, escrow.pending_fee );
 
@@ -934,7 +934,7 @@ void escrow_release_evaluator::do_apply( const escrow_release_operation& o )
       _db.get_account(o.from); // Verify from account exists
 
       const auto& e = _db.get_escrow( o.from, o.escrow_id );
-      FC_ASSERT( e.creativecoin_balance >= o.creativecoin_amount, "Release amount exceeds escrow balance. Amount: ${a}, Balance: ${b}", ("a", o.creativecoin_amount)("b", e.creativecoin_balance) );
+      FC_ASSERT( e.crea_balance >= o.crea_amount, "Release amount exceeds escrow balance. Amount: ${a}, Balance: ${b}", ("a", o.crea_amount)("b", e.crea_balance) );
       FC_ASSERT( e.cbd_balance >= o.cbd_amount, "Release amount exceeds escrow balance. Amount: ${a}, Balance: ${b}", ("a", o.cbd_amount)("b", e.cbd_balance) );
       FC_ASSERT( e.to == o.to, "Operation 'to' (${o}) does not match escrow 'to' (${e}).", ("o", o.to)("e", e.to) );
       FC_ASSERT( e.agent == o.agent, "Operation 'agent' (${a}) does not match escrow 'agent' (${e}).", ("o", o.agent)("e", e.agent) );
@@ -965,16 +965,16 @@ void escrow_release_evaluator::do_apply( const escrow_release_operation& o )
       }
       // If escrow expires and there is no dispute, either party can release funds to either party.
 
-      _db.adjust_balance( o.receiver, o.creativecoin_amount );
+      _db.adjust_balance( o.receiver, o.crea_amount );
       _db.adjust_balance( o.receiver, o.cbd_amount );
 
       _db.modify( e, [&]( escrow_object& esc )
       {
-         esc.creativecoin_balance -= o.creativecoin_amount;
+         esc.crea_balance -= o.crea_amount;
          esc.cbd_balance -= o.cbd_amount;
       });
 
-      if( e.creativecoin_balance.amount == 0 && e.cbd_balance.amount == 0 )
+      if( e.crea_balance.amount == 0 && e.cbd_balance.amount == 0 )
       {
          _db.remove( e );
       }
@@ -1326,11 +1326,11 @@ void vote_evaluator::do_apply( const vote_operation& o )
    }
    else if( _db.has_hardfork( CREA_HARDFORK_0_14__259 ) )
    {
-      FC_ASSERT( abs_rshares > CREA_VOTE_DUST_THRESHOLD || o.weight == 0, "Voting weight is too small, please accumulate more voting power or creativecoin power." );
+      FC_ASSERT( abs_rshares > CREA_VOTE_DUST_THRESHOLD || o.weight == 0, "Voting weight is too small, please accumulate more voting power or crea power." );
    }
    else if( _db.has_hardfork( CREA_HARDFORK_0_13__248 ) )
    {
-      FC_ASSERT( abs_rshares > CREA_VOTE_DUST_THRESHOLD || abs_rshares == 1, "Voting weight is too small, please accumulate more voting power or creativecoin power." );
+      FC_ASSERT( abs_rshares > CREA_VOTE_DUST_THRESHOLD || abs_rshares == 1, "Voting weight is too small, please accumulate more voting power or crea power." );
    }
 
 
@@ -1903,16 +1903,16 @@ void convert_evaluator::do_apply( const convert_operation& o )
   const auto& fhistory = _db.get_feed_history();
   FC_ASSERT( !fhistory.current_median_history.is_null(), "Cannot convert CBD because there is no price feed." );
 
-  auto creativecoin_conversion_delay = CREA_CONVERSION_DELAY_PRE_HF_16;
+  auto crea_conversion_delay = CREA_CONVERSION_DELAY_PRE_HF_16;
   if( _db.has_hardfork( CREA_HARDFORK_0_16__551) )
-     creativecoin_conversion_delay = CREA_CONVERSION_DELAY;
+     crea_conversion_delay = CREA_CONVERSION_DELAY;
 
   _db.create<convert_request_object>( [&]( convert_request_object& obj )
   {
       obj.owner           = o.owner;
       obj.requestid       = o.requestid;
       obj.amount          = o.amount;
-      obj.conversion_date = _db.head_block_time() + creativecoin_conversion_delay;
+      obj.conversion_date = _db.head_block_time() + crea_conversion_delay;
   });
 
 }
@@ -2297,39 +2297,39 @@ void claim_reward_balance_evaluator::do_apply( const claim_reward_balance_operat
 {
    const auto& acnt = _db.get_account( op.account );
 
-   FC_ASSERT( op.reward_creativecoin <= acnt.reward_creativecoin_balance, "Cannot claim that much CREA. Claim: ${c} Actual: ${a}",
-      ("c", op.reward_creativecoin)("a", acnt.reward_creativecoin_balance) );
+   FC_ASSERT( op.reward_crea <= acnt.reward_crea_balance, "Cannot claim that much CREA. Claim: ${c} Actual: ${a}",
+      ("c", op.reward_crea)("a", acnt.reward_crea_balance) );
    FC_ASSERT( op.reward_sbd <= acnt.reward_cbd_balance, "Cannot claim that much CBD. Claim: ${c} Actual: ${a}",
       ("c", op.reward_sbd)("a", acnt.reward_cbd_balance) );
    FC_ASSERT( op.reward_vests <= acnt.reward_vesting_balance, "Cannot claim that much VESTS. Claim: ${c} Actual: ${a}",
       ("c", op.reward_vests)("a", acnt.reward_vesting_balance) );
 
-   asset reward_vesting_creativecoin_to_move = asset( 0, CREA_SYMBOL );
+   asset reward_vesting_crea_to_move = asset( 0, CREA_SYMBOL );
    if( op.reward_vests == acnt.reward_vesting_balance )
-      reward_vesting_creativecoin_to_move = acnt.reward_vesting_creativecoin;
+      reward_vesting_crea_to_move = acnt.reward_vesting_crea;
    else
-      reward_vesting_creativecoin_to_move = asset( ( ( uint128_t( op.reward_vests.amount.value ) * uint128_t( acnt.reward_vesting_creativecoin.amount.value ) )
+      reward_vesting_crea_to_move = asset( ( ( uint128_t( op.reward_vests.amount.value ) * uint128_t( acnt.reward_vesting_crea.amount.value ) )
          / uint128_t( acnt.reward_vesting_balance.amount.value ) ).to_uint64(), CREA_SYMBOL );
 
-   _db.adjust_reward_balance( acnt, -op.reward_creativecoin );
+   _db.adjust_reward_balance( acnt, -op.reward_crea );
    _db.adjust_reward_balance( acnt, -op.reward_sbd );
-   _db.adjust_balance( acnt, op.reward_creativecoin );
+   _db.adjust_balance( acnt, op.reward_crea );
    _db.adjust_balance( acnt, op.reward_sbd );
 
    _db.modify( acnt, [&]( account_object& a )
    {
       a.vesting_shares += op.reward_vests;
       a.reward_vesting_balance -= op.reward_vests;
-      a.reward_vesting_creativecoin -= reward_vesting_creativecoin_to_move;
+      a.reward_vesting_crea -= reward_vesting_crea_to_move;
    });
 
    _db.modify( _db.get_dynamic_global_properties(), [&]( dynamic_global_property_object& gpo )
    {
       gpo.total_vesting_shares += op.reward_vests;
-      gpo.total_vesting_fund_creativecoin += reward_vesting_creativecoin_to_move;
+      gpo.total_vesting_fund_crea += reward_vesting_crea_to_move;
 
       gpo.pending_rewarded_vesting_shares -= op.reward_vests;
-      gpo.pending_rewarded_vesting_creativecoin -= reward_vesting_creativecoin_to_move;
+      gpo.pending_rewarded_vesting_crea -= reward_vesting_crea_to_move;
    });
 
    _db.adjust_proxied_witness_votes( acnt, op.reward_vests.amount );
@@ -2364,35 +2364,35 @@ void claim_reward_balance2_evaluator::do_apply( const claim_reward_balance2_oper
             FC_ASSERT( token <= a->reward_vesting_balance, "Cannot claim that much VESTS. Claim: ${c} Actual: ${a}",
                ("c", token)("a", a->reward_vesting_balance) );
 
-            asset reward_vesting_creativecoin_to_move = asset( 0, CREA_SYMBOL );
+            asset reward_vesting_crea_to_move = asset( 0, CREA_SYMBOL );
             if( token == a->reward_vesting_balance )
-               reward_vesting_creativecoin_to_move = a->reward_vesting_creativecoin;
+               reward_vesting_crea_to_move = a->reward_vesting_crea;
             else
-               reward_vesting_creativecoin_to_move = asset( ( ( uint128_t( token.amount.value ) * uint128_t( a->reward_vesting_creativecoin.amount.value ) )
+               reward_vesting_crea_to_move = asset( ( ( uint128_t( token.amount.value ) * uint128_t( a->reward_vesting_crea.amount.value ) )
                   / uint128_t( a->reward_vesting_balance.amount.value ) ).to_uint64(), CREA_SYMBOL );
 
             _db.modify( *a, [&]( account_object& a )
             {
                a.vesting_shares += token;
                a.reward_vesting_balance -= token;
-               a.reward_vesting_creativecoin -= reward_vesting_creativecoin_to_move;
+               a.reward_vesting_crea -= reward_vesting_crea_to_move;
             });
 
             _db.modify( _db.get_dynamic_global_properties(), [&]( dynamic_global_property_object& gpo )
             {
                gpo.total_vesting_shares += token;
-               gpo.total_vesting_fund_creativecoin += reward_vesting_creativecoin_to_move;
+               gpo.total_vesting_fund_crea += reward_vesting_crea_to_move;
 
                gpo.pending_rewarded_vesting_shares -= token;
-               gpo.pending_rewarded_vesting_creativecoin -= reward_vesting_creativecoin_to_move;
+               gpo.pending_rewarded_vesting_crea -= reward_vesting_crea_to_move;
             });
 
             _db.adjust_proxied_witness_votes( *a, token.amount );
          }
          else if( token.symbol == CREA_SYMBOL || token.symbol == CBD_SYMBOL )
          {
-            FC_ASSERT( is_asset_type( token, CREA_SYMBOL ) == false || token <= a->reward_creativecoin_balance,
-                       "Cannot claim that much CREA. Claim: ${c} Actual: ${a}", ("c", token)("a", a->reward_creativecoin_balance) );
+            FC_ASSERT( is_asset_type( token, CREA_SYMBOL ) == false || token <= a->reward_crea_balance,
+                       "Cannot claim that much CREA. Claim: ${c} Actual: ${a}", ("c", token)("a", a->reward_crea_balance) );
             FC_ASSERT( is_asset_type( token, CBD_SYMBOL ) == false || token <= a->reward_cbd_balance,
                        "Cannot claim that much CBD. Claim: ${c} Actual: ${a}", ("c", token)("a", a->reward_cbd_balance) );
             _db.adjust_reward_balance( *a, -token );
@@ -2514,4 +2514,4 @@ void delegate_vesting_shares_evaluator::do_apply( const delegate_vesting_shares_
    }
 }
 
-} } // creativecoin::chain
+} } // crea::chain

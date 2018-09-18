@@ -22,22 +22,22 @@
  * THE SOFTWARE.
  */
 
-#include <creativecoin/private_message/private_message_evaluators.hpp>
-#include <creativecoin/private_message/private_message_operations.hpp>
-#include <creativecoin/private_message/private_message_plugin.hpp>
+#include <crea/private_message/private_message_evaluators.hpp>
+#include <crea/private_message/private_message_operations.hpp>
+#include <crea/private_message/private_message_plugin.hpp>
 
-#include <creativecoin/app/impacted.hpp>
+#include <crea/app/impacted.hpp>
 
-#include <creativecoin/protocol/config.hpp>
+#include <crea/protocol/config.hpp>
 
-#include <creativecoin/chain/database.hpp>
-#include <creativecoin/chain/index.hpp>
-#include <creativecoin/chain/generic_custom_operation_interpreter.hpp>
+#include <crea/chain/database.hpp>
+#include <crea/chain/index.hpp>
+#include <crea/chain/generic_custom_operation_interpreter.hpp>
 
 #include <fc/smart_ref_impl.hpp>
 #include <fc/thread/thread.hpp>
 
-namespace creativecoin { namespace private_message {
+namespace crea { namespace private_message {
 
 namespace detail
 {
@@ -48,20 +48,20 @@ class private_message_plugin_impl
       private_message_plugin_impl(private_message_plugin& _plugin);
       virtual ~private_message_plugin_impl();
 
-      creativecoin::chain::database& database()
+      crea::chain::database& database()
       {
          return _self.database();
       }
 
       private_message_plugin&                                                             _self;
-      std::shared_ptr< generic_custom_operation_interpreter< creativecoin::private_message::private_message_plugin_operation > >   _custom_operation_interpreter;
+      std::shared_ptr< generic_custom_operation_interpreter< crea::private_message::private_message_plugin_operation > >   _custom_operation_interpreter;
       flat_map<string,string>                                                             _tracked_accounts;
 };
 
 private_message_plugin_impl::private_message_plugin_impl( private_message_plugin& _plugin )
    : _self( _plugin )
 {
-   _custom_operation_interpreter = std::make_shared< generic_custom_operation_interpreter< creativecoin::private_message::private_message_plugin_operation > >( database() );
+   _custom_operation_interpreter = std::make_shared< generic_custom_operation_interpreter< crea::private_message::private_message_plugin_operation > >( database() );
 
    _custom_operation_interpreter->register_evaluator< private_message_evaluator >( &_self );
 
@@ -185,6 +185,6 @@ flat_map<string,string> private_message_plugin::tracked_accounts() const
 
 } }
 
-CREA_DEFINE_PLUGIN( private_message, creativecoin::private_message::private_message_plugin )
+CREA_DEFINE_PLUGIN( private_message, crea::private_message::private_message_plugin )
 
-CREA_DEFINE_OPERATION_TYPE( creativecoin::private_message::private_message_plugin_operation )
+CREA_DEFINE_OPERATION_TYPE( crea::private_message::private_message_plugin_operation )

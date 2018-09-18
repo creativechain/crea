@@ -1,10 +1,10 @@
-file(GLOB HEADERS "include/creativecoin/plugins/stats_export/*.hpp")
+file(GLOB HEADERS "include/crea/plugins/stats_export/*.hpp")
 
 add_library( stats_export_plugin
              stats_export_plugin.cpp
            )
 
-target_link_libraries( stats_export_plugin block_data_export_plugin chain_plugin creativecoin_chain creativecoin_protocol )
+target_link_libraries( stats_export_plugin block_data_export_plugin chain_plugin crea_chain crea_protocol )
 target_include_directories( stats_export_plugin
                             PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/include" )
 

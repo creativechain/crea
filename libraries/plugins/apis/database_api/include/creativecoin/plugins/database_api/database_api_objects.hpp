@@ -1,18 +1,18 @@
 #pragma once
-#include <creativecoin/chain/account_object.hpp>
-#include <creativecoin/chain/block_summary_object.hpp>
-#include <creativecoin/chain/comment_object.hpp>
-#include <creativecoin/chain/global_property_object.hpp>
-#include <creativecoin/chain/history_object.hpp>
-#include <creativecoin/chain/creativecoin_objects.hpp>
-#include <creativecoin/chain/smt_objects.hpp>
-#include <creativecoin/chain/transaction_object.hpp>
-#include <creativecoin/chain/witness_objects.hpp>
-#include <creativecoin/chain/database.hpp>
+#include <crea/chain/account_object.hpp>
+#include <crea/chain/block_summary_object.hpp>
+#include <crea/chain/comment_object.hpp>
+#include <crea/chain/global_property_object.hpp>
+#include <crea/chain/history_object.hpp>
+#include <crea/chain/crea_objects.hpp>
+#include <crea/chain/smt_objects.hpp>
+#include <crea/chain/transaction_object.hpp>
+#include <crea/chain/witness_objects.hpp>
+#include <crea/chain/database.hpp>
 
-namespace creativecoin { namespace plugins { namespace database_api {
+namespace crea { namespace plugins { namespace database_api {
 
-using namespace creativecoin::chain;
+using namespace crea::chain;
 
 typedef change_recovery_account_request_object api_change_recovery_account_request_object;
 typedef block_summary_object                   api_block_summary_object;
@@ -56,7 +56,7 @@ struct api_comment_object
       author_rewards( o.author_rewards ),
       net_votes( o.net_votes ),
       max_accepted_payout( o.max_accepted_payout ),
-      percent_creativecoin_dollars( o.percent_creativecoin_dollars ),
+      percent_crea_dollars( o.percent_crea_dollars ),
       allow_replies( o.allow_replies ),
       allow_votes( o.allow_votes ),
       allow_curation_rewards( o.allow_curation_rewards )
@@ -123,7 +123,7 @@ struct api_comment_object
    string            root_permlink;
 
    asset             max_accepted_payout;
-   uint16_t          percent_creativecoin_dollars = 0;
+   uint16_t          percent_crea_dollars = 0;
    bool              allow_replies = false;
    bool              allow_votes = false;
    bool              allow_curation_rewards = false;
@@ -190,9 +190,9 @@ struct api_account_object
       savings_cbd_last_interest_payment( a.savings_cbd_last_interest_payment ),
       savings_withdraw_requests( a.savings_withdraw_requests ),
       reward_cbd_balance( a.reward_cbd_balance ),
-      reward_creativecoin_balance( a.reward_creativecoin_balance ),
+      reward_crea_balance( a.reward_crea_balance ),
       reward_vesting_balance( a.reward_vesting_balance ),
-      reward_vesting_creativecoin( a.reward_vesting_creativecoin ),
+      reward_vesting_crea( a.reward_vesting_crea ),
       curation_rewards( a.curation_rewards ),
       posting_rewards( a.posting_rewards ),
       vesting_shares( a.vesting_shares ),
@@ -269,9 +269,9 @@ struct api_account_object
    uint8_t           savings_withdraw_requests = 0;
 
    asset             reward_cbd_balance;
-   asset             reward_creativecoin_balance;
+   asset             reward_crea_balance;
    asset             reward_vesting_balance;
-   asset             reward_vesting_creativecoin;
+   asset             reward_vesting_crea;
 
    share_type        curation_rewards;
    share_type        posting_rewards;
@@ -517,8 +517,8 @@ struct api_hardfork_property_object
 struct order
 {
    price                order_price;
-   double               real_price; // dollars per creativecoin
-   share_type           creativecoin;
+   double               real_price; // dollars per crea
+   share_type           crea;
    share_type           sbd;
    fc::time_point_sec   created;
 };
@@ -529,9 +529,9 @@ struct order_book
    vector< order >      bids;
 };
 
-} } } // creativecoin::plugins::database_api
+} } } // crea::plugins::database_api
 
-FC_REFLECT( creativecoin::plugins::database_api::api_comment_object,
+FC_REFLECT( crea::plugins::database_api::api_comment_object,
              (id)(author)(permlink)
              (category)(parent_author)(parent_permlink)
              (title)(body)(json_metadata)(last_update)(created)(active)(last_payout)
@@ -540,15 +540,15 @@ FC_REFLECT( creativecoin::plugins::database_api::api_comment_object,
              (children_abs_rshares)(cashout_time)(max_cashout_time)
              (total_vote_weight)(reward_weight)(total_payout_value)(curator_payout_value)(author_rewards)(net_votes)
              (root_author)(root_permlink)
-             (max_accepted_payout)(percent_creativecoin_dollars)(allow_replies)(allow_votes)(allow_curation_rewards)
+             (max_accepted_payout)(percent_crea_dollars)(allow_replies)(allow_votes)(allow_curation_rewards)
              (beneficiaries)
           )
 
-FC_REFLECT( creativecoin::plugins::database_api::api_comment_vote_object,
+FC_REFLECT( crea::plugins::database_api::api_comment_vote_object,
              (id)(voter)(author)(permlink)(weight)(rshares)(vote_percent)(last_update)(num_changes)
           )
 
-FC_REFLECT( creativecoin::plugins::database_api::api_account_object,
+FC_REFLECT( crea::plugins::database_api::api_account_object,
              (id)(name)(owner)(active)(posting)(memo_key)(json_metadata)(proxy)(last_owner_update)(last_account_update)
              (created)(mined)
              (recovery_account)(last_account_recovery)(reset_account)
@@ -557,7 +557,7 @@ FC_REFLECT( creativecoin::plugins::database_api::api_account_object,
              (savings_balance)
              (cbd_balance)(cbd_seconds)(cbd_seconds_last_update)(cbd_last_interest_payment)
              (savings_cbd_balance)(savings_cbd_seconds)(savings_cbd_seconds_last_update)(savings_cbd_last_interest_payment)(savings_withdraw_requests)
-             (reward_cbd_balance)(reward_creativecoin_balance)(reward_vesting_balance)(reward_vesting_creativecoin)
+             (reward_cbd_balance)(reward_crea_balance)(reward_vesting_balance)(reward_vesting_crea)
              (vesting_shares)(delegated_vesting_shares)(received_vesting_shares)(vesting_withdraw_rate)(next_vesting_withdrawal)(withdrawn)(to_withdraw)(withdraw_routes)
              (curation_rewards)
              (posting_rewards)
@@ -566,21 +566,21 @@ FC_REFLECT( creativecoin::plugins::database_api::api_account_object,
              (is_smt)
           )
 
-FC_REFLECT( creativecoin::plugins::database_api::api_owner_authority_history_object,
+FC_REFLECT( crea::plugins::database_api::api_owner_authority_history_object,
              (id)
              (account)
              (previous_owner_authority)
              (last_valid_time)
           )
 
-FC_REFLECT( creativecoin::plugins::database_api::api_account_recovery_request_object,
+FC_REFLECT( crea::plugins::database_api::api_account_recovery_request_object,
              (id)
              (account_to_recover)
              (new_owner_authority)
              (expires)
           )
 
-FC_REFLECT( creativecoin::plugins::database_api::api_savings_withdraw_object,
+FC_REFLECT( crea::plugins::database_api::api_savings_withdraw_object,
              (id)
              (from)
              (to)
@@ -590,13 +590,13 @@ FC_REFLECT( creativecoin::plugins::database_api::api_savings_withdraw_object,
              (complete)
           )
 
-FC_REFLECT( creativecoin::plugins::database_api::api_feed_history_object,
+FC_REFLECT( crea::plugins::database_api::api_feed_history_object,
              (id)
              (current_median_history)
              (price_history)
           )
 
-FC_REFLECT( creativecoin::plugins::database_api::api_witness_object,
+FC_REFLECT( crea::plugins::database_api::api_witness_object,
              (id)
              (owner)
              (created)
@@ -609,7 +609,7 @@ FC_REFLECT( creativecoin::plugins::database_api::api_witness_object,
              (hardfork_version_vote)(hardfork_time_vote)
           )
 
-FC_REFLECT( creativecoin::plugins::database_api::api_witness_schedule_object,
+FC_REFLECT( crea::plugins::database_api::api_witness_schedule_object,
              (id)
              (current_virtual_time)
              (next_shuffle_block_num)
@@ -627,13 +627,13 @@ FC_REFLECT( creativecoin::plugins::database_api::api_witness_schedule_object,
              (hardfork_required_witnesses)
           )
 
-FC_REFLECT_DERIVED( creativecoin::plugins::database_api::api_signed_block_object, (creativecoin::protocol::signed_block),
+FC_REFLECT_DERIVED( crea::plugins::database_api::api_signed_block_object, (crea::protocol::signed_block),
                      (block_id)
                      (signing_key)
                      (transaction_ids)
                   )
 
-FC_REFLECT( creativecoin::plugins::database_api::api_hardfork_property_object,
+FC_REFLECT( crea::plugins::database_api::api_hardfork_property_object,
             (id)
             (processed_hardforks)
             (last_hardfork)
@@ -642,6 +642,6 @@ FC_REFLECT( creativecoin::plugins::database_api::api_hardfork_property_object,
             (next_hardfork_time)
           )
 
-FC_REFLECT( creativecoin::plugins::database_api::order, (order_price)(real_price)(creativecoin)(sbd)(created) );
+FC_REFLECT( crea::plugins::database_api::order, (order_price)(real_price)(crea)(sbd)(created) );
 
-FC_REFLECT( creativecoin::plugins::database_api::order_book, (asks)(bids) );
+FC_REFLECT( crea::plugins::database_api::order_book, (asks)(bids) );

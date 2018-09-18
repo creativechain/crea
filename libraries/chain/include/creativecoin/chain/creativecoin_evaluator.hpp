@@ -1,12 +1,12 @@
 #pragma once
 
-#include <creativecoin/protocol/creativecoin_operations.hpp>
+#include <crea/protocol/crea_operations.hpp>
 
-#include <creativecoin/chain/evaluator.hpp>
+#include <crea/chain/evaluator.hpp>
 
-namespace creativecoin { namespace chain {
+namespace crea { namespace chain {
 
-using namespace creativecoin::protocol;
+using namespace crea::protocol;
 
 CREA_DEFINE_EVALUATOR( account_create )
 CREA_DEFINE_EVALUATOR( account_create_with_delegation )
@@ -64,4 +64,4 @@ CREA_DEFINE_EVALUATOR( smt_set_runtime_parameters )
 CREA_DEFINE_EVALUATOR( smt_create )
 #endif
 
-} } // creativecoin::chain
+} } // crea::chain

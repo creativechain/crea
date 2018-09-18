@@ -1,26 +1,26 @@
 #pragma once
 
-#include <creativecoin/protocol/authority.hpp>
-#include <creativecoin/protocol/creativecoin_operations.hpp>
-#include <creativecoin/protocol/misc_utilities.hpp>
+#include <crea/protocol/authority.hpp>
+#include <crea/protocol/crea_operations.hpp>
+#include <crea/protocol/misc_utilities.hpp>
 
-#include <creativecoin/chain/creativecoin_object_types.hpp>
+#include <crea/chain/crea_object_types.hpp>
 
 #include <boost/multi_index/composite_key.hpp>
 #include <boost/multiprecision/cpp_int.hpp>
 
 
-namespace creativecoin { namespace chain {
+namespace crea { namespace chain {
 
-   using creativecoin::protocol::asset;
-   using creativecoin::protocol::price;
-   using creativecoin::protocol::asset_symbol_type;
+   using crea::protocol::asset;
+   using crea::protocol::price;
+   using crea::protocol::asset_symbol_type;
    using chainbase::t_deque;
 
    typedef protocol::fixed_string< 16 > reward_fund_name_type;
 
    /**
-    *  This object is used to track pending requests to convert sbd to creativecoin
+    *  This object is used to track pending requests to convert sbd to crea
     */
    class convert_request_object : public object< convert_request_object_type, convert_request_object >
    {
@@ -62,7 +62,7 @@ namespace creativecoin { namespace chain {
          time_point_sec    ratification_deadline;
          time_point_sec    escrow_expiration;
          asset             cbd_balance;
-         asset             creativecoin_balance;
+         asset             crea_balance;
          asset             pending_fee;
          bool              to_approved = false;
          bool              agent_approved = false;
@@ -120,7 +120,7 @@ namespace creativecoin { namespace chain {
          id_type           id;
 
          account_id_type   owner;
-         int64_t           creativecoin_volume = 0;
+         int64_t           crea_volume = 0;
          int64_t           cbd_volume = 0;
          uint128_t         weight = 0;
 
@@ -129,12 +129,12 @@ namespace creativecoin { namespace chain {
          /// this is the sort index
          uint128_t volume_weight()const
          {
-            return creativecoin_volume * cbd_volume * is_positive();
+            return crea_volume * cbd_volume * is_positive();
          }
 
          uint128_t min_volume_weight()const
          {
-            return std::min(creativecoin_volume,cbd_volume) * is_positive();
+            return std::min(crea_volume,cbd_volume) * is_positive();
          }
 
          void update_weight( bool hf9 )
@@ -144,7 +144,7 @@ namespace creativecoin { namespace chain {
 
          inline int is_positive()const
          {
-            return ( creativecoin_volume > 0 && cbd_volume > 0 ) ? 1 : 0;
+            return ( crea_volume > 0 && cbd_volume > 0 ) ? 1 : 0;
          }
    };
 
@@ -458,47 +458,47 @@ namespace creativecoin { namespace chain {
       allocator< reward_fund_object >
    > reward_fund_index;
 
-} } // creativecoin::chain
+} } // crea::chain
 
-#include <creativecoin/chain/comment_object.hpp>
-#include <creativecoin/chain/account_object.hpp>
+#include <crea/chain/comment_object.hpp>
+#include <crea/chain/account_object.hpp>
 
-FC_REFLECT( creativecoin::chain::limit_order_object,
+FC_REFLECT( crea::chain::limit_order_object,
              (id)(created)(expiration)(seller)(orderid)(for_sale)(sell_price) )
-CHAINBASE_SET_INDEX_TYPE( creativecoin::chain::limit_order_object, creativecoin::chain::limit_order_index )
+CHAINBASE_SET_INDEX_TYPE( crea::chain::limit_order_object, crea::chain::limit_order_index )
 
-FC_REFLECT( creativecoin::chain::feed_history_object,
+FC_REFLECT( crea::chain::feed_history_object,
              (id)(current_median_history)(price_history) )
-CHAINBASE_SET_INDEX_TYPE( creativecoin::chain::feed_history_object, creativecoin::chain::feed_history_index )
+CHAINBASE_SET_INDEX_TYPE( crea::chain::feed_history_object, crea::chain::feed_history_index )
 
-FC_REFLECT( creativecoin::chain::convert_request_object,
+FC_REFLECT( crea::chain::convert_request_object,
              (id)(owner)(requestid)(amount)(conversion_date) )
-CHAINBASE_SET_INDEX_TYPE( creativecoin::chain::convert_request_object, creativecoin::chain::convert_request_index )
+CHAINBASE_SET_INDEX_TYPE( crea::chain::convert_request_object, crea::chain::convert_request_index )
 
-FC_REFLECT( creativecoin::chain::liquidity_reward_balance_object,
-             (id)(owner)(creativecoin_volume)(cbd_volume)(weight)(last_update) )
-CHAINBASE_SET_INDEX_TYPE( creativecoin::chain::liquidity_reward_balance_object, creativecoin::chain::liquidity_reward_balance_index )
+FC_REFLECT( crea::chain::liquidity_reward_balance_object,
+             (id)(owner)(crea_volume)(cbd_volume)(weight)(last_update) )
+CHAINBASE_SET_INDEX_TYPE( crea::chain::liquidity_reward_balance_object, crea::chain::liquidity_reward_balance_index )
 
-FC_REFLECT( creativecoin::chain::withdraw_vesting_route_object,
+FC_REFLECT( crea::chain::withdraw_vesting_route_object,
              (id)(from_account)(to_account)(percent)(auto_vest) )
-CHAINBASE_SET_INDEX_TYPE( creativecoin::chain::withdraw_vesting_route_object, creativecoin::chain::withdraw_vesting_route_index )
+CHAINBASE_SET_INDEX_TYPE( crea::chain::withdraw_vesting_route_object, crea::chain::withdraw_vesting_route_index )
 
-FC_REFLECT( creativecoin::chain::savings_withdraw_object,
+FC_REFLECT( crea::chain::savings_withdraw_object,
              (id)(from)(to)(memo)(request_id)(amount)(complete) )
-CHAINBASE_SET_INDEX_TYPE( creativecoin::chain::savings_withdraw_object, creativecoin::chain::savings_withdraw_index )
+CHAINBASE_SET_INDEX_TYPE( crea::chain::savings_withdraw_object, crea::chain::savings_withdraw_index )
 
-FC_REFLECT( creativecoin::chain::escrow_object,
+FC_REFLECT( crea::chain::escrow_object,
              (id)(escrow_id)(from)(to)(agent)
              (ratification_deadline)(escrow_expiration)
-             (cbd_balance)(creativecoin_balance)(pending_fee)
+             (cbd_balance)(crea_balance)(pending_fee)
              (to_approved)(agent_approved)(disputed) )
-CHAINBASE_SET_INDEX_TYPE( creativecoin::chain::escrow_object, creativecoin::chain::escrow_index )
+CHAINBASE_SET_INDEX_TYPE( crea::chain::escrow_object, crea::chain::escrow_index )
 
-FC_REFLECT( creativecoin::chain::decline_voting_rights_request_object,
+FC_REFLECT( crea::chain::decline_voting_rights_request_object,
              (id)(account)(effective_date) )
-CHAINBASE_SET_INDEX_TYPE( creativecoin::chain::decline_voting_rights_request_object, creativecoin::chain::decline_voting_rights_request_index )
+CHAINBASE_SET_INDEX_TYPE( crea::chain::decline_voting_rights_request_object, crea::chain::decline_voting_rights_request_index )
 
-FC_REFLECT( creativecoin::chain::reward_fund_object,
+FC_REFLECT( crea::chain::reward_fund_object,
             (id)
             (name)
             (reward_balance)
@@ -510,4 +510,4 @@ FC_REFLECT( creativecoin::chain::reward_fund_object,
             (author_reward_curve)
             (curation_reward_curve)
          )
-CHAINBASE_SET_INDEX_TYPE( creativecoin::chain::reward_fund_object, creativecoin::chain::reward_fund_index )
+CHAINBASE_SET_INDEX_TYPE( crea::chain::reward_fund_object, crea::chain::reward_fund_index )

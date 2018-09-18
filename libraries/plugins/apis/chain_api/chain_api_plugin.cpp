@@ -1,8 +1,8 @@
-#include <creativecoin/plugins/chain_api/chain_api_plugin.hpp>
-#include <creativecoin/plugins/chain_api/chain_api.hpp>
+#include <crea/plugins/chain_api/chain_api_plugin.hpp>
+#include <crea/plugins/chain_api/chain_api.hpp>
 
 
-namespace creativecoin { namespace plugins { namespace chain {
+namespace crea { namespace plugins { namespace chain {
 
 chain_api_plugin::chain_api_plugin() {}
 chain_api_plugin::~chain_api_plugin() {}
@@ -17,4 +17,4 @@ void chain_api_plugin::plugin_initialize( const variables_map& options )
 void chain_api_plugin::plugin_startup() {}
 void chain_api_plugin::plugin_shutdown() {}
 
-} } } // creativecoin::plugins::chain
+} } } // crea::plugins::chain

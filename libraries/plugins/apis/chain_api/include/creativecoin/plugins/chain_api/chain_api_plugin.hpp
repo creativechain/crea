@@ -1,13 +1,13 @@
 #pragma once
-#include <creativecoin/plugins/chain/chain_plugin.hpp>
-#include <creativecoin/plugins/json_rpc/json_rpc_plugin.hpp>
+#include <crea/plugins/chain/chain_plugin.hpp>
+#include <crea/plugins/json_rpc/json_rpc_plugin.hpp>
 
 #include <appbase/application.hpp>
 
 #define CREA_CHAIN_API_PLUGIN_NAME "chain_api"
 
 
-namespace creativecoin { namespace plugins { namespace chain {
+namespace crea { namespace plugins { namespace chain {
 
 using namespace appbase;
 
@@ -15,8 +15,8 @@ class chain_api_plugin : public plugin< chain_api_plugin >
 {
 public:
    APPBASE_PLUGIN_REQUIRES(
-      (creativecoin::plugins::chain::chain_plugin)
-      (creativecoin::plugins::json_rpc::json_rpc_plugin)
+      (crea::plugins::chain::chain_plugin)
+      (crea::plugins::json_rpc::json_rpc_plugin)
    )
 
    chain_api_plugin();
@@ -35,4 +35,4 @@ public:
    std::shared_ptr< class chain_api > api;
 };
 
-} } } // creativecoin::plugins::chain
+} } } // crea::plugins::chain

@@ -1,13 +1,13 @@
 #pragma once
-#include <creativecoin/plugins/account_history/account_history_plugin.hpp>
-#include <creativecoin/plugins/json_rpc/json_rpc_plugin.hpp>
+#include <crea/plugins/account_history/account_history_plugin.hpp>
+#include <crea/plugins/json_rpc/json_rpc_plugin.hpp>
 
 #include <appbase/application.hpp>
 
 #define CREA_ACCOUNT_HISTORY_API_PLUGIN_NAME "account_history_api"
 
 
-namespace creativecoin { namespace plugins { namespace account_history {
+namespace crea { namespace plugins { namespace account_history {
 
 using namespace appbase;
 
@@ -15,7 +15,7 @@ class account_history_api_plugin : public plugin< account_history_api_plugin >
 {
 public:
    APPBASE_PLUGIN_REQUIRES(
-      (creativecoin::plugins::json_rpc::json_rpc_plugin)
+      (crea::plugins::json_rpc::json_rpc_plugin)
    )
 
    account_history_api_plugin();
@@ -32,4 +32,4 @@ public:
    std::shared_ptr< class account_history_api > api;
 };
 
-} } } // creativecoin::plugins::account_history
+} } } // crea::plugins::account_history

@@ -1,10 +1,10 @@
 #pragma once
-#include <creativecoin/plugins/chain/chain_plugin.hpp>
-#include <creativecoin/plugins/json_rpc/json_rpc_plugin.hpp>
+#include <crea/plugins/chain/chain_plugin.hpp>
+#include <crea/plugins/json_rpc/json_rpc_plugin.hpp>
 
 #include <appbase/application.hpp>
 
-namespace creativecoin { namespace plugins { namespace block_api {
+namespace crea { namespace plugins { namespace block_api {
 
 using namespace appbase;
 
@@ -17,8 +17,8 @@ class block_api_plugin : public plugin< block_api_plugin >
       virtual ~block_api_plugin();
 
       APPBASE_PLUGIN_REQUIRES(
-         (creativecoin::plugins::json_rpc::json_rpc_plugin)
-         (creativecoin::plugins::chain::chain_plugin)
+         (crea::plugins::json_rpc::json_rpc_plugin)
+         (crea::plugins::chain::chain_plugin)
       )
 
       static const std::string& name() { static std::string name = CREA_BLOCK_API_PLUGIN_NAME; return name; }
@@ -33,4 +33,4 @@ class block_api_plugin : public plugin< block_api_plugin >
       std::shared_ptr< class block_api > api;
 };
 
-} } } // creativecoin::plugins::block_api
+} } } // crea::plugins::block_api

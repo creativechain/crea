@@ -1,14 +1,14 @@
 #pragma once
 #include <fc/uint128.hpp>
 
-#include <creativecoin/chain/creativecoin_object_types.hpp>
+#include <crea/chain/crea_object_types.hpp>
 
-#include <creativecoin/protocol/asset.hpp>
+#include <crea/protocol/asset.hpp>
 
-namespace creativecoin { namespace chain {
+namespace crea { namespace chain {
 
-   using creativecoin::protocol::asset;
-   using creativecoin::protocol::price;
+   using crea::protocol::asset;
+   using crea::protocol::price;
 
    /**
     * @class dynamic_global_property_object
@@ -54,25 +54,25 @@ namespace creativecoin { namespace chain {
          asset       confidential_supply        = asset( 0, CREA_SYMBOL ); ///< total asset held in confidential balances
          asset       current_cbd_supply         = asset( 0, CBD_SYMBOL );
          asset       confidential_cbd_supply    = asset( 0, CBD_SYMBOL ); ///< total asset held in confidential balances
-         asset       total_vesting_fund_creativecoin   = asset( 0, CREA_SYMBOL );
+         asset       total_vesting_fund_crea   = asset( 0, CREA_SYMBOL );
          asset       total_vesting_shares       = asset( 0, VESTS_SYMBOL );
-         asset       total_reward_fund_creativecoin    = asset( 0, CREA_SYMBOL );
+         asset       total_reward_fund_crea    = asset( 0, CREA_SYMBOL );
          fc::uint128 total_reward_shares2; ///< the running total of REWARD^2
          asset       pending_rewarded_vesting_shares = asset( 0, VESTS_SYMBOL );
-         asset       pending_rewarded_vesting_creativecoin = asset( 0, CREA_SYMBOL );
+         asset       pending_rewarded_vesting_crea = asset( 0, CREA_SYMBOL );
 
          price       get_vesting_share_price() const
          {
-            if ( total_vesting_fund_creativecoin.amount == 0 || total_vesting_shares.amount == 0 )
+            if ( total_vesting_fund_crea.amount == 0 || total_vesting_shares.amount == 0 )
                return price ( asset( 1000, CREA_SYMBOL ), asset( 1000000, VESTS_SYMBOL ) );
 
-            return price( total_vesting_shares, total_vesting_fund_creativecoin );
+            return price( total_vesting_shares, total_vesting_fund_crea );
          }
 
          price get_reward_vesting_share_price() const
          {
             return price( total_vesting_shares + pending_rewarded_vesting_shares,
-               total_vesting_fund_creativecoin + pending_rewarded_vesting_creativecoin );
+               total_vesting_fund_crea + pending_rewarded_vesting_crea );
          }
 
          /**
@@ -130,9 +130,9 @@ namespace creativecoin { namespace chain {
       allocator< dynamic_global_property_object >
    > dynamic_global_property_index;
 
-} } // creativecoin::chain
+} } // crea::chain
 
-FC_REFLECT( creativecoin::chain::dynamic_global_property_object,
+FC_REFLECT( crea::chain::dynamic_global_property_object,
              (id)
              (head_block_number)
              (head_block_id)
@@ -145,12 +145,12 @@ FC_REFLECT( creativecoin::chain::dynamic_global_property_object,
              (confidential_supply)
              (current_cbd_supply)
              (confidential_cbd_supply)
-             (total_vesting_fund_creativecoin)
+             (total_vesting_fund_crea)
              (total_vesting_shares)
-             (total_reward_fund_creativecoin)
+             (total_reward_fund_crea)
              (total_reward_shares2)
              (pending_rewarded_vesting_shares)
-             (pending_rewarded_vesting_creativecoin)
+             (pending_rewarded_vesting_crea)
              (cbd_interest_rate)
              (cbd_print_rate)
              (maximum_block_size)
@@ -164,4 +164,4 @@ FC_REFLECT( creativecoin::chain::dynamic_global_property_object,
              (smt_creation_fee)
 #endif
           )
-CHAINBASE_SET_INDEX_TYPE( creativecoin::chain::dynamic_global_property_object, creativecoin::chain::dynamic_global_property_index )
+CHAINBASE_SET_INDEX_TYPE( crea::chain::dynamic_global_property_object, crea::chain::dynamic_global_property_index )

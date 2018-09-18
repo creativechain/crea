@@ -1,14 +1,14 @@
 #pragma once
-#include <creativecoin/protocol/transaction.hpp>
+#include <crea/protocol/transaction.hpp>
 
-#include <creativecoin/chain/buffer_type.hpp>
-#include <creativecoin/chain/creativecoin_object_types.hpp>
+#include <crea/chain/buffer_type.hpp>
+#include <crea/chain/crea_object_types.hpp>
 
 #include <boost/multi_index/hashed_index.hpp>
 
-namespace creativecoin { namespace chain {
+namespace crea { namespace chain {
 
-   using creativecoin::protocol::signed_transaction;
+   using crea::protocol::signed_transaction;
    using chainbase::t_vector;
 
    /**
@@ -49,19 +49,19 @@ namespace creativecoin { namespace chain {
       allocator< transaction_object >
    > transaction_index;
 
-} } // creativecoin::chain
+} } // crea::chain
 
-FC_REFLECT( creativecoin::chain::transaction_object, (id)(packed_trx)(trx_id)(expiration) )
-CHAINBASE_SET_INDEX_TYPE( creativecoin::chain::transaction_object, creativecoin::chain::transaction_index )
+FC_REFLECT( crea::chain::transaction_object, (id)(packed_trx)(trx_id)(expiration) )
+CHAINBASE_SET_INDEX_TYPE( crea::chain::transaction_object, crea::chain::transaction_index )
 
 namespace helpers
 {
    template <>
-   class index_statistic_provider<creativecoin::chain::transaction_index>
+   class index_statistic_provider<crea::chain::transaction_index>
    {
    public:
-      typedef creativecoin::chain::transaction_index IndexType;
-      typedef typename creativecoin::chain::transaction_object::t_packed_trx t_packed_trx;
+      typedef crea::chain::transaction_index IndexType;
+      typedef typename crea::chain::transaction_object::t_packed_trx t_packed_trx;
 
       index_statistic_info gather_statistics(const IndexType& index, bool onlyStaticInfo) const
       {

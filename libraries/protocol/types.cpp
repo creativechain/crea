@@ -1,12 +1,12 @@
-#include <creativecoin/protocol/config.hpp>
-#include <creativecoin/protocol/types.hpp>
+#include <crea/protocol/config.hpp>
+#include <crea/protocol/types.hpp>
 
 #include <fc/crypto/base58.hpp>
 #include <fc/crypto/ripemd160.hpp>
 #include <fc/exception/exception.hpp>
 #include <fc/io/raw.hpp>
 
-namespace creativecoin { namespace protocol {
+namespace crea { namespace protocol {
 
     public_key_type::public_key_type():key_data(){};
 
@@ -182,38 +182,38 @@ namespace creativecoin { namespace protocol {
          return fc::sha256();
    }
 
-} } // creativecoin::protocol
+} } // crea::protocol
 
 namespace fc
 {
     using namespace std;
-    void to_variant( const creativecoin::protocol::public_key_type& var,  fc::variant& vo )
+    void to_variant( const crea::protocol::public_key_type& var,  fc::variant& vo )
     {
         vo = std::string( var );
     }
 
-    void from_variant( const fc::variant& var,  creativecoin::protocol::public_key_type& vo )
+    void from_variant( const fc::variant& var,  crea::protocol::public_key_type& vo )
     {
-        vo = creativecoin::protocol::public_key_type( var.as_string() );
+        vo = crea::protocol::public_key_type( var.as_string() );
     }
 
-    void to_variant( const creativecoin::protocol::extended_public_key_type& var, fc::variant& vo )
+    void to_variant( const crea::protocol::extended_public_key_type& var, fc::variant& vo )
     {
        vo = std::string( var );
     }
 
-    void from_variant( const fc::variant& var, creativecoin::protocol::extended_public_key_type& vo )
+    void from_variant( const fc::variant& var, crea::protocol::extended_public_key_type& vo )
     {
-       vo = creativecoin::protocol::extended_public_key_type( var.as_string() );
+       vo = crea::protocol::extended_public_key_type( var.as_string() );
     }
 
-    void to_variant( const creativecoin::protocol::extended_private_key_type& var, fc::variant& vo )
+    void to_variant( const crea::protocol::extended_private_key_type& var, fc::variant& vo )
     {
        vo = std::string( var );
     }
 
-    void from_variant( const fc::variant& var, creativecoin::protocol::extended_private_key_type& vo )
+    void from_variant( const fc::variant& var, crea::protocol::extended_private_key_type& vo )
     {
-       vo = creativecoin::protocol::extended_private_key_type( var.as_string() );
+       vo = crea::protocol::extended_private_key_type( var.as_string() );
     }
 } // fc

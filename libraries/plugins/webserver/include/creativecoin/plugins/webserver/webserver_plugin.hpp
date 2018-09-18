@@ -1,14 +1,14 @@
 #pragma once
 #include <appbase/application.hpp>
 
-#include <creativecoin/plugins/json_rpc/json_rpc_plugin.hpp>
+#include <crea/plugins/json_rpc/json_rpc_plugin.hpp>
 
 #include <boost/thread.hpp>
 #include <boost/container/vector.hpp>
 
 #define CREA_WEBSERVER_PLUGIN_NAME "webserver"
 
-namespace creativecoin { namespace plugins { namespace webserver {
+namespace crea { namespace plugins { namespace webserver {
 
 namespace detail { class webserver_plugin_impl; }
 
@@ -48,4 +48,4 @@ class webserver_plugin : public appbase::plugin< webserver_plugin >
       std::unique_ptr< detail::webserver_plugin_impl > my;
 };
 
-} } } // creativecoin::plugins::webserver
+} } } // crea::plugins::webserver

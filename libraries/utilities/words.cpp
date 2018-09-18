@@ -22,9 +22,9 @@
  * THE SOFTWARE.
  */
 #include <stdint.h>
-#include <creativecoin/utilities/words.hpp>
+#include <crea/utilities/words.hpp>
 
-namespace creativecoin { namespace words {
+namespace crea { namespace words {
 
 const const_char_ptr word_list[] = {
 "a",
@@ -14362,7 +14362,7 @@ const const_char_ptr word_list[] = {
 "estado",
 "estamp",
 "estate",
-"ecreativecoin",
+"ecrea",
 "ester",
 "estevin",
 "estival",
@@ -49780,4 +49780,4 @@ void hide_unused_warning() {
   (void)word_list;
 }
 
-} } // creativecoin::words
+} } // crea::words

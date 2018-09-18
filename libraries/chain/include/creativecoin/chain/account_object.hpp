@@ -1,20 +1,20 @@
 #pragma once
 #include <fc/fixed_string.hpp>
 
-#include <creativecoin/protocol/authority.hpp>
-#include <creativecoin/protocol/creativecoin_operations.hpp>
+#include <crea/protocol/authority.hpp>
+#include <crea/protocol/crea_operations.hpp>
 
-#include <creativecoin/chain/creativecoin_object_types.hpp>
-#include <creativecoin/chain/witness_objects.hpp>
-#include <creativecoin/chain/shared_authority.hpp>
+#include <crea/chain/crea_object_types.hpp>
+#include <crea/chain/witness_objects.hpp>
+#include <crea/chain/shared_authority.hpp>
 
 #include <boost/multi_index/composite_key.hpp>
 
 #include <numeric>
 
-namespace creativecoin { namespace chain {
+namespace crea { namespace chain {
 
-   using creativecoin::protocol::authority;
+   using crea::protocol::authority;
 
    class account_object : public object< account_object_type, account_object >
    {
@@ -82,9 +82,9 @@ namespace creativecoin { namespace chain {
          ///@}
 
          asset             reward_cbd_balance = asset( 0, CBD_SYMBOL );
-         asset             reward_creativecoin_balance = asset( 0, CREA_SYMBOL );
+         asset             reward_crea_balance = asset( 0, CREA_SYMBOL );
          asset             reward_vesting_balance = asset( 0, VESTS_SYMBOL );
-         asset             reward_vesting_creativecoin = asset( 0, CREA_SYMBOL );
+         asset             reward_vesting_crea = asset( 0, CREA_SYMBOL );
 
          share_type        curation_rewards = 0;
          share_type        posting_rewards = 0;
@@ -401,7 +401,7 @@ namespace creativecoin { namespace chain {
    > change_recovery_account_request_index;
 } }
 
-FC_REFLECT( creativecoin::chain::account_object,
+FC_REFLECT( crea::chain::account_object,
              (id)(name)(memo_key)(json_metadata)(proxy)(last_account_update)
              (created)(mined)
              (recovery_account)(last_account_recovery)(reset_account)
@@ -410,7 +410,7 @@ FC_REFLECT( creativecoin::chain::account_object,
              (savings_balance)
              (cbd_balance)(cbd_seconds)(cbd_seconds_last_update)(cbd_last_interest_payment)
              (savings_cbd_balance)(savings_cbd_seconds)(savings_cbd_seconds_last_update)(savings_cbd_last_interest_payment)(savings_withdraw_requests)
-             (reward_creativecoin_balance)(reward_cbd_balance)(reward_vesting_balance)(reward_vesting_creativecoin)
+             (reward_crea_balance)(reward_cbd_balance)(reward_vesting_balance)(reward_vesting_crea)
              (vesting_shares)(delegated_vesting_shares)(received_vesting_shares)
              (vesting_withdraw_rate)(next_vesting_withdrawal)(withdrawn)(to_withdraw)(withdraw_routes)
              (curation_rewards)
@@ -420,32 +420,32 @@ FC_REFLECT( creativecoin::chain::account_object,
              (pending_claimed_accounts)
           )
 
-CHAINBASE_SET_INDEX_TYPE( creativecoin::chain::account_object, creativecoin::chain::account_index )
+CHAINBASE_SET_INDEX_TYPE( crea::chain::account_object, crea::chain::account_index )
 
-FC_REFLECT( creativecoin::chain::account_authority_object,
+FC_REFLECT( crea::chain::account_authority_object,
              (id)(account)(owner)(active)(posting)(last_owner_update)
 )
-CHAINBASE_SET_INDEX_TYPE( creativecoin::chain::account_authority_object, creativecoin::chain::account_authority_index )
+CHAINBASE_SET_INDEX_TYPE( crea::chain::account_authority_object, crea::chain::account_authority_index )
 
-FC_REFLECT( creativecoin::chain::vesting_delegation_object,
+FC_REFLECT( crea::chain::vesting_delegation_object,
             (id)(delegator)(delegatee)(vesting_shares)(min_delegation_time) )
-CHAINBASE_SET_INDEX_TYPE( creativecoin::chain::vesting_delegation_object, creativecoin::chain::vesting_delegation_index )
+CHAINBASE_SET_INDEX_TYPE( crea::chain::vesting_delegation_object, crea::chain::vesting_delegation_index )
 
-FC_REFLECT( creativecoin::chain::vesting_delegation_expiration_object,
+FC_REFLECT( crea::chain::vesting_delegation_expiration_object,
             (id)(delegator)(vesting_shares)(expiration) )
-CHAINBASE_SET_INDEX_TYPE( creativecoin::chain::vesting_delegation_expiration_object, creativecoin::chain::vesting_delegation_expiration_index )
+CHAINBASE_SET_INDEX_TYPE( crea::chain::vesting_delegation_expiration_object, crea::chain::vesting_delegation_expiration_index )
 
-FC_REFLECT( creativecoin::chain::owner_authority_history_object,
+FC_REFLECT( crea::chain::owner_authority_history_object,
              (id)(account)(previous_owner_authority)(last_valid_time)
           )
-CHAINBASE_SET_INDEX_TYPE( creativecoin::chain::owner_authority_history_object, creativecoin::chain::owner_authority_history_index )
+CHAINBASE_SET_INDEX_TYPE( crea::chain::owner_authority_history_object, crea::chain::owner_authority_history_index )
 
-FC_REFLECT( creativecoin::chain::account_recovery_request_object,
+FC_REFLECT( crea::chain::account_recovery_request_object,
              (id)(account_to_recover)(new_owner_authority)(expires)
           )
-CHAINBASE_SET_INDEX_TYPE( creativecoin::chain::account_recovery_request_object, creativecoin::chain::account_recovery_request_index )
+CHAINBASE_SET_INDEX_TYPE( crea::chain::account_recovery_request_object, crea::chain::account_recovery_request_index )
 
-FC_REFLECT( creativecoin::chain::change_recovery_account_request_object,
+FC_REFLECT( crea::chain::change_recovery_account_request_object,
              (id)(account_to_recover)(recovery_account)(effective_on)
           )
-CHAINBASE_SET_INDEX_TYPE( creativecoin::chain::change_recovery_account_request_object, creativecoin::chain::change_recovery_account_request_index )
+CHAINBASE_SET_INDEX_TYPE( crea::chain::change_recovery_account_request_object, crea::chain::change_recovery_account_request_index )

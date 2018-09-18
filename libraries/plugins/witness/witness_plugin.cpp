@@ -1,19 +1,19 @@
 
-#include <creativecoin/plugins/block_data_export/block_data_export_plugin.hpp>
+#include <crea/plugins/block_data_export/block_data_export_plugin.hpp>
 
-#include <creativecoin/plugins/witness/witness_export_objects.hpp>
-#include <creativecoin/plugins/witness/witness_plugin.hpp>
-#include <creativecoin/plugins/witness/witness_objects.hpp>
+#include <crea/plugins/witness/witness_export_objects.hpp>
+#include <crea/plugins/witness/witness_plugin.hpp>
+#include <crea/plugins/witness/witness_objects.hpp>
 
-#include <creativecoin/chain/database_exceptions.hpp>
-#include <creativecoin/chain/account_object.hpp>
-#include <creativecoin/chain/comment_object.hpp>
-#include <creativecoin/chain/witness_objects.hpp>
-#include <creativecoin/chain/index.hpp>
-#include <creativecoin/chain/util/impacted.hpp>
+#include <crea/chain/database_exceptions.hpp>
+#include <crea/chain/account_object.hpp>
+#include <crea/chain/comment_object.hpp>
+#include <crea/chain/witness_objects.hpp>
+#include <crea/chain/index.hpp>
+#include <crea/chain/util/impacted.hpp>
 
-#include <creativecoin/utilities/key_conversion.hpp>
-#include <creativecoin/utilities/plugin_utilities.hpp>
+#include <crea/utilities/key_conversion.hpp>
+#include <crea/utilities/plugin_utilities.hpp>
 
 #include <fc/io/json.hpp>
 #include <fc/macros.hpp>
@@ -28,12 +28,12 @@
 #define DISTANCE_CALC_PRECISION (10000)
 
 
-namespace creativecoin { namespace plugins { namespace witness {
+namespace crea { namespace plugins { namespace witness {
 
 using chain::plugin_exception;
 using std::string;
 using std::vector;
-using creativecoin::plugins::block_data_export::block_data_export_plugin;
+using crea::plugins::block_data_export::block_data_export_plugin;
 
 namespace bpo = boost::program_options;
 
@@ -77,8 +77,8 @@ namespace detail {
    public:
       witness_plugin_impl( boost::asio::io_service& io ) :
          _timer(io),
-         _chain_plugin( appbase::app().get_plugin< creativecoin::plugins::chain::chain_plugin >() ),
-         _db( appbase::app().get_plugin< creativecoin::plugins::chain::chain_plugin >().db() )
+         _chain_plugin( appbase::app().get_plugin< crea::plugins::chain::chain_plugin >() ),
+         _db( appbase::app().get_plugin< crea::plugins::chain::chain_plugin >().db() )
          {}
 
       void on_pre_apply_block( const chain::block_notification& note );
@@ -97,11 +97,11 @@ namespace detail {
       uint32_t _required_witness_participation = 33 * CREA_1_PERCENT;
       uint32_t _production_skip_flags = chain::database::skip_nothing;
 
-      std::map< creativecoin::protocol::public_key_type, fc::ecc::private_key > _private_keys;
-      std::set< creativecoin::protocol::account_name_type >                     _witnesses;
+      std::map< crea::protocol::public_key_type, fc::ecc::private_key > _private_keys;
+      std::set< crea::protocol::account_name_type >                     _witnesses;
       boost::asio::deadline_timer                                        _timer;
 
-      std::set< creativecoin::protocol::account_name_type >                     _dupe_customs;
+      std::set< crea::protocol::account_name_type >                     _dupe_customs;
 
       plugins::chain::chain_plugin& _chain_plugin;
       chain::database&              _db;
@@ -389,7 +389,7 @@ namespace detail {
       }
 
       std::shared_ptr< exp_witness_data_object > export_data =
-         creativecoin::plugins::block_data_export::find_export_data< exp_witness_data_object >( CREA_WITNESS_PLUGIN_NAME );
+         crea::plugins::block_data_export::find_export_data< exp_witness_data_object >( CREA_WITNESS_PLUGIN_NAME );
       if( export_data )
          export_data->reserve_ratio = exp_reserve_ratio_object( *reserve_ratio_ptr, block_size );
 
@@ -451,7 +451,7 @@ namespace detail {
                ("max_virtual_bandwidth", max_virtual_bandwidth)
                ("total_vesting_shares", total_vshares) );
          std::shared_ptr< exp_witness_data_object > export_data =
-            creativecoin::plugins::block_data_export::find_export_data< exp_witness_data_object >( CREA_WITNESS_PLUGIN_NAME );
+            crea::plugins::block_data_export::find_export_data< exp_witness_data_object >( CREA_WITNESS_PLUGIN_NAME );
          if( export_data )
             export_data->bandwidth_updates.emplace_back( *band, trx_size );
       }
@@ -610,7 +610,7 @@ namespace detail {
          );
       capture("n", block.block_num())("t", block.timestamp)("c", now);
 
-      appbase::app().get_plugin< creativecoin::plugins::p2p::p2p_plugin >().broadcast_block( block );
+      appbase::app().get_plugin< crea::plugins::p2p::p2p_plugin >().broadcast_block( block );
       return block_production_condition::produced;
    }
 
@@ -647,14 +647,14 @@ void witness_plugin::plugin_initialize(const boost::program_options::variables_m
          []() -> std::shared_ptr< exportable_block_data > { return std::make_shared< exp_witness_data_object >(); } );
    }
 
-   CREA_LOAD_VALUE_SET( options, "witness", my->_witnesses, creativecoin::protocol::account_name_type )
+   CREA_LOAD_VALUE_SET( options, "witness", my->_witnesses, crea::protocol::account_name_type )
 
    if( options.count("private-key") )
    {
       const std::vector<std::string> keys = options["private-key"].as<std::vector<std::string>>();
       for (const std::string& wif_key : keys )
       {
-         fc::optional<fc::ecc::private_key> private_key = creativecoin::utilities::wif_to_key(wif_key);
+         fc::optional<fc::ecc::private_key> private_key = crea::utilities::wif_to_key(wif_key);
          FC_ASSERT( private_key.valid(), "unable to parse private key" );
          my->_private_keys[private_key->get_public_key()] = *private_key;
       }
@@ -688,12 +688,12 @@ void witness_plugin::plugin_initialize(const boost::program_options::variables_m
 void witness_plugin::plugin_startup()
 { try {
    ilog("witness plugin:  plugin_startup() begin" );
-   chain::database& d = appbase::app().get_plugin< creativecoin::plugins::chain::chain_plugin >().db();
+   chain::database& d = appbase::app().get_plugin< crea::plugins::chain::chain_plugin >().db();
 
    if( !my->_witnesses.empty() )
    {
       ilog( "Launching block production for ${n} witnesses.", ("n", my->_witnesses.size()) );
-      appbase::app().get_plugin< creativecoin::plugins::p2p::p2p_plugin >().set_block_production( true );
+      appbase::app().get_plugin< crea::plugins::p2p::p2p_plugin >().set_block_production( true );
       if( my->_production_enabled )
       {
          if( d.head_block_num() == 0 )
@@ -724,4 +724,4 @@ void witness_plugin::plugin_shutdown()
    }
 }
 
-} } } // creativecoin::plugins::witness
+} } } // crea::plugins::witness

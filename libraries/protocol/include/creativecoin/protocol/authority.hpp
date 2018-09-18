@@ -1,8 +1,8 @@
 #pragma once
-#include <creativecoin/protocol/types.hpp>
+#include <crea/protocol/types.hpp>
 #include <fc/interprocess/container.hpp>
 
-namespace creativecoin { namespace protocol {
+namespace crea { namespace protocol {
 
    struct authority
    {
@@ -98,10 +98,10 @@ bool is_valid_account_name( const string& name );
 
 bool operator == ( const authority& a, const authority& b );
 
-} } // namespace creativecoin::protocol
+} } // namespace crea::protocol
 
 
-FC_REFLECT_TYPENAME( creativecoin::protocol::authority::account_authority_map)
-FC_REFLECT_TYPENAME( creativecoin::protocol::authority::key_authority_map)
-FC_REFLECT( creativecoin::protocol::authority, (weight_threshold)(account_auths)(key_auths) )
-FC_REFLECT_ENUM( creativecoin::protocol::authority::classification, (owner)(active)(key)(posting) )
+FC_REFLECT_TYPENAME( crea::protocol::authority::account_authority_map)
+FC_REFLECT_TYPENAME( crea::protocol::authority::key_authority_map)
+FC_REFLECT( crea::protocol::authority, (weight_threshold)(account_auths)(key_auths) )
+FC_REFLECT_ENUM( crea::protocol::authority::classification, (owner)(active)(key)(posting) )

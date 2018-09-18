@@ -1,14 +1,14 @@
 #pragma once
 
-#include <creativecoin/account_statistics/account_statistics_plugin.hpp>
+#include <crea/account_statistics/account_statistics_plugin.hpp>
 
 #include <fc/api.hpp>
 
-namespace creativecoin { namespace app {
+namespace crea { namespace app {
    struct api_context;
 } }
 
-namespace creativecoin { namespace account_statistics {
+namespace crea { namespace account_statistics {
 
 namespace detail
 {
@@ -18,7 +18,7 @@ namespace detail
 class account_statistics_api
 {
    public:
-      account_statistics_api( const creativecoin::app::api_context& ctx );
+      account_statistics_api( const crea::app::api_context& ctx );
 
       void on_api_startup();
 
@@ -26,6 +26,6 @@ class account_statistics_api
       std::shared_ptr< detail::account_statistics_api_impl > _my;
 };
 
-} } // creativecoin::account_statistics
+} } // crea::account_statistics
 
-FC_API( creativecoin::account_statistics::account_statistics_api, )
+FC_API( crea::account_statistics::account_statistics_api, )

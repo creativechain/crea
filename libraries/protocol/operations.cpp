@@ -1,8 +1,8 @@
-#include <creativecoin/protocol/operations.hpp>
+#include <crea/protocol/operations.hpp>
 
-#include <creativecoin/protocol/operation_util_impl.hpp>
+#include <crea/protocol/operation_util_impl.hpp>
 
-namespace creativecoin { namespace protocol {
+namespace crea { namespace protocol {
 
 struct is_market_op_visitor {
    typedef bool result_type;
@@ -32,6 +32,6 @@ bool is_virtual_operation( const operation& op )
    return op.visit( is_vop_visitor() );
 }
 
-} } // creativecoin::protocol
+} } // crea::protocol
 
-CREA_DEFINE_OPERATION_TYPE( creativecoin::protocol::operation )
+CREA_DEFINE_OPERATION_TYPE( crea::protocol::operation )

@@ -1,7 +1,7 @@
 #pragma once
-#include <creativecoin/plugins/chain/chain_plugin.hpp>
+#include <crea/plugins/chain/chain_plugin.hpp>
 
-#include <creativecoin/chain/creativecoin_object_types.hpp>
+#include <crea/chain/crea_object_types.hpp>
 
 #include <boost/multi_index/composite_key.hpp>
 
@@ -24,9 +24,9 @@
 #endif
 
 
-namespace creativecoin { namespace plugins { namespace market_history {
+namespace crea { namespace plugins { namespace market_history {
 
-using namespace creativecoin::chain;
+using namespace crea::chain;
 using namespace appbase;
 
 enum market_history_object_types
@@ -43,7 +43,7 @@ class market_history_plugin : public plugin< market_history_plugin >
       market_history_plugin();
       virtual ~market_history_plugin();
 
-      APPBASE_PLUGIN_REQUIRES( (creativecoin::plugins::chain::chain_plugin) )
+      APPBASE_PLUGIN_REQUIRES( (crea::plugins::chain::chain_plugin) )
 
       static const std::string& name() { static std::string name = CREA_MARKET_HISTORY_PLUGIN_NAME; return name; }
 
@@ -97,17 +97,17 @@ struct bucket_object : public object< bucket_object_type, bucket_object >
    fc::time_point_sec   open;
    uint32_t             seconds = 0;
 
-   bucket_object_details creativecoin;
-   bucket_object_details non_creativecoin;
+   bucket_object_details crea;
+   bucket_object_details non_crea;
 
 #ifdef CREA_ENABLE_SMT
    asset_symbol_type symbol = CBD_SYMBOL;
 
-   price high()const { return asset( non_creativecoin.high, symbol ) / asset( creativecoin.high, CREA_SYMBOL ); }
-   price low()const { return asset( non_creativecoin.low, symbol ) / asset( creativecoin.low, CREA_SYMBOL ); }
+   price high()const { return asset( non_crea.high, symbol ) / asset( crea.high, CREA_SYMBOL ); }
+   price low()const { return asset( non_crea.low, symbol ) / asset( crea.low, CREA_SYMBOL ); }
 #else
-   price high()const { return asset( non_creativecoin.high, CBD_SYMBOL ) / asset( creativecoin.high, CREA_SYMBOL ); }
-   price low()const { return asset( non_creativecoin.low, CBD_SYMBOL ) / asset( creativecoin.low, CREA_SYMBOL ); }
+   price high()const { return asset( non_crea.high, CBD_SYMBOL ) / asset( crea.high, CREA_SYMBOL ); }
+   price low()const { return asset( non_crea.low, CBD_SYMBOL ) / asset( crea.low, CREA_SYMBOL ); }
 #endif
 };
 
@@ -157,9 +157,9 @@ typedef multi_index_container<
    allocator< order_history_object >
 > order_history_index;
 
-} } } // creativecoin::plugins::market_history
+} } } // crea::plugins::market_history
 
-FC_REFLECT( creativecoin::plugins::market_history::bucket_object_details,
+FC_REFLECT( crea::plugins::market_history::bucket_object_details,
             (high)
             (low)
             (open)
@@ -167,23 +167,23 @@ FC_REFLECT( creativecoin::plugins::market_history::bucket_object_details,
             (volume) )
 
 #if defined CREA_ENABLE_SMT
-FC_REFLECT( creativecoin::plugins::market_history::bucket_object,
+FC_REFLECT( crea::plugins::market_history::bucket_object,
                      (id)
                      (open)(seconds)
-                     (creativecoin)(symbol)(non_creativecoin)
+                     (crea)(symbol)(non_crea)
          )
 #else
-FC_REFLECT( creativecoin::plugins::market_history::bucket_object,
+FC_REFLECT( crea::plugins::market_history::bucket_object,
                      (id)
                      (open)(seconds)
-                     (creativecoin)(non_creativecoin)
+                     (crea)(non_crea)
          )
 #endif
 
-CHAINBASE_SET_INDEX_TYPE( creativecoin::plugins::market_history::bucket_object, creativecoin::plugins::market_history::bucket_index )
+CHAINBASE_SET_INDEX_TYPE( crea::plugins::market_history::bucket_object, crea::plugins::market_history::bucket_index )
 
-FC_REFLECT( creativecoin::plugins::market_history::order_history_object,
+FC_REFLECT( crea::plugins::market_history::order_history_object,
                      (id)
                      (time)
                      (op) )
-CHAINBASE_SET_INDEX_TYPE( creativecoin::plugins::market_history::order_history_object, creativecoin::plugins::market_history::order_history_index )
+CHAINBASE_SET_INDEX_TYPE( crea::plugins::market_history::order_history_object, crea::plugins::market_history::order_history_index )

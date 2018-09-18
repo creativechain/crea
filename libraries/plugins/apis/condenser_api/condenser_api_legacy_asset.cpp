@@ -1,6 +1,6 @@
-#include <creativecoin/plugins/condenser_api/condenser_api_legacy_asset.hpp>
+#include <crea/plugins/condenser_api/condenser_api_legacy_asset.hpp>
 
-namespace creativecoin { namespace plugins { namespace condenser_api {
+namespace crea { namespace plugins { namespace condenser_api {
 
 uint32_t string_to_asset_num( const char* p, uint8_t decimals )
 {

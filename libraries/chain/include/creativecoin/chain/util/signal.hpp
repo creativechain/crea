@@ -2,7 +2,7 @@
 
 #include <fc/signals.hpp>
 
-namespace creativecoin { namespace chain { namespace util {
+namespace crea { namespace chain { namespace util {
 
 inline void disconnect_signal( boost::signals2::connection& signal )
 {

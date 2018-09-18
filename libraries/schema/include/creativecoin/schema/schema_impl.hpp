@@ -11,7 +11,7 @@
 #include <string>
 #include <vector>
 
-namespace creativecoin { namespace schema { namespace detail {
+namespace crea { namespace schema { namespace detail {
 
 struct get_deps_member_visitor
 {

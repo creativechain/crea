@@ -1,13 +1,13 @@
-#include <creativecoin/plugins/account_history/account_history_plugin.hpp>
+#include <crea/plugins/account_history/account_history_plugin.hpp>
 
-#include <creativecoin/chain/util/impacted.hpp>
+#include <crea/chain/util/impacted.hpp>
 
-#include <creativecoin/protocol/config.hpp>
+#include <crea/protocol/config.hpp>
 
-#include <creativecoin/chain/operation_notification.hpp>
-#include <creativecoin/chain/history_object.hpp>
+#include <crea/chain/operation_notification.hpp>
+#include <crea/chain/history_object.hpp>
 
-#include <creativecoin/utilities/plugin_utilities.hpp>
+#include <crea/utilities/plugin_utilities.hpp>
 
 #include <fc/io/json.hpp>
 #include <fc/smart_ref_impl.hpp>
@@ -15,11 +15,11 @@
 #include <boost/algorithm/string.hpp>
 
 
-#define CREA_NAMESPACE_PREFIX "creativecoin::protocol::"
+#define CREA_NAMESPACE_PREFIX "crea::protocol::"
 
-namespace creativecoin { namespace plugins { namespace account_history {
+namespace crea { namespace plugins { namespace account_history {
 
-using namespace creativecoin::protocol;
+using namespace crea::protocol;
 
 using chain::database;
 using chain::operation_notification;
@@ -31,7 +31,7 @@ class account_history_plugin_impl
 {
    public:
       account_history_plugin_impl() :
-         _db( appbase::app().get_plugin< creativecoin::plugins::chain::chain_plugin >().db() ) {}
+         _db( appbase::app().get_plugin< crea::plugins::chain::chain_plugin >().db() ) {}
 
       virtual ~account_history_plugin_impl() {}
 
@@ -330,4 +330,4 @@ flat_map< account_name_type, account_name_type > account_history_plugin::tracked
    return my->_tracked_accounts;
 }
 
-} } } // creativecoin::plugins::account_history
+} } } // crea::plugins::account_history

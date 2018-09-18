@@ -1,14 +1,14 @@
-#include <creativecoin/plugins/witness_api/witness_api_plugin.hpp>
-#include <creativecoin/plugins/witness_api/witness_api.hpp>
+#include <crea/plugins/witness_api/witness_api_plugin.hpp>
+#include <crea/plugins/witness_api/witness_api.hpp>
 
-namespace creativecoin { namespace plugins { namespace witness {
+namespace crea { namespace plugins { namespace witness {
 
 namespace detail {
 
 class witness_api_impl
 {
    public:
-      witness_api_impl() : _db( appbase::app().get_plugin< creativecoin::plugins::chain::chain_plugin >().db() ) {}
+      witness_api_impl() : _db( appbase::app().get_plugin< crea::plugins::chain::chain_plugin >().db() ) {}
 
       DECLARE_API_IMPL(
          (get_account_bandwidth)
@@ -48,4 +48,4 @@ DEFINE_READ_APIS( witness_api,
    (get_reserve_ratio)
 )
 
-} } } // creativecoin::plugins::witness
+} } } // crea::plugins::witness

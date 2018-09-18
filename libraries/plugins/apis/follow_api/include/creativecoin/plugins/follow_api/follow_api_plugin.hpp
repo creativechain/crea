@@ -1,13 +1,13 @@
 #pragma once
-#include <creativecoin/plugins/follow/follow_plugin.hpp>
-#include <creativecoin/plugins/json_rpc/json_rpc_plugin.hpp>
+#include <crea/plugins/follow/follow_plugin.hpp>
+#include <crea/plugins/json_rpc/json_rpc_plugin.hpp>
 
 #include <appbase/application.hpp>
 
 #define CREA_FOLLOW_API_PLUGIN_NAME "follow_api"
 
 
-namespace creativecoin { namespace plugins { namespace follow {
+namespace crea { namespace plugins { namespace follow {
 
 using namespace appbase;
 
@@ -15,8 +15,8 @@ class follow_api_plugin : public appbase::plugin< follow_api_plugin >
 {
 public:
    APPBASE_PLUGIN_REQUIRES(
-      (creativecoin::plugins::follow::follow_plugin)
-      (creativecoin::plugins::json_rpc::json_rpc_plugin)
+      (crea::plugins::follow::follow_plugin)
+      (crea::plugins::json_rpc::json_rpc_plugin)
    )
 
    follow_api_plugin();
@@ -33,4 +33,4 @@ public:
    std::shared_ptr< class follow_api > api;
 };
 
-} } } // creativecoin::plugins::follow
+} } } // crea::plugins::follow

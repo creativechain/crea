@@ -1,8 +1,8 @@
-#include <creativecoin/plugins/witness_api/witness_api_plugin.hpp>
-#include <creativecoin/plugins/witness_api/witness_api.hpp>
+#include <crea/plugins/witness_api/witness_api_plugin.hpp>
+#include <crea/plugins/witness_api/witness_api.hpp>
 
 
-namespace creativecoin { namespace plugins { namespace witness {
+namespace crea { namespace plugins { namespace witness {
 
 witness_api_plugin::witness_api_plugin() {}
 witness_api_plugin::~witness_api_plugin() {}
@@ -17,4 +17,4 @@ void witness_api_plugin::plugin_initialize( const variables_map& options )
 void witness_api_plugin::plugin_startup() {}
 void witness_api_plugin::plugin_shutdown() {}
 
-} } } // creativecoin::plugins::witness
+} } } // crea::plugins::witness

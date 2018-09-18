@@ -1,15 +1,15 @@
-file(GLOB HEADERS "include/creativecoin/chain/*.hpp" "include/creativecoin/chain/util/*.hpp")
+file(GLOB HEADERS "include/crea/chain/*.hpp" "include/crea/chain/util/*.hpp")
 
 ## SORT .cpp by most likely to change / break compile
-add_library( creativecoin_chain
+add_library( crea_chain
 
              # As database takes the longest to compile, start it first
              database.cpp
 
              smt_evaluator.cpp
              smt_objects/smt_market_maker.cpp
-             creativecoin_evaluator.cpp
-             creativecoin_objects.cpp
+             crea_evaluator.cpp
+             crea_objects.cpp
 
              witness_schedule.cpp
              fork_database.cpp
@@ -26,15 +26,15 @@ add_library( creativecoin_chain
              ${HEADERS}
            )
 
-target_link_libraries( creativecoin_chain creativecoin_jsonball creativecoin_protocol fc chainbase creativecoin_schema appbase
+target_link_libraries( crea_chain crea_jsonball crea_protocol fc chainbase crea_schema appbase
                        ${PATCH_MERGE_LIB} )
-target_include_directories( creativecoin_chain
+target_include_directories( crea_chain
                             PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}"
                             PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/include" "${CMAKE_CURRENT_BINARY_DIR}/include" )
 
 if( CLANG_TIDY_EXE )
    set_target_properties(
-      creativecoin_chain PROPERTIES
+      crea_chain PROPERTIES
       CXX_CLANG_TIDY "${DO_CLANG_TIDY}"
    )
 endif( CLANG_TIDY_EXE )
@@ -44,10 +44,10 @@ if(MSVC)
 endif(MSVC)
 
 INSTALL( TARGETS
-   creativecoin_chain
+   crea_chain
 
    RUNTIME DESTINATION bin
    LIBRARY DESTINATION lib
    ARCHIVE DESTINATION lib
 )
-INSTALL( FILES ${HEADERS} DESTINATION "include/creativecoin/chain" )
+INSTALL( FILES ${HEADERS} DESTINATION "include/crea/chain" )

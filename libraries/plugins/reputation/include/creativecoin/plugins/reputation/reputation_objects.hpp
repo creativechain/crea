@@ -1,12 +1,12 @@
 #pragma once
-#include <creativecoin/chain/creativecoin_object_types.hpp>
+#include <crea/chain/crea_object_types.hpp>
 
 #include <boost/multi_index/composite_key.hpp>
 
-namespace creativecoin { namespace plugins { namespace reputation {
+namespace crea { namespace plugins { namespace reputation {
 
 using namespace std;
-using namespace creativecoin::chain;
+using namespace crea::chain;
 
 using chainbase::t_vector;
 
@@ -53,8 +53,8 @@ typedef multi_index_container<
 > reputation_index;
 
 
-} } } // creativecoin::plugins::reputation
+} } } // crea::plugins::reputation
 
 
-FC_REFLECT( creativecoin::plugins::reputation::reputation_object, (id)(account)(reputation) )
-CHAINBASE_SET_INDEX_TYPE( creativecoin::plugins::reputation::reputation_object, creativecoin::plugins::reputation::reputation_index )
+FC_REFLECT( crea::plugins::reputation::reputation_object, (id)(account)(reputation) )
+CHAINBASE_SET_INDEX_TYPE( crea::plugins::reputation::reputation_object, crea::plugins::reputation::reputation_index )

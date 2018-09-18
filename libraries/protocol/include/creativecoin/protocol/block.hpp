@@ -1,8 +1,8 @@
 #pragma once
-#include <creativecoin/protocol/block_header.hpp>
-#include <creativecoin/protocol/transaction.hpp>
+#include <crea/protocol/block_header.hpp>
+#include <crea/protocol/transaction.hpp>
 
-namespace creativecoin { namespace protocol {
+namespace crea { namespace protocol {
 
    struct signed_block : public signed_block_header
    {
@@ -10,6 +10,6 @@ namespace creativecoin { namespace protocol {
       vector<signed_transaction> transactions;
    };
 
-} } // creativecoin::protocol
+} } // crea::protocol
 
-FC_REFLECT_DERIVED( creativecoin::protocol::signed_block, (creativecoin::protocol::signed_block_header), (transactions) )
+FC_REFLECT_DERIVED( crea::protocol::signed_block, (crea::protocol::signed_block_header), (transactions) )

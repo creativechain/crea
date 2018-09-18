@@ -21,10 +21,10 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-#include <creativecoin/utilities/string_escape.hpp>
+#include <crea/utilities/string_escape.hpp>
 #include <sstream>
 
-namespace creativecoin { namespace utilities {
+namespace crea { namespace utilities {
 
   std::string escape_string_for_c_source_code(const std::string& input)
   {
@@ -69,5 +69,5 @@ namespace creativecoin { namespace utilities {
     return escaped_string.str();
   }
 
-} } // end namespace creativecoin::utilities
+} } // end namespace crea::utilities
 

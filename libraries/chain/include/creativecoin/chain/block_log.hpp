@@ -1,10 +1,10 @@
 #pragma once
 #include <fc/filesystem.hpp>
-#include <creativecoin/protocol/block.hpp>
+#include <crea/protocol/block.hpp>
 
-namespace creativecoin { namespace chain {
+namespace crea { namespace chain {
 
-   using namespace creativecoin::protocol;
+   using namespace crea::protocol;
 
    namespace detail { class block_log_impl; }
 

@@ -1,13 +1,13 @@
 #pragma once
 
-#include <creativecoin/protocol/types.hpp>
+#include <crea/protocol/types.hpp>
 
-#include <creativecoin/protocol/operation_util.hpp>
-#include <creativecoin/protocol/creativecoin_operations.hpp>
-#include <creativecoin/protocol/creativecoin_virtual_operations.hpp>
-#include <creativecoin/protocol/smt_operations.hpp>
+#include <crea/protocol/operation_util.hpp>
+#include <crea/protocol/crea_operations.hpp>
+#include <crea/protocol/crea_virtual_operations.hpp>
+#include <crea/protocol/smt_operations.hpp>
 
-namespace creativecoin { namespace protocol {
+namespace crea { namespace protocol {
 
    /** NOTE: do not change the order of any operations prior to the virtual operations
     * or it will trigger a hardfork.
@@ -108,12 +108,12 @@ namespace creativecoin { namespace protocol {
 
    bool is_virtual_operation( const operation& op );
 
-} } // creativecoin::protocol
+} } // crea::protocol
 
 /*namespace fc {
-    void to_variant( const creativecoin::protocol::operation& var,  fc::variant& vo );
-    void from_variant( const fc::variant& var,  creativecoin::protocol::operation& vo );
+    void to_variant( const crea::protocol::operation& var,  fc::variant& vo );
+    void from_variant( const fc::variant& var,  crea::protocol::operation& vo );
 }*/
 
-CREA_DECLARE_OPERATION_TYPE( creativecoin::protocol::operation )
-FC_REFLECT_TYPENAME( creativecoin::protocol::operation )
+CREA_DECLARE_OPERATION_TYPE( crea::protocol::operation )
+FC_REFLECT_TYPENAME( crea::protocol::operation )

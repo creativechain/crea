@@ -1,11 +1,11 @@
 #pragma once
-#include <creativecoin/protocol/operations.hpp>
-#include <creativecoin/protocol/sign_state.hpp>
-#include <creativecoin/protocol/types.hpp>
+#include <crea/protocol/operations.hpp>
+#include <crea/protocol/sign_state.hpp>
+#include <crea/protocol/types.hpp>
 
 #include <numeric>
 
-namespace creativecoin { namespace protocol {
+namespace crea { namespace protocol {
 
    struct transaction
    {
@@ -104,8 +104,8 @@ namespace creativecoin { namespace protocol {
 
    /// @} transactions group
 
-} } // creativecoin::protocol
+} } // crea::protocol
 
-FC_REFLECT( creativecoin::protocol::transaction, (ref_block_num)(ref_block_prefix)(expiration)(operations)(extensions) )
-FC_REFLECT_DERIVED( creativecoin::protocol::signed_transaction, (creativecoin::protocol::transaction), (signatures) )
-FC_REFLECT_DERIVED( creativecoin::protocol::annotated_signed_transaction, (creativecoin::protocol::signed_transaction), (transaction_id)(block_num)(transaction_num) );
+FC_REFLECT( crea::protocol::transaction, (ref_block_num)(ref_block_prefix)(expiration)(operations)(extensions) )
+FC_REFLECT_DERIVED( crea::protocol::signed_transaction, (crea::protocol::transaction), (signatures) )
+FC_REFLECT_DERIVED( crea::protocol::annotated_signed_transaction, (crea::protocol::signed_transaction), (transaction_id)(block_num)(transaction_num) );

@@ -1,13 +1,13 @@
 
 #pragma once
 
-#include <creativecoin/protocol/base.hpp>
-#include <creativecoin/protocol/block_header.hpp>
-#include <creativecoin/protocol/asset.hpp>
+#include <crea/protocol/base.hpp>
+#include <crea/protocol/block_header.hpp>
+#include <crea/protocol/asset.hpp>
 
 #include <fc/utf8.hpp>
 
-namespace creativecoin { namespace protocol {
+namespace crea { namespace protocol {
 
 inline bool is_asset_type( asset asset, asset_symbol_type symbol )
 {

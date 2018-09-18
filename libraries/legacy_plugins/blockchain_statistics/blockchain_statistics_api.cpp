@@ -1,20 +1,20 @@
-#include <creativecoin/blockchain_statistics/blockchain_statistics_api.hpp>
+#include <crea/blockchain_statistics/blockchain_statistics_api.hpp>
 
-namespace creativecoin { namespace blockchain_statistics {
+namespace crea { namespace blockchain_statistics {
 
 namespace detail
 {
    class blockchain_statistics_api_impl
    {
       public:
-         blockchain_statistics_api_impl( creativecoin::app::application& app )
+         blockchain_statistics_api_impl( crea::app::application& app )
             :_app( app ) {}
 
          statistics get_stats_for_time( fc::time_point_sec open, uint32_t interval )const;
          statistics get_stats_for_interval( fc::time_point_sec start, fc::time_point_sec end )const;
          statistics get_lifetime_stats()const;
 
-         creativecoin::app::application& _app;
+         crea::app::application& _app;
    };
 
    statistics blockchain_statistics_api_impl::get_stats_for_time( fc::time_point_sec open, uint32_t interval )const
@@ -66,7 +66,7 @@ namespace detail
    }
 } // detail
 
-blockchain_statistics_api::blockchain_statistics_api( const creativecoin::app::api_context& ctx )
+blockchain_statistics_api::blockchain_statistics_api( const crea::app::api_context& ctx )
 {
    my = std::make_shared< detail::blockchain_statistics_api_impl >( ctx.app );
 }
@@ -104,7 +104,7 @@ statistics& statistics::operator +=( const bucket_object& b )
    this->operations                             += b.operations;
    this->transactions                           += b.transactions;
    this->transfers                              += b.transfers;
-   this->creativecoin_transferred                      += b.creativecoin_transferred;
+   this->crea_transferred                      += b.crea_transferred;
    this->cbd_transferred                        += b.cbd_transferred;
    this->cbd_paid_as_interest                   += b.cbd_paid_as_interest;
    this->accounts_created                       += b.paid_accounts_created + b.mined_accounts_created;
@@ -134,7 +134,7 @@ statistics& statistics::operator +=( const bucket_object& b )
    this->vests_paid_to_curators                 += b.vests_paid_to_curators;
    this->liquidity_rewards_paid                 += b.liquidity_rewards_paid;
    this->transfers_to_vesting                   += b.transfers_to_vesting;
-   this->creativecoin_vested                           += b.creativecoin_vested;
+   this->crea_vested                           += b.crea_vested;
    this->new_vesting_withdrawal_requests        += b.new_vesting_withdrawal_requests;
    this->vesting_withdraw_rate_delta            += b.vesting_withdraw_rate_delta;
    this->modified_vesting_withdrawal_requests   += b.modified_vesting_withdrawal_requests;
@@ -145,7 +145,7 @@ statistics& statistics::operator +=( const bucket_object& b )
    this->cbd_conversion_requests_created        += b.cbd_conversion_requests_created;
    this->cbd_to_be_converted                    += b.cbd_to_be_converted;
    this->cbd_conversion_requests_filled         += b.cbd_conversion_requests_filled;
-   this->creativecoin_converted                        += b.creativecoin_converted;
+   this->crea_converted                        += b.crea_converted;
    this->limit_orders_created                   += b.limit_orders_created;
    this->limit_orders_filled                    += b.limit_orders_filled;
    this->limit_orders_cancelled                 += b.limit_orders_cancelled;
@@ -155,4 +155,4 @@ statistics& statistics::operator +=( const bucket_object& b )
    return ( *this );
 }
 
-} } // creativecoin::blockchain_statistics
+} } // crea::blockchain_statistics

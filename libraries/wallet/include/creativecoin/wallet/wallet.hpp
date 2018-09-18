@@ -1,22 +1,22 @@
 #pragma once
 
-#include <creativecoin/plugins/condenser_api/condenser_api.hpp>
+#include <crea/plugins/condenser_api/condenser_api.hpp>
 
-#include <creativecoin/wallet/remote_node_api.hpp>
+#include <crea/wallet/remote_node_api.hpp>
 
-#include <creativecoin/utilities/key_conversion.hpp>
+#include <crea/utilities/key_conversion.hpp>
 
 #include <fc/macros.hpp>
 #include <fc/real128.hpp>
 #include <fc/crypto/base58.hpp>
 #include <fc/api.hpp>
 
-namespace creativecoin { namespace wallet {
+namespace crea { namespace wallet {
 
 using namespace std;
 
-using namespace creativecoin::utilities;
-using namespace creativecoin::protocol;
+using namespace crea::utilities;
+using namespace crea::protocol;
 
 typedef uint16_t transaction_handle_type;
 
@@ -83,7 +83,7 @@ class wallet_api_impl;
 class wallet_api
 {
    public:
-      wallet_api( const wallet_data& initial_data, const creativecoin::protocol::chain_id_type& _creativecoin_chain_id, fc::api< remote_node_api > rapi );
+      wallet_api( const wallet_data& initial_data, const crea::protocol::chain_id_type& _crea_chain_id, fc::api< remote_node_api > rapi );
       virtual ~wallet_api();
 
       bool copy_wallet_file( string destination_filename );
@@ -383,7 +383,7 @@ class wallet_api
        *  These accounts are created with combination of CREA and delegated SP
        *
        *  @param creator The account creating the new account
-       *  @param creativecoin_fee The amount of the fee to be paid with CREA
+       *  @param crea_fee The amount of the fee to be paid with CREA
        *  @param delegated_vests The amount of the fee to be paid with delegation
        *  @param new_account_name The name of the new account
        *  @param json_meta JSON Metadata associated with the new account
@@ -391,7 +391,7 @@ class wallet_api
        */
       condenser_api::legacy_signed_transaction create_account_delegated(
          string creator,
-         condenser_api::legacy_asset creativecoin_fee,
+         condenser_api::legacy_asset crea_fee,
          condenser_api::legacy_asset delegated_vests,
          string new_account_name,
          string json_meta,
@@ -406,7 +406,7 @@ class wallet_api
        * These accounts are created with combination of CREA and delegated SP
        *
        * @param creator The account creating the new account
-       * @param creativecoin_fee The amount of the fee to be paid with CREA
+       * @param crea_fee The amount of the fee to be paid with CREA
        * @param delegated_vests The amount of the fee to be paid with delegation
        * @param newname The name of the new account
        * @param json_meta JSON Metadata associated with the new account
@@ -418,7 +418,7 @@ class wallet_api
        */
       condenser_api::legacy_signed_transaction create_account_with_keys_delegated(
          string creator,
-         condenser_api::legacy_asset creativecoin_fee,
+         condenser_api::legacy_asset crea_fee,
          condenser_api::legacy_asset delegated_vests,
          string newname,
          string json_meta,
@@ -656,7 +656,7 @@ class wallet_api
        * @param agent The account acting as the agent in case of dispute
        * @param escrow_id A unique id for the escrow transfer. (from, escrow_id) must be a unique pair
        * @param cbd_amount The amount of CBD to transfer
-       * @param creativecoin_amount The amount of CREA to transfer
+       * @param crea_amount The amount of CREA to transfer
        * @param fee The fee paid to the agent
        * @param ratification_deadline The deadline for 'to' and 'agent' to approve the escrow transfer
        * @param escrow_expiration The expiration of the escrow transfer, after which either party can claim the funds
@@ -669,7 +669,7 @@ class wallet_api
          string agent,
          uint32_t escrow_id,
          condenser_api::legacy_asset cbd_amount,
-         condenser_api::legacy_asset creativecoin_amount,
+         condenser_api::legacy_asset crea_amount,
          condenser_api::legacy_asset fee,
          time_point_sec ratification_deadline,
          time_point_sec escrow_expiration,
@@ -728,7 +728,7 @@ class wallet_api
        * @param receiver The account that will receive funds being released
        * @param escrow_id A unique id for the escrow transfer
        * @param cbd_amount The amount of CBD that will be released
-       * @param creativecoin_amount The amount of CREA that will be released
+       * @param crea_amount The amount of CREA that will be released
        * @param broadcast true if you wish to broadcast the transaction
        */
       condenser_api::legacy_signed_transaction escrow_release(
@@ -739,7 +739,7 @@ class wallet_api
          string receiver,
          uint32_t escrow_id,
          condenser_api::legacy_asset cbd_amount,
-         condenser_api::legacy_asset creativecoin_amount,
+         condenser_api::legacy_asset crea_amount,
          bool broadcast = false
       );
 
@@ -877,7 +877,7 @@ class wallet_api
        * you can fill in.  It's better than nothing.
        *
        * @param operation_type the type of operation to return, must be one of the
-       *                       operations defined in `creativecoin/chain/operations.hpp`
+       *                       operations defined in `crea/chain/operations.hpp`
        *                       (e.g., "global_parameters_update_operation")
        * @return a default-constructed operation of the given type
        */
@@ -1062,7 +1062,7 @@ class wallet_api
 
       condenser_api::legacy_signed_transaction claim_reward_balance(
          string account,
-         condenser_api::legacy_asset reward_creativecoin,
+         condenser_api::legacy_asset reward_crea,
          condenser_api::legacy_asset reward_sbd,
          condenser_api::legacy_asset reward_vests,
          bool broadcast );
@@ -1075,20 +1075,20 @@ struct plain_keys {
 
 } }
 
-FC_REFLECT( creativecoin::wallet::wallet_data,
+FC_REFLECT( crea::wallet::wallet_data,
             (cipher_keys)
             (ws_server)
             (ws_user)
             (ws_password)
           )
 
-FC_REFLECT( creativecoin::wallet::brain_key_info, (brain_priv_key)(wif_priv_key) (pub_key))
+FC_REFLECT( crea::wallet::brain_key_info, (brain_priv_key)(wif_priv_key) (pub_key))
 
-FC_REFLECT( creativecoin::wallet::plain_keys, (checksum)(keys) )
+FC_REFLECT( crea::wallet::plain_keys, (checksum)(keys) )
 
-FC_REFLECT_ENUM( creativecoin::wallet::authority_type, (owner)(active)(posting) )
+FC_REFLECT_ENUM( crea::wallet::authority_type, (owner)(active)(posting) )
 
-FC_API( creativecoin::wallet::wallet_api,
+FC_API( crea::wallet::wallet_api,
         /// wallet api
         (help)(gethelp)
         (about)(is_new)(is_locked)(lock)(unlock)(set_password)
@@ -1171,4 +1171,4 @@ FC_API( creativecoin::wallet::wallet_api,
         (get_transaction)
       )
 
-FC_REFLECT( creativecoin::wallet::memo_data, (from)(to)(nonce)(check)(encrypted) )
+FC_REFLECT( crea::wallet::memo_data, (from)(to)(nonce)(check)(encrypted) )

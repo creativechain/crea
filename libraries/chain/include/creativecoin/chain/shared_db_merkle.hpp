@@ -1,6 +1,6 @@
-#include <creativecoin/protocol/types.hpp>
+#include <crea/protocol/types.hpp>
 
-namespace creativecoin { namespace chain {
+namespace crea { namespace chain {
 
 inline static const map< uint32_t, checksum_type >& get_shared_db_merkle()
 {
@@ -19,4 +19,4 @@ inline static const map< uint32_t, checksum_type >& get_shared_db_merkle()
    return shared_db_merkle;
 }
 
-} } //creativecoin::chain
+} } //crea::chain

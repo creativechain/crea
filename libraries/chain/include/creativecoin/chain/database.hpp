@@ -2,20 +2,20 @@
  * Copyright (c) 2015 Cryptonomex, Inc., and contributors.
  */
 #pragma once
-#include <creativecoin/chain/block_log.hpp>
-#include <creativecoin/chain/block_notification.hpp>
-#include <creativecoin/chain/fork_database.hpp>
-#include <creativecoin/chain/global_property_object.hpp>
-#include <creativecoin/chain/hardfork_property_object.hpp>
-#include <creativecoin/chain/node_property_object.hpp>
-#include <creativecoin/chain/operation_notification.hpp>
-#include <creativecoin/chain/transaction_notification.hpp>
+#include <crea/chain/block_log.hpp>
+#include <crea/chain/block_notification.hpp>
+#include <crea/chain/fork_database.hpp>
+#include <crea/chain/global_property_object.hpp>
+#include <crea/chain/hardfork_property_object.hpp>
+#include <crea/chain/node_property_object.hpp>
+#include <crea/chain/operation_notification.hpp>
+#include <crea/chain/transaction_notification.hpp>
 
-#include <creativecoin/chain/util/advanced_benchmark_dumper.hpp>
-#include <creativecoin/chain/util/signal.hpp>
+#include <crea/chain/util/advanced_benchmark_dumper.hpp>
+#include <crea/chain/util/signal.hpp>
 
-#include <creativecoin/protocol/protocol.hpp>
-#include <creativecoin/protocol/hardfork.hpp>
+#include <crea/protocol/protocol.hpp>
+#include <crea/protocol/hardfork.hpp>
 
 #include <appbase/plugin.hpp>
 
@@ -25,14 +25,14 @@
 
 #include <map>
 
-namespace creativecoin { namespace chain {
+namespace crea { namespace chain {
 
-   using creativecoin::protocol::signed_transaction;
-   using creativecoin::protocol::operation;
-   using creativecoin::protocol::authority;
-   using creativecoin::protocol::asset;
-   using creativecoin::protocol::asset_symbol_type;
-   using creativecoin::protocol::price;
+   using crea::protocol::signed_transaction;
+   using crea::protocol::operation;
+   using crea::protocol::authority;
+   using crea::protocol::asset;
+   using crea::protocol::asset_symbol_type;
+   using crea::protocol::price;
    using abstract_plugin = appbase::abstract_plugin;
 
    class database_impl;
@@ -155,7 +155,7 @@ namespace creativecoin { namespace chain {
          const signed_transaction   get_recent_transaction( const transaction_id_type& trx_id )const;
          std::vector<block_id_type> get_block_ids_on_fork(block_id_type head_of_fork) const;
 
-         chain_id_type creativecoin_chain_id;
+         chain_id_type crea_chain_id;
          chain_id_type get_chain_id() const;
          void set_chain_id( const std::string& _chain_id_name );
 
@@ -323,8 +323,8 @@ namespace creativecoin { namespace chain {
          uint32_t get_slot_at_time(fc::time_point_sec when)const;
 
          /** @return the sbd created and deposited to_account, may return CREA if there is no median feed */
-         std::pair< asset, asset > create_sbd( const account_object& to_account, asset creativecoin, bool to_reward_balance=false );
-         asset create_vesting( const account_object& to_account, asset creativecoin, bool to_reward_balance=false );
+         std::pair< asset, asset > create_sbd( const account_object& to_account, asset crea, bool to_reward_balance=false );
+         asset create_vesting( const account_object& to_account, asset crea, bool to_reward_balance=false );
          void adjust_total_payout( const comment_object& a, const asset& sbd, const asset& curator_cbd_value, const asset& beneficiary_value );
 
          void        adjust_liquidity_reward( const account_object& owner, const asset& volume, bool is_bid );
@@ -393,8 +393,8 @@ namespace creativecoin { namespace chain {
           * Helper method to return the current sbd value of a given amount of
           * CREA.  Return 0 CBD if there isn't a current_median_history
           */
-         asset to_sbd( const asset& creativecoin )const;
-         asset to_creativecoin( const asset& sbd )const;
+         asset to_sbd( const asset& crea )const;
+         asset to_crea( const asset& sbd )const;
 
          time_point_sec   head_block_time()const;
          uint32_t         head_block_num()const;

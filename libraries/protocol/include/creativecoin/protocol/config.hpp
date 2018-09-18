@@ -2,7 +2,7 @@
  * Copyright (c) 2016 Creativechain, Inc., and contributors.
  */
 #pragma once
-#include <creativecoin/protocol/hardfork.hpp>
+#include <crea/protocol/hardfork.hpp>
 
 // WARNING!
 // Every symbol defined here needs to be handled appropriately in get_config.cpp
@@ -12,7 +12,7 @@
 #define CREA_BLOCKCHAIN_VERSION              ( version(0, 21, 0) )
 
 #define CREA_INIT_PRIVATE_KEY                (fc::ecc::private_key::regenerate(fc::sha256::hash(std::string("init_key"))))
-#define CREA_INIT_PUBLIC_KEY_STR             (std::string( creativecoin::protocol::public_key_type(CREA_INIT_PRIVATE_KEY.get_public_key()) ))
+#define CREA_INIT_PUBLIC_KEY_STR             (std::string( crea::protocol::public_key_type(CREA_INIT_PRIVATE_KEY.get_public_key()) ))
 #define CREA_CHAIN_ID_NAME "testnet"
 #define CREA_CHAIN_ID (fc::sha256::hash(CREA_CHAIN_ID_NAME))
 #define CREA_ADDRESS_PREFIX                  "crea"
@@ -45,7 +45,7 @@
 #define CREA_BLOCKCHAIN_VERSION              ( version(0, 19, 10) )
 
 #define CREA_INIT_PRIVATE_KEY                (fc::ecc::private_key::regenerate(fc::sha256::hash(std::string("init_key"))))
-#define CREA_INIT_PUBLIC_KEY_STR             (std::string( creativecoin::protocol::public_key_type(CREA_INIT_PRIVATE_KEY.get_public_key()) ))
+#define CREA_INIT_PUBLIC_KEY_STR             (std::string( crea::protocol::public_key_type(CREA_INIT_PRIVATE_KEY.get_public_key()) ))
 #define CREA_CHAIN_ID_NAME ""
 #define CREA_CHAIN_ID fc::sha256()
 #define CREA_ADDRESS_PREFIX                  "CREA"
@@ -71,9 +71,9 @@
 
 #endif
 
-#define VESTS_SYMBOL  (creativecoin::protocol::asset_symbol_type::from_asset_num( CREA_ASSET_NUM_VESTS ) )
-#define CREA_SYMBOL  (creativecoin::protocol::asset_symbol_type::from_asset_num( CREA_ASSET_NUM_CREA ) )
-#define CBD_SYMBOL    (creativecoin::protocol::asset_symbol_type::from_asset_num( CREA_ASSET_NUM_CBD ) )
+#define VESTS_SYMBOL  (crea::protocol::asset_symbol_type::from_asset_num( CREA_ASSET_NUM_VESTS ) )
+#define CREA_SYMBOL  (crea::protocol::asset_symbol_type::from_asset_num( CREA_ASSET_NUM_CREA ) )
+#define CBD_SYMBOL    (crea::protocol::asset_symbol_type::from_asset_num( CREA_ASSET_NUM_CBD ) )
 
 #define CREA_BLOCKCHAIN_HARDFORK_VERSION     ( hardfork_version( CREA_BLOCKCHAIN_VERSION ) )
 

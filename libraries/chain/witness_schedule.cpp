@@ -1,11 +1,11 @@
 
-#include <creativecoin/chain/database.hpp>
-#include <creativecoin/chain/witness_objects.hpp>
-#include <creativecoin/chain/witness_schedule.hpp>
+#include <crea/chain/database.hpp>
+#include <crea/chain/witness_objects.hpp>
+#include <crea/chain/witness_schedule.hpp>
 
-#include <creativecoin/protocol/config.hpp>
+#include <crea/protocol/config.hpp>
 
-namespace creativecoin { namespace chain {
+namespace crea { namespace chain {
 
 void reset_virtual_schedule_time( database& db )
 {

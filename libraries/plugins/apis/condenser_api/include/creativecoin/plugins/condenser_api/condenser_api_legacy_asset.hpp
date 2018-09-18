@@ -1,12 +1,12 @@
 #pragma once
 
-#include <creativecoin/protocol/asset.hpp>
+#include <crea/protocol/asset.hpp>
 
-namespace creativecoin { namespace plugins { namespace condenser_api {
+namespace crea { namespace plugins { namespace condenser_api {
 
-using creativecoin::protocol::asset;
-using creativecoin::protocol::asset_symbol_type;
-using creativecoin::protocol::share_type;
+using crea::protocol::asset;
+using crea::protocol::asset_symbol_type;
+using crea::protocol::share_type;
 
 struct legacy_asset
 {
@@ -35,23 +35,23 @@ struct legacy_asset
       asset_symbol_type                symbol = CREA_SYMBOL;
 };
 
-} } } // creativecoin::plugins::condenser_api
+} } } // crea::plugins::condenser_api
 
 namespace fc {
 
-   inline void to_variant( const creativecoin::plugins::condenser_api::legacy_asset& a, fc::variant& var )
+   inline void to_variant( const crea::plugins::condenser_api::legacy_asset& a, fc::variant& var )
    {
       var = a.to_string();
    }
 
-   inline void from_variant( const fc::variant& var, creativecoin::plugins::condenser_api::legacy_asset& a )
+   inline void from_variant( const fc::variant& var, crea::plugins::condenser_api::legacy_asset& a )
    {
-      a = creativecoin::plugins::condenser_api::legacy_asset::from_string( var.as_string() );
+      a = crea::plugins::condenser_api::legacy_asset::from_string( var.as_string() );
    }
 
 } // fc
 
-FC_REFLECT( creativecoin::plugins::condenser_api::legacy_asset,
+FC_REFLECT( crea::plugins::condenser_api::legacy_asset,
    (amount)
    (symbol)
    )

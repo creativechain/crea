@@ -209,7 +209,7 @@ void application::quit() {
 
 void application::exec() {
    /** To avoid killing process by broken pipe and continue regular app shutdown.
-    *  Useful for usecase: `creativecoind | tee creativecoind.log` and pressing Ctrl+C
+    *  Useful for usecase: `cread | tee cread.log` and pressing Ctrl+C
     **/
    signal(SIGPIPE, SIG_IGN);
 

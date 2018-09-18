@@ -1,8 +1,8 @@
 
 #pragma once
 
-#include <creativecoin/protocol/base.hpp>
-#include <creativecoin/protocol/types.hpp>
+#include <crea/protocol/base.hpp>
+#include <crea/protocol/types.hpp>
 
 #include <fc/reflect/reflect.hpp>
 
@@ -10,9 +10,9 @@
 #include <string>
 #include <vector>
 
-namespace creativecoin { namespace private_message {
+namespace crea { namespace private_message {
 
-struct private_message_operation : public creativecoin::protocol::base_operation
+struct private_message_operation : public crea::protocol::base_operation
 {
     protocol::account_name_type  from;
     protocol::account_name_type  to;
@@ -27,7 +27,7 @@ typedef fc::static_variant< private_message_operation > private_message_plugin_o
 
 } }
 
-FC_REFLECT( creativecoin::private_message::private_message_operation, (from)(to)(from_memo_key)(to_memo_key)(sent_time)(checksum)(encrypted_message) )
+FC_REFLECT( crea::private_message::private_message_operation, (from)(to)(from_memo_key)(to_memo_key)(sent_time)(checksum)(encrypted_message) )
 
-CREA_DECLARE_OPERATION_TYPE( creativecoin::private_message::private_message_plugin_operation )
-FC_REFLECT_TYPENAME( creativecoin::private_message::private_message_plugin_operation )
+CREA_DECLARE_OPERATION_TYPE( crea::private_message::private_message_plugin_operation )
+FC_REFLECT_TYPENAME( crea::private_message::private_message_plugin_operation )

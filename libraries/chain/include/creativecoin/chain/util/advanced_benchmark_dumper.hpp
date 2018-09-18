@@ -10,7 +10,7 @@
 
 #include <utility>
 
-namespace creativecoin { namespace chain { namespace util {
+namespace crea { namespace chain { namespace util {
 
 template <typename TCntr>
 struct emplace_ret_value
@@ -107,11 +107,11 @@ class advanced_benchmark_dumper
       void dump();
 };
 
-} } } // creativecoin::chain::util
+} } } // crea::chain::util
 
-FC_REFLECT( creativecoin::chain::util::advanced_benchmark_dumper::item, (op_name)(time) )
-FC_REFLECT( creativecoin::chain::util::advanced_benchmark_dumper::ritem, (op_name)(time) )
+FC_REFLECT( crea::chain::util::advanced_benchmark_dumper::item, (op_name)(time) )
+FC_REFLECT( crea::chain::util::advanced_benchmark_dumper::ritem, (op_name)(time) )
 
-FC_REFLECT( creativecoin::chain::util::advanced_benchmark_dumper::total_info< std::set< creativecoin::chain::util::advanced_benchmark_dumper::item > >, (total_time)(items) )
-FC_REFLECT( creativecoin::chain::util::advanced_benchmark_dumper::total_info< std::multiset< creativecoin::chain::util::advanced_benchmark_dumper::ritem > >, (total_time)(items) )
+FC_REFLECT( crea::chain::util::advanced_benchmark_dumper::total_info< std::set< crea::chain::util::advanced_benchmark_dumper::item > >, (total_time)(items) )
+FC_REFLECT( crea::chain::util::advanced_benchmark_dumper::total_info< std::multiset< crea::chain::util::advanced_benchmark_dumper::ritem > >, (total_time)(items) )
 

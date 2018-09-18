@@ -1,22 +1,22 @@
 
 #pragma once
 
-#include <creativecoin/protocol/creativecoin_operations.hpp>
-#include <creativecoin/protocol/operation_util_impl.hpp>
-#include <creativecoin/protocol/types.hpp>
+#include <crea/protocol/crea_operations.hpp>
+#include <crea/protocol/operation_util_impl.hpp>
+#include <crea/protocol/types.hpp>
 
-#include <creativecoin/chain/evaluator.hpp>
-#include <creativecoin/chain/evaluator_registry.hpp>
-#include <creativecoin/chain/custom_operation_interpreter.hpp>
+#include <crea/chain/evaluator.hpp>
+#include <crea/chain/evaluator_registry.hpp>
+#include <crea/chain/custom_operation_interpreter.hpp>
 
-#include <creativecoin/schema/schema.hpp>
+#include <crea/schema/schema.hpp>
 
 #include <fc/variant.hpp>
 
 #include <string>
 #include <vector>
 
-namespace creativecoin { namespace chain {
+namespace crea { namespace chain {
 
 using protocol::operation;
 using protocol::authority;
@@ -215,9 +215,9 @@ class generic_custom_operation_interpreter
          FC_CAPTURE_AND_RETHROW( (outer_o) )
       }
 
-      virtual std::shared_ptr< creativecoin::schema::abstract_schema > get_operation_schema() override
+      virtual std::shared_ptr< crea::schema::abstract_schema > get_operation_schema() override
       {
-         return creativecoin::schema::get_schema_for_type< CustomOperationType >();
+         return crea::schema::get_schema_for_type< CustomOperationType >();
       }
 };
 

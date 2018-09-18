@@ -1,21 +1,21 @@
 
 #pragma once
 
-#include <creativecoin/app/plugin.hpp>
-#include <creativecoin/plugins/block_info/block_info.hpp>
+#include <crea/app/plugin.hpp>
+#include <crea/plugins/block_info/block_info.hpp>
 
 #include <string>
 #include <vector>
 
-namespace creativecoin { namespace protocol {
+namespace crea { namespace protocol {
 struct signed_block;
 } }
 
-namespace creativecoin { namespace plugin { namespace block_info {
+namespace crea { namespace plugin { namespace block_info {
 
-using creativecoin::app::application;
+using crea::app::application;
 
-class block_info_plugin : public creativecoin::app::plugin
+class block_info_plugin : public crea::app::plugin
 {
    public:
       block_info_plugin( application* app );

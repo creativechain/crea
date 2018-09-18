@@ -1,9 +1,9 @@
 #pragma once
-#include <creativecoin/protocol/block.hpp>
+#include <crea/protocol/block.hpp>
 
-#include <creativecoin/plugins/p2p/p2p_plugin.hpp>
-#include <creativecoin/plugins/chain/chain_plugin.hpp>
-#include <creativecoin/plugins/json_rpc/utility.hpp>
+#include <crea/plugins/p2p/p2p_plugin.hpp>
+#include <crea/plugins/chain/chain_plugin.hpp>
+#include <crea/plugins/json_rpc/utility.hpp>
 
 #include <fc/optional.hpp>
 #include <fc/variant.hpp>
@@ -11,16 +11,16 @@
 
 #include <boost/thread/mutex.hpp>
 
-namespace creativecoin { namespace plugins { namespace network_broadcast_api {
+namespace crea { namespace plugins { namespace network_broadcast_api {
 
 using std::vector;
 using fc::variant;
 using fc::optional;
-using creativecoin::plugins::json_rpc::void_type;
+using crea::plugins::json_rpc::void_type;
 
-using creativecoin::protocol::signed_transaction;
-using creativecoin::protocol::transaction_id_type;
-using creativecoin::protocol::signed_block;
+using crea::protocol::signed_transaction;
+using crea::protocol::transaction_id_type;
+using crea::protocol::signed_block;
 
 struct broadcast_transaction_args
 {
@@ -54,10 +54,10 @@ class network_broadcast_api
       std::unique_ptr< detail::network_broadcast_api_impl > my;
 };
 
-} } } // creativecoin::plugins::network_broadcast_api
+} } } // crea::plugins::network_broadcast_api
 
-FC_REFLECT( creativecoin::plugins::network_broadcast_api::broadcast_transaction_args,
+FC_REFLECT( crea::plugins::network_broadcast_api::broadcast_transaction_args,
    (trx)(max_block_age) )
 
-FC_REFLECT( creativecoin::plugins::network_broadcast_api::broadcast_block_args,
+FC_REFLECT( crea::plugins::network_broadcast_api::broadcast_block_args,
    (block) )
