@@ -238,13 +238,13 @@ namespace creativecoin { namespace protocol {
          FC_ASSERT( maximum_block_size >= CREA_MIN_BLOCK_SIZE_LIMIT, "maximum_block_size smaller than minimum max block size" );
       }
 
-      itr = props.find( "sbd_interest_rate" );
+      itr = props.find( "cbd_interest_rate" );
       if( itr != props.end() )
       {
-         uint16_t sbd_interest_rate;
-         fc::raw::unpack_from_vector( itr->second, sbd_interest_rate );
-         FC_ASSERT( sbd_interest_rate >= 0, "sbd_interest_rate must be positive" );
-         FC_ASSERT( sbd_interest_rate <= CREA_100_PERCENT, "sbd_interest_rate must not exceed 100%" );
+         uint16_t cbd_interest_rate;
+         fc::raw::unpack_from_vector( itr->second, cbd_interest_rate );
+         FC_ASSERT( cbd_interest_rate >= 0, "cbd_interest_rate must be positive" );
+         FC_ASSERT( cbd_interest_rate <= CREA_100_PERCENT, "cbd_interest_rate must not exceed 100%" );
       }
 
       itr = props.find( "new_signing_key" );
@@ -255,14 +255,14 @@ namespace creativecoin { namespace protocol {
          FC_UNUSED( signing_key ); // This tests the deserialization of the key
       }
 
-      itr = props.find( "sbd_exchange_rate" );
+      itr = props.find( "cbd_exchange_rate" );
       if( itr != props.end() )
       {
-         price sbd_exchange_rate;
-         fc::raw::unpack_from_vector( itr->second, sbd_exchange_rate );
-         FC_ASSERT( ( is_asset_type( sbd_exchange_rate.base, CBD_SYMBOL ) && is_asset_type( sbd_exchange_rate.quote, CREA_SYMBOL ) ),
+         price cbd_exchange_rate;
+         fc::raw::unpack_from_vector( itr->second, cbd_exchange_rate );
+         FC_ASSERT( ( is_asset_type( cbd_exchange_rate.base, CBD_SYMBOL ) && is_asset_type( cbd_exchange_rate.quote, CREA_SYMBOL ) ),
             "Price feed must be a CREA/CBD price" );
-         sbd_exchange_rate.validate();
+         cbd_exchange_rate.validate();
       }
 
       itr = props.find( "url" );
@@ -520,12 +520,12 @@ namespace creativecoin { namespace protocol {
       validate_account_name( to );
       validate_account_name( agent );
       FC_ASSERT( fee.amount >= 0, "fee cannot be negative" );
-      FC_ASSERT( sbd_amount.amount >= 0, "sbd amount cannot be negative" );
+      FC_ASSERT( cbd_amount.amount >= 0, "sbd amount cannot be negative" );
       FC_ASSERT( creativecoin_amount.amount >= 0, "creativecoin amount cannot be negative" );
-      FC_ASSERT( sbd_amount.amount > 0 || creativecoin_amount.amount > 0, "escrow must transfer a non-zero amount" );
+      FC_ASSERT( cbd_amount.amount > 0 || creativecoin_amount.amount > 0, "escrow must transfer a non-zero amount" );
       FC_ASSERT( from != agent && to != agent, "agent must be a third party" );
       FC_ASSERT( (fee.symbol == CREA_SYMBOL) || (fee.symbol == CBD_SYMBOL), "fee must be CREA or CBD" );
-      FC_ASSERT( sbd_amount.symbol == CBD_SYMBOL, "sbd amount must contain CBD" );
+      FC_ASSERT( cbd_amount.symbol == CBD_SYMBOL, "sbd amount must contain CBD" );
       FC_ASSERT( creativecoin_amount.symbol == CREA_SYMBOL, "creativecoin amount must contain CREA" );
       FC_ASSERT( ratification_deadline < escrow_expiration, "ratification deadline must be before escrow expiration" );
       if ( json_meta.size() > 0 )
@@ -562,10 +562,10 @@ namespace creativecoin { namespace protocol {
       validate_account_name( receiver );
       FC_ASSERT( who == from || who == to || who == agent, "who must be from or to or agent" );
       FC_ASSERT( receiver == from || receiver == to, "receiver must be from or to" );
-      FC_ASSERT( sbd_amount.amount >= 0, "sbd amount cannot be negative" );
+      FC_ASSERT( cbd_amount.amount >= 0, "sbd amount cannot be negative" );
       FC_ASSERT( creativecoin_amount.amount >= 0, "creativecoin amount cannot be negative" );
-      FC_ASSERT( sbd_amount.amount > 0 || creativecoin_amount.amount > 0, "escrow must release a non-zero amount" );
-      FC_ASSERT( sbd_amount.symbol == CBD_SYMBOL, "sbd amount must contain CBD" );
+      FC_ASSERT( cbd_amount.amount > 0 || creativecoin_amount.amount > 0, "escrow must release a non-zero amount" );
+      FC_ASSERT( cbd_amount.symbol == CBD_SYMBOL, "sbd amount must contain CBD" );
       FC_ASSERT( creativecoin_amount.symbol == CREA_SYMBOL, "creativecoin amount must contain CREA" );
    }
 

@@ -77,7 +77,7 @@ void copy_legacy_chain_properties( chain_properties& dest, const legacy_chain_pr
 {
    dest.account_creation_fee = src.account_creation_fee.to_asset< force_canon >();
    dest.maximum_block_size = src.maximum_block_size;
-   dest.sbd_interest_rate = src.sbd_interest_rate;
+   dest.cbd_interest_rate = src.cbd_interest_rate;
 }
 
 void witness_update_evaluator::do_apply( const witness_update_operation& o )
@@ -137,16 +137,16 @@ void witness_set_properties_evaluator::do_apply( const witness_set_properties_op
    // Capture old properties. This allows only updating the object once.
    chain_properties  props;
    public_key_type   signing_key;
-   price             sbd_exchange_rate;
-   time_point_sec    last_sbd_exchange_update;
+   price             cbd_exchange_rate;
+   time_point_sec    last_cbd_exchange_update;
    string            url;
 
    bool account_creation_changed = false;
    bool max_block_changed        = false;
-   bool sbd_interest_changed     = false;
+   bool cbd_interest_changed     = false;
    bool account_subsidy_changed  = false;
    bool key_changed              = false;
-   bool sbd_exchange_changed     = false;
+   bool cbd_exchange_changed     = false;
    bool url_changed              = false;
 
    auto itr = o.props.find( "key" );
@@ -170,11 +170,11 @@ void witness_set_properties_evaluator::do_apply( const witness_set_properties_op
       max_block_changed = true;
    }
 
-   itr = o.props.find( "sbd_interest_rate" );
+   itr = o.props.find( "cbd_interest_rate" );
    if( itr != o.props.end() )
    {
-      fc::raw::unpack_from_vector( itr->second, props.sbd_interest_rate );
-      sbd_interest_changed = true;
+      fc::raw::unpack_from_vector( itr->second, props.cbd_interest_rate );
+      cbd_interest_changed = true;
    }
 
    itr = o.props.find( "account_subsidy_limit" );
@@ -191,12 +191,12 @@ void witness_set_properties_evaluator::do_apply( const witness_set_properties_op
       key_changed = true;
    }
 
-   itr = o.props.find( "sbd_exchange_rate" );
+   itr = o.props.find( "cbd_exchange_rate" );
    if( itr != o.props.end() )
    {
-      fc::raw::unpack_from_vector( itr->second, sbd_exchange_rate );
-      last_sbd_exchange_update = _db.head_block_time();
-      sbd_exchange_changed = true;
+      fc::raw::unpack_from_vector( itr->second, cbd_exchange_rate );
+      last_cbd_exchange_update = _db.head_block_time();
+      cbd_exchange_changed = true;
    }
 
    itr = o.props.find( "url" );
@@ -214,8 +214,8 @@ void witness_set_properties_evaluator::do_apply( const witness_set_properties_op
       if( max_block_changed )
          w.props.maximum_block_size = props.maximum_block_size;
 
-      if( sbd_interest_changed )
-         w.props.sbd_interest_rate = props.sbd_interest_rate;
+      if( cbd_interest_changed )
+         w.props.cbd_interest_rate = props.cbd_interest_rate;
 
       if( account_subsidy_changed )
          w.props.account_subsidy_limit = props.account_subsidy_limit;
@@ -223,10 +223,10 @@ void witness_set_properties_evaluator::do_apply( const witness_set_properties_op
       if( key_changed )
          w.signing_key = signing_key;
 
-      if( sbd_exchange_changed )
+      if( cbd_exchange_changed )
       {
-         w.sbd_exchange_rate = sbd_exchange_rate;
-         w.last_sbd_exchange_update = last_sbd_exchange_update;
+         w.cbd_exchange_rate = cbd_exchange_rate;
+         w.last_cbd_exchange_update = last_cbd_exchange_update;
       }
 
       if( url_changed )
@@ -819,17 +819,17 @@ void escrow_transfer_evaluator::do_apply( const escrow_transfer_operation& o )
       FC_ASSERT( o.escrow_expiration > _db.head_block_time(), "The escrow expiration must be after head block time." );
 
       asset creativecoin_spent = o.creativecoin_amount;
-      asset sbd_spent = o.sbd_amount;
+      asset cbd_spent = o.cbd_amount;
       if( o.fee.symbol == CREA_SYMBOL )
          creativecoin_spent += o.fee;
       else
-         sbd_spent += o.fee;
+         cbd_spent += o.fee;
 
       FC_ASSERT( from_account.balance >= creativecoin_spent, "Account cannot cover CREA costs of escrow. Required: ${r} Available: ${a}", ("r",creativecoin_spent)("a",from_account.balance) );
-      FC_ASSERT( from_account.sbd_balance >= sbd_spent, "Account cannot cover CBD costs of escrow. Required: ${r} Available: ${a}", ("r",sbd_spent)("a",from_account.sbd_balance) );
+      FC_ASSERT( from_account.cbd_balance >= cbd_spent, "Account cannot cover CBD costs of escrow. Required: ${r} Available: ${a}", ("r",cbd_spent)("a",from_account.cbd_balance) );
 
       _db.adjust_balance( from_account, -creativecoin_spent );
-      _db.adjust_balance( from_account, -sbd_spent );
+      _db.adjust_balance( from_account, -cbd_spent );
 
       _db.create<escrow_object>([&]( escrow_object& esc )
       {
@@ -839,7 +839,7 @@ void escrow_transfer_evaluator::do_apply( const escrow_transfer_operation& o )
          esc.agent                  = o.agent;
          esc.ratification_deadline  = o.ratification_deadline;
          esc.escrow_expiration      = o.escrow_expiration;
-         esc.sbd_balance            = o.sbd_amount;
+         esc.cbd_balance            = o.cbd_amount;
          esc.creativecoin_balance          = o.creativecoin_amount;
          esc.pending_fee            = o.fee;
       });
@@ -888,7 +888,7 @@ void escrow_approve_evaluator::do_apply( const escrow_approve_operation& o )
       if( reject_escrow )
       {
          _db.adjust_balance( o.from, escrow.creativecoin_balance );
-         _db.adjust_balance( o.from, escrow.sbd_balance );
+         _db.adjust_balance( o.from, escrow.cbd_balance );
          _db.adjust_balance( o.from, escrow.pending_fee );
 
          _db.remove( escrow );
@@ -935,7 +935,7 @@ void escrow_release_evaluator::do_apply( const escrow_release_operation& o )
 
       const auto& e = _db.get_escrow( o.from, o.escrow_id );
       FC_ASSERT( e.creativecoin_balance >= o.creativecoin_amount, "Release amount exceeds escrow balance. Amount: ${a}, Balance: ${b}", ("a", o.creativecoin_amount)("b", e.creativecoin_balance) );
-      FC_ASSERT( e.sbd_balance >= o.sbd_amount, "Release amount exceeds escrow balance. Amount: ${a}, Balance: ${b}", ("a", o.sbd_amount)("b", e.sbd_balance) );
+      FC_ASSERT( e.cbd_balance >= o.cbd_amount, "Release amount exceeds escrow balance. Amount: ${a}, Balance: ${b}", ("a", o.cbd_amount)("b", e.cbd_balance) );
       FC_ASSERT( e.to == o.to, "Operation 'to' (${o}) does not match escrow 'to' (${e}).", ("o", o.to)("e", e.to) );
       FC_ASSERT( e.agent == o.agent, "Operation 'agent' (${a}) does not match escrow 'agent' (${e}).", ("o", o.agent)("e", e.agent) );
       FC_ASSERT( o.receiver == e.from || o.receiver == e.to, "Funds must be released to 'from' (${f}) or 'to' (${t})", ("f", e.from)("t", e.to) );
@@ -966,15 +966,15 @@ void escrow_release_evaluator::do_apply( const escrow_release_operation& o )
       // If escrow expires and there is no dispute, either party can release funds to either party.
 
       _db.adjust_balance( o.receiver, o.creativecoin_amount );
-      _db.adjust_balance( o.receiver, o.sbd_amount );
+      _db.adjust_balance( o.receiver, o.cbd_amount );
 
       _db.modify( e, [&]( escrow_object& esc )
       {
          esc.creativecoin_balance -= o.creativecoin_amount;
-         esc.sbd_balance -= o.sbd_amount;
+         esc.cbd_balance -= o.cbd_amount;
       });
 
-      if( e.creativecoin_balance.amount == 0 && e.sbd_balance.amount == 0 )
+      if( e.creativecoin_balance.amount == 0 && e.cbd_balance.amount == 0 )
       {
          _db.remove( e );
       }
@@ -1889,8 +1889,8 @@ void feed_publish_evaluator::do_apply( const feed_publish_operation& o )
    const auto& witness = _db.get_witness( o.publisher );
    _db.modify( witness, [&]( witness_object& w )
    {
-      w.sbd_exchange_rate = o.exchange_rate;
-      w.last_sbd_exchange_update = _db.head_block_time();
+      w.cbd_exchange_rate = o.exchange_rate;
+      w.last_cbd_exchange_update = _db.head_block_time();
    });
 }
 
@@ -2299,8 +2299,8 @@ void claim_reward_balance_evaluator::do_apply( const claim_reward_balance_operat
 
    FC_ASSERT( op.reward_creativecoin <= acnt.reward_creativecoin_balance, "Cannot claim that much CREA. Claim: ${c} Actual: ${a}",
       ("c", op.reward_creativecoin)("a", acnt.reward_creativecoin_balance) );
-   FC_ASSERT( op.reward_sbd <= acnt.reward_sbd_balance, "Cannot claim that much CBD. Claim: ${c} Actual: ${a}",
-      ("c", op.reward_sbd)("a", acnt.reward_sbd_balance) );
+   FC_ASSERT( op.reward_sbd <= acnt.reward_cbd_balance, "Cannot claim that much CBD. Claim: ${c} Actual: ${a}",
+      ("c", op.reward_sbd)("a", acnt.reward_cbd_balance) );
    FC_ASSERT( op.reward_vests <= acnt.reward_vesting_balance, "Cannot claim that much VESTS. Claim: ${c} Actual: ${a}",
       ("c", op.reward_vests)("a", acnt.reward_vesting_balance) );
 
@@ -2393,8 +2393,8 @@ void claim_reward_balance2_evaluator::do_apply( const claim_reward_balance2_oper
          {
             FC_ASSERT( is_asset_type( token, CREA_SYMBOL ) == false || token <= a->reward_creativecoin_balance,
                        "Cannot claim that much CREA. Claim: ${c} Actual: ${a}", ("c", token)("a", a->reward_creativecoin_balance) );
-            FC_ASSERT( is_asset_type( token, CBD_SYMBOL ) == false || token <= a->reward_sbd_balance,
-                       "Cannot claim that much CBD. Claim: ${c} Actual: ${a}", ("c", token)("a", a->reward_sbd_balance) );
+            FC_ASSERT( is_asset_type( token, CBD_SYMBOL ) == false || token <= a->reward_cbd_balance,
+                       "Cannot claim that much CBD. Claim: ${c} Actual: ${a}", ("c", token)("a", a->reward_cbd_balance) );
             _db.adjust_reward_balance( *a, -token );
             _db.adjust_balance( *a, token );
          }

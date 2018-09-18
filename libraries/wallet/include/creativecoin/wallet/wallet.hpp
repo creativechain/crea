@@ -655,7 +655,7 @@ class wallet_api
        * @param to The account the funds are going to
        * @param agent The account acting as the agent in case of dispute
        * @param escrow_id A unique id for the escrow transfer. (from, escrow_id) must be a unique pair
-       * @param sbd_amount The amount of CBD to transfer
+       * @param cbd_amount The amount of CBD to transfer
        * @param creativecoin_amount The amount of CREA to transfer
        * @param fee The fee paid to the agent
        * @param ratification_deadline The deadline for 'to' and 'agent' to approve the escrow transfer
@@ -668,7 +668,7 @@ class wallet_api
          string to,
          string agent,
          uint32_t escrow_id,
-         condenser_api::legacy_asset sbd_amount,
+         condenser_api::legacy_asset cbd_amount,
          condenser_api::legacy_asset creativecoin_amount,
          condenser_api::legacy_asset fee,
          time_point_sec ratification_deadline,
@@ -727,7 +727,7 @@ class wallet_api
        * @param who The account authorizing the release
        * @param receiver The account that will receive funds being released
        * @param escrow_id A unique id for the escrow transfer
-       * @param sbd_amount The amount of CBD that will be released
+       * @param cbd_amount The amount of CBD that will be released
        * @param creativecoin_amount The amount of CREA that will be released
        * @param broadcast true if you wish to broadcast the transaction
        */
@@ -738,7 +738,7 @@ class wallet_api
          string who,
          string receiver,
          uint32_t escrow_id,
-         condenser_api::legacy_asset sbd_amount,
+         condenser_api::legacy_asset cbd_amount,
          condenser_api::legacy_asset creativecoin_amount,
          bool broadcast = false
       );

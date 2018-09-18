@@ -180,16 +180,16 @@ struct api_account_object
       last_vote_time( a.last_vote_time ),
       balance( a.balance ),
       savings_balance( a.savings_balance ),
-      sbd_balance( a.sbd_balance ),
-      sbd_seconds( a.sbd_seconds ),
-      sbd_seconds_last_update( a.sbd_seconds_last_update ),
-      sbd_last_interest_payment( a.sbd_last_interest_payment ),
-      savings_sbd_balance( a.savings_sbd_balance ),
-      savings_sbd_seconds( a.savings_sbd_seconds ),
-      savings_sbd_seconds_last_update( a.savings_sbd_seconds_last_update ),
-      savings_sbd_last_interest_payment( a.savings_sbd_last_interest_payment ),
+      cbd_balance( a.cbd_balance ),
+      cbd_seconds( a.cbd_seconds ),
+      cbd_seconds_last_update( a.cbd_seconds_last_update ),
+      cbd_last_interest_payment( a.cbd_last_interest_payment ),
+      savings_cbd_balance( a.savings_cbd_balance ),
+      savings_cbd_seconds( a.savings_cbd_seconds ),
+      savings_cbd_seconds_last_update( a.savings_cbd_seconds_last_update ),
+      savings_cbd_last_interest_payment( a.savings_cbd_last_interest_payment ),
       savings_withdraw_requests( a.savings_withdraw_requests ),
-      reward_sbd_balance( a.reward_sbd_balance ),
+      reward_cbd_balance( a.reward_cbd_balance ),
       reward_creativecoin_balance( a.reward_creativecoin_balance ),
       reward_vesting_balance( a.reward_vesting_balance ),
       reward_vesting_creativecoin( a.reward_vesting_creativecoin ),
@@ -256,19 +256,19 @@ struct api_account_object
    asset             balance;
    asset             savings_balance;
 
-   asset             sbd_balance;
-   uint128_t         sbd_seconds;
-   time_point_sec    sbd_seconds_last_update;
-   time_point_sec    sbd_last_interest_payment;
+   asset             cbd_balance;
+   uint128_t         cbd_seconds;
+   time_point_sec    cbd_seconds_last_update;
+   time_point_sec    cbd_last_interest_payment;
 
-   asset             savings_sbd_balance;
-   uint128_t         savings_sbd_seconds;
-   time_point_sec    savings_sbd_seconds_last_update;
-   time_point_sec    savings_sbd_last_interest_payment;
+   asset             savings_cbd_balance;
+   uint128_t         savings_cbd_seconds;
+   time_point_sec    savings_cbd_seconds_last_update;
+   time_point_sec    savings_cbd_last_interest_payment;
 
    uint8_t           savings_withdraw_requests = 0;
 
-   asset             reward_sbd_balance;
+   asset             reward_cbd_balance;
    asset             reward_creativecoin_balance;
    asset             reward_vesting_balance;
    asset             reward_vesting_creativecoin;
@@ -386,8 +386,8 @@ struct api_witness_object
       pow_worker( w.pow_worker ),
       signing_key( w.signing_key ),
       props( w.props ),
-      sbd_exchange_rate( w.sbd_exchange_rate ),
-      last_sbd_exchange_update( w.last_sbd_exchange_update ),
+      cbd_exchange_rate( w.cbd_exchange_rate ),
+      last_cbd_exchange_update( w.last_cbd_exchange_update ),
       votes( w.votes ),
       virtual_last_update( w.virtual_last_update ),
       virtual_position( w.virtual_position ),
@@ -410,8 +410,8 @@ struct api_witness_object
    uint64_t          pow_worker = 0;
    public_key_type   signing_key;
    chain_properties  props;
-   price             sbd_exchange_rate;
-   time_point_sec    last_sbd_exchange_update;
+   price             cbd_exchange_rate;
+   time_point_sec    last_cbd_exchange_update;
    share_type        votes;
    fc::uint128       virtual_last_update;
    fc::uint128       virtual_position;
@@ -555,9 +555,9 @@ FC_REFLECT( creativecoin::plugins::database_api::api_account_object,
              (comment_count)(lifetime_vote_count)(post_count)(can_vote)(voting_power)(last_vote_time)
              (balance)
              (savings_balance)
-             (sbd_balance)(sbd_seconds)(sbd_seconds_last_update)(sbd_last_interest_payment)
-             (savings_sbd_balance)(savings_sbd_seconds)(savings_sbd_seconds_last_update)(savings_sbd_last_interest_payment)(savings_withdraw_requests)
-             (reward_sbd_balance)(reward_creativecoin_balance)(reward_vesting_balance)(reward_vesting_creativecoin)
+             (cbd_balance)(cbd_seconds)(cbd_seconds_last_update)(cbd_last_interest_payment)
+             (savings_cbd_balance)(savings_cbd_seconds)(savings_cbd_seconds_last_update)(savings_cbd_last_interest_payment)(savings_withdraw_requests)
+             (reward_cbd_balance)(reward_creativecoin_balance)(reward_vesting_balance)(reward_vesting_creativecoin)
              (vesting_shares)(delegated_vesting_shares)(received_vesting_shares)(vesting_withdraw_rate)(next_vesting_withdrawal)(withdrawn)(to_withdraw)(withdraw_routes)
              (curation_rewards)
              (posting_rewards)
@@ -603,7 +603,7 @@ FC_REFLECT( creativecoin::plugins::database_api::api_witness_object,
              (url)(votes)(virtual_last_update)(virtual_position)(virtual_scheduled_time)(total_missed)
              (last_aslot)(last_confirmed_block_num)(pow_worker)(signing_key)
              (props)
-             (sbd_exchange_rate)(last_sbd_exchange_update)
+             (cbd_exchange_rate)(last_cbd_exchange_update)
              (last_work)
              (running_version)
              (hardfork_version_vote)(hardfork_time_vote)

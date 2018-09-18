@@ -1108,7 +1108,7 @@ std::pair< asset, asset > database::create_sbd( const account_object& to_account
 
       if( !median_price.is_null() )
       {
-         auto to_sbd = ( gpo.sbd_print_rate * creativecoin.amount ) / CREA_100_PERCENT;
+         auto to_sbd = ( gpo.cbd_print_rate * creativecoin.amount ) / CREA_100_PERCENT;
          auto to_creativecoin = creativecoin.amount - to_sbd;
 
          auto sbd = asset( to_sbd, CREA_SYMBOL ) * median_price;
@@ -1391,16 +1391,16 @@ void database::clear_null_account_balance()
       adjust_savings_balance( null_account, -null_account.savings_balance );
    }
 
-   if( null_account.sbd_balance.amount > 0 )
+   if( null_account.cbd_balance.amount > 0 )
    {
-      total_sbd += null_account.sbd_balance;
-      adjust_balance( null_account, -null_account.sbd_balance );
+      total_sbd += null_account.cbd_balance;
+      adjust_balance( null_account, -null_account.cbd_balance );
    }
 
-   if( null_account.savings_sbd_balance.amount > 0 )
+   if( null_account.savings_cbd_balance.amount > 0 )
    {
-      total_sbd += null_account.savings_sbd_balance;
-      adjust_savings_balance( null_account, -null_account.savings_sbd_balance );
+      total_sbd += null_account.savings_cbd_balance;
+      adjust_savings_balance( null_account, -null_account.savings_cbd_balance );
    }
 
    if( null_account.vesting_shares.amount > 0 )
@@ -1428,10 +1428,10 @@ void database::clear_null_account_balance()
       adjust_reward_balance( null_account, -null_account.reward_creativecoin_balance );
    }
 
-   if( null_account.reward_sbd_balance.amount > 0 )
+   if( null_account.reward_cbd_balance.amount > 0 )
    {
-      total_sbd += null_account.reward_sbd_balance;
-      adjust_reward_balance( null_account, -null_account.reward_sbd_balance );
+      total_sbd += null_account.reward_cbd_balance;
+      adjust_reward_balance( null_account, -null_account.reward_cbd_balance );
    }
 
    if( null_account.reward_vesting_balance.amount > 0 )
@@ -1616,13 +1616,13 @@ void database::process_vesting_withdrawals()
    }
 }
 
-void database::adjust_total_payout( const comment_object& cur, const asset& sbd_created, const asset& curator_sbd_value, const asset& beneficiary_value )
+void database::adjust_total_payout( const comment_object& cur, const asset& cbd_created, const asset& curator_cbd_value, const asset& beneficiary_value )
 {
    modify( cur, [&]( comment_object& c )
    {
       // input assets should be in sbd
-      c.total_payout_value += sbd_created;
-      c.curator_payout_value += curator_sbd_value;
+      c.total_payout_value += cbd_created;
+      c.curator_payout_value += curator_cbd_value;
       c.beneficiary_payout_value += beneficiary_value;
    } );
    /// TODO: potentially modify author's total payout numbers as well
@@ -1747,16 +1747,16 @@ share_type database::cashout_comment_helper( util::comment_reward_context& ctx, 
 
             author_tokens -= total_beneficiary;
 
-            auto sbd_creativecoin     = ( author_tokens * comment.percent_creativecoin_dollars ) / ( 2 * CREA_100_PERCENT ) ;
-            auto vesting_creativecoin = author_tokens - sbd_creativecoin;
+            auto cbd_creativecoin     = ( author_tokens * comment.percent_creativecoin_dollars ) / ( 2 * CREA_100_PERCENT ) ;
+            auto vesting_creativecoin = author_tokens - cbd_creativecoin;
 
             const auto& author = get_account( comment.author );
             auto vest_created = create_vesting( author, asset( vesting_creativecoin, CREA_SYMBOL ), has_hardfork( CREA_HARDFORK_0_17__659 ) );
-            auto sbd_payout = create_sbd( author, asset( sbd_creativecoin, CREA_SYMBOL ), has_hardfork( CREA_HARDFORK_0_17__659 ) );
+            auto cbd_payout = create_sbd( author, asset( cbd_creativecoin, CREA_SYMBOL ), has_hardfork( CREA_HARDFORK_0_17__659 ) );
 
-            adjust_total_payout( comment, sbd_payout.first + to_sbd( sbd_payout.second + asset( vesting_creativecoin, CREA_SYMBOL ) ), to_sbd( asset( curation_tokens, CREA_SYMBOL ) ), to_sbd( asset( total_beneficiary, CREA_SYMBOL ) ) );
+            adjust_total_payout( comment, cbd_payout.first + to_sbd( cbd_payout.second + asset( vesting_creativecoin, CREA_SYMBOL ) ), to_sbd( asset( curation_tokens, CREA_SYMBOL ) ), to_sbd( asset( total_beneficiary, CREA_SYMBOL ) ) );
 
-            push_virtual_operation( author_reward_operation( comment.author, to_string( comment.permlink ), sbd_payout.first, sbd_payout.second, vest_created ) );
+            push_virtual_operation( author_reward_operation( comment.author, to_string( comment.permlink ), cbd_payout.first, cbd_payout.second, vest_created ) );
             push_virtual_operation( comment_reward_operation( comment.author, to_string( comment.permlink ), to_sbd( asset( claimed_reward, CREA_SYMBOL ) ) ) );
 
             #ifndef IS_LOW_MEM
@@ -2195,7 +2195,7 @@ void database::pay_liquidity_reward()
          modify( *itr, [&]( liquidity_reward_balance_object& obj )
          {
             obj.creativecoin_volume = 0;
-            obj.sbd_volume   = 0;
+            obj.cbd_volume   = 0;
             obj.last_update  = head_block_time();
             obj.weight = 0;
          } );
@@ -2276,7 +2276,7 @@ void database::process_conversions()
    modify( props, [&]( dynamic_global_property_object& p )
    {
        p.current_supply += net_creativecoin;
-       p.current_sbd_supply -= net_sbd;
+       p.current_cbd_supply -= net_sbd;
        p.virtual_supply += net_creativecoin;
        p.virtual_supply -= net_sbd * get_feed_history().current_median_history;
    } );
@@ -2341,7 +2341,7 @@ void database::expire_escrow_ratification()
       ++escrow_itr;
 
       adjust_balance( old_escrow.from, old_escrow.creativecoin_balance );
-      adjust_balance( old_escrow.from, old_escrow.sbd_balance );
+      adjust_balance( old_escrow.from, old_escrow.cbd_balance );
       adjust_balance( old_escrow.from, old_escrow.pending_fee );
 
       remove( old_escrow );
@@ -3080,16 +3080,16 @@ try {
       const auto& wit = get_witness( wso.current_shuffled_witnesses[i] );
       if( has_hardfork( CREA_HARDFORK_0_19__822 ) )
       {
-         if( now < wit.last_sbd_exchange_update + CREA_MAX_FEED_AGE_SECONDS
-            && !wit.sbd_exchange_rate.is_null() )
+         if( now < wit.last_cbd_exchange_update + CREA_MAX_FEED_AGE_SECONDS
+            && !wit.cbd_exchange_rate.is_null() )
          {
-            feeds.push_back( wit.sbd_exchange_rate );
+            feeds.push_back( wit.cbd_exchange_rate );
          }
       }
-      else if( wit.last_sbd_exchange_update < now + CREA_MAX_FEED_AGE_SECONDS &&
-          !wit.sbd_exchange_rate.is_null() )
+      else if( wit.last_cbd_exchange_update < now + CREA_MAX_FEED_AGE_SECONDS &&
+          !wit.cbd_exchange_rate.is_null() )
       {
-         feeds.push_back( wit.sbd_exchange_rate );
+         feeds.push_back( wit.cbd_exchange_rate );
       }
    }
 
@@ -3127,7 +3127,7 @@ try {
             if( has_hardfork( CREA_HARDFORK_0_14__230 ) )
             {
                const auto& gpo = get_dynamic_global_properties();
-               price min_price( asset( 9 * gpo.current_sbd_supply.amount, CBD_SYMBOL ), gpo.current_supply ); // This price limits CBD to 10% market cap
+               price min_price( asset( 9 * gpo.current_cbd_supply.amount, CBD_SYMBOL ), gpo.current_supply ); // This price limits CBD to 10% market cap
 
                if( min_price > fho.current_median_history )
                   fho.current_median_history = min_price;
@@ -3473,21 +3473,21 @@ void database::update_virtual_supply()
    modify( get_dynamic_global_properties(), [&]( dynamic_global_property_object& dgp )
    {
       dgp.virtual_supply = dgp.current_supply
-         + ( get_feed_history().current_median_history.is_null() ? asset( 0, CREA_SYMBOL ) : dgp.current_sbd_supply * get_feed_history().current_median_history );
+         + ( get_feed_history().current_median_history.is_null() ? asset( 0, CREA_SYMBOL ) : dgp.current_cbd_supply * get_feed_history().current_median_history );
 
       auto median_price = get_feed_history().current_median_history;
 
       if( !median_price.is_null() && has_hardfork( CREA_HARDFORK_0_14__230 ) )
       {
-         auto percent_sbd = uint16_t( ( ( fc::uint128_t( ( dgp.current_sbd_supply * get_feed_history().current_median_history ).amount.value ) * CREA_100_PERCENT )
+         auto percent_sbd = uint16_t( ( ( fc::uint128_t( ( dgp.current_cbd_supply * get_feed_history().current_median_history ).amount.value ) * CREA_100_PERCENT )
             / dgp.virtual_supply.amount.value ).to_uint64() );
 
          if( percent_sbd <= CREA_CBD_START_PERCENT )
-            dgp.sbd_print_rate = CREA_100_PERCENT;
+            dgp.cbd_print_rate = CREA_100_PERCENT;
          else if( percent_sbd >= CREA_CBD_STOP_PERCENT )
-            dgp.sbd_print_rate = 0;
+            dgp.cbd_print_rate = 0;
          else
-            dgp.sbd_print_rate = ( ( CREA_CBD_STOP_PERCENT - percent_sbd ) * CREA_100_PERCENT ) / ( CREA_CBD_STOP_PERCENT - CREA_CBD_START_PERCENT );
+            dgp.cbd_print_rate = ( ( CREA_CBD_STOP_PERCENT - percent_sbd ) * CREA_100_PERCENT ) / ( CREA_CBD_STOP_PERCENT - CREA_CBD_START_PERCENT );
       }
    });
 } FC_CAPTURE_AND_RETHROW() }
@@ -3711,13 +3711,13 @@ void database::adjust_liquidity_reward( const account_object& owner, const asset
       {
          if( head_block_time() - r.last_update >= CREA_LIQUIDITY_TIMEOUT_SEC )
          {
-            r.sbd_volume = 0;
+            r.cbd_volume = 0;
             r.creativecoin_volume = 0;
             r.weight = 0;
          }
 
          if( is_sdb )
-            r.sbd_volume += volume.amount.value;
+            r.cbd_volume += volume.amount.value;
          else
             r.creativecoin_volume += volume.amount.value;
 
@@ -3731,7 +3731,7 @@ void database::adjust_liquidity_reward( const account_object& owner, const asset
       {
          r.owner = owner.id;
          if( is_sdb )
-            r.sbd_volume = volume.amount.value;
+            r.cbd_volume = volume.amount.value;
          else
             r.creativecoin_volume = volume.amount.value;
 
@@ -3904,36 +3904,36 @@ void database::modify_balance( const account_object& a, const asset& delta, bool
             }
             break;
          case CREA_ASSET_NUM_CBD:
-            if( a.sbd_seconds_last_update != head_block_time() )
+            if( a.cbd_seconds_last_update != head_block_time() )
             {
-               acnt.sbd_seconds += fc::uint128_t(a.sbd_balance.amount.value) * (head_block_time() - a.sbd_seconds_last_update).to_seconds();
-               acnt.sbd_seconds_last_update = head_block_time();
+               acnt.cbd_seconds += fc::uint128_t(a.cbd_balance.amount.value) * (head_block_time() - a.cbd_seconds_last_update).to_seconds();
+               acnt.cbd_seconds_last_update = head_block_time();
 
-               if( acnt.sbd_seconds > 0 &&
-                   (acnt.sbd_seconds_last_update - acnt.sbd_last_interest_payment).to_seconds() > CREA_CBD_INTEREST_COMPOUND_INTERVAL_SEC )
+               if( acnt.cbd_seconds > 0 &&
+                   (acnt.cbd_seconds_last_update - acnt.cbd_last_interest_payment).to_seconds() > CREA_CBD_INTEREST_COMPOUND_INTERVAL_SEC )
                {
-                  auto interest = acnt.sbd_seconds / CREA_SECONDS_PER_YEAR;
-                  interest *= get_dynamic_global_properties().sbd_interest_rate;
+                  auto interest = acnt.cbd_seconds / CREA_SECONDS_PER_YEAR;
+                  interest *= get_dynamic_global_properties().cbd_interest_rate;
                   interest /= CREA_100_PERCENT;
                   asset interest_paid(interest.to_uint64(), CBD_SYMBOL);
-                  acnt.sbd_balance += interest_paid;
-                  acnt.sbd_seconds = 0;
-                  acnt.sbd_last_interest_payment = head_block_time();
+                  acnt.cbd_balance += interest_paid;
+                  acnt.cbd_seconds = 0;
+                  acnt.cbd_last_interest_payment = head_block_time();
 
                   if(interest > 0)
                      push_virtual_operation( interest_operation( a.name, interest_paid ) );
 
                   modify( get_dynamic_global_properties(), [&]( dynamic_global_property_object& props)
                   {
-                     props.current_sbd_supply += interest_paid;
+                     props.current_cbd_supply += interest_paid;
                      props.virtual_supply += interest_paid * get_feed_history().current_median_history;
                   } );
                }
             }
-            acnt.sbd_balance += delta;
+            acnt.cbd_balance += delta;
             if( check_balance )
             {
-               FC_ASSERT( acnt.sbd_balance.amount.value >= 0, "Insufficient CBD funds" );
+               FC_ASSERT( acnt.cbd_balance.amount.value >= 0, "Insufficient CBD funds" );
             }
             break;
          case CREA_ASSET_NUM_VESTS:
@@ -3976,10 +3976,10 @@ void database::modify_reward_balance( const account_object& a, const asset& valu
             break;
          case CREA_ASSET_NUM_CBD:
             FC_ASSERT( share_delta.amount.value == 0 );
-            acnt.reward_sbd_balance += value_delta;
+            acnt.reward_cbd_balance += value_delta;
             if( check_balance )
             {
-               FC_ASSERT( acnt.reward_sbd_balance.amount.value >= 0, "Insufficient reward CBD funds" );
+               FC_ASSERT( acnt.reward_cbd_balance.amount.value >= 0, "Insufficient reward CBD funds" );
             }
             break;
          default:
@@ -4094,36 +4094,36 @@ void database::adjust_savings_balance( const account_object& a, const asset& del
             }
             break;
          case CREA_ASSET_NUM_CBD:
-            if( a.savings_sbd_seconds_last_update != head_block_time() )
+            if( a.savings_cbd_seconds_last_update != head_block_time() )
             {
-               acnt.savings_sbd_seconds += fc::uint128_t(a.savings_sbd_balance.amount.value) * (head_block_time() - a.savings_sbd_seconds_last_update).to_seconds();
-               acnt.savings_sbd_seconds_last_update = head_block_time();
+               acnt.savings_cbd_seconds += fc::uint128_t(a.savings_cbd_balance.amount.value) * (head_block_time() - a.savings_cbd_seconds_last_update).to_seconds();
+               acnt.savings_cbd_seconds_last_update = head_block_time();
 
-               if( acnt.savings_sbd_seconds > 0 &&
-                   (acnt.savings_sbd_seconds_last_update - acnt.savings_sbd_last_interest_payment).to_seconds() > CREA_CBD_INTEREST_COMPOUND_INTERVAL_SEC )
+               if( acnt.savings_cbd_seconds > 0 &&
+                   (acnt.savings_cbd_seconds_last_update - acnt.savings_cbd_last_interest_payment).to_seconds() > CREA_CBD_INTEREST_COMPOUND_INTERVAL_SEC )
                {
-                  auto interest = acnt.savings_sbd_seconds / CREA_SECONDS_PER_YEAR;
-                  interest *= get_dynamic_global_properties().sbd_interest_rate;
+                  auto interest = acnt.savings_cbd_seconds / CREA_SECONDS_PER_YEAR;
+                  interest *= get_dynamic_global_properties().cbd_interest_rate;
                   interest /= CREA_100_PERCENT;
                   asset interest_paid(interest.to_uint64(), CBD_SYMBOL);
-                  acnt.savings_sbd_balance += interest_paid;
-                  acnt.savings_sbd_seconds = 0;
-                  acnt.savings_sbd_last_interest_payment = head_block_time();
+                  acnt.savings_cbd_balance += interest_paid;
+                  acnt.savings_cbd_seconds = 0;
+                  acnt.savings_cbd_last_interest_payment = head_block_time();
 
                   if(interest > 0)
                      push_virtual_operation( interest_operation( a.name, interest_paid ) );
 
                   modify( get_dynamic_global_properties(), [&]( dynamic_global_property_object& props)
                   {
-                     props.current_sbd_supply += interest_paid;
+                     props.current_cbd_supply += interest_paid;
                      props.virtual_supply += interest_paid * get_feed_history().current_median_history;
                   } );
                }
             }
-            acnt.savings_sbd_balance += delta;
+            acnt.savings_cbd_balance += delta;
             if( check_balance )
             {
-               FC_ASSERT( acnt.savings_sbd_balance.amount.value >= 0, "Insufficient savings CBD funds" );
+               FC_ASSERT( acnt.savings_cbd_balance.amount.value >= 0, "Insufficient savings CBD funds" );
             }
             break;
          default:
@@ -4212,11 +4212,11 @@ void database::adjust_supply( const asset& delta, bool adjust_vesting )
             break;
          }
          case CREA_ASSET_NUM_CBD:
-            props.current_sbd_supply += delta;
-            props.virtual_supply = props.current_sbd_supply * get_feed_history().current_median_history + props.current_supply;
+            props.current_cbd_supply += delta;
+            props.virtual_supply = props.current_cbd_supply * get_feed_history().current_median_history + props.current_supply;
             if( check_supply )
             {
-               FC_ASSERT( props.current_sbd_supply.amount.value >= 0 );
+               FC_ASSERT( props.current_cbd_supply.amount.value >= 0 );
             }
             break;
          default:
@@ -4233,7 +4233,7 @@ asset database::get_balance( const account_object& a, asset_symbol_type symbol )
       case CREA_ASSET_NUM_CREA:
          return a.balance;
       case CREA_ASSET_NUM_CBD:
-         return a.sbd_balance;
+         return a.cbd_balance;
       default:
       {
 #ifdef CREA_ENABLE_SMT
@@ -4263,7 +4263,7 @@ asset database::get_savings_balance( const account_object& a, asset_symbol_type 
       case CREA_ASSET_NUM_CREA:
          return a.savings_balance;
       case CREA_ASSET_NUM_CBD:
-         return a.savings_sbd_balance;
+         return a.savings_cbd_balance;
       default: // Note no savings balance for SMT per comments in issue 1682.
          FC_ASSERT( !"invalid symbol" );
    }
@@ -4750,9 +4750,9 @@ void database::validate_invariants()const
          total_supply += itr->balance;
          total_supply += itr->savings_balance;
          total_supply += itr->reward_creativecoin_balance;
-         total_sbd += itr->sbd_balance;
-         total_sbd += itr->savings_sbd_balance;
-         total_sbd += itr->reward_sbd_balance;
+         total_sbd += itr->cbd_balance;
+         total_sbd += itr->savings_cbd_balance;
+         total_sbd += itr->reward_cbd_balance;
          total_vesting += itr->vesting_shares;
          total_vesting += itr->reward_vesting_balance;
          pending_vesting_creativecoin += itr->reward_vesting_creativecoin;
@@ -4794,7 +4794,7 @@ void database::validate_invariants()const
       for( auto itr = escrow_idx.begin(); itr != escrow_idx.end(); ++itr )
       {
          total_supply += itr->creativecoin_balance;
-         total_sbd += itr->sbd_balance;
+         total_sbd += itr->cbd_balance;
 
          if( itr->pending_fee.symbol == CREA_SYMBOL )
             total_supply += itr->pending_fee;
@@ -4826,7 +4826,7 @@ void database::validate_invariants()const
       total_supply += gpo.total_vesting_fund_creativecoin + gpo.total_reward_fund_creativecoin + gpo.pending_rewarded_vesting_creativecoin;
 
       FC_ASSERT( gpo.current_supply == total_supply, "", ("gpo.current_supply",gpo.current_supply)("total_supply",total_supply) );
-      FC_ASSERT( gpo.current_sbd_supply == total_sbd, "", ("gpo.current_sbd_supply",gpo.current_sbd_supply)("total_sbd",total_sbd) );
+      FC_ASSERT( gpo.current_cbd_supply == total_sbd, "", ("gpo.current_cbd_supply",gpo.current_cbd_supply)("total_sbd",total_sbd) );
       FC_ASSERT( gpo.total_vesting_shares + gpo.pending_rewarded_vesting_shares == total_vesting, "", ("gpo.total_vesting_shares",gpo.total_vesting_shares)("total_vesting",total_vesting) );
       FC_ASSERT( gpo.total_vesting_shares.amount == total_vsf_votes, "", ("total_vesting_shares",gpo.total_vesting_shares)("total_vsf_votes",total_vsf_votes) );
       FC_ASSERT( gpo.pending_rewarded_vesting_creativecoin == pending_vesting_creativecoin, "", ("pending_rewarded_vesting_creativecoin",gpo.pending_rewarded_vesting_creativecoin)("pending_vesting_creativecoin", pending_vesting_creativecoin));
@@ -4834,8 +4834,8 @@ void database::validate_invariants()const
       FC_ASSERT( gpo.virtual_supply >= gpo.current_supply );
       if ( !get_feed_history().current_median_history.is_null() )
       {
-         FC_ASSERT( gpo.current_sbd_supply * get_feed_history().current_median_history + gpo.current_supply
-            == gpo.virtual_supply, "", ("gpo.current_sbd_supply",gpo.current_sbd_supply)("get_feed_history().current_median_history",get_feed_history().current_median_history)("gpo.current_supply",gpo.current_supply)("gpo.virtual_supply",gpo.virtual_supply) );
+         FC_ASSERT( gpo.current_cbd_supply * get_feed_history().current_median_history + gpo.current_supply
+            == gpo.virtual_supply, "", ("gpo.current_cbd_supply",gpo.current_cbd_supply)("get_feed_history().current_median_history",get_feed_history().current_median_history)("gpo.current_supply",gpo.current_supply)("gpo.virtual_supply",gpo.virtual_supply) );
       }
    }
    FC_CAPTURE_LOG_AND_RETHROW( (head_block_num()) );

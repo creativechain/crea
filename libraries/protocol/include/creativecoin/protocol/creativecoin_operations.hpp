@@ -299,7 +299,7 @@ namespace creativecoin { namespace protocol {
       account_name_type agent;
       uint32_t          escrow_id = 30;
 
-      asset             sbd_amount = asset( 0, CBD_SYMBOL );
+      asset             cbd_amount = asset( 0, CBD_SYMBOL );
       asset             creativecoin_amount = asset( 0, CREA_SYMBOL );
       asset             fee;
 
@@ -371,7 +371,7 @@ namespace creativecoin { namespace protocol {
       account_name_type receiver; ///< the account that should receive funds (might be from, might be to)
 
       uint32_t          escrow_id = 30;
-      asset             sbd_amount = asset( 0, CBD_SYMBOL ); ///< the amount of sbd to release
+      asset             cbd_amount = asset( 0, CBD_SYMBOL ); ///< the amount of sbd to release
       asset             creativecoin_amount = asset( 0, CREA_SYMBOL ); ///< the amount of creativecoin to release
 
       void validate()const;
@@ -455,7 +455,7 @@ namespace creativecoin { namespace protocol {
        *  to tune rate limiting and capacity
        */
       uint32_t          maximum_block_size = CREA_MIN_BLOCK_SIZE_LIMIT * 2;
-      uint16_t          sbd_interest_rate  = CREA_DEFAULT_CBD_INTEREST_RATE;
+      uint16_t          cbd_interest_rate  = CREA_DEFAULT_CBD_INTEREST_RATE;
 
       template< bool force_canon >
       void validate()const
@@ -466,8 +466,8 @@ namespace creativecoin { namespace protocol {
          }
          FC_ASSERT( account_creation_fee.amount >= CREA_MIN_ACCOUNT_CREATION_FEE);
          FC_ASSERT( maximum_block_size >= CREA_MIN_BLOCK_SIZE_LIMIT);
-         FC_ASSERT( sbd_interest_rate >= 0 );
-         FC_ASSERT( sbd_interest_rate <= CREA_100_PERCENT );
+         FC_ASSERT( cbd_interest_rate >= 0 );
+         FC_ASSERT( cbd_interest_rate <= CREA_100_PERCENT );
       }
    };
 
@@ -1071,7 +1071,7 @@ FC_REFLECT( creativecoin::protocol::equihash_pow, (input)(proof)(prev_block)(pow
 FC_REFLECT( creativecoin::protocol::legacy_chain_properties,
             (account_creation_fee)
             (maximum_block_size)
-            (sbd_interest_rate)
+            (cbd_interest_rate)
           )
 
 FC_REFLECT_TYPENAME( creativecoin::protocol::pow2_work )
@@ -1138,10 +1138,10 @@ FC_REFLECT( creativecoin::protocol::allowed_vote_assets, (votable_assets) )
 FC_REFLECT_TYPENAME( creativecoin::protocol::comment_options_extension )
 FC_REFLECT( creativecoin::protocol::comment_options_operation, (author)(permlink)(max_accepted_payout)(percent_creativecoin_dollars)(allow_votes)(allow_curation_rewards)(extensions) )
 
-FC_REFLECT( creativecoin::protocol::escrow_transfer_operation, (from)(to)(sbd_amount)(creativecoin_amount)(escrow_id)(agent)(fee)(json_meta)(ratification_deadline)(escrow_expiration) );
+FC_REFLECT( creativecoin::protocol::escrow_transfer_operation, (from)(to)(cbd_amount)(creativecoin_amount)(escrow_id)(agent)(fee)(json_meta)(ratification_deadline)(escrow_expiration) );
 FC_REFLECT( creativecoin::protocol::escrow_approve_operation, (from)(to)(agent)(who)(escrow_id)(approve) );
 FC_REFLECT( creativecoin::protocol::escrow_dispute_operation, (from)(to)(agent)(who)(escrow_id) );
-FC_REFLECT( creativecoin::protocol::escrow_release_operation, (from)(to)(agent)(who)(receiver)(escrow_id)(sbd_amount)(creativecoin_amount) );
+FC_REFLECT( creativecoin::protocol::escrow_release_operation, (from)(to)(agent)(who)(receiver)(escrow_id)(cbd_amount)(creativecoin_amount) );
 FC_REFLECT( creativecoin::protocol::claim_account_operation, (creator)(fee)(extensions) );
 FC_REFLECT( creativecoin::protocol::create_claimed_account_operation, (creator)(new_account_name)(owner)(active)(posting)(memo_key)(json_metadata)(extensions) );
 FC_REFLECT( creativecoin::protocol::request_account_recovery_operation, (recovery_account)(account_to_recover)(new_owner_authority)(extensions) );

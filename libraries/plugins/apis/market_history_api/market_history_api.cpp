@@ -52,7 +52,7 @@ DEFINE_API_IMPL( market_history_api_impl, get_ticker )
 
    auto volume = get_volume( get_volume_args() );
    result.creativecoin_volume = volume.creativecoin_volume;
-   result.sbd_volume = volume.sbd_volume;
+   result.cbd_volume = volume.cbd_volume;
 
    return result;
 }
@@ -70,7 +70,7 @@ DEFINE_API_IMPL( market_history_api_impl, get_volume )
    do
    {
       result.creativecoin_volume.amount += itr->creativecoin.volume;
-      result.sbd_volume.amount += itr->non_creativecoin.volume;
+      result.cbd_volume.amount += itr->non_creativecoin.volume;
 
       ++itr;
    } while( itr != bucket_idx.end() && itr->seconds == bucket_size );

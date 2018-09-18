@@ -120,16 +120,16 @@ struct api_account_object
       last_vote_time( a.last_vote_time ),
       balance( legacy_asset::from_asset( a.balance ) ),
       savings_balance( legacy_asset::from_asset( a.savings_balance ) ),
-      sbd_balance( legacy_asset::from_asset( a.sbd_balance ) ),
-      sbd_seconds( a.sbd_seconds ),
-      sbd_seconds_last_update( a.sbd_seconds_last_update ),
-      sbd_last_interest_payment( a.sbd_last_interest_payment ),
-      savings_sbd_balance( legacy_asset::from_asset( a.savings_sbd_balance ) ),
-      savings_sbd_seconds( a.savings_sbd_seconds ),
-      savings_sbd_seconds_last_update( a.savings_sbd_seconds_last_update ),
-      savings_sbd_last_interest_payment( a.savings_sbd_last_interest_payment ),
+      cbd_balance( legacy_asset::from_asset( a.cbd_balance ) ),
+      cbd_seconds( a.cbd_seconds ),
+      cbd_seconds_last_update( a.cbd_seconds_last_update ),
+      cbd_last_interest_payment( a.cbd_last_interest_payment ),
+      savings_cbd_balance( legacy_asset::from_asset( a.savings_cbd_balance ) ),
+      savings_cbd_seconds( a.savings_cbd_seconds ),
+      savings_cbd_seconds_last_update( a.savings_cbd_seconds_last_update ),
+      savings_cbd_last_interest_payment( a.savings_cbd_last_interest_payment ),
       savings_withdraw_requests( a.savings_withdraw_requests ),
-      reward_sbd_balance( legacy_asset::from_asset( a.reward_sbd_balance ) ),
+      reward_cbd_balance( legacy_asset::from_asset( a.reward_cbd_balance ) ),
       reward_creativecoin_balance( legacy_asset::from_asset( a.reward_creativecoin_balance ) ),
       reward_vesting_balance( legacy_asset::from_asset( a.reward_vesting_balance ) ),
       reward_vesting_creativecoin( legacy_asset::from_asset( a.reward_vesting_creativecoin ) ),
@@ -182,19 +182,19 @@ struct api_account_object
    legacy_asset      balance;
    legacy_asset      savings_balance;
 
-   legacy_asset      sbd_balance;
-   uint128_t         sbd_seconds;
-   time_point_sec    sbd_seconds_last_update;
-   time_point_sec    sbd_last_interest_payment;
+   legacy_asset      cbd_balance;
+   uint128_t         cbd_seconds;
+   time_point_sec    cbd_seconds_last_update;
+   time_point_sec    cbd_last_interest_payment;
 
-   legacy_asset      savings_sbd_balance;
-   uint128_t         savings_sbd_seconds;
-   time_point_sec    savings_sbd_seconds_last_update;
-   time_point_sec    savings_sbd_last_interest_payment;
+   legacy_asset      savings_cbd_balance;
+   uint128_t         savings_cbd_seconds;
+   time_point_sec    savings_cbd_seconds_last_update;
+   time_point_sec    savings_cbd_last_interest_payment;
 
    uint8_t           savings_withdraw_requests = 0;
 
-   legacy_asset      reward_sbd_balance;
+   legacy_asset      reward_cbd_balance;
    legacy_asset      reward_creativecoin_balance;
    legacy_asset      reward_vesting_balance;
    legacy_asset      reward_vesting_creativecoin;
@@ -357,16 +357,16 @@ struct extended_dynamic_global_properties
       virtual_supply( legacy_asset::from_asset( o.virtual_supply ) ),
       current_supply( legacy_asset::from_asset( o.current_supply ) ),
       confidential_supply( legacy_asset::from_asset( o.confidential_supply ) ),
-      current_sbd_supply( legacy_asset::from_asset( o.current_sbd_supply ) ),
-      confidential_sbd_supply( legacy_asset::from_asset( o.confidential_sbd_supply ) ),
+      current_cbd_supply( legacy_asset::from_asset( o.current_cbd_supply ) ),
+      confidential_cbd_supply( legacy_asset::from_asset( o.confidential_cbd_supply ) ),
       total_vesting_fund_creativecoin( legacy_asset::from_asset( o.total_vesting_fund_creativecoin ) ),
       total_vesting_shares( legacy_asset::from_asset( o.total_vesting_shares ) ),
       total_reward_fund_creativecoin( legacy_asset::from_asset( o.total_reward_fund_creativecoin ) ),
       total_reward_shares2( o.total_reward_shares2 ),
       pending_rewarded_vesting_shares( legacy_asset::from_asset( o.pending_rewarded_vesting_shares ) ),
       pending_rewarded_vesting_creativecoin( legacy_asset::from_asset( o.pending_rewarded_vesting_creativecoin ) ),
-      sbd_interest_rate( o.sbd_interest_rate ),
-      sbd_print_rate( o.sbd_print_rate ),
+      cbd_interest_rate( o.cbd_interest_rate ),
+      cbd_print_rate( o.cbd_print_rate ),
       maximum_block_size( o.maximum_block_size ),
       current_aslot( o.current_aslot ),
       recent_slots_filled( o.recent_slots_filled ),
@@ -387,8 +387,8 @@ struct extended_dynamic_global_properties
    legacy_asset      virtual_supply;
    legacy_asset      current_supply;
    legacy_asset      confidential_supply;
-   legacy_asset      current_sbd_supply;
-   legacy_asset      confidential_sbd_supply;
+   legacy_asset      current_cbd_supply;
+   legacy_asset      confidential_cbd_supply;
    legacy_asset      total_vesting_fund_creativecoin;
    legacy_asset      total_vesting_shares;
    legacy_asset      total_reward_fund_creativecoin;
@@ -396,8 +396,8 @@ struct extended_dynamic_global_properties
    legacy_asset      pending_rewarded_vesting_shares;
    legacy_asset      pending_rewarded_vesting_creativecoin;
 
-   uint16_t          sbd_interest_rate = 0;
-   uint16_t          sbd_print_rate = CREA_100_PERCENT;
+   uint16_t          cbd_interest_rate = 0;
+   uint16_t          cbd_print_rate = CREA_100_PERCENT;
 
    uint32_t          maximum_block_size = 0;
    uint64_t          current_aslot = 0;
@@ -427,8 +427,8 @@ struct api_witness_object
       pow_worker( w.pow_worker ),
       signing_key( w.signing_key ),
       props( w.props ),
-      sbd_exchange_rate( w.sbd_exchange_rate ),
-      last_sbd_exchange_update( w.last_sbd_exchange_update ),
+      cbd_exchange_rate( w.cbd_exchange_rate ),
+      last_cbd_exchange_update( w.last_cbd_exchange_update ),
       votes( w.votes ),
       virtual_last_update( w.virtual_last_update ),
       virtual_position( w.virtual_position ),
@@ -449,8 +449,8 @@ struct api_witness_object
    uint64_t                pow_worker;
    public_key_type         signing_key;
    api_chain_properties    props;
-   legacy_price            sbd_exchange_rate;
-   time_point_sec          last_sbd_exchange_update;
+   legacy_price            cbd_exchange_rate;
+   time_point_sec          last_cbd_exchange_update;
    share_type              votes;
    fc::uint128_t           virtual_last_update;
    fc::uint128_t           virtual_position;
@@ -556,7 +556,7 @@ struct api_escrow_object
       agent( e.agent ),
       ratification_deadline( e.ratification_deadline ),
       escrow_expiration( e.escrow_expiration ),
-      sbd_balance( legacy_asset::from_asset( e.sbd_balance ) ),
+      cbd_balance( legacy_asset::from_asset( e.cbd_balance ) ),
       creativecoin_balance( legacy_asset::from_asset( e.creativecoin_balance ) ),
       pending_fee( legacy_asset::from_asset( e.pending_fee ) ),
       to_approved( e.to_approved ),
@@ -571,7 +571,7 @@ struct api_escrow_object
    account_name_type agent;
    time_point_sec    ratification_deadline;
    time_point_sec    escrow_expiration;
-   legacy_asset      sbd_balance;
+   legacy_asset      cbd_balance;
    legacy_asset      creativecoin_balance;
    legacy_asset      pending_fee;
    bool              to_approved = false;
@@ -844,7 +844,7 @@ struct ticker
       highest_bid( t.highest_bid ),
       percent_change( t.percent_change ),
       creativecoin_volume( legacy_asset::from_asset( t.creativecoin_volume ) ),
-      sbd_volume( legacy_asset::from_asset( t.sbd_volume ) )
+      cbd_volume( legacy_asset::from_asset( t.cbd_volume ) )
    {}
 
    double         latest = 0;
@@ -852,7 +852,7 @@ struct ticker
    double         highest_bid = 0;
    double         percent_change = 0;
    legacy_asset   creativecoin_volume;
-   legacy_asset   sbd_volume;
+   legacy_asset   cbd_volume;
 };
 
 struct volume
@@ -860,11 +860,11 @@ struct volume
    volume() {}
    volume( const market_history::get_volume_return& v ) :
       creativecoin_volume( legacy_asset::from_asset( v.creativecoin_volume ) ),
-      sbd_volume( legacy_asset::from_asset( v.sbd_volume ) )
+      cbd_volume( legacy_asset::from_asset( v.cbd_volume ) )
    {}
 
    legacy_asset   creativecoin_volume;
-   legacy_asset   sbd_volume;
+   legacy_asset   cbd_volume;
 };
 
 struct order
@@ -1128,9 +1128,9 @@ FC_REFLECT( creativecoin::plugins::condenser_api::api_account_object,
              (comment_count)(lifetime_vote_count)(post_count)(can_vote)(voting_power)(last_vote_time)
              (balance)
              (savings_balance)
-             (sbd_balance)(sbd_seconds)(sbd_seconds_last_update)(sbd_last_interest_payment)
-             (savings_sbd_balance)(savings_sbd_seconds)(savings_sbd_seconds_last_update)(savings_sbd_last_interest_payment)(savings_withdraw_requests)
-             (reward_sbd_balance)(reward_creativecoin_balance)(reward_vesting_balance)(reward_vesting_creativecoin)
+             (cbd_balance)(cbd_seconds)(cbd_seconds_last_update)(cbd_last_interest_payment)
+             (savings_cbd_balance)(savings_cbd_seconds)(savings_cbd_seconds_last_update)(savings_cbd_last_interest_payment)(savings_withdraw_requests)
+             (reward_cbd_balance)(reward_creativecoin_balance)(reward_vesting_balance)(reward_vesting_creativecoin)
              (vesting_shares)(delegated_vesting_shares)(received_vesting_shares)(vesting_withdraw_rate)(next_vesting_withdrawal)(withdrawn)(to_withdraw)(withdraw_routes)
              (curation_rewards)
              (posting_rewards)
@@ -1158,10 +1158,10 @@ FC_REFLECT( creativecoin::plugins::condenser_api::api_comment_object,
 FC_REFLECT( creativecoin::plugins::condenser_api::extended_dynamic_global_properties,
             (head_block_number)(head_block_id)(time)
             (current_witness)(total_pow)(num_pow_witnesses)
-            (virtual_supply)(current_supply)(confidential_supply)(current_sbd_supply)(confidential_sbd_supply)
+            (virtual_supply)(current_supply)(confidential_supply)(current_cbd_supply)(confidential_cbd_supply)
             (total_vesting_fund_creativecoin)(total_vesting_shares)
             (total_reward_fund_creativecoin)(total_reward_shares2)(pending_rewarded_vesting_shares)(pending_rewarded_vesting_creativecoin)
-            (sbd_interest_rate)(sbd_print_rate)
+            (cbd_interest_rate)(cbd_print_rate)
             (maximum_block_size)(current_aslot)(recent_slots_filled)(participation_count)(last_irreversible_block_num)(vote_power_reserve_rate)
             (average_block_size)(current_reserve_ratio)(max_virtual_bandwidth) )
 
@@ -1172,7 +1172,7 @@ FC_REFLECT( creativecoin::plugins::condenser_api::api_witness_object,
              (url)(votes)(virtual_last_update)(virtual_position)(virtual_scheduled_time)(total_missed)
              (last_aslot)(last_confirmed_block_num)(pow_worker)(signing_key)
              (props)
-             (sbd_exchange_rate)(last_sbd_exchange_update)
+             (cbd_exchange_rate)(last_cbd_exchange_update)
              (last_work)
              (running_version)
              (hardfork_version_vote)(hardfork_time_vote)
@@ -1218,7 +1218,7 @@ FC_REFLECT( creativecoin::plugins::condenser_api::api_reward_fund_object,
 FC_REFLECT( creativecoin::plugins::condenser_api::api_escrow_object,
              (id)(escrow_id)(from)(to)(agent)
              (ratification_deadline)(escrow_expiration)
-             (sbd_balance)(creativecoin_balance)(pending_fee)
+             (cbd_balance)(creativecoin_balance)(pending_fee)
              (to_approved)(agent_approved)(disputed) )
 
 FC_REFLECT( creativecoin::plugins::condenser_api::api_savings_withdraw_object,
@@ -1269,10 +1269,10 @@ FC_REFLECT( creativecoin::plugins::condenser_api::comment_blog_entry,
             (comment)(blog)(reblog_on)(entry_id) )
 
 FC_REFLECT( creativecoin::plugins::condenser_api::ticker,
-            (latest)(lowest_ask)(highest_bid)(percent_change)(creativecoin_volume)(sbd_volume) )
+            (latest)(lowest_ask)(highest_bid)(percent_change)(creativecoin_volume)(cbd_volume) )
 
 FC_REFLECT( creativecoin::plugins::condenser_api::volume,
-            (creativecoin_volume)(sbd_volume) )
+            (creativecoin_volume)(cbd_volume) )
 
 FC_REFLECT( creativecoin::plugins::condenser_api::order,
             (order_price)(real_price)(creativecoin)(sbd)(created) )

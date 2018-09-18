@@ -61,7 +61,7 @@ namespace creativecoin { namespace chain {
          account_name_type agent;
          time_point_sec    ratification_deadline;
          time_point_sec    escrow_expiration;
-         asset             sbd_balance;
+         asset             cbd_balance;
          asset             creativecoin_balance;
          asset             pending_fee;
          bool              to_approved = false;
@@ -121,7 +121,7 @@ namespace creativecoin { namespace chain {
 
          account_id_type   owner;
          int64_t           creativecoin_volume = 0;
-         int64_t           sbd_volume = 0;
+         int64_t           cbd_volume = 0;
          uint128_t         weight = 0;
 
          time_point_sec    last_update = fc::time_point_sec::min(); /// used to decay negative liquidity balances. block num
@@ -129,12 +129,12 @@ namespace creativecoin { namespace chain {
          /// this is the sort index
          uint128_t volume_weight()const
          {
-            return creativecoin_volume * sbd_volume * is_positive();
+            return creativecoin_volume * cbd_volume * is_positive();
          }
 
          uint128_t min_volume_weight()const
          {
-            return std::min(creativecoin_volume,sbd_volume) * is_positive();
+            return std::min(creativecoin_volume,cbd_volume) * is_positive();
          }
 
          void update_weight( bool hf9 )
@@ -144,7 +144,7 @@ namespace creativecoin { namespace chain {
 
          inline int is_positive()const
          {
-            return ( creativecoin_volume > 0 && sbd_volume > 0 ) ? 1 : 0;
+            return ( creativecoin_volume > 0 && cbd_volume > 0 ) ? 1 : 0;
          }
    };
 
@@ -476,7 +476,7 @@ FC_REFLECT( creativecoin::chain::convert_request_object,
 CHAINBASE_SET_INDEX_TYPE( creativecoin::chain::convert_request_object, creativecoin::chain::convert_request_index )
 
 FC_REFLECT( creativecoin::chain::liquidity_reward_balance_object,
-             (id)(owner)(creativecoin_volume)(sbd_volume)(weight)(last_update) )
+             (id)(owner)(creativecoin_volume)(cbd_volume)(weight)(last_update) )
 CHAINBASE_SET_INDEX_TYPE( creativecoin::chain::liquidity_reward_balance_object, creativecoin::chain::liquidity_reward_balance_index )
 
 FC_REFLECT( creativecoin::chain::withdraw_vesting_route_object,
@@ -490,7 +490,7 @@ CHAINBASE_SET_INDEX_TYPE( creativecoin::chain::savings_withdraw_object, creative
 FC_REFLECT( creativecoin::chain::escrow_object,
              (id)(escrow_id)(from)(to)(agent)
              (ratification_deadline)(escrow_expiration)
-             (sbd_balance)(creativecoin_balance)(pending_fee)
+             (cbd_balance)(creativecoin_balance)(pending_fee)
              (to_approved)(agent_approved)(disputed) )
 CHAINBASE_SET_INDEX_TYPE( creativecoin::chain::escrow_object, creativecoin::chain::escrow_index )
 

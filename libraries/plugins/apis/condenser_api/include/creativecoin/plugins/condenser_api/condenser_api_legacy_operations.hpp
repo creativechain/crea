@@ -87,7 +87,7 @@ namespace creativecoin { namespace plugins { namespace condenser_api {
       api_chain_properties( const chain::chain_properties& c ) :
          account_creation_fee( legacy_asset::from_asset( c.account_creation_fee ) ),
          maximum_block_size( c.maximum_block_size ),
-         sbd_interest_rate( c.sbd_interest_rate )
+         cbd_interest_rate( c.cbd_interest_rate )
       {}
 
       operator legacy_chain_properties() const
@@ -95,13 +95,13 @@ namespace creativecoin { namespace plugins { namespace condenser_api {
          legacy_chain_properties props;
          props.account_creation_fee = legacy_creativecoin_asset::from_asset( asset( account_creation_fee ) );
          props.maximum_block_size = maximum_block_size;
-         props.sbd_interest_rate = sbd_interest_rate;
+         props.cbd_interest_rate = cbd_interest_rate;
          return props;
       }
 
       legacy_asset   account_creation_fee;
       uint32_t       maximum_block_size = CREA_MIN_BLOCK_SIZE_LIMIT * 2;
-      uint16_t       sbd_interest_rate = CREA_DEFAULT_CBD_INTEREST_RATE;
+      uint16_t       cbd_interest_rate = CREA_DEFAULT_CBD_INTEREST_RATE;
    };
 
    struct legacy_account_create_operation
@@ -263,7 +263,7 @@ namespace creativecoin { namespace plugins { namespace condenser_api {
          to( op.to ),
          agent( op.agent ),
          escrow_id( op.escrow_id ),
-         sbd_amount( legacy_asset::from_asset( op.sbd_amount ) ),
+         cbd_amount( legacy_asset::from_asset( op.cbd_amount ) ),
          creativecoin_amount( legacy_asset::from_asset( op.creativecoin_amount ) ),
          fee( legacy_asset::from_asset( op.fee ) ),
          ratification_deadline( op.ratification_deadline ),
@@ -278,7 +278,7 @@ namespace creativecoin { namespace plugins { namespace condenser_api {
          op.to = to;
          op.agent = agent;
          op.escrow_id = escrow_id;
-         op.sbd_amount = sbd_amount;
+         op.cbd_amount = cbd_amount;
          op.creativecoin_amount = creativecoin_amount;
          op.fee = fee;
          op.ratification_deadline = ratification_deadline;
@@ -292,7 +292,7 @@ namespace creativecoin { namespace plugins { namespace condenser_api {
       account_name_type agent;
       uint32_t          escrow_id;
 
-      legacy_asset      sbd_amount;
+      legacy_asset      cbd_amount;
       legacy_asset      creativecoin_amount;
       legacy_asset      fee;
 
@@ -312,7 +312,7 @@ namespace creativecoin { namespace plugins { namespace condenser_api {
          who( op.who ),
          receiver( op.receiver ),
          escrow_id( op.escrow_id ),
-         sbd_amount( legacy_asset::from_asset( op.sbd_amount ) ),
+         cbd_amount( legacy_asset::from_asset( op.cbd_amount ) ),
          creativecoin_amount( legacy_asset::from_asset( op.creativecoin_amount ) )
       {}
 
@@ -325,7 +325,7 @@ namespace creativecoin { namespace plugins { namespace condenser_api {
          op.who = who;
          op.receiver = receiver;
          op.escrow_id = escrow_id;
-         op.sbd_amount = sbd_amount;
+         op.cbd_amount = cbd_amount;
          op.creativecoin_amount = creativecoin_amount;
          return op;
       }
@@ -337,7 +337,7 @@ namespace creativecoin { namespace plugins { namespace condenser_api {
       account_name_type receiver;
 
       uint32_t          escrow_id;
-      legacy_asset      sbd_amount;
+      legacy_asset      cbd_amount;
       legacy_asset      creativecoin_amount;
    };
 
@@ -350,7 +350,7 @@ namespace creativecoin { namespace plugins { namespace condenser_api {
          op.work.visit( convert_to_legacy_static_variant< legacy_pow2_work >( work ) );
          props.account_creation_fee = legacy_asset::from_asset( op.props.account_creation_fee.to_asset< false >() );
          props.maximum_block_size = op.props.maximum_block_size;
-         props.sbd_interest_rate = op.props.sbd_interest_rate;
+         props.cbd_interest_rate = op.props.cbd_interest_rate;
       }
 
       operator pow2_operation()const
@@ -360,7 +360,7 @@ namespace creativecoin { namespace plugins { namespace condenser_api {
          op.new_owner_key = new_owner_key;
          op.props.account_creation_fee = legacy_creativecoin_asset::from_asset( asset( props.account_creation_fee ) );
          op.props.maximum_block_size = props.maximum_block_size;
-         op.props.sbd_interest_rate = props.sbd_interest_rate;
+         op.props.cbd_interest_rate = props.cbd_interest_rate;
          return op;
       }
 
@@ -423,7 +423,7 @@ namespace creativecoin { namespace plugins { namespace condenser_api {
       {
          props.account_creation_fee = legacy_asset::from_asset( op.props.account_creation_fee.to_asset< false >() );
          props.maximum_block_size = op.props.maximum_block_size;
-         props.sbd_interest_rate = op.props.sbd_interest_rate;
+         props.cbd_interest_rate = op.props.cbd_interest_rate;
       }
 
       operator witness_update_operation()const
@@ -434,7 +434,7 @@ namespace creativecoin { namespace plugins { namespace condenser_api {
          op.block_signing_key = block_signing_key;
          op.props.account_creation_fee = legacy_creativecoin_asset::from_asset( asset( props.account_creation_fee ) );
          op.props.maximum_block_size = props.maximum_block_size;
-         op.props.sbd_interest_rate = props.sbd_interest_rate;
+         op.props.cbd_interest_rate = props.cbd_interest_rate;
          op.fee = fee;
          return op;
       }
@@ -663,7 +663,7 @@ namespace creativecoin { namespace plugins { namespace condenser_api {
       legacy_author_reward_operation( const author_reward_operation& op ) :
          author( op.author ),
          permlink( op.permlink ),
-         sbd_payout( legacy_asset::from_asset( op.sbd_payout ) ),
+         cbd_payout( legacy_asset::from_asset( op.cbd_payout ) ),
          creativecoin_payout( legacy_asset::from_asset( op.creativecoin_payout ) ),
          vesting_payout( legacy_asset::from_asset( op.vesting_payout ) )
       {}
@@ -673,7 +673,7 @@ namespace creativecoin { namespace plugins { namespace condenser_api {
          author_reward_operation op;
          op.author = author;
          op.permlink = permlink;
-         op.sbd_payout = sbd_payout;
+         op.cbd_payout = cbd_payout;
          op.creativecoin_payout = creativecoin_payout;
          op.vesting_payout = vesting_payout;
          return op;
@@ -681,7 +681,7 @@ namespace creativecoin { namespace plugins { namespace condenser_api {
 
       account_name_type author;
       string            permlink;
-      legacy_asset      sbd_payout;
+      legacy_asset      cbd_payout;
       legacy_asset      creativecoin_payout;
       legacy_asset      vesting_payout;
    };
@@ -1494,7 +1494,7 @@ void old_sv_from_variant( const fc::variant& v, T& sv )
 }
 
 FC_REFLECT( creativecoin::plugins::condenser_api::api_chain_properties,
-            (account_creation_fee)(maximum_block_size)(sbd_interest_rate)
+            (account_creation_fee)(maximum_block_size)(cbd_interest_rate)
           )
 
 FC_REFLECT( creativecoin::plugins::condenser_api::legacy_price, (base)(quote) )
@@ -1532,12 +1532,12 @@ FC_REFLECT( creativecoin::plugins::condenser_api::legacy_witness_update_operatio
 FC_REFLECT( creativecoin::plugins::condenser_api::legacy_limit_order_create_operation, (owner)(orderid)(amount_to_sell)(min_to_receive)(fill_or_kill)(expiration) )
 FC_REFLECT( creativecoin::plugins::condenser_api::legacy_limit_order_create2_operation, (owner)(orderid)(amount_to_sell)(exchange_rate)(fill_or_kill)(expiration) )
 FC_REFLECT( creativecoin::plugins::condenser_api::legacy_comment_options_operation, (author)(permlink)(max_accepted_payout)(percent_creativecoin_dollars)(allow_votes)(allow_curation_rewards)(extensions) )
-FC_REFLECT( creativecoin::plugins::condenser_api::legacy_escrow_transfer_operation, (from)(to)(sbd_amount)(creativecoin_amount)(escrow_id)(agent)(fee)(json_meta)(ratification_deadline)(escrow_expiration) );
-FC_REFLECT( creativecoin::plugins::condenser_api::legacy_escrow_release_operation, (from)(to)(agent)(who)(receiver)(escrow_id)(sbd_amount)(creativecoin_amount) );
+FC_REFLECT( creativecoin::plugins::condenser_api::legacy_escrow_transfer_operation, (from)(to)(cbd_amount)(creativecoin_amount)(escrow_id)(agent)(fee)(json_meta)(ratification_deadline)(escrow_expiration) );
+FC_REFLECT( creativecoin::plugins::condenser_api::legacy_escrow_release_operation, (from)(to)(agent)(who)(receiver)(escrow_id)(cbd_amount)(creativecoin_amount) );
 FC_REFLECT( creativecoin::plugins::condenser_api::legacy_pow2_operation, (work)(new_owner_key)(props) )
 FC_REFLECT( creativecoin::plugins::condenser_api::legacy_claim_reward_balance_operation, (account)(reward_creativecoin)(reward_sbd)(reward_vests) )
 FC_REFLECT( creativecoin::plugins::condenser_api::legacy_delegate_vesting_shares_operation, (delegator)(delegatee)(vesting_shares) );
-FC_REFLECT( creativecoin::plugins::condenser_api::legacy_author_reward_operation, (author)(permlink)(sbd_payout)(creativecoin_payout)(vesting_payout) )
+FC_REFLECT( creativecoin::plugins::condenser_api::legacy_author_reward_operation, (author)(permlink)(cbd_payout)(creativecoin_payout)(vesting_payout) )
 FC_REFLECT( creativecoin::plugins::condenser_api::legacy_curation_reward_operation, (curator)(reward)(comment_author)(comment_permlink) )
 FC_REFLECT( creativecoin::plugins::condenser_api::legacy_comment_reward_operation, (author)(permlink)(payout) )
 FC_REFLECT( creativecoin::plugins::condenser_api::legacy_fill_convert_request_operation, (owner)(requestid)(amount_in)(amount_out) )

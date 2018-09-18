@@ -27,7 +27,7 @@ struct get_ticker_return
    double      highest_bid = 0;
    double      percent_change = 0;
    asset       creativecoin_volume = asset( 0 , CREA_SYMBOL );
-   asset       sbd_volume = asset( 0, CBD_SYMBOL );
+   asset       cbd_volume = asset( 0, CBD_SYMBOL );
 };
 
 typedef void_type get_volume_args;
@@ -35,7 +35,7 @@ typedef void_type get_volume_args;
 struct get_volume_return
 {
    asset       creativecoin_volume = asset( 0, CREA_SYMBOL );
-   asset       sbd_volume = asset( 0, CBD_SYMBOL );
+   asset       cbd_volume = asset( 0, CBD_SYMBOL );
 };
 
 struct order
@@ -130,10 +130,10 @@ class market_history_api
 } } } // creativecoin::plugins::market_history
 
 FC_REFLECT( creativecoin::plugins::market_history::get_ticker_return,
-            (latest)(lowest_ask)(highest_bid)(percent_change)(creativecoin_volume)(sbd_volume) )
+            (latest)(lowest_ask)(highest_bid)(percent_change)(creativecoin_volume)(cbd_volume) )
 
 FC_REFLECT( creativecoin::plugins::market_history::get_volume_return,
-            (creativecoin_volume)(sbd_volume) )
+            (creativecoin_volume)(cbd_volume) )
 
 FC_REFLECT( creativecoin::plugins::market_history::order,
             (order_price)(real_price)(creativecoin)(sbd)(created) )

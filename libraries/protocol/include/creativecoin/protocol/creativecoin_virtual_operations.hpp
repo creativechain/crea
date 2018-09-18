@@ -10,11 +10,11 @@ namespace creativecoin { namespace protocol {
    struct author_reward_operation : public virtual_operation {
       author_reward_operation(){}
       author_reward_operation( const account_name_type& a, const string& p, const asset& s, const asset& st, const asset& v )
-         :author(a), permlink(p), sbd_payout(s), creativecoin_payout(st), vesting_payout(v){}
+         :author(a), permlink(p), cbd_payout(s), creativecoin_payout(st), vesting_payout(v){}
 
       account_name_type author;
       string            permlink;
-      asset             sbd_payout;
+      asset             cbd_payout;
       asset             creativecoin_payout;
       asset             vesting_payout;
    };
@@ -178,7 +178,7 @@ namespace creativecoin { namespace protocol {
 
 } } //creativecoin::protocol
 
-FC_REFLECT( creativecoin::protocol::author_reward_operation, (author)(permlink)(sbd_payout)(creativecoin_payout)(vesting_payout) )
+FC_REFLECT( creativecoin::protocol::author_reward_operation, (author)(permlink)(cbd_payout)(creativecoin_payout)(vesting_payout) )
 FC_REFLECT( creativecoin::protocol::curation_reward_operation, (curator)(reward)(comment_author)(comment_permlink) )
 FC_REFLECT( creativecoin::protocol::comment_reward_operation, (author)(permlink)(payout) )
 FC_REFLECT( creativecoin::protocol::fill_convert_request_operation, (owner)(requestid)(amount_in)(amount_out) )

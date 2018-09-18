@@ -348,25 +348,25 @@ typedef list_vesting_delegation_expirations_return find_vesting_delegation_expir
 
 /* CBD Converstions */
 
-struct list_sbd_conversion_requests_args
+struct list_cbd_conversion_requests_args
 {
    fc::variant       start;
    uint32_t          limit;
    sort_order_type   order;
 };
 
-struct list_sbd_conversion_requests_return
+struct list_cbd_conversion_requests_return
 {
    vector< api_convert_request_object > requests;
 };
 
 
-struct find_sbd_conversion_requests_args
+struct find_cbd_conversion_requests_args
 {
    account_name_type account;
 };
 
-typedef list_sbd_conversion_requests_return find_sbd_conversion_requests_return;
+typedef list_cbd_conversion_requests_return find_cbd_conversion_requests_return;
 
 
 /* Decline Voting Rights Requests */
@@ -700,13 +700,13 @@ FC_REFLECT( creativecoin::plugins::database_api::list_vesting_delegation_expirat
 FC_REFLECT( creativecoin::plugins::database_api::find_vesting_delegation_expirations_args,
    (account) )
 
-FC_REFLECT( creativecoin::plugins::database_api::list_sbd_conversion_requests_args,
+FC_REFLECT( creativecoin::plugins::database_api::list_cbd_conversion_requests_args,
    (start)(limit)(order) )
 
-FC_REFLECT( creativecoin::plugins::database_api::list_sbd_conversion_requests_return,
+FC_REFLECT( creativecoin::plugins::database_api::list_cbd_conversion_requests_return,
    (requests) )
 
-FC_REFLECT( creativecoin::plugins::database_api::find_sbd_conversion_requests_args,
+FC_REFLECT( creativecoin::plugins::database_api::find_cbd_conversion_requests_args,
    (account) )
 
 FC_REFLECT( creativecoin::plugins::database_api::list_decline_voting_rights_requests_args,

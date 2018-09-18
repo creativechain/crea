@@ -38,7 +38,7 @@ namespace creativecoin { namespace chain {
        *  to tune rate limiting and capacity
        */
       uint32_t          maximum_block_size = CREA_MIN_BLOCK_SIZE_LIMIT * 2;
-      uint16_t          sbd_interest_rate  = CREA_DEFAULT_CBD_INTEREST_RATE;
+      uint16_t          cbd_interest_rate  = CREA_DEFAULT_CBD_INTEREST_RATE;
       uint32_t          account_subsidy_limit = 0;
    };
 
@@ -91,8 +91,8 @@ namespace creativecoin { namespace chain {
          public_key_type   signing_key;
 
          chain_properties  props;
-         price             sbd_exchange_rate;
-         time_point_sec    last_sbd_exchange_update;
+         price             cbd_exchange_rate;
+         time_point_sec    last_cbd_exchange_update;
 
 
          /**
@@ -262,7 +262,7 @@ FC_REFLECT_ENUM( creativecoin::chain::witness_object::witness_schedule_type, (to
 FC_REFLECT( creativecoin::chain::chain_properties,
              (account_creation_fee)
              (maximum_block_size)
-             (sbd_interest_rate)
+             (cbd_interest_rate)
              (account_subsidy_limit)
           )
 
@@ -273,7 +273,7 @@ FC_REFLECT( creativecoin::chain::witness_object,
              (url)(votes)(schedule)(virtual_last_update)(virtual_position)(virtual_scheduled_time)(total_missed)
              (last_aslot)(last_confirmed_block_num)(pow_worker)(signing_key)
              (props)
-             (sbd_exchange_rate)(last_sbd_exchange_update)
+             (cbd_exchange_rate)(last_cbd_exchange_update)
              (last_work)
              (running_version)
              (hardfork_version_vote)(hardfork_time_vote)

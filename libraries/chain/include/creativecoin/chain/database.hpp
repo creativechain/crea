@@ -325,7 +325,7 @@ namespace creativecoin { namespace chain {
          /** @return the sbd created and deposited to_account, may return CREA if there is no median feed */
          std::pair< asset, asset > create_sbd( const account_object& to_account, asset creativecoin, bool to_reward_balance=false );
          asset create_vesting( const account_object& to_account, asset creativecoin, bool to_reward_balance=false );
-         void adjust_total_payout( const comment_object& a, const asset& sbd, const asset& curator_sbd_value, const asset& beneficiary_value );
+         void adjust_total_payout( const comment_object& a, const asset& sbd, const asset& curator_cbd_value, const asset& beneficiary_value );
 
          void        adjust_liquidity_reward( const account_object& owner, const asset& volume, bool is_bid );
          void        adjust_balance( const account_object& a, const asset& delta );

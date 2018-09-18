@@ -52,8 +52,8 @@ namespace creativecoin { namespace chain {
          asset       virtual_supply             = asset( 0, CREA_SYMBOL );
          asset       current_supply             = asset( 0, CREA_SYMBOL );
          asset       confidential_supply        = asset( 0, CREA_SYMBOL ); ///< total asset held in confidential balances
-         asset       current_sbd_supply         = asset( 0, CBD_SYMBOL );
-         asset       confidential_sbd_supply    = asset( 0, CBD_SYMBOL ); ///< total asset held in confidential balances
+         asset       current_cbd_supply         = asset( 0, CBD_SYMBOL );
+         asset       confidential_cbd_supply    = asset( 0, CBD_SYMBOL ); ///< total asset held in confidential balances
          asset       total_vesting_fund_creativecoin   = asset( 0, CREA_SYMBOL );
          asset       total_vesting_shares       = asset( 0, VESTS_SYMBOL );
          asset       total_reward_fund_creativecoin    = asset( 0, CREA_SYMBOL );
@@ -78,9 +78,9 @@ namespace creativecoin { namespace chain {
          /**
           *  This property defines the interest rate that CBD deposits receive.
           */
-         uint16_t sbd_interest_rate = 0;
+         uint16_t cbd_interest_rate = 0;
 
-         uint16_t sbd_print_rate = CREA_100_PERCENT;
+         uint16_t cbd_print_rate = CREA_100_PERCENT;
 
          /**
           *  Maximum block size is decided by the set of active witnesses which change every round.
@@ -143,16 +143,16 @@ FC_REFLECT( creativecoin::chain::dynamic_global_property_object,
              (virtual_supply)
              (current_supply)
              (confidential_supply)
-             (current_sbd_supply)
-             (confidential_sbd_supply)
+             (current_cbd_supply)
+             (confidential_cbd_supply)
              (total_vesting_fund_creativecoin)
              (total_vesting_shares)
              (total_reward_fund_creativecoin)
              (total_reward_shares2)
              (pending_rewarded_vesting_shares)
              (pending_rewarded_vesting_creativecoin)
-             (sbd_interest_rate)
-             (sbd_print_rate)
+             (cbd_interest_rate)
+             (cbd_print_rate)
              (maximum_block_size)
              (current_aslot)
              (recent_slots_filled)

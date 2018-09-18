@@ -293,7 +293,7 @@ public:
                                                                           time_point_sec(time_point::now()),
                                                                           " old");
       result["participation"] = (100*dynamic_props.recent_slots_filled.popcount()) / 128.0;
-      result["median_sbd_price"] = _remote_api->get_current_median_history_price();
+      result["median_cbd_price"] = _remote_api->get_current_median_history_price();
       result["account_creation_fee"] = _remote_api->get_chain_properties().account_creation_fee;
       result["post_reward_fund"] = fc::variant(_remote_api->get_reward_fund( CREA_POST_REWARD_FUND_NAME )).get_object();
       return result;
@@ -735,11 +735,11 @@ public:
          for( const auto& a : accounts ) {
             total_creativecoin += a.balance.to_asset();
             total_vest  += a.vesting_shares.to_asset();
-            total_sbd  += a.sbd_balance.to_asset();
+            total_sbd  += a.cbd_balance.to_asset();
             out << std::left << std::setw( 17 ) << std::string(a.name)
                 << std::right << std::setw(18) << fc::variant(a.balance).as_string() <<" "
                 << std::right << std::setw(26) << fc::variant(a.vesting_shares).as_string() <<" "
-                << std::right << std::setw(16) << fc::variant(a.sbd_balance).as_string() <<"\n";
+                << std::right << std::setw(16) << fc::variant(a.cbd_balance).as_string() <<"\n";
          }
          out << "-------------------------------------------------------------------------\n";
             out << std::left << std::setw( 17 ) << "TOTAL"
@@ -1836,7 +1836,7 @@ condenser_api::legacy_signed_transaction wallet_api::escrow_transfer(
    string to,
    string agent,
    uint32_t escrow_id,
-   condenser_api::legacy_asset sbd_amount,
+   condenser_api::legacy_asset cbd_amount,
    condenser_api::legacy_asset creativecoin_amount,
    condenser_api::legacy_asset fee,
    time_point_sec ratification_deadline,
@@ -1850,7 +1850,7 @@ condenser_api::legacy_signed_transaction wallet_api::escrow_transfer(
    op.to = to;
    op.agent = agent;
    op.escrow_id = escrow_id;
-   op.sbd_amount = sbd_amount.to_asset();
+   op.cbd_amount = cbd_amount.to_asset();
    op.creativecoin_amount = creativecoin_amount.to_asset();
    op.fee = fee.to_asset();
    op.ratification_deadline = ratification_deadline;
@@ -1918,7 +1918,7 @@ condenser_api::legacy_signed_transaction wallet_api::escrow_release(
    string who,
    string receiver,
    uint32_t escrow_id,
-   condenser_api::legacy_asset sbd_amount,
+   condenser_api::legacy_asset cbd_amount,
    condenser_api::legacy_asset creativecoin_amount,
    bool broadcast )
 {
@@ -1930,7 +1930,7 @@ condenser_api::legacy_signed_transaction wallet_api::escrow_release(
    op.who = who;
    op.receiver = receiver;
    op.escrow_id = escrow_id;
-   op.sbd_amount = sbd_amount.to_asset();
+   op.cbd_amount = cbd_amount.to_asset();
    op.creativecoin_amount = creativecoin_amount.to_asset();
 
    signed_transaction tx;
