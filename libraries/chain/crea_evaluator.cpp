@@ -1326,11 +1326,11 @@ void vote_evaluator::do_apply( const vote_operation& o )
    }
    else if( _db.has_hardfork( CREA_HARDFORK_0_14__259 ) )
    {
-      FC_ASSERT( abs_rshares > CREA_VOTE_DUST_THRESHOLD || o.weight == 0, "Voting weight is too small, please accumulate more voting power or crea power." );
+      FC_ASSERT( abs_rshares > CREA_VOTE_DUST_THRESHOLD || o.weight == 0, "Voting weight is too small, please accumulate more voting power or crea energy." );
    }
    else if( _db.has_hardfork( CREA_HARDFORK_0_13__248 ) )
    {
-      FC_ASSERT( abs_rshares > CREA_VOTE_DUST_THRESHOLD || abs_rshares == 1, "Voting weight is too small, please accumulate more voting power or crea power." );
+      FC_ASSERT( abs_rshares > CREA_VOTE_DUST_THRESHOLD || abs_rshares == 1, "Voting weight is too small, please accumulate more voting power or crea energy." );
    }
 
 
