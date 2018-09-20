@@ -44,7 +44,7 @@ void new_chain_banner( const chain::database& db )
       "********************************\n"
       "*                              *\n"
       "*   ------- NEW CHAIN ------   *\n"
-      "*   -   Welcome to Creativecoin!  -   *\n"
+      "*   -    Welcome to Crea!  -   *\n"
       "*   ------------------------   *\n"
       "*                              *\n"
       "********************************\n"
