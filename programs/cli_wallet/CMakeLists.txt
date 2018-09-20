@@ -12,10 +12,10 @@ endif()
 if( CREA_STATIC_BUILD )
    target_link_libraries( cli_wallet PRIVATE
                           "-static-libstdc++ -static-libgcc -lreadline"
-                          graphene_net creativecoin_chain creativecoin_protocol creativecoin_utilities creativecoin_wallet condenser_api_plugin fc ${CMAKE_DL_LIBS} ${PLATFORM_SPECIFIC_LIBS} )
+                          graphene_net crea_chain crea_protocol crea_utilities crea_wallet condenser_api_plugin fc ${CMAKE_DL_LIBS} ${PLATFORM_SPECIFIC_LIBS} )
 else( CREA_STATIC_BUILD )
    target_link_libraries( cli_wallet PRIVATE
-                          graphene_net creativecoin_chain creativecoin_protocol creativecoin_utilities creativecoin_wallet condenser_api_plugin fc ${CMAKE_DL_LIBS} ${PLATFORM_SPECIFIC_LIBS} )
+                          graphene_net crea_chain crea_protocol crea_utilities crea_wallet condenser_api_plugin fc ${CMAKE_DL_LIBS} ${PLATFORM_SPECIFIC_LIBS} )
 endif( CREA_STATIC_BUILD )
 
 if( CLANG_TIDY_EXE )

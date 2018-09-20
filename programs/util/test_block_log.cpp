@@ -1,13 +1,13 @@
-#include <creativecoin/chain/database.hpp>
-#include <creativecoin/protocol/block.hpp>
+#include <crea/chain/database.hpp>
+#include <crea/protocol/block.hpp>
 #include <fc/io/raw.hpp>
 
 int main( int argc, char** argv, char** envp )
 {
    try
    {
-      //creativecoin::chain::database db;
-      creativecoin::chain::block_log log;
+      //crea::chain::database db;
+      crea::chain::block_log log;
 
       fc::temp_directory temp_dir( "." );
 
@@ -16,9 +16,9 @@ int main( int argc, char** argv, char** envp )
 
       idump( (log.head() ) );
 
-      creativecoin::protocol::signed_block b1;
+      crea::protocol::signed_block b1;
       b1.witness = "alice";
-      b1.previous = creativecoin::protocol::block_id_type();
+      b1.previous = crea::protocol::block_id_type();
 
       log.append( b1 );
       log.flush();
@@ -26,7 +26,7 @@ int main( int argc, char** argv, char** envp )
       idump( ( log.head() ) );
       idump( (fc::raw::pack_size(b1)) );
 
-      creativecoin::protocol::signed_block b2;
+      crea::protocol::signed_block b2;
       b2.witness = "bob";
       b2.previous = b1.id();
 

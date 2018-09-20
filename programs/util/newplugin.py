@@ -17,7 +17,7 @@ add_library( {plugin_provider}_{plugin_name}
              {plugin_name}_api.cpp
            )
 
-target_link_libraries( {plugin_provider}_{plugin_name} creativecoin_app creativecoin_chain creativecoin_protocol )
+target_link_libraries( {plugin_provider}_{plugin_name} crea_app crea_chain crea_protocol )
 target_include_directories( {plugin_provider}_{plugin_name}
                             PUBLIC "${{CMAKE_CURRENT_SOURCE_DIR}}/include" )
 """,
@@ -28,7 +28,7 @@ target_include_directories( {plugin_provider}_{plugin_name}
 
 #include <fc/api.hpp>
 
-namespace creativecoin {{ namespace app {{
+namespace crea {{ namespace app {{
    struct api_context;
 }} }}
 
@@ -41,7 +41,7 @@ class {plugin_name}_api_impl;
 class {plugin_name}_api
 {{
    public:
-      {plugin_name}_api( const creativecoin::app::api_context& ctx );
+      {plugin_name}_api( const crea::app::api_context& ctx );
 
       void on_api_startup();
 
@@ -62,7 +62,7 @@ FC_API( {plugin_provider}::plugin::{plugin_name}::{plugin_name}_api,
 """
 #pragma once
 
-#include <creativecoin/app/plugin.hpp>
+#include <crea/app/plugin.hpp>
 
 namespace {plugin_provider} {{ namespace plugin {{ namespace {plugin_name} {{
 
@@ -70,10 +70,10 @@ namespace detail {{
 class {plugin_name}_plugin_impl;
 }}
 
-class {plugin_name}_plugin : public creativecoin::app::plugin
+class {plugin_name}_plugin : public crea::app::plugin
 {{
    public:
-      {plugin_name}_plugin( creativecoin::app::application* app );
+      {plugin_name}_plugin( crea::app::application* app );
       virtual ~{plugin_name}_plugin();
 
       virtual std::string plugin_name()const override;
@@ -90,8 +90,8 @@ class {plugin_name}_plugin : public creativecoin::app::plugin
 
 "{plugin_name}_api.cpp" :
 """
-#include <creativecoin/app/api_context.hpp>
-#include <creativecoin/app/application.hpp>
+#include <crea/app/api_context.hpp>
+#include <crea/app/application.hpp>
 
 #include <{plugin_provider}/plugins/{plugin_name}/{plugin_name}_api.hpp>
 #include <{plugin_provider}/plugins/{plugin_name}/{plugin_name}_plugin.hpp>
@@ -103,14 +103,14 @@ namespace detail {{
 class {plugin_name}_api_impl
 {{
    public:
-      {plugin_name}_api_impl( creativecoin::app::application& _app );
+      {plugin_name}_api_impl( crea::app::application& _app );
 
       std::shared_ptr< {plugin_provider}::plugin::{plugin_name}::{plugin_name}_plugin > get_plugin();
 
-      creativecoin::app::application& app;
+      crea::app::application& app;
 }};
 
-{plugin_name}_api_impl::{plugin_name}_api_impl( creativecoin::app::application& _app ) : app( _app )
+{plugin_name}_api_impl::{plugin_name}_api_impl( crea::app::application& _app ) : app( _app )
 {{}}
 
 std::shared_ptr< {plugin_provider}::plugin::{plugin_name}::{plugin_name}_plugin > {plugin_name}_api_impl::get_plugin()
@@ -120,7 +120,7 @@ std::shared_ptr< {plugin_provider}::plugin::{plugin_name}::{plugin_name}_plugin 
 
 }} // detail
 
-{plugin_name}_api::{plugin_name}_api( const creativecoin::app::api_context& ctx )
+{plugin_name}_api::{plugin_name}_api( const crea::app::api_context& ctx )
 {{
    my = std::make_shared< detail::{plugin_name}_api_impl >(ctx.app);
 }}
@@ -145,7 +145,7 @@ namespace detail {{
 class {plugin_name}_plugin_impl
 {{
    public:
-      {plugin_name}_plugin_impl( creativecoin::app::application& app );
+      {plugin_name}_plugin_impl( crea::app::application& app );
       virtual ~{plugin_name}_plugin_impl();
 
       virtual std::string plugin_name()const;
@@ -154,11 +154,11 @@ class {plugin_name}_plugin_impl
       virtual void plugin_shutdown();
       void on_applied_block( const chain::signed_block& b );
 
-      creativecoin::app::application& _app;
+      crea::app::application& _app;
       boost::signals2::scoped_connection _applied_block_conn;
 }};
 
-{plugin_name}_plugin_impl::{plugin_name}_plugin_impl( creativecoin::app::application& app )
+{plugin_name}_plugin_impl::{plugin_name}_plugin_impl( crea::app::application& app )
   : _app(app) {{}}
 
 {plugin_name}_plugin_impl::~{plugin_name}_plugin_impl() {{}}
@@ -189,7 +189,7 @@ void {plugin_name}_plugin_impl::on_applied_block( const chain::signed_block& b )
 
 }}
 
-{plugin_name}_plugin::{plugin_name}_plugin( creativecoin::app::application* app )
+{plugin_name}_plugin::{plugin_name}_plugin( crea::app::application* app )
    : plugin(app)
 {{
    FC_ASSERT( app != nullptr );
@@ -230,7 +230,7 @@ import sys
 
 def main(argv):
     parser = argparse.ArgumentParser()
-    parser.add_argument("provider", help="Name of plugin provider (creativecoin for plugins developed by Creativechain)")
+    parser.add_argument("provider", help="Name of plugin provider (crea for plugins developed by Creativechain)")
     parser.add_argument("name", help="Name of plugin to create")
     args = parser.parse_args(argv[1:])
     ctx = {

@@ -8,26 +8,26 @@
 #include <fc/reflect/reflect.hpp>
 #include <fc/variant.hpp>
 
-#include <creativecoin/utilities/key_conversion.hpp>
+#include <crea/utilities/key_conversion.hpp>
 
-#include <creativecoin/protocol/transaction.hpp>
-#include <creativecoin/protocol/types.hpp>
+#include <crea/protocol/transaction.hpp>
+#include <crea/protocol/types.hpp>
 
 #define CHAIN_ID_PARAM "--chain-id"
 
 struct tx_signing_request
 {
-   creativecoin::protocol::transaction     tx;
+   crea::protocol::transaction     tx;
    std::string                      wif;
 };
 
 struct tx_signing_result
 {
-   creativecoin::protocol::transaction     tx;
+   crea::protocol::transaction     tx;
    fc::sha256                       digest;
    fc::sha256                       sig_digest;
-   creativecoin::protocol::public_key_type key;
-   creativecoin::protocol::signature_type  sig;
+   crea::protocol::public_key_type key;
+   crea::protocol::signature_type  sig;
 };
 
 struct error_result
@@ -120,12 +120,12 @@ int main(int argc, char** argv, char** envp)
          sres.digest = sreq.tx.digest();
          sres.sig_digest = sreq.tx.sig_digest(chainId);
 
-         auto priv_key = creativecoin::utilities::wif_to_key( sreq.wif );
+         auto priv_key = crea::utilities::wif_to_key( sreq.wif );
 
          if(priv_key)
          {
             sres.sig = priv_key->sign_compact( sres.sig_digest );
-            sres.key = creativecoin::protocol::public_key_type( priv_key->get_public_key() );
+            sres.key = crea::protocol::public_key_type( priv_key->get_public_key() );
             std::string sres_str = fc::json::to_string( sres );
             std::cout << "{\"result\":" << sres_str << "}" << std::endl;
          }

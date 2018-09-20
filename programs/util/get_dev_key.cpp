@@ -28,8 +28,8 @@
 #include <fc/crypto/elliptic.hpp>
 #include <fc/io/json.hpp>
 
-#include <creativecoin/protocol/types.hpp>
-#include <creativecoin/utilities/key_conversion.hpp>
+#include <crea/protocol/types.hpp>
+#include <crea/utilities/key_conversion.hpp>
 
 #ifndef WIN32
 #include <csignal>
@@ -87,8 +87,8 @@ int main( int argc, char** argv )
       auto show_key = [&]( const fc::ecc::private_key& priv_key, const std::string& name )
       {
          fc::mutable_variant_object mvo;
-         creativecoin::protocol::public_key_type pub_key = priv_key.get_public_key();
-         mvo( "private_key",    creativecoin::utilities::key_to_wif( priv_key ) )
+         crea::protocol::public_key_type pub_key = priv_key.get_public_key();
+         mvo( "private_key",    crea::utilities::key_to_wif( priv_key ) )
 	    ( "public_key",     std::string( pub_key ) )
 	    ( "account_name", name )
 	 ;

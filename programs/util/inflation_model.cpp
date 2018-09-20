@@ -1,7 +1,7 @@
 
-#include <creativecoin/chain/compound.hpp>
-#include <creativecoin/protocol/asset.hpp>
-#include <creativecoin/protocol/types.hpp>
+#include <crea/chain/compound.hpp>
+#include <crea/protocol/asset.hpp>
+#include <crea/protocol/types.hpp>
 
 #include <fc/io/json.hpp>
 #include <fc/variant_object.hpp>
@@ -21,11 +21,11 @@
 #define VPOW_OFF        9
 #define REWARD_TYPES   10
 
-using creativecoin::protocol::asset;
-using creativecoin::protocol::share_type;
-using creativecoin::protocol::calc_percent_reward_per_block;
-using creativecoin::protocol::calc_percent_reward_per_round;
-using creativecoin::protocol::calc_percent_reward_per_hour;
+using crea::protocol::asset;
+using crea::protocol::share_type;
+using crea::protocol::calc_percent_reward_per_block;
+using crea::protocol::calc_percent_reward_per_round;
+using crea::protocol::calc_percent_reward_per_hour;
 
 /*
 Explanation of output
