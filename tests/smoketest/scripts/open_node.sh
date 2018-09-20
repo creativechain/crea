@@ -6,30 +6,30 @@ popd () { command popd "$@" > /dev/null; }
 
 if [ $# -ne 5 ]
 then
-   echo Usage: node_kind creativecoind_path node_options work_path port
-   echo Example: reference ~/creativecoin/creativecoin/build/programs/creativecoind/creativecoind --webserver-http-endpoint=127.0.0.1:8090 ~/working 8090
+   echo Usage: node_kind cread_path node_options work_path port
+   echo Example: reference ~/creativecoin/creativecoin/build/programs/cread/cread --webserver-http-endpoint=127.0.0.1:8090 ~/working 8090
    exit -1
 fi
 
 function check_pid_port {
-   echo Checking that creativecoind with pid $1 listens at $2 port.
+   echo Checking that cread with pid $1 listens at $2 port.
 
    NETSTAT_CMD="netstat -tlpn 2> /dev/null"
    STAGE1=$(eval $NETSTAT_CMD)
    # echo STAGE1: $STAGE1
-   STAGE2=$(echo $STAGE1 | grep -o ":$2 [^ ]* LISTEN $1/creativecoind")
+   STAGE2=$(echo $STAGE1 | grep -o ":$2 [^ ]* LISTEN $1/cread")
    ATTEMPT=0
 
    while [[ -z $STAGE2 ]] && [ $ATTEMPT -lt 3 ]; do
       sleep 3
       STAGE1=$(eval $NETSTAT_CMD)
-      STAGE2=$(echo $STAGE1 | grep -o ":$2 [^ ]* LISTEN $1/creativecoind")
+      STAGE2=$(echo $STAGE1 | grep -o ":$2 [^ ]* LISTEN $1/cread")
       ((ATTEMPT++))
    done
 
    if [[ -z $STAGE2 ]]; then
-      echo FATAL: Could not find creativecoind with pid $1 listening at port $2 using $NETSTAT_CMD command.
-      echo FATAL: Most probably another creativecoind instance is running and listens at the port.
+      echo FATAL: Could not find cread with pid $1 listening at port $2 using $NETSTAT_CMD command.
+      echo FATAL: Most probably another cread instance is running and listens at the port.
       kill -s SIGINT $1
       return 1
    else
@@ -56,7 +56,7 @@ function cleanup {
 
 trap cleanup SIGINT SIGPIPE
 
-echo Running $NAME creativecoind to listen
+echo Running $NAME cread to listen
 $CREAD_PATH $NODE_OPTIONS -d $WORK_PATH & PID=$!
 
 if [ $PID -le 0 ]

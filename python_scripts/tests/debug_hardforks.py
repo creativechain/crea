@@ -9,7 +9,7 @@ from pathlib import Path
 from time import sleep
 
 # local imports
-from creativecoindebugnode import DebugNode
+from creadebugnode import DebugNode
 from creativecoinapi.creativecoinnoderpc import CreativecoinNodeRPC
 
 WAITING = True
@@ -20,9 +20,9 @@ def main( ):
       print( "This script only works on POSIX systems" )
       return
 
-   parser = ArgumentParser( description='Run a creativecoind debug node on an existing chain, trigger a hardfork' \
+   parser = ArgumentParser( description='Run a cread debug node on an existing chain, trigger a hardfork' \
                               ' and verify hardfork does not break invariants or block production' )
-   parser.add_argument( '--creativecoind', '-s', type=str, required=True, help='The location of a creativecoind binary to run the debug node' )
+   parser.add_argument( '--cread', '-s', type=str, required=True, help='The location of a cread binary to run the debug node' )
    parser.add_argument( '--data-dir', '-d', type=str, required=True, help='The location of an existing data directory. ' + \
                         'The debug node will pull blocks from this directory when replaying the chain. The directory ' + \
                         'will not be changed.' )
@@ -31,19 +31,19 @@ def main( ):
 
    args = parser.parse_args()
 
-   creativecoind = Path( args.creativecoind )
-   if( not creativecoind.exists() ):
-      print( 'Error: creativecoind does not exist.' )
+   cread = Path( args.cread )
+   if( not cread.exists() ):
+      print( 'Error: cread does not exist.' )
       return
 
-   creativecoind = creativecoind.resolve()
-   if( not creativecoind.is_file() ):
-      print( 'Error: creativecoind is not a file.' )
+   cread = cread.resolve()
+   if( not cread.is_file() ):
+      print( 'Error: cread is not a file.' )
       return
 
    data_dir = Path( args.data_dir )
    if( not data_dir.exists() ):
-      print( 'Error: data_dir does not exist or is not a properly constructed creativecoind data directory' )
+      print( 'Error: data_dir does not exist or is not a properly constructed cread data directory' )
 
    data_dir = data_dir.resolve()
    if( not data_dir.is_dir() ):
@@ -51,11 +51,11 @@ def main( ):
 
    signal.signal( signal.SIGINT, sigint_handler )
 
-   debug_node = DebugNode( str( creativecoind ), str( data_dir ) )
+   debug_node = DebugNode( str( cread ), str( data_dir ) )
 
    with debug_node :
 
-      run_creativecoind_tests( debug_node )
+      run_cread_tests( debug_node )
 
       if( args.pause_node ):
          print( "Letting the node hang for manual inspection..." )
@@ -66,7 +66,7 @@ def main( ):
          sleep( 1 )
 
 
-def run_creativecoind_tests( debug_node ):
+def run_cread_tests( debug_node ):
    from creativecoinapi.creativecoinnoderpc import CreativecoinNodeRPC
 
    try:

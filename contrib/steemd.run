@@ -1,14 +1,14 @@
 #!/bin/bash
 
-CREAD="/usr/local/creativecoind-default/bin/creativecoind"
+CREAD="/usr/local/cread-default/bin/cread"
 
-VERSION=`cat /etc/creativecoindversion`
+VERSION=`cat /etc/creadversion`
 
 if [[ "$USE_WAY_TOO_MUCH_RAM" ]]; then
-    CREAD="/usr/local/creativecoind-full/bin/creativecoind"
+    CREAD="/usr/local/cread-full/bin/cread"
 fi
 
-chown -R creativecoind:creativecoind $HOME
+chown -R cread:cread $HOME
 
 ARGS=""
 
@@ -47,27 +47,27 @@ ARGS+=" --follow-start-feeds=$CREAD_FEED_START_TIME"
 
 # overwrite local config with image one
 if [[ "$USE_FULL_WEB_NODE" ]]; then
-  cp /etc/creativecoind/fullnode.config.ini $HOME/config.ini
+  cp /etc/cread/fullnode.config.ini $HOME/config.ini
 elif [[ "$IS_BROADCAST_NODE" ]]; then
-  cp /etc/creativecoind/config-for-broadcaster.ini $HOME/config.ini
+  cp /etc/cread/config-for-broadcaster.ini $HOME/config.ini
 elif [[ "$IS_AH_NODE" ]]; then
-  cp /etc/creativecoind/config-for-ahnode.ini $HOME/config.ini
+  cp /etc/cread/config-for-ahnode.ini $HOME/config.ini
 elif [[ "$IS_OPSWHITELIST_NODE" ]]; then
-  cp /etc/creativecoind/fullnode.opswhitelist.config.ini $HOME/config.ini
+  cp /etc/cread/fullnode.opswhitelist.config.ini $HOME/config.ini
 else
-  cp /etc/creativecoind/config.ini $HOME/config.ini
+  cp /etc/cread/config.ini $HOME/config.ini
 fi
 
-chown creativecoind:creativecoind $HOME/config.ini
+chown cread:cread $HOME/config.ini
 
 if [[ ! -d $HOME/blockchain ]]; then
-    if [[ -e /var/cache/creativecoind/blocks.tbz2 ]]; then
+    if [[ -e /var/cache/cread/blocks.tbz2 ]]; then
         # init with blockchain cached in image
         ARGS+=" --replay-blockchain"
         mkdir -p $HOME/blockchain/database
         cd $HOME/blockchain/database
-        tar xvjpf /var/cache/creativecoind/blocks.tbz2
-        chown -R creativecoind:creativecoind $HOME/blockchain
+        tar xvjpf /var/cache/cread/blocks.tbz2
+        chown -R cread:cread $HOME/blockchain
     fi
 else
    ARGS+=" --tags-skip-startup-update"
@@ -78,7 +78,7 @@ fi
 cd $HOME
 
 if [[ "$USE_PUBLIC_SHARED_MEMORY" ]]; then
-  echo creativecoind: Downloading and uncompressing blockchain-$VERSION-latest.tar.lz4 - this may take awhile.
+  echo cread: Downloading and uncompressing blockchain-$VERSION-latest.tar.lz4 - this may take awhile.
   wget -qO- https://s3.amazonaws.com/creativecoin-dev-blockchainstate/blockchain-$VERSION-latest.tar.lz4 | lz4 -d | tar x
 fi
 
@@ -87,7 +87,7 @@ if [[ "$USE_PUBLIC_BLOCKLOG" ]]; then
     if [[ ! -d $HOME/blockchain ]]; then
       mkdir -p $HOME/blockchain
     fi
-    echo "creativecoind: Downloading a block_log and replaying the blockchain"
+    echo "cread: Downloading a block_log and replaying the blockchain"
     echo "This may take a little while..."
     wget -O $HOME/blockchain/block_log https://s3.amazonaws.com/creativecoin-dev-blockchainstate/block_log-latest
     ARGS+=" --replay-blockchain"
@@ -98,7 +98,7 @@ fi
 sleep 1
 
 mv /etc/nginx/nginx.conf /etc/nginx/nginx.original.conf
-cp /etc/nginx/creativecoind.nginx.conf /etc/nginx/nginx.conf
+cp /etc/nginx/cread.nginx.conf /etc/nginx/nginx.conf
 
 if [[ "$USE_NGINX_FRONTEND" ]]; then
     cp /etc/nginx/healthcheck.conf.template /etc/nginx/healthcheck.conf
@@ -108,7 +108,7 @@ if [[ "$USE_NGINX_FRONTEND" ]]; then
     cp /etc/nginx/healthcheck.conf /etc/nginx/sites-enabled/default
     /etc/init.d/fcgiwrap restart
     service nginx restart
-    exec chpst -ucreativecoind \
+    exec chpst -ucread \
         $CREAD \
             --webserver-ws-endpoint=0.0.0.0:8091 \
             --webserver-http-endpoint=0.0.0.0:8091 \
@@ -118,7 +118,7 @@ if [[ "$USE_NGINX_FRONTEND" ]]; then
             $CREAD_EXTRA_OPTS \
             2>&1
 else
-    exec chpst -ucreativecoind \
+    exec chpst -ucread \
         $CREAD \
             --webserver-ws-endpoint=0.0.0.0:8090 \
             --webserver-http-endpoint=0.0.0.0:8090 \

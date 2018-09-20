@@ -1,16 +1,16 @@
 #!/bin/bash
 
-VERSION=`cat /etc/creativecoindversion`
+VERSION=`cat /etc/creadversion`
 
 if [[ "$IS_BROADCAST_NODE" ]]; then
-  CREAD="/usr/local/creativecoind-default/bin/creativecoind"
+  CREAD="/usr/local/cread-default/bin/cread"
 elif [[ "$IS_AH_NODE" ]]; then
-  CREAD="/usr/local/creativecoind-default/bin/creativecoind"
+  CREAD="/usr/local/cread-default/bin/cread"
 else
-  CREAD="/usr/local/creativecoind-full/bin/creativecoind"
+  CREAD="/usr/local/cread-full/bin/cread"
 fi
 
-chown -R creativecoind:creativecoind $HOME
+chown -R cread:cread $HOME
 
 # clean out data dir since it may be semi-persistent block storage on the ec2 with stale data
 rm -rf $HOME/*
@@ -39,24 +39,24 @@ fi
 
 # overwrite local config with image one
 if [[ "$IS_BROADCAST_NODE" ]]; then
-  cp /etc/creativecoind/config-for-broadcaster.ini $HOME/config.ini
+  cp /etc/cread/config-for-broadcaster.ini $HOME/config.ini
 elif [[ "$IS_AH_NODE" ]]; then
-  cp /etc/creativecoind/config-for-ahnode.ini $HOME/config.ini
+  cp /etc/cread/config-for-ahnode.ini $HOME/config.ini
 elif [[ "$IS_OPSWHITELIST_NODE" ]]; then
-  cp /etc/creativecoind/fullnode.opswhitelist.config.ini $HOME/config.ini
+  cp /etc/cread/fullnode.opswhitelist.config.ini $HOME/config.ini
 else
-  cp /etc/creativecoind/fullnode.config.ini $HOME/config.ini
+  cp /etc/cread/fullnode.config.ini $HOME/config.ini
 fi
 
-chown creativecoind:creativecoind $HOME/config.ini
+chown cread:cread $HOME/config.ini
 
 cd $HOME
 
 mv /etc/nginx/nginx.conf /etc/nginx/nginx.original.conf
-cp /etc/nginx/creativecoind.nginx.conf /etc/nginx/nginx.conf
+cp /etc/nginx/cread.nginx.conf /etc/nginx/nginx.conf
 
 # get blockchain state from an S3 bucket
-echo creativecoind: beginning download and decompress of s3://$S3_BUCKET/blockchain-$VERSION-latest.tar.lz4
+echo cread: beginning download and decompress of s3://$S3_BUCKET/blockchain-$VERSION-latest.tar.lz4
 finished=0
 count=1
 if [[ "$USE_RAMDISK" ]]; then
@@ -77,13 +77,13 @@ if [[ "$USE_RAMDISK" ]]; then
     fi
     if [[ $? -ne 0 ]]; then
       sleep 1
-      echo notifyalert creativecoind: unable to pull blockchain state from S3 - attempt $count
+      echo notifyalert cread: unable to pull blockchain state from S3 - attempt $count
       (( count++ ))
     else
       finished=1
     fi
   done
-  chown -R creativecoind:creativecoind /mnt/ramdisk/blockchain
+  chown -R cread:cread /mnt/ramdisk/blockchain
 else
   while [[ $count -le 5 ]] && [[ $finished == 0 ]]
   do
@@ -97,7 +97,7 @@ else
     fi
     if [[ $? -ne 0 ]]; then
       sleep 1
-      echo notifyalert creativecoind: unable to pull blockchain state from S3 - attempt $count
+      echo notifyalert cread: unable to pull blockchain state from S3 - attempt $count
       (( count++ ))
     else
       finished=1
@@ -106,19 +106,19 @@ else
 fi
 if [[ $finished == 0 ]]; then
   if [[ ! "$SYNC_TO_S3" ]]; then
-    echo notifyalert creativecoind: unable to pull blockchain state from S3 - exiting
+    echo notifyalert cread: unable to pull blockchain state from S3 - exiting
     exit 1
   else
-    echo notifycreativecoindsync creativecoindsync: shared memory file for $VERSION not found, creating a new one by replaying the blockchain
+    echo notifycreadsync creadsync: shared memory file for $VERSION not found, creating a new one by replaying the blockchain
     if [[ "$USE_RAMDISK" ]]; then
       mkdir -p /mnt/ramdisk/blockchain
-      chown -R creativecoind:creativecoind /mnt/ramdisk/blockchain
+      chown -R cread:cread /mnt/ramdisk/blockchain
     else
       mkdir blockchain
     fi
     aws s3 cp s3://$S3_BUCKET/block_log-latest blockchain/block_log
     if [[ $? -ne 0 ]]; then
-      echo notifycreativecoindsync creativecoindsync: unable to pull latest block_log from S3, will sync from scratch.
+      echo notifycreadsync creadsync: unable to pull latest block_log from S3, will sync from scratch.
     else
       ARGS+=" --replay-blockchain --force-validate"
     fi
@@ -136,7 +136,7 @@ if [[ "$SYNC_TO_S3" ]]; then
   chown www-data:www-data /tmp/issyncnode
 fi
 
-chown -R creativecoind:creativecoind $HOME/*
+chown -R cread:cread $HOME/*
 
 # let's get going
 cp /etc/nginx/healthcheck.conf.template /etc/nginx/healthcheck.conf
@@ -146,7 +146,7 @@ rm /etc/nginx/sites-enabled/default
 cp /etc/nginx/healthcheck.conf /etc/nginx/sites-enabled/default
 /etc/init.d/fcgiwrap restart
 service nginx restart
-exec chpst -ucreativecoind \
+exec chpst -ucread \
     $CREAD \
         --webserver-ws-endpoint=127.0.0.1:8091 \
         --webserver-http-endpoint=127.0.0.1:8091 \
@@ -156,12 +156,12 @@ exec chpst -ucreativecoind \
         $CREAD_EXTRA_OPTS \
         2>&1&
 SAVED_PID=`pgrep -f p2p-endpoint`
-echo $SAVED_PID >> /tmp/creativecoindpid
-mkdir -p /etc/service/creativecoind
+echo $SAVED_PID >> /tmp/creadpid
+mkdir -p /etc/service/cread
 if [[ ! "$SYNC_TO_S3" ]]; then
-  cp /usr/local/bin/paas-sv-run.sh /etc/service/creativecoind/run
+  cp /usr/local/bin/paas-sv-run.sh /etc/service/cread/run
 else
-  cp /usr/local/bin/sync-sv-run.sh /etc/service/creativecoind/run
+  cp /usr/local/bin/sync-sv-run.sh /etc/service/cread/run
 fi
-chmod +x /etc/service/creativecoind/run
-runsv /etc/service/creativecoind
+chmod +x /etc/service/cread/run
+runsv /etc/service/cread

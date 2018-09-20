@@ -16,7 +16,7 @@ from concurrent.futures import ProcessPoolExecutor
 from concurrent.futures import Future
 from concurrent.futures import wait
 from jsonsocket import JSONSocket
-from jsonsocket import creativecoind_call
+from jsonsocket import cread_call
 from list_comment import list_comments
 from pathlib import Path
 
@@ -156,13 +156,13 @@ def list_votes(url1, url2, comment_line, max_tries=10, timeout=0.1):
       } ), "utf-8" ) + b"\r\n"
 
     with ThreadPoolExecutor(max_workers=2) as executor:
-      future1 = executor.submit(creativecoind_call, url1, data=request, max_tries=max_tries, timeout=timeout)
-      future2 = executor.submit(creativecoind_call, url2, data=request, max_tries=max_tries, timeout=timeout)
+      future1 = executor.submit(cread_call, url1, data=request, max_tries=max_tries, timeout=timeout)
+      future2 = executor.submit(cread_call, url2, data=request, max_tries=max_tries, timeout=timeout)
 
     status1, json1 = future1.result()
     status2, json2 = future2.result()
-    #status1, json1 = creativecoind_call(url1, data=request, max_tries=max_tries, timeout=timeout)
-    #status2, json2 = creativecoind_call(url2, data=request, max_tries=max_tries, timeout=timeout)
+    #status1, json1 = cread_call(url1, data=request, max_tries=max_tries, timeout=timeout)
+    #status2, json2 = cread_call(url2, data=request, max_tries=max_tries, timeout=timeout)
     
     if status1 == False or status2 == False or json1 != json2:
       print("Comparison failed for permlink: {}; author: {}; limit: {}".format(permlink, author, LIMIT))

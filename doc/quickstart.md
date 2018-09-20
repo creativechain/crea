@@ -1,11 +1,11 @@
 Quickstart
 ----------
 
-### Get current creativecoind
+### Get current cread
 Use docker:
 ```
 docker run \
-    -d -p 2001:2001 -p 8090:8090 --name creativecoind-default \
+    -d -p 2001:2001 -p 8090:8090 --name cread-default \
     --restart unless-stopped creativecoin/creativecoin
 ```
 #### Low memory node?
@@ -18,7 +18,7 @@ For full api node use:
 ```
 docker run \
     --env USE_WAY_TOO_MUCH_RAM=1 --env USE_FULL_WEB_NODE=1 \
-    -d -p 2001:2001 -p 8090:8090 --name creativecoind-full \
+    -d -p 2001:2001 -p 8090:8090 --name cread-full \
     --restart unless-stopped \
     creativecoin/creativecoin
 ```
@@ -42,7 +42,7 @@ This configuration exists in Docker with the following command
 
 ```
 docker run -d --env TRACK_ACCOUNT="yourexchangeid" \
-    --name creativecoind \
+    --name cread \
     --restart unless-stopped \
     creativecoin/creativecoin
 ```

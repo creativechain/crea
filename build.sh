@@ -190,7 +190,7 @@ function buildSource {
 
     #export PERL_USE_UNSAFE_INC=1
 
-    make -j$(nproc) creativecoind
+    make -j$(nproc) cread
     make -j$(nproc) cli_wallet
 }
 

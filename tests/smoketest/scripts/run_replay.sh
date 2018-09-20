@@ -6,10 +6,10 @@ popd () { command popd "$@" > /dev/null; }
 
 if [ $# -lt 5 -o $# -gt 6 ]
 then
-   echo "Usage: path_to_tested_creativecoind path_to_reference_creativecoind"
+   echo "Usage: path_to_tested_cread path_to_reference_cread"
    echo "       path_to_test_blockchain_directory path_to_reference_blockchain_directory"
    echo "       number_of_blocks_to_replay [--dont-copy-config]"
-   echo "Example: ~/work/creativecoin/creativecoin/build/programs/creativecoind/creativecoind ~/master/creativecoin/creativecoin/build/programs/creativecoind/creativecoind ~/creativecoin/creativecoin/work1 ~/creativecoin/creativecoin/work2 2000000"
+   echo "Example: ~/work/creativecoin/creativecoin/build/programs/cread/cread ~/master/creativecoin/creativecoin/build/programs/cread/cread ~/creativecoin/creativecoin/work1 ~/creativecoin/creativecoin/work2 2000000"
    echo "Note: Run this script from test group directory."
    exit -1
 fi
@@ -51,7 +51,7 @@ function cleanup {
         sleep 0.1 && kill -s SIGINT $REPLAY_PID1 &
      fi
      wait -n $REPLAY_PID1
-     [ $ARG -ne 0 -a $? -ne 0 ] && echo "FATAL: tested creativecoind failed to replay $BLOCK_LIMIT blocks." && EXIT_CODE=-1
+     [ $ARG -ne 0 -a $? -ne 0 ] && echo "FATAL: tested cread failed to replay $BLOCK_LIMIT blocks." && EXIT_CODE=-1
    fi
    if [ $REPLAY_PID2 ]
    then
@@ -59,7 +59,7 @@ function cleanup {
         sleep 0.1 && kill -s SIGINT $REPLAY_PID2 &
      fi
      wait -n $REPLAY_PID2
-     [ $ARG -ne 0 -a $? -ne 0 ] && echo "FATAL: reference creativecoind failed to replay $BLOCK_LIMIT blocks." && EXIT_CODE=-1
+     [ $ARG -ne 0 -a $? -ne 0 ] && echo "FATAL: reference cread failed to replay $BLOCK_LIMIT blocks." && EXIT_CODE=-1
    fi
 
    if [ $ARG -ne 0 ]

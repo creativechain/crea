@@ -10,7 +10,7 @@ running tests, it is recommended to build as release.
 
 ### LOW_MEMORY_NODE=[OFF/ON]
 
-Builds creativecoind to be a consensus-only low memory node. Data and fields not
+Builds cread to be a consensus-only low memory node. Data and fields not
 needed for consensus are not stored in the object database.  This option is
 recommended for witnesses and seed-nodes.
 
@@ -87,7 +87,7 @@ will build out of the box without further effort:
     mkdir build
     cd build
     cmake -DCMAKE_BUILD_TYPE=Release ..
-    make -j$(nproc) creativecoind
+    make -j$(nproc) cread
     make -j$(nproc) cli_wallet
     # optional
     make install  # defaults to /usr/local
@@ -152,7 +152,7 @@ Then the instructions are the same as for creativecoin:
     git submodule update --init --recursive
     mkdir build && cd build
     cmake -DCMAKE_BUILD_TYPE=Release ..
-    make -j$(nproc) creativecoind
+    make -j$(nproc) cread
     make -j$(nproc) cli_wallet
 
 ## Building on macOS X
@@ -221,15 +221,15 @@ creativecoin. Until then, this will allow you to install boost 1.60.0.
 
 Also, some useful build targets for `make` are:
 
-    creativecoind
+    cread
     chain_test
     cli_wallet
 
 e.g.:
 
-    make -j$(sysctl -n hw.logicalcpu) creativecoind
+    make -j$(sysctl -n hw.logicalcpu) cread
 
-This will only build `creativecoind`.
+This will only build `cread`.
 
 ## Building on Other Platforms
 

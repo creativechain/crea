@@ -5,8 +5,8 @@ pushd () { command pushd "$@" > /dev/null; }
 popd () { command popd "$@" > /dev/null; }
 
 function print_help_and_quit {
-   echo Usage: jobs test_creativecoind_path ref_creativecoind_path test_work_path ref_work_path block_limit [--dont-copy-config]
-   echo Example: 16 ~/creativecoin/1/creativecoind ~/creativecoin/2/creativecoind ~/creativecoin/1/wdir ~/creativecoin/2/wdir 5000000
+   echo Usage: jobs test_cread_path ref_cread_path test_work_path ref_work_path block_limit [--dont-copy-config]
+   echo Example: 16 ~/creativecoin/1/cread ~/creativecoin/2/cread ~/creativecoin/1/wdir ~/creativecoin/2/wdir 5000000
    exit -1
 }
 

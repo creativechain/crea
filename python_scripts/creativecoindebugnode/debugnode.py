@@ -14,10 +14,10 @@ from time import sleep
 from creativecoinapi.creativecoinnoderpc import CreativecoinNodeRPC
 
 class DebugNode( object ):
-   """ Wraps the creativecoind debug node plugin for easier automated testing of the Creativecoin Network"""
+   """ Wraps the cread debug node plugin for easier automated testing of the Creativecoin Network"""
 
-   def __init__( self, creativecoind, data_dir, args='', plugins=[], apis=[], creativecoind_out=None, creativecoind_err=None ):
-      """ Creates a creativecoind debug node.
+   def __init__( self, cread, data_dir, args='', plugins=[], apis=[], cread_out=None, cread_err=None ):
+      """ Creates a cread debug node.
 
       It can be ran by using 'with debug_node:'
       While in the context of 'with' the debug node will continue to run.
@@ -26,29 +26,29 @@ class DebugNode( object ):
       For all other requests, the python-creativecoin library should be used.
 
       args:
-         creativecoind -- The string path to the location of the creativecoind binary
-         data_dir -- The string path to an existing creativecoind data directory which will be used to pull blocks from.
-         args -- Other string args to pass to creativecoind.
+         cread -- The string path to the location of the cread binary
+         data_dir -- The string path to an existing cread data directory which will be used to pull blocks from.
+         args -- Other string args to pass to cread.
          plugins -- Any additional plugins to start with the debug node. Modify plugins DebugNode.plugins
          apis -- Any additional APIs to have available. APIs will retain this order for accesibility starting at id 3.
             database_api is 0, login_api is 1, and debug_node_api is 2. Modify apis with DebugNode.api
-         creativecoind_stdout -- A stream for creativecoind's stdout. Default is to pipe to /dev/null
-         creativecoind_stderr -- A stream for creativecoind's stderr. Default is to pipe to /dev/null
+         cread_stdout -- A stream for cread's stdout. Default is to pipe to /dev/null
+         cread_stderr -- A stream for cread's stderr. Default is to pipe to /dev/null
       """
       self._data_dir = None
       self._debug_key = None
       self._FNULL = None
       self._rpc = None
-      self._creativecoind_bin = None
-      self._creativecoind_lock = None
-      self._creativecoind_process = None
+      self._cread_bin = None
+      self._cread_lock = None
+      self._cread_process = None
       self._temp_data_dir = None
 
-      self._creativecoind_bin = Path( creativecoind )
-      if( not self._creativecoind_bin.exists() ):
-         raise ValueError( 'creativecoind does not exist' )
-      if( not self._creativecoind_bin.is_file() ):
-         raise ValueError( 'creativecoind is not a file' )
+      self._cread_bin = Path( cread )
+      if( not self._cread_bin.exists() ):
+         raise ValueError( 'cread does not exist' )
+      if( not self._cread_bin.is_file() ):
+         raise ValueError( 'cread is not a file' )
 
       self._data_dir = Path( data_dir )
       if( not self._data_dir.exists() ):
@@ -65,22 +65,22 @@ class DebugNode( object ):
          self._args = list()
 
       self._FNULL = open( devnull, 'w' )
-      if( creativecoind_out != None ):
-         self.creativecoind_out = creativecoind_out
+      if( cread_out != None ):
+         self.cread_out = cread_out
       else:
-         self.creativecoind_out = self._FNULL
+         self.cread_out = self._FNULL
 
-      if( creativecoind_err != None ):
-         self.creativecoind_err = creativecoind_err
+      if( cread_err != None ):
+         self.cread_err = cread_err
       else:
-         self.creativecoind_err = self._FNULL
+         self.cread_err = self._FNULL
 
       self._debug_key = '5JHNbFNDg834SFj8CMArV6YW7td4zrPzXveqTfaShmYVuYNeK69'
-      self._creativecoind_lock = Lock()
+      self._cread_lock = Lock()
 
 
    def __enter__( self ):
-      self._creativecoind_lock.acquire()
+      self._cread_lock.acquire()
 
       # Setup temp directory to use as the data directory for this
       self._temp_data_dir = TemporaryDirectory()
@@ -97,42 +97,42 @@ class DebugNode( object ):
       config.touch()
       config.write_text( self._get_config() )
 
-      creativecoind = [ str( self._creativecoind_bin ), '--data-dir=' + str( self._temp_data_dir.name ) ]
-      creativecoind.extend( self._args )
+      cread = [ str( self._cread_bin ), '--data-dir=' + str( self._temp_data_dir.name ) ]
+      cread.extend( self._args )
 
-      self._creativecoind_process = Popen( creativecoind, stdout=self.creativecoind_out, stderr=self.creativecoind_err )
-      self._creativecoind_process.poll()
+      self._cread_process = Popen( cread, stdout=self.cread_out, stderr=self.cread_err )
+      self._cread_process.poll()
       sleep( 5 )
-      if( not self._creativecoind_process.returncode ):
+      if( not self._cread_process.returncode ):
          self._rpc = CreativecoinNodeRPC( 'ws://127.0.0.1:8095', '', '' )
       else:
-         raise Exception( "creativecoind did not start properly..." )
+         raise Exception( "cread did not start properly..." )
 
    def __exit__( self, exc, value, tb ):
       self._rpc = None
 
-      if( self._creativecoind_process != None ):
-         self._creativecoind_process.poll()
+      if( self._cread_process != None ):
+         self._cread_process.poll()
 
-         if( not self._creativecoind_process.returncode ):
-            self._creativecoind_process.send_signal( SIGINT )
+         if( not self._cread_process.returncode ):
+            self._cread_process.send_signal( SIGINT )
 
             sleep( 7 )
-            self._creativecoind_process.poll()
+            self._cread_process.poll()
 
-            if( not self._creativecoind_process.returncode ):
-               self._creativecoind_process.send_signal( SIGTERM )
+            if( not self._cread_process.returncode ):
+               self._cread_process.send_signal( SIGTERM )
 
                sleep( 5 )
-               self._creativecoind_process.poll()
+               self._cread_process.poll()
 
-               if( self._creativecoind_process.returncode ):
-                  loggin.error( 'creativecoind did not properly shut down after SIGINT and SIGTERM. User intervention may be required.' )
+               if( self._cread_process.returncode ):
+                  loggin.error( 'cread did not properly shut down after SIGINT and SIGTERM. User intervention may be required.' )
 
-      self._creativecoind_process = None
+      self._cread_process = None
       self._temp_data_dir.cleanup()
       self._temp_data_dir = None
-      self._creativecoind_lock.release()
+      self._cread_lock.release()
 
 
    def _get_config( self ):
@@ -233,7 +233,7 @@ if __name__=="__main__":
    def main():
       global WAITING
       """
-      This example contains a simple parser to obtain the locations of both creativecoind and the data directory,
+      This example contains a simple parser to obtain the locations of both cread and the data directory,
       creates and runs a new debug node, replays all of the blocks in the data directory, and finally waits
       for the user to interface with it outside of the script. Sending SIGINT succesfully and cleanly terminates
       the program.
@@ -248,26 +248,26 @@ if __name__=="__main__":
       parser = ArgumentParser( description='Run a Debug Node on an existing chain. This simply replays all blocks ' + \
                                  'and then waits indefinitely to allow user interaction through RPC calls and ' + \
                                  'the CLI wallet' )
-      parser.add_argument( '--creativecoind', '-s', type=str, required=True, help='The location of a creativecoind binary to run the debug node' )
+      parser.add_argument( '--cread', '-s', type=str, required=True, help='The location of a cread binary to run the debug node' )
       parser.add_argument( '--data-dir', '-d', type=str, required=True, help='The location of an existing data directory. ' + \
                            'The debug node will pull blocks from this directory when replaying the chain. The directory ' + \
                            'will not be changed.' )
 
       args = parser.parse_args()
 
-      creativecoind = Path( args.creativecoind )
-      if( not creativecoind.exists() ):
-         print( 'Error: creativecoind does not exist.' )
+      cread = Path( args.cread )
+      if( not cread.exists() ):
+         print( 'Error: cread does not exist.' )
          return
 
-      creativecoind = creativecoind.resolve()
-      if( not creativecoind.is_file() ):
-         print( 'Error: creativecoind is not a file.' )
+      cread = cread.resolve()
+      if( not cread.is_file() ):
+         print( 'Error: cread is not a file.' )
          return
 
       data_dir = Path( args.data_dir )
       if( not data_dir.exists() ):
-         print( 'Error: data_dir does not exist or is not a properly constructed creativecoind data directory' )
+         print( 'Error: data_dir does not exist or is not a properly constructed cread data directory' )
 
       data_dir = data_dir.resolve()
       if( not data_dir.is_dir() ):
@@ -276,7 +276,7 @@ if __name__=="__main__":
       signal.signal( signal.SIGINT, sigint_handler )
 
       print( 'Creating and starting debug node' )
-      debug_node = DebugNode( str( creativecoind ), str( data_dir ), creativecoind_err=sys.stderr )
+      debug_node = DebugNode( str( cread ), str( data_dir ), cread_err=sys.stderr )
 
       with debug_node:
          print( 'Done!' )

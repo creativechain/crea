@@ -1,6 +1,6 @@
 FROM phusion/baseimage:0.9.19
 
-#ARG CREAD_BLOCKCHAIN=https://example.com/creativecoind-blockchain.tbz2
+#ARG CREAD_BLOCKCHAIN=https://example.com/cread-blockchain.tbz2
 
 ARG CREA_STATIC_BUILD=ON
 ENV CREA_STATIC_BUILD ${CREA_STATIC_BUILD}
@@ -79,7 +79,7 @@ RUN \
     mkdir build && \
     cd build && \
     cmake \
-        -DCMAKE_INSTALL_PREFIX=/usr/local/creativecoind-testnet \
+        -DCMAKE_INSTALL_PREFIX=/usr/local/cread-testnet \
         -DCMAKE_BUILD_TYPE=Release \
         -DBUILD_CREA_TESTNET=ON \
         -DLOW_MEMORY_NODE=OFF \
@@ -128,7 +128,7 @@ RUN \
     mkdir build && \
     cd build && \
     cmake \
-        -DCMAKE_INSTALL_PREFIX=/usr/local/creativecoind-default \
+        -DCMAKE_INSTALL_PREFIX=/usr/local/cread-default \
         -DCMAKE_BUILD_TYPE=Release \
         -DLOW_MEMORY_NODE=ON \
         -DCLEAR_VOTES=ON \
@@ -140,18 +140,18 @@ RUN \
     make -j$(nproc) && \
     make install && \
     cd .. && \
-    ( /usr/local/creativecoind-default/bin/creativecoind --version \
+    ( /usr/local/cread-default/bin/cread --version \
       | grep -o '[0-9]*\.[0-9]*\.[0-9]*' \
       && echo '_' \
       && git rev-parse --short HEAD ) \
       | sed -e ':a' -e 'N' -e '$!ba' -e 's/\n//g' \
-      > /etc/creativecoindversion && \
-    cat /etc/creativecoindversion && \
+      > /etc/creadversion && \
+    cat /etc/creadversion && \
     rm -rfv build && \
     mkdir build && \
     cd build && \
     cmake \
-        -DCMAKE_INSTALL_PREFIX=/usr/local/creativecoind-full \
+        -DCMAKE_INSTALL_PREFIX=/usr/local/cread-full \
         -DCMAKE_BUILD_TYPE=Release \
         -DLOW_MEMORY_NODE=OFF \
         -DCLEAR_VOTES=OFF \
@@ -211,18 +211,18 @@ RUN \
         /usr/include \
         /usr/local/include
 
-RUN useradd -s /bin/bash -m -d /var/lib/creativecoind creativecoind
+RUN useradd -s /bin/bash -m -d /var/lib/cread cread
 
-RUN mkdir /var/cache/creativecoind && \
-    chown creativecoind:creativecoind -R /var/cache/creativecoind
+RUN mkdir /var/cache/cread && \
+    chown cread:cread -R /var/cache/cread
 
 # add blockchain cache to image
-#ADD $CREAD_BLOCKCHAIN /var/cache/creativecoind/blocks.tbz2
+#ADD $CREAD_BLOCKCHAIN /var/cache/cread/blocks.tbz2
 
-ENV HOME /var/lib/creativecoind
-RUN chown creativecoind:creativecoind -R /var/lib/creativecoind
+ENV HOME /var/lib/cread
+RUN chown cread:cread -R /var/lib/cread
 
-VOLUME ["/var/lib/creativecoind"]
+VOLUME ["/var/lib/cread"]
 
 # rpc service:
 EXPOSE 8090
@@ -230,32 +230,32 @@ EXPOSE 8090
 EXPOSE 2001
 
 # add seednodes from documentation to image
-ADD doc/seednodes.txt /etc/creativecoind/seednodes.txt
+ADD doc/seednodes.txt /etc/cread/seednodes.txt
 
 # the following adds lots of logging info to stdout
-ADD contrib/config-for-docker.ini /etc/creativecoind/config.ini
-ADD contrib/fullnode.config.ini /etc/creativecoind/fullnode.config.ini
-ADD contrib/fullnode.opswhitelist.config.ini /etc/creativecoind/fullnode.opswhitelist.config.ini
-ADD contrib/config-for-broadcaster.ini /etc/creativecoind/config-for-broadcaster.ini
-ADD contrib/config-for-ahnode.ini /etc/creativecoind/config-for-ahnode.ini
-ADD contrib/testnet.config.ini /etc/creativecoind/testnet.config.ini
-ADD contrib/fastgen.config.ini /etc/creativecoind/fastgen.config.ini
+ADD contrib/config-for-docker.ini /etc/cread/config.ini
+ADD contrib/fullnode.config.ini /etc/cread/fullnode.config.ini
+ADD contrib/fullnode.opswhitelist.config.ini /etc/cread/fullnode.opswhitelist.config.ini
+ADD contrib/config-for-broadcaster.ini /etc/cread/config-for-broadcaster.ini
+ADD contrib/config-for-ahnode.ini /etc/cread/config-for-ahnode.ini
+ADD contrib/testnet.config.ini /etc/cread/testnet.config.ini
+ADD contrib/fastgen.config.ini /etc/cread/fastgen.config.ini
 
 # add normal startup script that starts via sv
-ADD contrib/creativecoind.run /usr/local/bin/creativecoin-sv-run.sh
+ADD contrib/cread.run /usr/local/bin/creativecoin-sv-run.sh
 RUN chmod +x /usr/local/bin/creativecoin-sv-run.sh
 
 # add nginx templates
-ADD contrib/creativecoind.nginx.conf /etc/nginx/creativecoind.nginx.conf
+ADD contrib/cread.nginx.conf /etc/nginx/cread.nginx.conf
 ADD contrib/healthcheck.conf.template /etc/nginx/healthcheck.conf.template
 
 # add PaaS startup script and service script
-ADD contrib/startpaascreativecoind.sh /usr/local/bin/startpaascreativecoind.sh
+ADD contrib/startpaascread.sh /usr/local/bin/startpaascread.sh
 ADD contrib/testnetinit.sh /usr/local/bin/testnetinit.sh
 ADD contrib/paas-sv-run.sh /usr/local/bin/paas-sv-run.sh
 ADD contrib/sync-sv-run.sh /usr/local/bin/sync-sv-run.sh
 ADD contrib/healthcheck.sh /usr/local/bin/healthcheck.sh
-RUN chmod +x /usr/local/bin/startpaascreativecoind.sh
+RUN chmod +x /usr/local/bin/startpaascread.sh
 RUN chmod +x /usr/local/bin/testnetinit.sh
 RUN chmod +x /usr/local/bin/paas-sv-run.sh
 RUN chmod +x /usr/local/bin/sync-sv-run.sh
@@ -265,6 +265,6 @@ RUN chmod +x /usr/local/bin/healthcheck.sh
 # this enables exitting of the container when the writer node dies
 # for PaaS mode (elasticbeanstalk, etc)
 # AWS EB Docker requires a non-daemonized entrypoint
-ADD contrib/creativecoindentrypoint.sh /usr/local/bin/creativecoindentrypoint.sh
-RUN chmod +x /usr/local/bin/creativecoindentrypoint.sh
-CMD /usr/local/bin/creativecoindentrypoint.sh
+ADD contrib/creadentrypoint.sh /usr/local/bin/creadentrypoint.sh
+RUN chmod +x /usr/local/bin/creadentrypoint.sh
+CMD /usr/local/bin/creadentrypoint.sh

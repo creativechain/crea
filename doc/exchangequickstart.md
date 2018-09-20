@@ -50,15 +50,15 @@ docker pull creativecoin/creativecoin
 
 ### Running a binary build without a Docker container
 
-If you build with Docker but do not want to run creativecoind from within a docker container, you can stop here with this step and instead extract the binary from the container with the commands below. If you are going to run creativecoind with docker (recommended method), skip this step altogether. We're simply providing an option for everyone's use-case. Our binaries are built mostly static, only dynamically linking to linux kernel libraries. We have tested and confirmed binaries built in Docker work on Ubuntu and Fedora and will likely work on many other Linux distrubutions. Building the image yourself or pulling one of our pre-built images both work.
+If you build with Docker but do not want to run cread from within a docker container, you can stop here with this step and instead extract the binary from the container with the commands below. If you are going to run cread with docker (recommended method), skip this step altogether. We're simply providing an option for everyone's use-case. Our binaries are built mostly static, only dynamically linking to linux kernel libraries. We have tested and confirmed binaries built in Docker work on Ubuntu and Fedora and will likely work on many other Linux distrubutions. Building the image yourself or pulling one of our pre-built images both work.
 
 To extract the binary you need to start a container and then copy the file from it.
 
 ```
-docker run -d --name creativecoind-exchange creativecoin/creativecoin
-docker cp creativecoind-exchange:/usr/local/creativecoind-default/bin/creativecoind /local/path/to/creativecoind
-docker cp creativecoind-exchange:/usr/local/creativecoind-default/bin/cli_wallet /local/path/to/cli_wallet
-docker stop creativecoind-exchange
+docker run -d --name cread-exchange creativecoin/creativecoin
+docker cp cread-exchange:/usr/local/cread-default/bin/cread /local/path/to/cread
+docker cp cread-exchange:/usr/local/cread-default/bin/cli_wallet /local/path/to/cli_wallet
+docker stop cread-exchange
 ```
 
 For your convenience, we have provided a provided an [example\_config](example\_config.ini) that we expect should be sufficient to run your exchange node. Be sure to rename it to simply `config.ini`.
@@ -77,7 +77,7 @@ mkdir creativecoinwallet
 The below command will start a daemonized instance opening ports for p2p and RPC  while linking the directories we created for blockchain and wallet data inside the container. Fill in `TRACK_ACCOUNT` with the name of your exchange account that you want to follow. The `-v` flags are how you map directories outside of the container to the inside, you list the path to the directories you created earlier before the `:` for each `-v` flag. The restart policy ensures that the container will automatically restart even if your system is restarted.
 
 ```
-docker run -d --name creativecoind-exchange --env TRACK_ACCOUNT=nameofaccount -p 2001:2001 -p 8090:8090 -v /path/to/creativecoinwallet:/var/creativecoinwallet -v /path/to/blockchain:/var/lib/creativecoind/blockchain --restart always creativecoin/creativecoin
+docker run -d --name cread-exchange --env TRACK_ACCOUNT=nameofaccount -p 2001:2001 -p 8090:8090 -v /path/to/creativecoinwallet:/var/creativecoinwallet -v /path/to/blockchain:/var/lib/cread/blockchain --restart always creativecoin/creativecoin
 ```
 
 You can see that the container is running with the `docker ps` command.
@@ -91,5 +91,5 @@ Initial syncing will take between 6 and 48 hours depending on your equipment, fa
 The command below will run the cli_wallet from inside the running container while mapping the `wallet.json` to the directory you created for it on the host.
 
 ```
-docker exec -it creativecoind-exchange /usr/local/creativecoind-default/bin/cli_wallet -w /var/creativecoinwallet/wallet.json
+docker exec -it cread-exchange /usr/local/cread-default/bin/cli_wallet -w /var/creativecoinwallet/wallet.json
 ```

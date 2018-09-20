@@ -15,9 +15,9 @@ pushd () { command pushd "$@" > /dev/null; }
 popd () { command popd "$@" > /dev/null; }
 
 function print_help_and_quit {
-   echo "Usage: path_to_tested_creativecoind path_to_reference_creativecoind path_to_test_blockchain_directory"
+   echo "Usage: path_to_tested_cread path_to_reference_cread path_to_test_blockchain_directory"
    echo "       path_to_reference_blockchain_directory number_of_blocks_to_replay [number_of_jobs [--dont-copy-config]]"
-   echo "Example: ~/work/creativecoin/creativecoin/build/Release/programs/creativecoind/creativecoind ~/master/creativecoin/creativecoin/build/Release/programs/creativecoind/creativecoind ~/creativecoin/creativecoin/work1 ~/creativecoin/creativecoin/work2 5000000"
+   echo "Example: ~/work/creativecoin/creativecoin/build/Release/programs/cread/cread ~/master/creativecoin/creativecoin/build/Release/programs/cread/cread ~/creativecoin/creativecoin/work1 ~/creativecoin/creativecoin/work2 5000000"
    echo "         Pass absolute, not relative paths;"
    echo "         if <number_of_jobs> not passed or if is less or zero equal <nproc> will be used;"
    echo "         if --dont-copy-config is passed config.init files are not copied from test directories."
@@ -53,7 +53,7 @@ then
    print_help_and_quit
 fi
 
-function check_creativecoind_path {
+function check_cread_path {
    echo Checking $1...
    if [ -x "$1" ] && file "$1" | grep -q "executable"
    then
@@ -106,8 +106,8 @@ function cleanup {
 
 trap cleanup SIGINT SIGPIPE
 
-check_creativecoind_path $TEST_CREAD_PATH
-check_creativecoind_path $REF_CREAD_PATH
+check_cread_path $TEST_CREAD_PATH
+check_cread_path $REF_CREAD_PATH
 
 check_work_path $TEST_WORK_PATH
 check_work_path $REF_WORK_PATH

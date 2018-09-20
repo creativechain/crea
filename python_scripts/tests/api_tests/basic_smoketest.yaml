@@ -1,5 +1,5 @@
 - config:
-  - testset: "Basic creativecoind API Smoke Test"
+  - testset: "Basic cread API Smoke Test"
 
 - test:
   - name: "Test ip address"

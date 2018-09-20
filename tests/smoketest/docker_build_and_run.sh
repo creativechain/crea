@@ -1,7 +1,7 @@
 #!/bin/bash
 #params:
-# - ref creativecoind location
-# - tested creativecoind location
+# - ref cread location
+# - tested cread location
 # - ref blockchain folder location
 # - tested blockchain folder location
 # - path to directory, where non-empty logs should be generated
@@ -11,13 +11,13 @@
 #
 # WARNING: use absolute paths instead of relative!
 #
-# sudo ./docker_build_and_run.sh ~/creativecoin/creativecoin/build/Release/programs/creativecoind ~/creativecoin/creativecoin/build/Release/programs/creativecoind ~/creativecoin/creativecoind_data/creativecoinnet ~/creativecoin/creativecoind_data/creativecoinnet ~/creativecoin/logs 5000000 12
+# sudo ./docker_build_and_run.sh ~/creativecoin/creativecoin/build/Release/programs/cread ~/creativecoin/creativecoin/build/Release/programs/cread ~/creativecoin/cread_data/creativecoinnet ~/creativecoin/cread_data/creativecoinnet ~/creativecoin/logs 5000000 12
 
 if [ $# -lt 6 -o $# -gt 8 ]
 then
-   echo "Usage: reference_creativecoind_location tested_creativecoind_location ref_blockchain_folder_location tested_blockchain_folder_location"
+   echo "Usage: reference_cread_location tested_cread_location ref_blockchain_folder_location tested_blockchain_folder_location"
    echo "       logs_dir stop_replay_at_block [jobs [--dont-copy-config]"
-   echo "Example: ~/creativecoin/ref_creativecoind ~/creativecoin/creativecoin/build/Release/programs/creativecoind ~/creativecoin/creativecoinnet ~/creativecoin/testnet"
+   echo "Example: ~/creativecoin/ref_cread ~/creativecoin/creativecoin/build/Release/programs/cread ~/creativecoin/creativecoinnet ~/creativecoin/testnet"
    echo "         ~/creativecoin/logs 5000000 12"
    echo "         if <jobs> not passed, <nproc> will be used."
    exit -1

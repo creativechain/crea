@@ -1,24 +1,24 @@
 #!/bin/bash
 
-VERSION=`cat /etc/creativecoindversion`
+VERSION=`cat /etc/creadversion`
 
 # if the writer node dies by itself, kill runsv causing the container to exit
 CREAD_PID=`pgrep -f p2p-endpoint`
 if [[ ! $? -eq 0 ]]; then
-  echo NOTIFYALERT! creativecoindsync has quit unexpectedly, checking for coredump and then starting a new instance..
+  echo NOTIFYALERT! creadsync has quit unexpectedly, checking for coredump and then starting a new instance..
   sleep 30
-  SAVED_PID=`cat /tmp/creativecoindpid`
+  SAVED_PID=`cat /tmp/creadpid`
   if [[ -e /tmp/core.$SAVED_PID ]]; then
-    gdb --batch --quiet -ex "thread apply all bt full" -ex "quit" /usr/local/creativecoind-full/bin/creativecoind /tmp/core.$SAVED_PID >> /tmp/stacktrace
+    gdb --batch --quiet -ex "thread apply all bt full" -ex "quit" /usr/local/cread-full/bin/cread /tmp/core.$SAVED_PID >> /tmp/stacktrace
     STACKTRACE=`cat /tmp/stacktrace`
-    echo NOTIFYALERT! creativecoindsync stacktrace from coredump:
+    echo NOTIFYALERT! creadsync stacktrace from coredump:
     for ((i=0;i<${#STACKTRACE};i+=120)); do
       echo "${STACKTRACE:i:120}"
     done
     CORE_FILE_NAME=coredump-`date '+%Y%m%d-%H%M%S'`.$SAVED_PID
     aws s3 cp /tmp/core.$SAVED_PID s3://$S3_BUCKET/$CORE_FILE_NAME
   fi
-  RUN_SV_PID=`pgrep -f /etc/service/creativecoind`
+  RUN_SV_PID=`pgrep -f /etc/service/cread`
   kill -9 $RUN_SV_PID
 fi
 
@@ -40,25 +40,25 @@ if [[ ! -z "$BLOCKCHAIN_TIME" ]]; then
   if [[ ${BLOCK_AGE} -le 10 ]]; then
     CREAD_PID=`pgrep -f p2p-endpoint`
     kill -SIGINT $CREAD_PID
-    echo creativecoindsync: waiting for creativecoind to exit cleanly
+    echo creadsync: waiting for cread to exit cleanly
 
-    # wait 60 seconds for creativecoind to exit, to be safe.
+    # wait 60 seconds for cread to exit, to be safe.
     let WAIT_TIME=0
     while ( kill -0 $CREAD_PID ) && [[ WAIT_TIME -le 60 ]]; do
        sleep 1
        let WAIT_TIME++
     done
 
-    echo creativecoindsync: starting a new blockchainstate upload operation
+    echo creadsync: starting a new blockchainstate upload operation
     cd ${COMPRESSPATH:-$HOME}
-    echo creativecoindsync: compressing blockchainstate...
+    echo creadsync: compressing blockchainstate...
     if [[ "$USE_RAMDISK" ]]; then
       tar vcf blockchain.tar.lz4 --use-compress-prog=lz4 -C $HOME blockchain -C /mnt/ramdisk blockchain
     else
       tar cf blockchain.tar.lz4 --use-compress-prog=lz4 -C $HOME blockchain
     fi
     if [[ ! $? -eq 0 ]]; then
-      echo NOTIFYALERT! creativecoindsync was unable to compress shared memory file, check the logs.
+      echo NOTIFYALERT! creadsync was unable to compress shared memory file, check the logs.
       exit 1
     fi
     if [[ "$IS_BROADCAST_NODE" ]]; then
@@ -68,13 +68,13 @@ if [[ ! -z "$BLOCKCHAIN_TIME" ]]; then
     else
       FILE_NAME=blockchain-$VERSION-`date '+%Y%m%d-%H%M%S'`.tar.lz4
     fi
-    echo creativecoindsync: uploading $FILE_NAME to $S3_BUCKET
+    echo creadsync: uploading $FILE_NAME to $S3_BUCKET
     aws s3 cp blockchain.tar.lz4 s3://$S3_BUCKET/$FILE_NAME
     if [[ ! $? -eq 0 ]]; then
-      echo NOTIFYALERT! creativecoindsync was unable to upload $FILE_NAME to s3://$S3_BUCKET
+      echo NOTIFYALERT! creadsync was unable to upload $FILE_NAME to s3://$S3_BUCKET
       exit 1
     fi
-    echo creativecoindsync: replacing current version of blockchain state with $FILE_NAME
+    echo creadsync: replacing current version of blockchain state with $FILE_NAME
     if [[ "$IS_BROADCAST_NODE" ]]; then
       aws s3 cp s3://$S3_BUCKET/$FILE_NAME s3://$S3_BUCKET/broadcast-$VERSION-latest.tar.lz4
       aws s3api put-object-acl --bucket $S3_BUCKET --key broadcast-$VERSION-latest.tar.lz4 --acl public-read
@@ -86,7 +86,7 @@ if [[ ! -z "$BLOCKCHAIN_TIME" ]]; then
       aws s3api put-object-acl --bucket $S3_BUCKET --key blockchain-$VERSION-latest.tar.lz4 --acl public-read
     fi
     if [[ ! $? -eq 0 ]]; then
-      echo NOTIFYALERT! creativecoindsync was unable to overwrite the current blockchainstate with $FILE_NAME
+      echo NOTIFYALERT! creadsync was unable to overwrite the current blockchainstate with $FILE_NAME
       exit 1
     fi
     # upload a current block_log
@@ -97,11 +97,11 @@ if [[ ! -z "$BLOCKCHAIN_TIME" ]]; then
       aws s3api put-object-acl --bucket $S3_BUCKET --key block_log-latest --acl public-read
     fi
     # kill the container starting the process over again
-    echo creativecoindsync: stopping the container after a sync operation
+    echo creadsync: stopping the container after a sync operation
     if [[ -e /tmp/isnewsync ]]; then
-      echo notifycreativecoindsync: creativecoindsync: successfully generated and uploaded new blockchain-$VERSION-latest.tar.lz4 to s3://$S3_BUCKET
+      echo notifycreadsync: creadsync: successfully generated and uploaded new blockchain-$VERSION-latest.tar.lz4 to s3://$S3_BUCKET
     fi
-    RUN_SV_PID=`pgrep -f /etc/service/creativecoind`
+    RUN_SV_PID=`pgrep -f /etc/service/cread`
     kill -9 $RUN_SV_PID
   fi
 fi

@@ -112,7 +112,7 @@ if( SKIP_BY_TX_ID )
    SET( CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -DSKIP_BY_TX_ID" )
 endif()
 
-OPTION( CREA_STATIC_BUILD "Build creativecoind as a static library (ON or OFF)" OFF )
+OPTION( CREA_STATIC_BUILD "Build cread as a static library (ON or OFF)" OFF )
 if( CREA_STATIC_BUILD AND ( ( MSVC AND NOT MINGW ) OR APPLE ) )
    MESSAGE( STATUS "Statuc build is not available on Windows or OS X" )
    SET( CREA_STATIC_BUILD OFF )

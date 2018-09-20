@@ -6,7 +6,7 @@ Usage: list_comment.py <server_address> [<output_filename>]
 import sys
 import json
 from jsonsocket import JSONSocket
-from jsonsocket import creativecoind_call
+from jsonsocket import cread_call
 
 def list_comments(url):
   """
@@ -24,7 +24,7 @@ def list_comments(url):
       "params": { "start":[ last_cashout_time, "", "" ], "limit": 5, "order": "by_cashout_time" }
       } ), "utf-8" ) + b"\r\n"
 
-    status, response = creativecoind_call(url, data=request)
+    status, response = cread_call(url, data=request)
     
     if status == False:
       print( "rpc failed for last_cashout_time: " + last_cashout_time )

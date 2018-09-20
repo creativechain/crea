@@ -1,12 +1,12 @@
 #!/bin/bash
 
-VERSION=`cat /etc/creativecoindversion`
+VERSION=`cat /etc/creadversion`
 
-CREAD="/usr/local/creativecoind-testnet/bin/creativecoind"
+CREAD="/usr/local/cread-testnet/bin/cread"
 
-UTILS="/usr/local/creativecoind-testnet/bin"
+UTILS="/usr/local/cread-testnet/bin"
 
-chown -R creativecoind:creativecoind $HOME
+chown -R cread:cread $HOME
 
 # clean out data dir since it may be semi-persistent block storage on the ec2 with stale data
 rm -rf $HOME/*
@@ -17,11 +17,11 @@ mkdir -p $HOME/testnet_datadir
 ARGS+=" --p2p-seed-node=127.0.0.1:12001"
 
 # copy over config for testnet init and fastgen nodes
-cp /etc/creativecoind/testnet.config.ini $HOME/config.ini
-cp /etc/creativecoind/fastgen.config.ini $HOME/testnet_datadir/config.ini
+cp /etc/cread/testnet.config.ini $HOME/config.ini
+cp /etc/cread/fastgen.config.ini $HOME/testnet_datadir/config.ini
 
-chown creativecoind:creativecoind $HOME/config.ini
-chown creativecoind:creativecoind $HOME/testnet_datadir/config.ini
+chown cread:cread $HOME/config.ini
+chown cread:cread $HOME/testnet_datadir/config.ini
 
 cd $HOME
 
@@ -29,7 +29,7 @@ echo chain-id = $CHAIN_ID >> config.ini
 echo chain-id = $CHAIN_ID >> testnet_datadir/config.ini
 
 mv /etc/nginx/nginx.conf /etc/nginx/nginx.original.conf
-cp /etc/nginx/creativecoind.nginx.conf /etc/nginx/nginx.conf
+cp /etc/nginx/cread.nginx.conf /etc/nginx/nginx.conf
 
 # for appbase tags plugin loading
 ARGS+=" --tags-skip-startup-update"
@@ -49,11 +49,11 @@ pip install ./tinman
 aws s3 cp s3://$S3_BUCKET/txgen-latest.list ./txgen.list
 cp tinman/txgen.conf.example ./txgen.conf
 
-chown -R creativecoind:creativecoind $HOME/*
+chown -R cread:cread $HOME/*
 
-echo creativecoind-testnet: starting fastgen node
+echo cread-testnet: starting fastgen node
 # start the fastgen node
-exec chpst -ucreativecoind \
+exec chpst -ucread \
     $CREAD \
         --webserver-ws-endpoint=0.0.0.0:9990 \
         --webserver-http-endpoint=0.0.0.0:9990 \
@@ -65,7 +65,7 @@ exec chpst -ucreativecoind \
 sleep 120
 
 # pipe the transactions through keysub and into the fastgen node
-echo creativecoind-testnet: pipelining transactions into fastgen node, this may take some time
+echo cread-testnet: pipelining transactions into fastgen node, this may take some time
 ( \
   echo [\"set_secret\", {\"secret\":\"$SHARED_SECRET\"}] ; \
   cat txgen.list \
@@ -80,7 +80,7 @@ i=0 ; while [ $i -lt 21 ] ; do echo witness = '"'init-$i'"' >> config.ini ; let 
 $UTILS/get_dev_key $SHARED_SECRET block-init-0:21 | cut -d '"' -f 4 | sed 's/^/private-key = /' >> config.ini
 
 # let's get going
-echo creativecoind-testnet: bringing up witness / full node
+echo cread-testnet: bringing up witness / full node
 cp /etc/nginx/healthcheck.conf.template /etc/nginx/healthcheck.conf
 echo server 127.0.0.1:8091\; >> /etc/nginx/healthcheck.conf
 echo } >> /etc/nginx/healthcheck.conf
@@ -88,7 +88,7 @@ rm /etc/nginx/sites-enabled/default
 cp /etc/nginx/healthcheck.conf /etc/nginx/sites-enabled/default
 /etc/init.d/fcgiwrap restart
 service nginx restart
-exec chpst -ucreativecoind \
+exec chpst -ucread \
     $CREAD \
         --webserver-ws-endpoint=0.0.0.0:8091 \
         --webserver-http-endpoint=0.0.0.0:8091 \

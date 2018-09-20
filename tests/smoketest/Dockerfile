@@ -19,8 +19,8 @@ COPY . $WDIR/
 RUN apt-get clean
 RUN rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
-#reference: volume points to reference creativecoind
-#tested: volume points to tested creativecoind
+#reference: volume points to reference cread
+#tested: volume points to tested cread
 #ref_blockchain: volume points to reference folder, where blockchain folder exists
 #tested_blockchain: volume points to tested folder, where blockchain folder exists
 #logs_dir: location where non-empty logs will be copied
@@ -31,7 +31,7 @@ EXPOSE 8091
 
 #CMD pyresttest
 CMD cd $SMOKETEST && \
-   ./smoketest.sh /reference/creativecoind /tested/creativecoind /ref_blockchain /tested_blockchain $STOP_REPLAY_AT_BLOCK $JOBS $COPY_CONFIG 2>&1 | tee log.txt || \
+   ./smoketest.sh /reference/cread /tested/cread /ref_blockchain /tested_blockchain $STOP_REPLAY_AT_BLOCK $JOBS $COPY_CONFIG 2>&1 | tee log.txt || \
    find ./ -type f -path */logs/* -not -name logs | cpio -pd /logs_dir && \
    cp log.txt /logs_dir && \
    chmod -R a+rw /logs_dir
