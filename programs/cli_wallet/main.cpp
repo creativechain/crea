@@ -36,11 +36,11 @@
 #include <fc/rpc/websocket_api.hpp>
 #include <fc/smart_ref_impl.hpp>
 
-#include <creativecoin/utilities/key_conversion.hpp>
+#include <crea/utilities/key_conversion.hpp>
 
-#include <creativecoin/protocol/protocol.hpp>
-#include <creativecoin/wallet/remote_node_api.hpp>
-#include <creativecoin/wallet/wallet.hpp>
+#include <crea/protocol/protocol.hpp>
+#include <crea/wallet/remote_node_api.hpp>
+#include <crea/wallet/wallet.hpp>
 
 #include <fc/interprocess/signals.hpp>
 #include <boost/program_options.hpp>
@@ -58,9 +58,9 @@
 #endif
 
 
-using namespace creativecoin::utilities;
-using namespace creativecoin::chain;
-using namespace creativecoin::wallet;
+using namespace crea::utilities;
+using namespace crea::chain;
+using namespace crea::wallet;
 using namespace std;
 namespace bpo = boost::program_options;
 
@@ -100,11 +100,11 @@ int main( int argc, char** argv )
          wdump((allowed_ips));
       }
 
-      creativecoin::protocol::chain_id_type _creativecoin_chain_id;
+      crea::protocol::chain_id_type _crea_chain_id;
 
 #ifdef IS_TEST_NET
       if( options.count("chain-id") )
-            _creativecoin_chain_id = generate_chain_id( options["chain-id"].as< std::string >() );
+            _crea_chain_id = generate_chain_id( options["chain-id"].as< std::string >() );
 #endif
 
       fc::path data_dir;
@@ -157,9 +157,9 @@ int main( int argc, char** argv )
       auto con  = client.connect( wdata.ws_server );
       auto apic = std::make_shared<fc::rpc::websocket_api_connection>(*con);
 
-      auto remote_api = apic->get_remote_api< creativecoin::wallet::remote_node_api >( 0, "condenser_api" );
+      auto remote_api = apic->get_remote_api< crea::wallet::remote_node_api >( 0, "condenser_api" );
 
-      auto wapiptr = std::make_shared<wallet_api>( wdata, _creativecoin_chain_id, remote_api );
+      auto wapiptr = std::make_shared<wallet_api>( wdata, _crea_chain_id, remote_api );
       wapiptr->set_wallet_filename( wallet_file.generic_string() );
       wapiptr->load_wallet_file();
 
