@@ -173,7 +173,7 @@ namespace crea { namespace protocol {
    { try {
       validate_account_name( from );
       validate_account_name( to );
-      FC_ASSERT( amount.symbol != VESTS_SYMBOL, "transferring of Creativecoin Power (STMP) is not allowed." );
+      FC_ASSERT( amount.symbol != VESTS_SYMBOL, "transferring of Crea Energy (CGY) is not allowed." );
       FC_ASSERT( amount.amount > 0, "Cannot transfer a negative amount (aka: stealing)" );
       FC_ASSERT( memo.size() < CREA_MAX_MEMO_SIZE, "Memo is too large" );
       FC_ASSERT( fc::is_utf8( memo ), "Memo is not UTF8" );
@@ -520,12 +520,12 @@ namespace crea { namespace protocol {
       validate_account_name( to );
       validate_account_name( agent );
       FC_ASSERT( fee.amount >= 0, "fee cannot be negative" );
-      FC_ASSERT( cbd_amount.amount >= 0, "sbd amount cannot be negative" );
+      FC_ASSERT( cbd_amount.amount >= 0, "cbd amount cannot be negative" );
       FC_ASSERT( crea_amount.amount >= 0, "crea amount cannot be negative" );
       FC_ASSERT( cbd_amount.amount > 0 || crea_amount.amount > 0, "escrow must transfer a non-zero amount" );
       FC_ASSERT( from != agent && to != agent, "agent must be a third party" );
       FC_ASSERT( (fee.symbol == CREA_SYMBOL) || (fee.symbol == CBD_SYMBOL), "fee must be CREA or CBD" );
-      FC_ASSERT( cbd_amount.symbol == CBD_SYMBOL, "sbd amount must contain CBD" );
+      FC_ASSERT( cbd_amount.symbol == CBD_SYMBOL, "cbd amount must contain CBD" );
       FC_ASSERT( crea_amount.symbol == CREA_SYMBOL, "crea amount must contain CREA" );
       FC_ASSERT( ratification_deadline < escrow_expiration, "ratification deadline must be before escrow expiration" );
       if ( json_meta.size() > 0 )
@@ -562,10 +562,10 @@ namespace crea { namespace protocol {
       validate_account_name( receiver );
       FC_ASSERT( who == from || who == to || who == agent, "who must be from or to or agent" );
       FC_ASSERT( receiver == from || receiver == to, "receiver must be from or to" );
-      FC_ASSERT( cbd_amount.amount >= 0, "sbd amount cannot be negative" );
+      FC_ASSERT( cbd_amount.amount >= 0, "cbd amount cannot be negative" );
       FC_ASSERT( crea_amount.amount >= 0, "crea amount cannot be negative" );
       FC_ASSERT( cbd_amount.amount > 0 || crea_amount.amount > 0, "escrow must release a non-zero amount" );
-      FC_ASSERT( cbd_amount.symbol == CBD_SYMBOL, "sbd amount must contain CBD" );
+      FC_ASSERT( cbd_amount.symbol == CBD_SYMBOL, "cbd amount must contain CBD" );
       FC_ASSERT( crea_amount.symbol == CREA_SYMBOL, "crea amount must contain CREA" );
    }
 
@@ -640,12 +640,12 @@ namespace crea { namespace protocol {
    {
       validate_account_name( account );
       FC_ASSERT( is_asset_type( reward_crea, CREA_SYMBOL ), "Reward Creativecoin must be CREA" );
-      FC_ASSERT( is_asset_type( reward_sbd, CBD_SYMBOL ), "Reward Creativecoin must be CBD" );
+      FC_ASSERT( is_asset_type( reward_cbd, CBD_SYMBOL ), "Reward Creativecoin must be CBD" );
       FC_ASSERT( is_asset_type( reward_vests, VESTS_SYMBOL ), "Reward Creativecoin must be VESTS" );
       FC_ASSERT( reward_crea.amount >= 0, "Cannot claim a negative amount" );
-      FC_ASSERT( reward_sbd.amount >= 0, "Cannot claim a negative amount" );
+      FC_ASSERT( reward_cbd.amount >= 0, "Cannot claim a negative amount" );
       FC_ASSERT( reward_vests.amount >= 0, "Cannot claim a negative amount" );
-      FC_ASSERT( reward_crea.amount > 0 || reward_sbd.amount > 0 || reward_vests.amount > 0, "Must claim something." );
+      FC_ASSERT( reward_crea.amount > 0 || reward_cbd.amount > 0 || reward_vests.amount > 0, "Must claim something." );
    }
 
 #ifdef CREA_ENABLE_SMT

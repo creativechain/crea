@@ -322,10 +322,10 @@ namespace crea { namespace chain {
           */
          uint32_t get_slot_at_time(fc::time_point_sec when)const;
 
-         /** @return the sbd created and deposited to_account, may return CREA if there is no median feed */
-         std::pair< asset, asset > create_sbd( const account_object& to_account, asset crea, bool to_reward_balance=false );
+         /** @return the cbd created and deposited to_account, may return CREA if there is no median feed */
+         std::pair< asset, asset > create_cbd( const account_object& to_account, asset crea, bool to_reward_balance=false );
          asset create_vesting( const account_object& to_account, asset crea, bool to_reward_balance=false );
-         void adjust_total_payout( const comment_object& a, const asset& sbd, const asset& curator_cbd_value, const asset& beneficiary_value );
+         void adjust_total_payout( const comment_object& a, const asset& cbd, const asset& curator_cbd_value, const asset& beneficiary_value );
 
          void        adjust_liquidity_reward( const account_object& owner, const asset& volume, bool is_bid );
          void        adjust_balance( const account_object& a, const asset& delta );
@@ -390,11 +390,11 @@ namespace crea { namespace chain {
          void  pay_liquidity_reward();
 
          /**
-          * Helper method to return the current sbd value of a given amount of
+          * Helper method to return the current cbd value of a given amount of
           * CREA.  Return 0 CBD if there isn't a current_median_history
           */
-         asset to_sbd( const asset& crea )const;
-         asset to_crea( const asset& sbd )const;
+         asset to_cbd( const asset& crea )const;
+         asset to_crea( const asset& cbd )const;
 
          time_point_sec   head_block_time()const;
          uint32_t         head_block_num()const;

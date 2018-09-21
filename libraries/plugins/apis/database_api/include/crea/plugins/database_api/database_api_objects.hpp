@@ -519,7 +519,7 @@ struct order
    price                order_price;
    double               real_price; // dollars per crea
    share_type           crea;
-   share_type           sbd;
+   share_type           cbd;
    fc::time_point_sec   created;
 };
 
@@ -642,6 +642,6 @@ FC_REFLECT( crea::plugins::database_api::api_hardfork_property_object,
             (next_hardfork_time)
           )
 
-FC_REFLECT( crea::plugins::database_api::order, (order_price)(real_price)(crea)(sbd)(created) );
+FC_REFLECT( crea::plugins::database_api::order, (order_price)(real_price)(crea)(cbd)(created) );
 
 FC_REFLECT( crea::plugins::database_api::order_book, (asks)(bids) );

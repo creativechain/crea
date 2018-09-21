@@ -63,7 +63,7 @@ struct account_stats_bucket_object : public object< account_stats_bucket_object_
    uint32_t             new_reply_votes = 0;                      ///< New votes on replies
    uint32_t             changed_reply_votes = 0;                  ///< Changed votes for replies
    uint32_t             author_reward_payouts = 0;                ///< Number of author reward payouts
-   share_type           author_rewards_sbd = 0;                   ///< CBD paid for author rewards
+   share_type           author_rewards_cbd = 0;                   ///< CBD paid for author rewards
    share_type           author_rewards_vests = 0;                 ///< VESTS paid for author rewards
    share_type           author_rewards_total_crea_value = 0;     ///< CREA Value of author rewards
    share_type           author_rewards_payout_cbd_value = 0;      ///< CBD Value of author rewards at time of payout
@@ -181,7 +181,7 @@ FC_REFLECT( crea::account_statistics::account_stats_bucket_object,
    (new_reply_votes)
    (changed_reply_votes)
    (author_reward_payouts)
-   (author_rewards_sbd)
+   (author_rewards_cbd)
    (author_rewards_vests)
    (author_rewards_total_crea_value)
    (author_rewards_payout_cbd_value)

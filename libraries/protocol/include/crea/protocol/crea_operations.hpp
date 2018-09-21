@@ -371,7 +371,7 @@ namespace crea { namespace protocol {
       account_name_type receiver; ///< the account that should receive funds (might be from, might be to)
 
       uint32_t          escrow_id = 30;
-      asset             cbd_amount = asset( 0, CBD_SYMBOL ); ///< the amount of sbd to release
+      asset             cbd_amount = asset( 0, CBD_SYMBOL ); ///< the amount of cbd to release
       asset             crea_amount = asset( 0, CREA_SYMBOL ); ///< the amount of crea to release
 
       void validate()const;
@@ -1006,7 +1006,7 @@ namespace crea { namespace protocol {
    {
       account_name_type account;
       asset             reward_crea;
-      asset             reward_sbd;
+      asset             reward_cbd;
       asset             reward_vests;
 
       void get_required_posting_authorities( flat_set< account_name_type >& a )const{ a.insert( account ); }
@@ -1148,7 +1148,7 @@ FC_REFLECT( crea::protocol::request_account_recovery_operation, (recovery_accoun
 FC_REFLECT( crea::protocol::recover_account_operation, (account_to_recover)(new_owner_authority)(recent_owner_authority)(extensions) );
 FC_REFLECT( crea::protocol::change_recovery_account_operation, (account_to_recover)(new_recovery_account)(extensions) );
 FC_REFLECT( crea::protocol::decline_voting_rights_operation, (account)(decline) );
-FC_REFLECT( crea::protocol::claim_reward_balance_operation, (account)(reward_crea)(reward_sbd)(reward_vests) )
+FC_REFLECT( crea::protocol::claim_reward_balance_operation, (account)(reward_crea)(reward_cbd)(reward_vests) )
 #ifdef CREA_ENABLE_SMT
 FC_REFLECT( crea::protocol::claim_reward_balance2_operation, (account)(extensions)(reward_tokens) )
 #endif

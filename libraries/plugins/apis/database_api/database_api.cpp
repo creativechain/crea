@@ -1281,7 +1281,7 @@ DEFINE_API_IMPL( database_api_impl, get_order_book )
       cur.order_price = itr->sell_price;
       cur.real_price  = 0.0;
       // cur.real_price  = (cur.order_price).to_real();
-      cur.sbd = itr->for_sale;
+      cur.cbd = itr->for_sale;
       cur.crea = ( asset( itr->for_sale, CBD_SYMBOL ) * cur.order_price ).amount;
       cur.created = itr->created;
       result.bids.push_back( cur );
@@ -1295,7 +1295,7 @@ DEFINE_API_IMPL( database_api_impl, get_order_book )
       cur.real_price = 0.0;
       // cur.real_price  = (~cur.order_price).to_real();
       cur.crea   = itr->for_sale;
-      cur.sbd     = ( asset( itr->for_sale, CREA_SYMBOL ) * cur.order_price ).amount;
+      cur.cbd     = ( asset( itr->for_sale, CREA_SYMBOL ) * cur.order_price ).amount;
       cur.created = itr->created;
       result.asks.push_back( cur );
       ++buy_itr;

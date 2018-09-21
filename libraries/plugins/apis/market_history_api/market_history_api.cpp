@@ -93,7 +93,7 @@ DEFINE_API_IMPL( market_history_api_impl, get_order_book )
       cur.order_price = itr->sell_price;
       cur.real_price = ASSET_TO_REAL( itr->sell_price.base ) / ASSET_TO_REAL( itr->sell_price.quote );
       cur.crea = ( asset( itr->for_sale, CBD_SYMBOL ) * itr->sell_price ).amount;
-      cur.sbd = itr->for_sale;
+      cur.cbd = itr->for_sale;
       cur.created = itr->created;
       result.bids.push_back( cur );
       ++itr;
@@ -107,7 +107,7 @@ DEFINE_API_IMPL( market_history_api_impl, get_order_book )
       cur.order_price = itr->sell_price;
       cur.real_price = ASSET_TO_REAL( itr->sell_price.quote ) / ASSET_TO_REAL( itr->sell_price.base );
       cur.crea = itr->for_sale;
-      cur.sbd = ( asset( itr->for_sale, CREA_SYMBOL ) * itr->sell_price ).amount;
+      cur.cbd = ( asset( itr->for_sale, CREA_SYMBOL ) * itr->sell_price ).amount;
       cur.created = itr->created;
       result.asks.push_back( cur );
       ++itr;

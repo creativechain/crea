@@ -731,11 +731,11 @@ public:
          auto accounts = result.as<vector<condenser_api::api_account_object>>();
          asset total_crea;
          asset total_vest(0, VESTS_SYMBOL );
-         asset total_sbd(0, CBD_SYMBOL );
+         asset total_cbd(0, CBD_SYMBOL );
          for( const auto& a : accounts ) {
             total_crea += a.balance.to_asset();
             total_vest  += a.vesting_shares.to_asset();
-            total_sbd  += a.cbd_balance.to_asset();
+            total_cbd  += a.cbd_balance.to_asset();
             out << std::left << std::setw( 17 ) << std::string(a.name)
                 << std::right << std::setw(18) << fc::variant(a.balance).as_string() <<" "
                 << std::right << std::setw(26) << fc::variant(a.vesting_shares).as_string() <<" "
@@ -745,7 +745,7 @@ public:
             out << std::left << std::setw( 17 ) << "TOTAL"
                 << std::right << std::setw(18) << legacy_asset::from_asset(total_crea).to_string() <<" "
                 << std::right << std::setw(26) << legacy_asset::from_asset(total_vest).to_string() <<" "
-                << std::right << std::setw(16) << legacy_asset::from_asset(total_sbd).to_string() <<"\n";
+                << std::right << std::setw(16) << legacy_asset::from_asset(total_cbd).to_string() <<"\n";
          return out.str();
       };
       m["get_account_history"] = []( variant result, const fc::variants& a ) {
@@ -813,10 +813,10 @@ public:
          {
             if ( i < orders.bids.size() )
             {
-               bid_sum += asset( orders.bids[i].sbd, CBD_SYMBOL );
+               bid_sum += asset( orders.bids[i].cbd, CBD_SYMBOL );
                ss
                   << ' ' << setw( spacing ) << legacy_asset::from_asset( bid_sum ).to_string()
-                  << ' ' << setw( spacing ) << legacy_asset::from_asset( asset( orders.bids[i].sbd, CBD_SYMBOL ) ).to_string()
+                  << ' ' << setw( spacing ) << legacy_asset::from_asset( asset( orders.bids[i].cbd, CBD_SYMBOL ) ).to_string()
                   << ' ' << setw( spacing ) << legacy_asset::from_asset( asset( orders.bids[i].crea, CREA_SYMBOL ) ).to_string()
                   << ' ' << setw( spacing ) << orders.bids[i].real_price;
             }
@@ -829,10 +829,10 @@ public:
 
             if ( i < orders.asks.size() )
             {
-               ask_sum += asset( orders.asks[i].sbd, CBD_SYMBOL );
+               ask_sum += asset( orders.asks[i].cbd, CBD_SYMBOL );
                ss << ' ' << setw( spacing ) << orders.asks[i].real_price
                   << ' ' << setw( spacing ) << legacy_asset::from_asset( asset( orders.asks[i].crea, CREA_SYMBOL ) ).to_string()
-                  << ' ' << setw( spacing ) << legacy_asset::from_asset( asset( orders.asks[i].sbd, CBD_SYMBOL ) ).to_string()
+                  << ' ' << setw( spacing ) << legacy_asset::from_asset( asset( orders.asks[i].cbd, CBD_SYMBOL ) ).to_string()
                   << ' ' << setw( spacing ) << legacy_asset::from_asset( ask_sum ).to_string();
             }
 
@@ -2068,7 +2068,7 @@ condenser_api::legacy_signed_transaction wallet_api::set_withdraw_vesting_route(
    return my->sign_transaction( tx, broadcast );
 }
 
-condenser_api::legacy_signed_transaction wallet_api::convert_sbd(
+condenser_api::legacy_signed_transaction wallet_api::convert_cbd(
    string from,
    condenser_api::legacy_asset amount,
    bool broadcast )
@@ -2170,7 +2170,7 @@ condenser_api::legacy_signed_transaction wallet_api::decline_voting_rights(
 condenser_api::legacy_signed_transaction wallet_api::claim_reward_balance(
    string account,
    condenser_api::legacy_asset reward_crea,
-   condenser_api::legacy_asset reward_sbd,
+   condenser_api::legacy_asset reward_cbd,
    condenser_api::legacy_asset reward_vests,
    bool broadcast )
 {
@@ -2178,7 +2178,7 @@ condenser_api::legacy_signed_transaction wallet_api::claim_reward_balance(
    claim_reward_balance_operation op;
    op.account = account;
    op.reward_crea = reward_crea.to_asset();
-   op.reward_sbd = reward_sbd.to_asset();
+   op.reward_cbd = reward_cbd.to_asset();
    op.reward_vests = reward_vests.to_asset();
 
    signed_transaction tx;

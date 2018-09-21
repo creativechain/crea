@@ -7,7 +7,7 @@ namespace crea { namespace chain { namespace util {
 using crea::protocol::asset;
 using crea::protocol::price;
 
-inline asset to_sbd( const price& p, const asset& crea )
+inline asset to_cbd( const price& p, const asset& crea )
 {
    FC_ASSERT( crea.symbol == CREA_SYMBOL );
    if( p.is_null() )
@@ -15,12 +15,12 @@ inline asset to_sbd( const price& p, const asset& crea )
    return crea * p;
 }
 
-inline asset to_crea( const price& p, const asset& sbd )
+inline asset to_crea( const price& p, const asset& cbd )
 {
-   FC_ASSERT( sbd.symbol == CBD_SYMBOL );
+   FC_ASSERT( cbd.symbol == CBD_SYMBOL );
    if( p.is_null() )
       return asset( 0, CREA_SYMBOL );
-   return sbd * p;
+   return cbd * p;
 }
 
 } } }

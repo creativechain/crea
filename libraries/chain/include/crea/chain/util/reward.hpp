@@ -24,7 +24,7 @@ struct comment_reward_context
 {
    share_type rshares;
    uint16_t   reward_weight = 0;
-   asset      max_sbd;
+   asset      max_cbd;
    uint128_t  total_reward_shares2;
    asset      total_reward_fund_crea;
    price      current_crea_price;
@@ -43,7 +43,7 @@ uint128_t evaluate_reward_curve( const uint128_t& rshares, const protocol::curve
 
 inline bool is_comment_payout_dust( const price& p, uint64_t crea_payout )
 {
-   return to_sbd( p, asset( crea_payout, CREA_SYMBOL ) ) < CREA_MIN_PAYOUT_CBD;
+   return to_cbd( p, asset( crea_payout, CREA_SYMBOL ) ) < CREA_MIN_PAYOUT_CBD;
 }
 
 } } } // crea::chain::util
@@ -51,7 +51,7 @@ inline bool is_comment_payout_dust( const price& p, uint64_t crea_payout )
 FC_REFLECT( crea::chain::util::comment_reward_context,
    (rshares)
    (reward_weight)
-   (max_sbd)
+   (max_cbd)
    (total_reward_shares2)
    (total_reward_fund_crea)
    (current_crea_price)

@@ -614,7 +614,7 @@ namespace crea { namespace plugins { namespace condenser_api {
       legacy_claim_reward_balance_operation( const claim_reward_balance_operation& op ) :
          account( op.account ),
          reward_crea( legacy_asset::from_asset( op.reward_crea ) ),
-         reward_sbd( legacy_asset::from_asset( op.reward_sbd ) ),
+         reward_cbd( legacy_asset::from_asset( op.reward_cbd ) ),
          reward_vests( legacy_asset::from_asset( op.reward_vests ) )
       {}
 
@@ -623,14 +623,14 @@ namespace crea { namespace plugins { namespace condenser_api {
          claim_reward_balance_operation op;
          op.account = account;
          op.reward_crea = reward_crea;
-         op.reward_sbd = reward_sbd;
+         op.reward_cbd = reward_cbd;
          op.reward_vests = reward_vests;
          return op;
       }
 
       account_name_type account;
       legacy_asset      reward_crea;
-      legacy_asset      reward_sbd;
+      legacy_asset      reward_cbd;
       legacy_asset      reward_vests;
    };
 
@@ -1535,7 +1535,7 @@ FC_REFLECT( crea::plugins::condenser_api::legacy_comment_options_operation, (aut
 FC_REFLECT( crea::plugins::condenser_api::legacy_escrow_transfer_operation, (from)(to)(cbd_amount)(crea_amount)(escrow_id)(agent)(fee)(json_meta)(ratification_deadline)(escrow_expiration) );
 FC_REFLECT( crea::plugins::condenser_api::legacy_escrow_release_operation, (from)(to)(agent)(who)(receiver)(escrow_id)(cbd_amount)(crea_amount) );
 FC_REFLECT( crea::plugins::condenser_api::legacy_pow2_operation, (work)(new_owner_key)(props) )
-FC_REFLECT( crea::plugins::condenser_api::legacy_claim_reward_balance_operation, (account)(reward_crea)(reward_sbd)(reward_vests) )
+FC_REFLECT( crea::plugins::condenser_api::legacy_claim_reward_balance_operation, (account)(reward_crea)(reward_cbd)(reward_vests) )
 FC_REFLECT( crea::plugins::condenser_api::legacy_delegate_vesting_shares_operation, (delegator)(delegatee)(vesting_shares) );
 FC_REFLECT( crea::plugins::condenser_api::legacy_author_reward_operation, (author)(permlink)(cbd_payout)(crea_payout)(vesting_payout) )
 FC_REFLECT( crea::plugins::condenser_api::legacy_curation_reward_operation, (curator)(reward)(comment_author)(comment_permlink) )

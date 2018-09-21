@@ -835,7 +835,7 @@ class wallet_api
        *  @param amount The amount of CBD to convert
        *  @param broadcast true if you wish to broadcast the transaction
        */
-      condenser_api::legacy_signed_transaction convert_sbd(
+      condenser_api::legacy_signed_transaction convert_cbd(
          string from,
          condenser_api::legacy_asset amount,
          bool broadcast = false );
@@ -1063,7 +1063,7 @@ class wallet_api
       condenser_api::legacy_signed_transaction claim_reward_balance(
          string account,
          condenser_api::legacy_asset reward_crea,
-         condenser_api::legacy_asset reward_sbd,
+         condenser_api::legacy_asset reward_cbd,
          condenser_api::legacy_asset reward_vests,
          bool broadcast );
 };
@@ -1141,7 +1141,7 @@ FC_API( crea::wallet::wallet_api,
         (transfer_to_vesting)
         (withdraw_vesting)
         (set_withdraw_vesting_route)
-        (convert_sbd)
+        (convert_cbd)
         (publish_feed)
         (get_order_book)
         (get_open_orders)

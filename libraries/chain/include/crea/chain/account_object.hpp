@@ -64,17 +64,17 @@ namespace crea { namespace chain {
           *  CREA_MIN_COMPOUNDING_INTERVAL_SECONDS has past since cbd_last_interest_payment then
           *  interest is added to cbd_balance.
           *
-          *  @defgroup cbd_data sbd Balance Data
+          *  @defgroup cbd_data cbd Balance Data
           */
          ///@{
-         asset             cbd_balance = asset( 0, CBD_SYMBOL ); /// total sbd balance
-         uint128_t         cbd_seconds; ///< total sbd * how long it has been hel
+         asset             cbd_balance = asset( 0, CBD_SYMBOL ); /// total cbd balance
+         uint128_t         cbd_seconds; ///< total cbd * how long it has been hel
          time_point_sec    cbd_seconds_last_update; ///< the last time the cbd_seconds was updated
          time_point_sec    cbd_last_interest_payment; ///< used to pay interest at most once per month
 
 
-         asset             savings_cbd_balance = asset( 0, CBD_SYMBOL ); /// total sbd balance
-         uint128_t         savings_cbd_seconds; ///< total sbd * how long it has been hel
+         asset             savings_cbd_balance = asset( 0, CBD_SYMBOL ); /// total cbd balance
+         uint128_t         savings_cbd_seconds; ///< total cbd * how long it has been hel
          time_point_sec    savings_cbd_seconds_last_update; ///< the last time the cbd_seconds was updated
          time_point_sec    savings_cbd_last_interest_payment; ///< used to pay interest at most once per month
 

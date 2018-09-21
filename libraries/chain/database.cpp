@@ -1091,10 +1091,10 @@ uint32_t database::get_slot_at_time(fc::time_point_sec when)const
 }
 
 /**
- *  Converts CREA into sbd and adds it to to_account while reducing the CREA supply
- *  by CREA and increasing the sbd supply by the specified amount.
+ *  Converts CREA into cbd and adds it to to_account while reducing the CREA supply
+ *  by CREA and increasing the cbd supply by the specified amount.
  */
-std::pair< asset, asset > database::create_sbd( const account_object& to_account, asset crea, bool to_reward_balance )
+std::pair< asset, asset > database::create_cbd( const account_object& to_account, asset crea, bool to_reward_balance )
 {
    std::pair< asset, asset > assets( asset( 0, CBD_SYMBOL ), asset( 0, CREA_SYMBOL ) );
 
@@ -1108,25 +1108,25 @@ std::pair< asset, asset > database::create_sbd( const account_object& to_account
 
       if( !median_price.is_null() )
       {
-         auto to_sbd = ( gpo.cbd_print_rate * crea.amount ) / CREA_100_PERCENT;
-         auto to_crea = crea.amount - to_sbd;
+         auto to_cbd = ( gpo.cbd_print_rate * crea.amount ) / CREA_100_PERCENT;
+         auto to_crea = crea.amount - to_cbd;
 
-         auto sbd = asset( to_sbd, CREA_SYMBOL ) * median_price;
+         auto cbd = asset( to_cbd, CREA_SYMBOL ) * median_price;
 
          if( to_reward_balance )
          {
-            adjust_reward_balance( to_account, sbd );
+            adjust_reward_balance( to_account, cbd );
             adjust_reward_balance( to_account, asset( to_crea, CREA_SYMBOL ) );
          }
          else
          {
-            adjust_balance( to_account, sbd );
+            adjust_balance( to_account, cbd );
             adjust_balance( to_account, asset( to_crea, CREA_SYMBOL ) );
          }
 
-         adjust_supply( asset( -to_sbd, CREA_SYMBOL ) );
-         adjust_supply( sbd );
-         assets.first = sbd;
+         adjust_supply( asset( -to_cbd, CREA_SYMBOL ) );
+         adjust_supply( cbd );
+         assets.first = cbd;
          assets.second = asset( to_crea, CREA_SYMBOL );
       }
       else
@@ -1377,7 +1377,7 @@ void database::clear_null_account_balance()
 
    const auto& null_account = get_account( CREA_NULL_ACCOUNT );
    asset total_crea( 0, CREA_SYMBOL );
-   asset total_sbd( 0, CBD_SYMBOL );
+   asset total_cbd( 0, CBD_SYMBOL );
 
    if( null_account.balance.amount > 0 )
    {
@@ -1393,13 +1393,13 @@ void database::clear_null_account_balance()
 
    if( null_account.cbd_balance.amount > 0 )
    {
-      total_sbd += null_account.cbd_balance;
+      total_cbd += null_account.cbd_balance;
       adjust_balance( null_account, -null_account.cbd_balance );
    }
 
    if( null_account.savings_cbd_balance.amount > 0 )
    {
-      total_sbd += null_account.savings_cbd_balance;
+      total_cbd += null_account.savings_cbd_balance;
       adjust_savings_balance( null_account, -null_account.savings_cbd_balance );
    }
 
@@ -1430,7 +1430,7 @@ void database::clear_null_account_balance()
 
    if( null_account.reward_cbd_balance.amount > 0 )
    {
-      total_sbd += null_account.reward_cbd_balance;
+      total_cbd += null_account.reward_cbd_balance;
       adjust_reward_balance( null_account, -null_account.reward_cbd_balance );
    }
 
@@ -1456,8 +1456,8 @@ void database::clear_null_account_balance()
    if( total_crea.amount > 0 )
       adjust_supply( -total_crea );
 
-   if( total_sbd.amount > 0 )
-      adjust_supply( -total_sbd );
+   if( total_cbd.amount > 0 )
+      adjust_supply( -total_cbd );
 }
 
 /**
@@ -1620,7 +1620,7 @@ void database::adjust_total_payout( const comment_object& cur, const asset& cbd_
 {
    modify( cur, [&]( comment_object& c )
    {
-      // input assets should be in sbd
+      // input assets should be in cbd
       c.total_payout_value += cbd_created;
       c.curator_payout_value += curator_cbd_value;
       c.beneficiary_payout_value += beneficiary_value;
@@ -1701,7 +1701,7 @@ void fill_comment_reward_context_local_state( util::comment_reward_context& ctx,
 {
    ctx.rshares = comment.net_rshares;
    ctx.reward_weight = comment.reward_weight;
-   ctx.max_sbd = comment.max_accepted_payout;
+   ctx.max_cbd = comment.max_accepted_payout;
 }
 
 share_type database::cashout_comment_helper( util::comment_reward_context& ctx, const comment_object& comment, bool forward_curation_remainder )
@@ -1752,12 +1752,12 @@ share_type database::cashout_comment_helper( util::comment_reward_context& ctx, 
 
             const auto& author = get_account( comment.author );
             auto vest_created = create_vesting( author, asset( vesting_crea, CREA_SYMBOL ), has_hardfork( CREA_HARDFORK_0_17__659 ) );
-            auto cbd_payout = create_sbd( author, asset( cbd_crea, CREA_SYMBOL ), has_hardfork( CREA_HARDFORK_0_17__659 ) );
+            auto cbd_payout = create_cbd( author, asset( cbd_crea, CREA_SYMBOL ), has_hardfork( CREA_HARDFORK_0_17__659 ) );
 
-            adjust_total_payout( comment, cbd_payout.first + to_sbd( cbd_payout.second + asset( vesting_crea, CREA_SYMBOL ) ), to_sbd( asset( curation_tokens, CREA_SYMBOL ) ), to_sbd( asset( total_beneficiary, CREA_SYMBOL ) ) );
+            adjust_total_payout( comment, cbd_payout.first + to_cbd( cbd_payout.second + asset( vesting_crea, CREA_SYMBOL ) ), to_cbd( asset( curation_tokens, CREA_SYMBOL ) ), to_cbd( asset( total_beneficiary, CREA_SYMBOL ) ) );
 
             push_virtual_operation( author_reward_operation( comment.author, to_string( comment.permlink ), cbd_payout.first, cbd_payout.second, vest_created ) );
-            push_virtual_operation( comment_reward_operation( comment.author, to_string( comment.permlink ), to_sbd( asset( claimed_reward, CREA_SYMBOL ) ) ) );
+            push_virtual_operation( comment_reward_operation( comment.author, to_string( comment.permlink ), to_cbd( asset( claimed_reward, CREA_SYMBOL ) ) ) );
 
             #ifndef IS_LOW_MEM
                modify( comment, [&]( comment_object& c )
@@ -2241,7 +2241,7 @@ share_type database::pay_reward_funds( share_type reward )
 
 /**
  *  Iterates over all conversion requests with a conversion date before
- *  the head block time and then converts them to/from crea/sbd at the
+ *  the head block time and then converts them to/from crea/cbd at the
  *  current median price feed history price times the premium
  */
 void database::process_conversions()
@@ -2254,7 +2254,7 @@ void database::process_conversions()
    if( fhistory.current_median_history.is_null() )
       return;
 
-   asset net_sbd( 0, CBD_SYMBOL );
+   asset net_cbd( 0, CBD_SYMBOL );
    asset net_crea( 0, CREA_SYMBOL );
 
    while( itr != request_by_date.end() && itr->conversion_date <= now )
@@ -2263,7 +2263,7 @@ void database::process_conversions()
 
       adjust_balance( itr->owner, amount_to_issue );
 
-      net_sbd   += itr->amount;
+      net_cbd   += itr->amount;
       net_crea += amount_to_issue;
 
       push_virtual_operation( fill_convert_request_operation ( itr->owner, itr->requestid, itr->amount, amount_to_issue ) );
@@ -2276,20 +2276,20 @@ void database::process_conversions()
    modify( props, [&]( dynamic_global_property_object& p )
    {
        p.current_supply += net_crea;
-       p.current_cbd_supply -= net_sbd;
+       p.current_cbd_supply -= net_cbd;
        p.virtual_supply += net_crea;
-       p.virtual_supply -= net_sbd * get_feed_history().current_median_history;
+       p.virtual_supply -= net_cbd * get_feed_history().current_median_history;
    } );
 }
 
-asset database::to_sbd( const asset& crea )const
+asset database::to_cbd( const asset& crea )const
 {
-   return util::to_sbd( get_feed_history().current_median_history, crea );
+   return util::to_cbd( get_feed_history().current_median_history, crea );
 }
 
-asset database::to_crea( const asset& sbd )const
+asset database::to_crea( const asset& cbd )const
 {
-   return util::to_crea( get_feed_history().current_median_history, sbd );
+   return util::to_crea( get_feed_history().current_median_history, cbd );
 }
 
 void database::account_recovery_processing()
@@ -3479,15 +3479,15 @@ void database::update_virtual_supply()
 
       if( !median_price.is_null() && has_hardfork( CREA_HARDFORK_0_14__230 ) )
       {
-         auto percent_sbd = uint16_t( ( ( fc::uint128_t( ( dgp.current_cbd_supply * get_feed_history().current_median_history ).amount.value ) * CREA_100_PERCENT )
+         auto percent_cbd = uint16_t( ( ( fc::uint128_t( ( dgp.current_cbd_supply * get_feed_history().current_median_history ).amount.value ) * CREA_100_PERCENT )
             / dgp.virtual_supply.amount.value ).to_uint64() );
 
-         if( percent_sbd <= CREA_CBD_START_PERCENT )
+         if( percent_cbd <= CREA_CBD_START_PERCENT )
             dgp.cbd_print_rate = CREA_100_PERCENT;
-         else if( percent_sbd >= CREA_CBD_STOP_PERCENT )
+         else if( percent_cbd >= CREA_CBD_STOP_PERCENT )
             dgp.cbd_print_rate = 0;
          else
-            dgp.cbd_print_rate = ( ( CREA_CBD_STOP_PERCENT - percent_sbd ) * CREA_100_PERCENT ) / ( CREA_CBD_STOP_PERCENT - CREA_CBD_START_PERCENT );
+            dgp.cbd_print_rate = ( ( CREA_CBD_STOP_PERCENT - percent_cbd ) * CREA_100_PERCENT ) / ( CREA_CBD_STOP_PERCENT - CREA_CBD_START_PERCENT );
       }
    });
 } FC_CAPTURE_AND_RETHROW() }
@@ -4733,7 +4733,7 @@ void database::validate_invariants()const
    {
       const auto& account_idx = get_index<account_index>().indices().get<by_name>();
       asset total_supply = asset( 0, CREA_SYMBOL );
-      asset total_sbd = asset( 0, CBD_SYMBOL );
+      asset total_cbd = asset( 0, CBD_SYMBOL );
       asset total_vesting = asset( 0, VESTS_SYMBOL );
       asset pending_vesting_crea = asset( 0, CREA_SYMBOL );
       share_type total_vsf_votes = share_type( 0 );
@@ -4750,9 +4750,9 @@ void database::validate_invariants()const
          total_supply += itr->balance;
          total_supply += itr->savings_balance;
          total_supply += itr->reward_crea_balance;
-         total_sbd += itr->cbd_balance;
-         total_sbd += itr->savings_cbd_balance;
-         total_sbd += itr->reward_cbd_balance;
+         total_cbd += itr->cbd_balance;
+         total_cbd += itr->savings_cbd_balance;
+         total_cbd += itr->reward_cbd_balance;
          total_vesting += itr->vesting_shares;
          total_vesting += itr->reward_vesting_balance;
          pending_vesting_crea += itr->reward_vesting_crea;
@@ -4770,7 +4770,7 @@ void database::validate_invariants()const
          if( itr->amount.symbol == CREA_SYMBOL )
             total_supply += itr->amount;
          else if( itr->amount.symbol == CBD_SYMBOL )
-            total_sbd += itr->amount;
+            total_cbd += itr->amount;
          else
             FC_ASSERT( false, "Encountered illegal symbol in convert_request_object" );
       }
@@ -4785,7 +4785,7 @@ void database::validate_invariants()const
          }
          else if ( itr->sell_price.base.symbol == CBD_SYMBOL )
          {
-            total_sbd += asset( itr->for_sale, CBD_SYMBOL );
+            total_cbd += asset( itr->for_sale, CBD_SYMBOL );
          }
       }
 
@@ -4794,12 +4794,12 @@ void database::validate_invariants()const
       for( auto itr = escrow_idx.begin(); itr != escrow_idx.end(); ++itr )
       {
          total_supply += itr->crea_balance;
-         total_sbd += itr->cbd_balance;
+         total_cbd += itr->cbd_balance;
 
          if( itr->pending_fee.symbol == CREA_SYMBOL )
             total_supply += itr->pending_fee;
          else if( itr->pending_fee.symbol == CBD_SYMBOL )
-            total_sbd += itr->pending_fee;
+            total_cbd += itr->pending_fee;
          else
             FC_ASSERT( false, "found escrow pending fee that is not CBD or CREA" );
       }
@@ -4811,7 +4811,7 @@ void database::validate_invariants()const
          if( itr->amount.symbol == CREA_SYMBOL )
             total_supply += itr->amount;
          else if( itr->amount.symbol == CBD_SYMBOL )
-            total_sbd += itr->amount;
+            total_cbd += itr->amount;
          else
             FC_ASSERT( false, "found savings withdraw that is not CBD or CREA" );
       }
@@ -4826,7 +4826,7 @@ void database::validate_invariants()const
       total_supply += gpo.total_vesting_fund_crea + gpo.total_reward_fund_crea + gpo.pending_rewarded_vesting_crea;
 
       FC_ASSERT( gpo.current_supply == total_supply, "", ("gpo.current_supply",gpo.current_supply)("total_supply",total_supply) );
-      FC_ASSERT( gpo.current_cbd_supply == total_sbd, "", ("gpo.current_cbd_supply",gpo.current_cbd_supply)("total_sbd",total_sbd) );
+      FC_ASSERT( gpo.current_cbd_supply == total_cbd, "", ("gpo.current_cbd_supply",gpo.current_cbd_supply)("total_cbd",total_cbd) );
       FC_ASSERT( gpo.total_vesting_shares + gpo.pending_rewarded_vesting_shares == total_vesting, "", ("gpo.total_vesting_shares",gpo.total_vesting_shares)("total_vesting",total_vesting) );
       FC_ASSERT( gpo.total_vesting_shares.amount == total_vsf_votes, "", ("total_vesting_shares",gpo.total_vesting_shares)("total_vsf_votes",total_vsf_votes) );
       FC_ASSERT( gpo.pending_rewarded_vesting_crea == pending_vesting_crea, "", ("pending_rewarded_vesting_crea",gpo.pending_rewarded_vesting_crea)("pending_vesting_crea", pending_vesting_crea));

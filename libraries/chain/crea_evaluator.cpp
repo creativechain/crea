@@ -2299,8 +2299,8 @@ void claim_reward_balance_evaluator::do_apply( const claim_reward_balance_operat
 
    FC_ASSERT( op.reward_crea <= acnt.reward_crea_balance, "Cannot claim that much CREA. Claim: ${c} Actual: ${a}",
       ("c", op.reward_crea)("a", acnt.reward_crea_balance) );
-   FC_ASSERT( op.reward_sbd <= acnt.reward_cbd_balance, "Cannot claim that much CBD. Claim: ${c} Actual: ${a}",
-      ("c", op.reward_sbd)("a", acnt.reward_cbd_balance) );
+   FC_ASSERT( op.reward_cbd <= acnt.reward_cbd_balance, "Cannot claim that much CBD. Claim: ${c} Actual: ${a}",
+      ("c", op.reward_cbd)("a", acnt.reward_cbd_balance) );
    FC_ASSERT( op.reward_vests <= acnt.reward_vesting_balance, "Cannot claim that much VESTS. Claim: ${c} Actual: ${a}",
       ("c", op.reward_vests)("a", acnt.reward_vesting_balance) );
 
@@ -2312,9 +2312,9 @@ void claim_reward_balance_evaluator::do_apply( const claim_reward_balance_operat
          / uint128_t( acnt.reward_vesting_balance.amount.value ) ).to_uint64(), CREA_SYMBOL );
 
    _db.adjust_reward_balance( acnt, -op.reward_crea );
-   _db.adjust_reward_balance( acnt, -op.reward_sbd );
+   _db.adjust_reward_balance( acnt, -op.reward_cbd );
    _db.adjust_balance( acnt, op.reward_crea );
-   _db.adjust_balance( acnt, op.reward_sbd );
+   _db.adjust_balance( acnt, op.reward_cbd );
 
    _db.modify( acnt, [&]( account_object& a )
    {

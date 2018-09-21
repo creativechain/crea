@@ -43,7 +43,7 @@ struct order
    price          order_price;
    double         real_price;
    share_type     crea;
-   share_type     sbd;
+   share_type     cbd;
    time_point_sec created;
 };
 
@@ -136,7 +136,7 @@ FC_REFLECT( crea::plugins::market_history::get_volume_return,
             (crea_volume)(cbd_volume) )
 
 FC_REFLECT( crea::plugins::market_history::order,
-            (order_price)(real_price)(crea)(sbd)(created) )
+            (order_price)(real_price)(crea)(cbd)(created) )
 
 FC_REFLECT( crea::plugins::market_history::get_order_book_args,
             (limit) )

@@ -680,8 +680,8 @@ struct discussion : public api_comment_object
 
    string                        url; /// /category/@rootauthor/root_permlink#author/permlink
    string                        root_title;
-   legacy_asset                  pending_payout_value; ///< sbd
-   legacy_asset                  total_pending_payout_value; ///< sbd including replies
+   legacy_asset                  pending_payout_value; ///< cbd
+   legacy_asset                  total_pending_payout_value; ///< cbd including replies
    vector< tags::vote_state >    active_votes;
    vector< string >              replies; ///< author/slug mapping
    share_type                    author_reputation = 0;
@@ -874,14 +874,14 @@ struct order
       order_price( o.order_price ),
       real_price( o.real_price ),
       crea( o.crea ),
-      sbd( o.sbd ),
+      cbd( o.cbd ),
       created( o.created )
    {}
 
    legacy_price   order_price;
    double         real_price;
    share_type     crea;
-   share_type     sbd;
+   share_type     cbd;
    time_point_sec created;
 };
 
@@ -1275,7 +1275,7 @@ FC_REFLECT( crea::plugins::condenser_api::volume,
             (crea_volume)(cbd_volume) )
 
 FC_REFLECT( crea::plugins::condenser_api::order,
-            (order_price)(real_price)(crea)(sbd)(created) )
+            (order_price)(real_price)(crea)(cbd)(created) )
 
 FC_REFLECT( crea::plugins::condenser_api::order_book,
             (bids)(asks) )

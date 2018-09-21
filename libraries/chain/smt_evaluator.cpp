@@ -95,7 +95,7 @@ void smt_create_evaluator::do_apply( const smt_create_operation& o )
       FC_ASSERT( !fhistory.current_median_history.is_null(), "Cannot pay the fee using CBD because there is no price feed." );
       if( o.smt_creation_fee.symbol == CREA_SYMBOL )
       {
-         effective_elevation_fee = _db.to_sbd( o.smt_creation_fee );
+         effective_elevation_fee = _db.to_cbd( o.smt_creation_fee );
       }
       else
       {
