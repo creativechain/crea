@@ -24,11 +24,11 @@
 #ifdef IS_TEST_NET
 #include <boost/test/unit_test.hpp>
 
-#include <creativecoin/chain/creativecoin_objects.hpp>
-#include <creativecoin/chain/database.hpp>
+#include <crea/chain/crea_objects.hpp>
+#include <crea/chain/database.hpp>
 
-#include <creativecoin/plugins/condenser_api/condenser_api_legacy_asset.hpp>
-#include <creativecoin/plugins/condenser_api/condenser_api_legacy_objects.hpp>
+#include <crea/plugins/condenser_api/condenser_api_legacy_asset.hpp>
+#include <crea/plugins/condenser_api/condenser_api_legacy_objects.hpp>
 
 #include <fc/crypto/digest.hpp>
 #include <fc/crypto/elliptic.hpp>
@@ -38,9 +38,9 @@
 
 #include <cmath>
 
-using namespace creativecoin;
-using namespace creativecoin::chain;
-using namespace creativecoin::protocol;
+using namespace crea;
+using namespace crea::chain;
+using namespace crea::protocol;
 
 BOOST_FIXTURE_TEST_SUITE( serialization_tests, clean_database_fixture )
 
@@ -117,23 +117,23 @@ BOOST_AUTO_TEST_CASE( legacy_asset_test )
 {
    try
    {
-      using creativecoin::plugins::condenser_api::legacy_asset;
+      using crea::plugins::condenser_api::legacy_asset;
 
       BOOST_CHECK_EQUAL( legacy_asset().symbol.decimals(), 3 );
       BOOST_CHECK_EQUAL( legacy_asset().to_string(), "0.000 TESTS" );
 
       BOOST_TEST_MESSAGE( "Asset Test" );
-      legacy_asset creativecoin = legacy_asset::from_string( "123.456 TESTS" );
+      legacy_asset crea = legacy_asset::from_string( "123.456 TESTS" );
       legacy_asset sbd = legacy_asset::from_string( "654.321 TBD" );
       legacy_asset tmp = legacy_asset::from_string( "0.456 TESTS" );
       BOOST_CHECK_EQUAL( tmp.amount.value, 456 );
       tmp = legacy_asset::from_string( "0.056 TESTS" );
       BOOST_CHECK_EQUAL( tmp.amount.value, 56 );
 
-      BOOST_CHECK_EQUAL( creativecoin.amount.value, 123456 );
-      BOOST_CHECK_EQUAL( creativecoin.symbol.decimals(), 3 );
-      BOOST_CHECK_EQUAL( creativecoin.to_string(), "123.456 TESTS" );
-      BOOST_CHECK( creativecoin.symbol == CREA_SYMBOL );
+      BOOST_CHECK_EQUAL( crea.amount.value, 123456 );
+      BOOST_CHECK_EQUAL( crea.symbol.decimals(), 3 );
+      BOOST_CHECK_EQUAL( crea.to_string(), "123.456 TESTS" );
+      BOOST_CHECK( crea.symbol == CREA_SYMBOL );
       BOOST_CHECK_EQUAL( legacy_asset::from_asset( asset( 50, CREA_SYMBOL ) ).to_string(), "0.050 TESTS" );
       BOOST_CHECK_EQUAL( legacy_asset::from_asset( asset(50000, CREA_SYMBOL ) ) .to_string(), "50.000 TESTS" );
 
@@ -176,7 +176,7 @@ BOOST_AUTO_TEST_CASE( asset_test )
       BOOST_CHECK_EQUAL( asset().symbol.decimals(), 3 );
       BOOST_CHECK_EQUAL( fc::json::to_string( asset() ), "{\"amount\":\"0\",\"precision\":3,\"nai\":\"@@000000021\"}" );
 
-      asset creativecoin = fc::json::from_string( "{\"amount\":\"123456\",    \"precision\":3, \"nai\":\"@@000000021\"}" ).as< asset >();
+      asset crea = fc::json::from_string( "{\"amount\":\"123456\",    \"precision\":3, \"nai\":\"@@000000021\"}" ).as< asset >();
       asset sbd =   fc::json::from_string( "{\"amount\":\"654321\",    \"precision\":3, \"nai\":\"@@000000013\"}" ).as< asset >();
       asset vests = fc::json::from_string( "{\"amount\":\"123456789\", \"precision\":6, \"nai\":\"@@000000037\"}" ).as< asset >();
       asset tmp =   fc::json::from_string( "{\"amount\":\"456\",       \"precision\":3, \"nai\":\"@@000000021\"}" ).as< asset >();
@@ -184,10 +184,10 @@ BOOST_AUTO_TEST_CASE( asset_test )
       tmp = fc::json::from_string( "{\"amount\":\"56\", \"precision\":3, \"nai\":\"@@000000021\"}" ).as< asset >();
       BOOST_CHECK_EQUAL( tmp.amount.value, 56 );
 
-      BOOST_CHECK_EQUAL( creativecoin.amount.value, 123456 );
-      BOOST_CHECK_EQUAL( creativecoin.symbol.decimals(), 3 );
-      BOOST_CHECK_EQUAL( fc::json::to_string( creativecoin ), "{\"amount\":\"123456\",\"precision\":3,\"nai\":\"@@000000021\"}" );
-      BOOST_CHECK( creativecoin.symbol.asset_num == CREA_ASSET_NUM_CREA );
+      BOOST_CHECK_EQUAL( crea.amount.value, 123456 );
+      BOOST_CHECK_EQUAL( crea.symbol.decimals(), 3 );
+      BOOST_CHECK_EQUAL( fc::json::to_string( crea ), "{\"amount\":\"123456\",\"precision\":3,\"nai\":\"@@000000021\"}" );
+      BOOST_CHECK( crea.symbol.asset_num == CREA_ASSET_NUM_CREA );
       BOOST_CHECK_EQUAL( fc::json::to_string( asset( 50, CREA_SYMBOL ) ), "{\"amount\":\"50\",\"precision\":3,\"nai\":\"@@000000021\"}" );
       BOOST_CHECK_EQUAL( fc::json::to_string( asset( 50000, CREA_SYMBOL ) ), "{\"amount\":\"50000\",\"precision\":3,\"nai\":\"@@000000021\"}" );
 
@@ -333,7 +333,7 @@ BOOST_AUTO_TEST_CASE( asset_raw_test )
       }
       // ilog( "h0:${h0}", ("h0", h._hash[0]) );
 
-/*      asset creativecoin = asset::from_string( "0.001 TESTS" );
+/*      asset crea = asset::from_string( "0.001 TESTS" );
 #define VESTS_SYMBOL  (uint64_t(6) | (uint64_t('V') << 8) | (uint64_t('E') << 16) | (uint64_t('S') << 24) | (uint64_t('T') << 32) | (uint64_t('S') << 40)) ///< VESTS with 6 digits of precision
 #define CREA_SYMBOL  (uint64_t(3) | (uint64_t('T') << 8) | (uint64_t('E') << 16) | (uint64_t('S') << 24) | (uint64_t('T') << 32) | (uint64_t('S') << 40)) ///< CREA with 3 digits of precision
 #define CBD_SYMBOL    (uint64_t(3) | (uint64_t('T') << 8) | (uint64_t('B') << 16) | (uint64_t('D') << 24) ) ///< Test Backed Dollars with 3 digits of precision
@@ -530,7 +530,7 @@ BOOST_AUTO_TEST_CASE( min_block_size )
 
 BOOST_AUTO_TEST_CASE( legacy_signed_transaction )
 {
-   using creativecoin::plugins::condenser_api::legacy_signed_transaction;
+   using crea::plugins::condenser_api::legacy_signed_transaction;
 
    signed_transaction tx;
    vote_operation op;
@@ -597,8 +597,8 @@ BOOST_AUTO_TEST_CASE( legacy_operation_test )
 {
    try
    {
-      auto v = fc::json::from_string( "{\"ref_block_num\": 41047, \"ref_block_prefix\": 4089157749, \"expiration\": \"2018-03-28T19:05:47\", \"operations\": [[\"witness_update\", {\"owner\": \"test\", \"url\": \"foo\", \"block_signing_key\": \"TST1111111111111111111111111111111114T1Anm\", \"props\": {\"account_creation_fee\": \"0.500 TESTS\", \"maximum_block_size\": 65536, \"sbd_interest_rate\": 0}, \"fee\": \"0.000 TESTS\"}]], \"extensions\": [], \"signatures\": [\"1f1b2d47427a46513777ae9ed032b761b504423b18350e673beb991a1b52d2381c26c36368f9cc4a72c9de3cc16bca83b269c2ea1960e28647caf151e17c35bf3f\"]}" );
-      auto ls = v.as< creativecoin::plugins::condenser_api::legacy_signed_transaction >();
+      auto v = fc::json::from_string( "{\"ref_block_num\": 41047, \"ref_block_prefix\": 4089157749, \"expiration\": \"2018-03-28T19:05:47\", \"operations\": [[\"witness_update\", {\"owner\": \"test\", \"url\": \"foo\", \"block_signing_key\": \"TST1111111111111111111111111111111114T1Anm\", \"props\": {\"account_creation_fee\": \"0.500 TESTS\", \"maximum_block_size\": 65536, \"cbd_interest_rate\": 0}, \"fee\": \"0.000 TESTS\"}]], \"extensions\": [], \"signatures\": [\"1f1b2d47427a46513777ae9ed032b761b504423b18350e673beb991a1b52d2381c26c36368f9cc4a72c9de3cc16bca83b269c2ea1960e28647caf151e17c35bf3f\"]}" );
+      auto ls = v.as< crea::plugins::condenser_api::legacy_signed_transaction >();
       // not throwing an error here is success
    }
    FC_LOG_AND_RETHROW()

@@ -1,5 +1,6 @@
 #include <crea/plugins/p2p/p2p_plugin.hpp>
 #include <crea/plugins/p2p/p2p_default_seeds.hpp>
+#include <crea/plugins/statsd/utility.hpp>
 
 #include <graphene/net/node.hpp>
 #include <graphene/net/exceptions.hpp>
@@ -150,7 +151,7 @@ private:
       handler_state&      _barrier;
       std::atomic_bool&   _activityFlag;
    };
-   
+
 };
 
 ////////////////////////////// Begin node_delegate Implementation //////////////////////////////
@@ -202,12 +203,13 @@ bool p2p_plugin_impl::handle_block( const graphene::net::block_message& blk_msg,
 
          if( !sync_mode )
          {
-            fc::microseconds latency = fc::time_point::now() - blk_msg.block.timestamp;
-            ilog( "Got ${t} transactions on block ${b} by ${w} -- latency: ${l} ms",
+            fc::microseconds offset = fc::time_point::now() - blk_msg.block.timestamp;
+            STATSD_TIMER( "p2p", "offset", "block_arrival", offset, 1.0f )
+            ilog( "Got ${t} transactions on block ${b} by ${w} -- Block Time Offset: ${l} ms",
                ("t", blk_msg.block.transactions.size())
                ("b", blk_msg.block.block_num())
                ("w", blk_msg.block.witness)
-               ("l", latency.count() / 1000) );
+               ("l", offset.count() / 1000) );
          }
 
          return result;
@@ -647,9 +649,16 @@ void p2p_plugin::plugin_startup()
 
       for( const auto& seed : my->seeds )
       {
-         ilog("P2P adding seed node ${s}", ("s", seed));
-         my->node->add_node(seed);
-         my->node->connect_to_endpoint(seed);
+         try
+         {
+            ilog("P2P adding seed node ${s}", ("s", seed));
+            my->node->add_node(seed);
+            my->node->connect_to_endpoint(seed);
+         }
+         catch( graphene::net::already_connected_to_requested_peer& )
+         {
+            wlog( "Already connected to seed node ${s}. Is it specified twice in config?", ("s", seed) );
+         }
       }
 
       if( my->max_connections )
@@ -694,7 +703,7 @@ void p2p_plugin::plugin_shutdown() {
    my->running.store(false);
 
    ilog("P2P Plugin: checking handle_block and handle_transaction activity");
-   std::future_status bfState, tfState; 
+   std::future_status bfState, tfState;
    do
    {
       if(my->activeHandleBlock.load())

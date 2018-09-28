@@ -7,6 +7,10 @@
 #include <crea/protocol/exceptions.hpp>
 #include <crea/protocol/transaction_util.hpp>
 
+#include <crea/utilities/git_revision.hpp>
+
+#include <fc/git_revision.hpp>
+
 namespace crea { namespace plugins { namespace database_api {
 
 class database_api_impl
@@ -18,6 +22,7 @@ class database_api_impl
       DECLARE_API_IMPL
       (
          (get_config)
+         (get_version)
          (get_dynamic_global_properties)
          (get_witness_schedule)
          (get_hardfork_properties)
@@ -117,6 +122,17 @@ database_api_impl::~database_api_impl() {}
 DEFINE_API_IMPL( database_api_impl, get_config )
 {
    return crea::protocol::get_config();
+}
+
+DEFINE_API_IMPL( database_api_impl, get_version )
+{
+   return get_version_return
+   (
+      fc::string( CREA_BLOCKCHAIN_VERSION ),
+      fc::string( crea::utilities::git_revision_sha ),
+      fc::string( fc::git_revision_sha ),
+      _db.get_chain_id()
+   );
 }
 
 DEFINE_API_IMPL( database_api_impl, get_dynamic_global_properties )
@@ -1324,7 +1340,8 @@ DEFINE_API_IMPL( database_api_impl, get_required_signatures )
                                                    [&]( string account_name ){ return authority( _db.get< chain::account_authority_object, chain::by_account >( account_name ).active  ); },
                                                    [&]( string account_name ){ return authority( _db.get< chain::account_authority_object, chain::by_account >( account_name ).owner   ); },
                                                    [&]( string account_name ){ return authority( _db.get< chain::account_authority_object, chain::by_account >( account_name ).posting ); },
-                                                   CREA_MAX_SIG_CHECK_DEPTH );
+                                                   CREA_MAX_SIG_CHECK_DEPTH,
+                                                   _db.has_hardfork( CREA_HARDFORK_0_20__1944 ) ? fc::ecc::canonical_signature_type::bip_0062 : fc::ecc::canonical_signature_type::fc_canonical );
 
    return result;
 }
@@ -1356,7 +1373,9 @@ DEFINE_API_IMPL( database_api_impl, get_potential_signatures )
             result.keys.insert( k );
          return authority( auth );
       },
-      CREA_MAX_SIG_CHECK_DEPTH
+
+      CREA_MAX_SIG_CHECK_DEPTH,
+      _db.has_hardfork( CREA_HARDFORK_0_20__1944 ) ? fc::ecc::canonical_signature_type::bip_0062 : fc::ecc::canonical_signature_type::fc_canonical
    );
 
    return result;
@@ -1368,7 +1387,10 @@ DEFINE_API_IMPL( database_api_impl, verify_authority )
                            [&]( string account_name ){ return authority( _db.get< chain::account_authority_object, chain::by_account >( account_name ).active  ); },
                            [&]( string account_name ){ return authority( _db.get< chain::account_authority_object, chain::by_account >( account_name ).owner   ); },
                            [&]( string account_name ){ return authority( _db.get< chain::account_authority_object, chain::by_account >( account_name ).posting ); },
-                           CREA_MAX_SIG_CHECK_DEPTH );
+                           CREA_MAX_SIG_CHECK_DEPTH,
+                           CREA_MAX_AUTHORITY_MEMBERSHIP,
+                           CREA_MAX_SIG_CHECK_ACCOUNTS,
+                           _db.has_hardfork( CREA_HARDFORK_0_20__1944 ) ? fc::ecc::canonical_signature_type::bip_0062 : fc::ecc::canonical_signature_type::fc_canonical );
    return verify_authority_return( { true } );
 }
 
@@ -1434,7 +1456,7 @@ DEFINE_API_IMPL( database_api_impl, get_smt_next_identifier )
 }
 #endif
 
-DEFINE_LOCKLESS_APIS( database_api, (get_config) )
+DEFINE_LOCKLESS_APIS( database_api, (get_config)(get_version) )
 
 DEFINE_READ_APIS( database_api,
    (get_dynamic_global_properties)

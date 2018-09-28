@@ -157,13 +157,15 @@ namespace crea { namespace protocol {
    struct comment_benefactor_reward_operation : public virtual_operation
    {
       comment_benefactor_reward_operation() {}
-      comment_benefactor_reward_operation( const account_name_type& b, const account_name_type& a, const string& p, const asset& r )
-         : benefactor( b ), author( a ), permlink( p ), reward( r ) {}
+      comment_benefactor_reward_operation( const account_name_type& b, const account_name_type& a, const string& p, const asset& s, const asset& st, const asset& v )
+         : benefactor( b ), author( a ), permlink( p ), cbd_payout( s ), crea_payout( st ), vesting_payout( v ) {}
 
       account_name_type benefactor;
       account_name_type author;
       string            permlink;
-      asset             reward;
+      asset             cbd_payout;
+      asset             crea_payout;
+      asset             vesting_payout;
    };
 
    struct producer_reward_operation : public virtual_operation
@@ -174,6 +176,11 @@ namespace crea { namespace protocol {
       account_name_type producer;
       asset             vesting_shares;
 
+   };
+
+   struct clear_null_account_balance_operation : public virtual_operation
+   {
+      vector< asset >   total_cleared;
    };
 
 } } //crea::protocol
@@ -191,5 +198,6 @@ FC_REFLECT( crea::protocol::fill_transfer_from_savings_operation, (from)(to)(amo
 FC_REFLECT( crea::protocol::hardfork_operation, (hardfork_id) )
 FC_REFLECT( crea::protocol::comment_payout_update_operation, (author)(permlink) )
 FC_REFLECT( crea::protocol::return_vesting_delegation_operation, (account)(vesting_shares) )
-FC_REFLECT( crea::protocol::comment_benefactor_reward_operation, (benefactor)(author)(permlink)(reward) )
+FC_REFLECT( crea::protocol::comment_benefactor_reward_operation, (benefactor)(author)(permlink)(cbd_payout)(crea_payout)(vesting_payout) )
 FC_REFLECT( crea::protocol::producer_reward_operation, (producer)(vesting_shares) )
+FC_REFLECT( crea::protocol::clear_null_account_balance_operation, (total_cleared) )

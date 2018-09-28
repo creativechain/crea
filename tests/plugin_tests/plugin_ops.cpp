@@ -1,18 +1,18 @@
 #ifdef IS_TEST_NET
-#include <creativecoin/chain/generic_custom_operation_interpreter.hpp>
-#include <creativecoin/chain/account_object.hpp>
+#include <crea/chain/generic_custom_operation_interpreter.hpp>
+#include <crea/chain/account_object.hpp>
 
 #include <boost/test/unit_test.hpp>
 
 #include "../db_fixture/database_fixture.hpp"
 
-using namespace creativecoin::chain;
-using namespace creativecoin::chain::test;
+using namespace crea::chain;
+using namespace crea::chain::test;
 /*
-namespace creativecoin { namespace plugin_tests {
+namespace crea { namespace plugin_tests {
 
-using namespace creativecoin::app;
-using namespace creativecoin::chain;
+using namespace crea::app;
+using namespace crea::chain;
 
 struct test_a_operation : base_operation
 {
@@ -75,16 +75,16 @@ test_plugin::test_plugin( application* app ) : plugin( app )
    database().set_custom_operation_interpreter( plugin_name(), _evaluator_registry );
 }
 
-} } // creativecoin::plugin_tests
+} } // crea::plugin_tests
 
-CREA_DEFINE_PLUGIN( test, creativecoin::plugin_tests::test_plugin )
+CREA_DEFINE_PLUGIN( test, crea::plugin_tests::test_plugin )
 
-FC_REFLECT( creativecoin::plugin_tests::test_a_operation, (account) )
-FC_REFLECT( creativecoin::plugin_tests::test_b_operation, (account) )
+FC_REFLECT( crea::plugin_tests::test_a_operation, (account) )
+FC_REFLECT( crea::plugin_tests::test_b_operation, (account) )
 
-CREA_DECLARE_OPERATION_TYPE( creativecoin::plugin_tests::test_op );
-FC_REFLECT_TYPENAME( creativecoin::plugin_tests::test_op );
-CREA_DEFINE_OPERATION_TYPE( creativecoin::plugin_tests::test_op );
+CREA_DECLARE_OPERATION_TYPE( crea::plugin_tests::test_op );
+FC_REFLECT_TYPENAME( crea::plugin_tests::test_op );
+CREA_DEFINE_OPERATION_TYPE( crea::plugin_tests::test_op );
 */
 
 BOOST_FIXTURE_TEST_SUITE( plugin_ops, clean_database_fixture );

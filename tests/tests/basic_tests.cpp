@@ -24,10 +24,10 @@
 
 #include <boost/test/unit_test.hpp>
 
-#include <creativecoin/chain/database.hpp>
-#include <creativecoin/protocol/protocol.hpp>
+#include <crea/chain/database.hpp>
+#include <crea/protocol/protocol.hpp>
 
-#include <creativecoin/protocol/creativecoin_operations.hpp>
+#include <crea/protocol/crea_operations.hpp>
 
 #include <fc/crypto/digest.hpp>
 #include <fc/crypto/hex.hpp>
@@ -36,9 +36,9 @@
 #include <algorithm>
 #include <random>
 
-using namespace creativecoin;
-using namespace creativecoin::chain;
-using namespace creativecoin::protocol;
+using namespace crea;
+using namespace crea::chain;
+using namespace crea::protocol;
 
 BOOST_FIXTURE_TEST_SUITE( basic_tests, clean_database_fixture )
 

@@ -252,6 +252,11 @@ struct get_impacted_account_visitor
       _impacted.insert( op.producer );
    }
 
+   void operator()( const hardfork_operation& op )
+   {
+      _impacted.insert( CREA_INIT_MINER_NAME );
+   }
+
    //void operator()( const operation& op ){}
 };
 

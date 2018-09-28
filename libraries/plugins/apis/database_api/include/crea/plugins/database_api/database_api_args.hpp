@@ -52,6 +52,20 @@ enum sort_order_type
 typedef void_type          get_config_args;
 typedef fc::variant_object get_config_return;
 
+/* get_version */
+typedef void_type          get_version_args;
+struct get_version_return
+{
+   get_version_return() {}
+   get_version_return( fc::string bc_v, fc::string s_v, fc::string fc_v, chain_id_type c_id )
+      :blockchain_version( bc_v ), crea_revision( s_v ), fc_revision( fc_v ), chain_id( c_id ) {}
+
+   fc::string     blockchain_version;
+   fc::string     crea_revision;
+   fc::string     fc_revision;
+   chain_id_type  chain_id;
+};
+
 
 /* Singletons */
 
@@ -566,6 +580,9 @@ struct get_smt_next_identifier_return
 #endif
 
 } } } // crea::database_api
+
+FC_REFLECT( crea::plugins::database_api::get_version_return,
+            (blockchain_version)(crea_revision)(fc_revision)(chain_id) )
 
 FC_REFLECT_ENUM( crea::plugins::database_api::sort_order_type,
    (by_name)

@@ -1,15 +1,15 @@
 #ifdef IS_TEST_NET
 #include <boost/test/unit_test.hpp>
 
-#include <creativecoin/chain/account_object.hpp>
-#include <creativecoin/chain/comment_object.hpp>
-#include <creativecoin/protocol/creativecoin_operations.hpp>
-#include <creativecoin/plugins/json_rpc/json_rpc_plugin.hpp>
+#include <crea/chain/account_object.hpp>
+#include <crea/chain/comment_object.hpp>
+#include <crea/protocol/crea_operations.hpp>
+#include <crea/plugins/json_rpc/json_rpc_plugin.hpp>
 
 #include "../db_fixture/database_fixture.hpp"
 
-using namespace creativecoin::chain;
-using namespace creativecoin::protocol;
+using namespace crea::chain;
+using namespace crea::protocol;
 
 BOOST_FIXTURE_TEST_SUITE( json_rpc, json_rpc_database_fixture )
 

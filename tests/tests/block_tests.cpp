@@ -24,23 +24,23 @@
 #ifdef IS_TEST_NET
 #include <boost/test/unit_test.hpp>
 
-#include <creativecoin/protocol/exceptions.hpp>
+#include <crea/protocol/exceptions.hpp>
 
-#include <creativecoin/chain/database.hpp>
-#include <creativecoin/chain/creativecoin_objects.hpp>
-#include <creativecoin/chain/history_object.hpp>
+#include <crea/chain/database.hpp>
+#include <crea/chain/crea_objects.hpp>
+#include <crea/chain/history_object.hpp>
 
-#include <creativecoin/plugins/account_history/account_history_plugin.hpp>
+#include <crea/plugins/account_history/account_history_plugin.hpp>
 
-#include <creativecoin/utilities/tempdir.hpp>
+#include <crea/utilities/tempdir.hpp>
 
 #include <fc/crypto/digest.hpp>
 
 #include "../db_fixture/database_fixture.hpp"
 
-using namespace creativecoin;
-using namespace creativecoin::chain;
-using namespace creativecoin::protocol;
+using namespace crea;
+using namespace crea::chain;
+using namespace crea::protocol;
 
 #define TEST_SHARED_MEM_SIZE (1024 * 1024 * 8)
 
@@ -60,7 +60,7 @@ BOOST_AUTO_TEST_CASE( generate_empty_blocks )
 {
    try {
       fc::time_point_sec now( CREA_TESTING_GENESIS_TIMESTAMP );
-      fc::temp_directory data_dir( creativecoin::utilities::temp_directory_path() );
+      fc::temp_directory data_dir( crea::utilities::temp_directory_path() );
       signed_block b;
 
       // TODO:  Don't generate this here
@@ -128,7 +128,7 @@ BOOST_AUTO_TEST_CASE( generate_empty_blocks )
 BOOST_AUTO_TEST_CASE( undo_block )
 {
    try {
-      fc::temp_directory data_dir( creativecoin::utilities::temp_directory_path() );
+      fc::temp_directory data_dir( crea::utilities::temp_directory_path() );
       {
          database db;
          db._log_hardforks = false;
@@ -177,8 +177,8 @@ BOOST_AUTO_TEST_CASE( undo_block )
 BOOST_AUTO_TEST_CASE( fork_blocks )
 {
    try {
-      fc::temp_directory data_dir1( creativecoin::utilities::temp_directory_path() );
-      fc::temp_directory data_dir2( creativecoin::utilities::temp_directory_path() );
+      fc::temp_directory data_dir1( crea::utilities::temp_directory_path() );
+      fc::temp_directory data_dir2( crea::utilities::temp_directory_path() );
 
       //TODO This test needs 6-7 ish witnesses prior to fork
 
@@ -244,8 +244,8 @@ BOOST_AUTO_TEST_CASE( fork_blocks )
 BOOST_AUTO_TEST_CASE( switch_forks_undo_create )
 {
    try {
-      fc::temp_directory dir1( creativecoin::utilities::temp_directory_path() ),
-                         dir2( creativecoin::utilities::temp_directory_path() );
+      fc::temp_directory dir1( crea::utilities::temp_directory_path() ),
+                         dir2( crea::utilities::temp_directory_path() );
       database db1,
                db2;
       db1._log_hardforks = false;
@@ -303,8 +303,8 @@ BOOST_AUTO_TEST_CASE( switch_forks_undo_create )
 BOOST_AUTO_TEST_CASE( duplicate_transactions )
 {
    try {
-      fc::temp_directory dir1( creativecoin::utilities::temp_directory_path() ),
-                         dir2( creativecoin::utilities::temp_directory_path() );
+      fc::temp_directory dir1( crea::utilities::temp_directory_path() ),
+                         dir2( crea::utilities::temp_directory_path() );
       database db1,
                db2;
       db1._log_hardforks = false;
@@ -357,7 +357,7 @@ BOOST_AUTO_TEST_CASE( duplicate_transactions )
 BOOST_AUTO_TEST_CASE( tapos )
 {
    try {
-      fc::temp_directory dir1( creativecoin::utilities::temp_directory_path() );
+      fc::temp_directory dir1( crea::utilities::temp_directory_path() );
       database db1;
       db1._log_hardforks = false;
       open_test_database( db1, dir1.path() );
@@ -735,16 +735,16 @@ BOOST_FIXTURE_TEST_CASE( hardfork_test, database_fixture )
          if( arg == "--show-test-names" )
             std::cout << "running test " << boost::unit_test::framework::current_test_case().p_name << std::endl;
       }
-      appbase::app().register_plugin< creativecoin::plugins::account_history::account_history_plugin >();
-      db_plugin = &appbase::app().register_plugin< creativecoin::plugins::debug_node::debug_node_plugin >();
+      appbase::app().register_plugin< crea::plugins::account_history::account_history_plugin >();
+      db_plugin = &appbase::app().register_plugin< crea::plugins::debug_node::debug_node_plugin >();
       init_account_pub_key = init_account_priv_key.get_public_key();
 
       appbase::app().initialize<
-         creativecoin::plugins::account_history::account_history_plugin,
-         creativecoin::plugins::debug_node::debug_node_plugin
+         crea::plugins::account_history::account_history_plugin,
+         crea::plugins::debug_node::debug_node_plugin
       >( argc, argv );
 
-      db = &appbase::app().get_plugin< creativecoin::plugins::chain::chain_plugin >().db();
+      db = &appbase::app().get_plugin< crea::plugins::chain::chain_plugin >().db();
       BOOST_REQUIRE( db );
 
 

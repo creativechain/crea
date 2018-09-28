@@ -6,11 +6,9 @@
 #include <crea/plugins/block_data_export/exportable_block_data.hpp>
 
 #include <crea/chain/account_object.hpp>
-#include <crea/chain/block_notification.hpp>
 #include <crea/chain/database.hpp>
 #include <crea/chain/global_property_object.hpp>
 #include <crea/chain/index.hpp>
-#include <crea/chain/operation_notification.hpp>
 
 #include <boost/thread/future.hpp>
 #include <boost/thread/sync_bounded_queue.hpp>

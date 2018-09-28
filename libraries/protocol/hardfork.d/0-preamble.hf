@@ -15,5 +15,5 @@
 #ifdef IS_TEST_NET
 #define CREA_NUM_HARDFORKS 21
 #else
-#define CREA_NUM_HARDFORKS 19
+#define CREA_NUM_HARDFORKS 20
 #endif

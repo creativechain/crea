@@ -2,7 +2,6 @@
 #include <crea/plugins/json_rpc/utility.hpp>
 
 #include <crea/chain/history_object.hpp>
-#include <crea/chain/operation_notification.hpp>
 
 #include <crea/protocol/types.hpp>
 

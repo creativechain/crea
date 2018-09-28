@@ -116,6 +116,12 @@ namespace crea { namespace chain {
 
          uint32_t delegation_return_period = CREA_DELEGATION_RETURN_PERIOD_HF0;
 
+         uint64_t reverse_auction_seconds = 0;
+
+         int64_t available_account_subsidies = 0;
+
+         uint16_t cbd_stop_percent = 0;
+         uint16_t cbd_start_percent = 0;
 #ifdef CREA_ENABLE_SMT
          asset smt_creation_fee = asset( 1000000, CBD_SYMBOL );
 #endif
@@ -160,6 +166,10 @@ FC_REFLECT( crea::chain::dynamic_global_property_object,
              (last_irreversible_block_num)
              (vote_power_reserve_rate)
              (delegation_return_period)
+             (reverse_auction_seconds)
+             (available_account_subsidies)
+             (cbd_stop_percent)
+             (cbd_start_percent)
 #ifdef CREA_ENABLE_SMT
              (smt_creation_fee)
 #endif

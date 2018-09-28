@@ -6,18 +6,18 @@ FC_TODO(Extend testing scenarios to support multiple NAIs per account)
 
 #include <boost/test/unit_test.hpp>
 
-#include <creativecoin/protocol/exceptions.hpp>
-#include <creativecoin/protocol/hardfork.hpp>
+#include <crea/protocol/exceptions.hpp>
+#include <crea/protocol/hardfork.hpp>
 
-#include <creativecoin/chain/database.hpp>
-#include <creativecoin/chain/database_exceptions.hpp>
-#include <creativecoin/chain/creativecoin_objects.hpp>
-#include <creativecoin/chain/smt_objects.hpp>
+#include <crea/chain/database.hpp>
+#include <crea/chain/database_exceptions.hpp>
+#include <crea/chain/crea_objects.hpp>
+#include <crea/chain/smt_objects.hpp>
 
 #include "../db_fixture/database_fixture.hpp"
 
-using namespace creativecoin::chain;
-using namespace creativecoin::protocol;
+using namespace crea::chain;
+using namespace crea::protocol;
 using fc::string;
 using boost::container::flat_set;
 using boost::container::flat_map;
@@ -246,7 +246,7 @@ BOOST_AUTO_TEST_CASE( set_setup_parameters_validate )
 
       op.control_account = "####";
       CREA_REQUIRE_THROW( op.validate(), fc::exception ); // invalid account name
-      
+
       op.control_account = "dany";
       op.validate();
 
@@ -327,7 +327,7 @@ BOOST_AUTO_TEST_CASE( setup_emissions_apply )
       fail_op.emissions_unit.token_unit["bob"] = 10;
 
       // Do invalid attempt at SMT creation.
-      create_invalid_smt("alice", alice_private_key);      
+      create_invalid_smt("alice", alice_private_key);
 
       // Fail due to non-existing SMT (too early).
       FAIL_WITH_OP(fail_op, alice_private_key, fc::assert_exception)
@@ -348,12 +348,12 @@ BOOST_AUTO_TEST_CASE( setup_emissions_apply )
          fail_op.symbol = smt2;
          fail_op.lep_abs_amount = fail_op.rep_abs_amount = asset( 1000, fail_op.symbol );
          // TODO: Replace the code below with account setup operation execution once its implemented.
-         const creativecoin::chain::smt_token_object* smt = db->find< creativecoin::chain::smt_token_object, by_symbol >( fail_op.symbol );
+         const crea::chain::smt_token_object* smt = db->find< crea::chain::smt_token_object, by_symbol >( fail_op.symbol );
          FC_ASSERT( smt != nullptr, "The SMT has just been created!" );
-         FC_ASSERT( smt->phase < creativecoin::chain::smt_phase::setup_completed, "Who closed setup phase?!" );
-         db->modify( *smt, [&]( creativecoin::chain::smt_token_object& token )
+         FC_ASSERT( smt->phase < crea::chain::smt_phase::setup_completed, "Who closed setup phase?!" );
+         db->modify( *smt, [&]( crea::chain::smt_token_object& token )
          {
-            token.phase = creativecoin::chain::smt_phase::setup_completed;
+            token.phase = crea::chain::smt_phase::setup_completed;
          });
          // Fail due to closed setup phase (too late).
          FAIL_WITH_OP(fail_op, alice_private_key, fc::assert_exception)
@@ -369,23 +369,23 @@ BOOST_AUTO_TEST_CASE( set_setup_parameters_apply )
    try
    {
       ACTORS( (dany)(eddy) )
-      
+
       generate_block();
 
       FUND( "dany", 5000000 );
 
       set_price_feed( price( ASSET( "1.000 TBD" ), ASSET( "1.000 TESTS" ) ) );
       convert( "dany", ASSET( "5000.000 TESTS" ) );
-      
+
       smt_set_setup_parameters_operation fail_op;
       fail_op.control_account = "dany";
 
       // Do invalid attempt at SMT creation.
       create_invalid_smt("dany", dany_private_key);
-      
+
       // Fail due to non-existing SMT (too early).
       FAIL_WITH_OP(fail_op, dany_private_key, fc::assert_exception)
-      
+
       // Create SMT(s) and continue.
       auto smts = create_smt_3("dany", dany_private_key);
       {
@@ -706,7 +706,7 @@ BOOST_AUTO_TEST_CASE( smt_transfer_apply )
 
       validate_database();
    }
-   FC_LOG_AND_RETHROW()   
+   FC_LOG_AND_RETHROW()
 }
 
 BOOST_AUTO_TEST_CASE( comment_votable_assers_validate )
@@ -731,7 +731,7 @@ BOOST_AUTO_TEST_CASE( comment_votable_assers_validate )
 
          op.author = "alice";
          op.permlink = "test";
-            
+
          BOOST_TEST_MESSAGE( "--- Testing valid configuration: no votable_assets" );
          allowed_vote_assets ava;
          op.extensions.insert( ava );
@@ -743,7 +743,7 @@ BOOST_AUTO_TEST_CASE( comment_votable_assers_validate )
 
          op.author = "alice";
          op.permlink = "test";
-            
+
          BOOST_TEST_MESSAGE( "--- Testing valid configuration of votable_assets" );
          allowed_vote_assets ava;
          for(size_t i = 0; i < SMT_MAX_VOTABLE_ASSETS; ++i)
@@ -751,7 +751,7 @@ BOOST_AUTO_TEST_CASE( comment_votable_assers_validate )
             const auto& smt = smts[i];
             ava.add_votable_asset(smt, share_type(10 + i), (i & 2) != 0);
          }
-         
+
          op.extensions.insert( ava );
          op.validate();
       }
@@ -761,7 +761,7 @@ BOOST_AUTO_TEST_CASE( comment_votable_assers_validate )
 
          op.author = "alice";
          op.permlink = "test";
-            
+
          BOOST_TEST_MESSAGE( "--- Testing invalid configuration of votable_assets - too much assets specified" );
          allowed_vote_assets ava;
          for(size_t i = 0; i < smts.size(); ++i)
@@ -769,7 +769,7 @@ BOOST_AUTO_TEST_CASE( comment_votable_assers_validate )
             const auto& smt = smts[i];
             ava.add_votable_asset(smt, share_type(20 + i), (i & 2) != 0);
          }
-         
+
          op.extensions.insert( ava );
          CREA_REQUIRE_THROW( op.validate(), fc::assert_exception );
       }
@@ -895,7 +895,7 @@ BOOST_AUTO_TEST_CASE( vesting_smt_creation )
    try
    {
       BOOST_TEST_MESSAGE( "Test Creation of vesting SMT" );
-      
+
       ACTORS((alice));
       generate_block();
 
@@ -985,8 +985,8 @@ BOOST_AUTO_TEST_CASE( setup_validate )
       (
          get_generation_unit( { { "xyz", 1 } }, { { "xyz2", 2 } } )/*pre_soft_cap_unit*/,
          get_generation_unit()/*post_soft_cap_unit*/,
-         get_cap_commitment( 1 )/*min_creativecoin_units_commitment*/,
-         get_cap_commitment( SMT_MIN_HARD_CAP_CREA_UNITS + 1 )/*hard_cap_creativecoin_units_commitment*/,
+         get_cap_commitment( 1 )/*min_crea_units_commitment*/,
+         get_cap_commitment( SMT_MIN_HARD_CAP_CREA_UNITS + 1 )/*hard_cap_crea_units_commitment*/,
          CREA_100_PERCENT/*soft_cap_percent*/,
          1/*min_unit_ratio*/,
          2/*max_unit_ratio*/
@@ -1004,113 +1004,113 @@ BOOST_AUTO_TEST_CASE( setup_validate )
       for( uint32_t i = 0; i < SMT_MAX_UNIT_ROUTES + 1; ++i )
          to_many_units.emplace( "alice" + std::to_string( i ), 1 );
 
-      //FC_ASSERT( creativecoin_unit.size() <= SMT_MAX_UNIT_ROUTES )
-      gp.pre_soft_cap_unit.creativecoin_unit = to_many_units;
+      //FC_ASSERT( crea_unit.size() <= SMT_MAX_UNIT_ROUTES )
+      gp.pre_soft_cap_unit.crea_unit = to_many_units;
       gp.pre_soft_cap_unit.token_unit = { { "bob",3 } };
       op.initial_generation_policy = gp;
       CREA_REQUIRE_THROW( op.validate(), fc::exception );
 
-      gp.pre_soft_cap_unit.creativecoin_unit = { { "bob2", 33 } };
+      gp.pre_soft_cap_unit.crea_unit = { { "bob2", 33 } };
       gp.pre_soft_cap_unit.token_unit = to_many_units;
       op.initial_generation_policy = gp;
       CREA_REQUIRE_THROW( op.validate(), fc::exception );
 
       //Invalid account
-      gp.pre_soft_cap_unit.creativecoin_unit = { { "{}{}", 12 } };
+      gp.pre_soft_cap_unit.crea_unit = { { "{}{}", 12 } };
       gp.pre_soft_cap_unit.token_unit = { { "xyz", 13 } };
       op.initial_generation_policy = gp;
       CREA_REQUIRE_THROW( op.validate(), fc::exception );
 
-      gp.pre_soft_cap_unit.creativecoin_unit = { { "xyz2", 14 } };
+      gp.pre_soft_cap_unit.crea_unit = { { "xyz2", 14 } };
       gp.pre_soft_cap_unit.token_unit = { { "{}", 15 } };
       op.initial_generation_policy = gp;
       CREA_REQUIRE_THROW( op.validate(), fc::exception );
 
       //Invalid account -> valid is '$from'
-      gp.pre_soft_cap_unit.creativecoin_unit = { { "$fromx", 1 } };
+      gp.pre_soft_cap_unit.crea_unit = { { "$fromx", 1 } };
       gp.pre_soft_cap_unit.token_unit = { { "$from", 2 } };
       op.initial_generation_policy = gp;
       CREA_REQUIRE_THROW( op.validate(), fc::exception );
 
-      gp.pre_soft_cap_unit.creativecoin_unit = { { "$from", 3 } };
+      gp.pre_soft_cap_unit.crea_unit = { { "$from", 3 } };
       gp.pre_soft_cap_unit.token_unit = { { "$from_", 4 } };
       op.initial_generation_policy = gp;
       CREA_REQUIRE_THROW( op.validate(), fc::exception );
 
       //Invalid account -> valid is '$from.vesting'
-      gp.pre_soft_cap_unit.creativecoin_unit = { { "$from.vestingx", 2 } };
+      gp.pre_soft_cap_unit.crea_unit = { { "$from.vestingx", 2 } };
       gp.pre_soft_cap_unit.token_unit = { { "$from.vesting", 222 } };
       op.initial_generation_policy = gp;
       CREA_REQUIRE_THROW( op.validate(), fc::exception );
 
-      gp.pre_soft_cap_unit.creativecoin_unit = { { "$from.vesting", 13 } };
+      gp.pre_soft_cap_unit.crea_unit = { { "$from.vesting", 13 } };
       gp.pre_soft_cap_unit.token_unit = { { "$from.vesting.vesting", 3 } };
       op.initial_generation_policy = gp;
       CREA_REQUIRE_THROW( op.validate(), fc::exception );
 
-      //FC_ASSERT( creativecoin_unit.value > 0 );
-      gp.pre_soft_cap_unit.creativecoin_unit = { { "$from.vesting", 0 } };
+      //FC_ASSERT( crea_unit.value > 0 );
+      gp.pre_soft_cap_unit.crea_unit = { { "$from.vesting", 0 } };
       gp.pre_soft_cap_unit.token_unit = { { "$from.vesting", 2 } };
       op.initial_generation_policy = gp;
       CREA_REQUIRE_THROW( op.validate(), fc::exception );
 
-      gp.pre_soft_cap_unit.creativecoin_unit = { { "$from.vesting", 10 } };
+      gp.pre_soft_cap_unit.crea_unit = { { "$from.vesting", 10 } };
       gp.pre_soft_cap_unit.token_unit = { { "$from.vesting", 0 } };
       op.initial_generation_policy = gp;
       CREA_REQUIRE_THROW( op.validate(), fc::exception );
 
-      //FC_ASSERT( creativecoin_unit.value > 0 );
-      gp.pre_soft_cap_unit.creativecoin_unit = { { "$from", 0 } };
+      //FC_ASSERT( crea_unit.value > 0 );
+      gp.pre_soft_cap_unit.crea_unit = { { "$from", 0 } };
       gp.pre_soft_cap_unit.token_unit = { { "$from", 100 } };
       op.initial_generation_policy = gp;
       CREA_REQUIRE_THROW( op.validate(), fc::exception );
 
-      gp.pre_soft_cap_unit.creativecoin_unit = { { "$from", 33 } };
+      gp.pre_soft_cap_unit.crea_unit = { { "$from", 33 } };
       gp.pre_soft_cap_unit.token_unit = { { "$from", 0 } };
       op.initial_generation_policy = gp;
       CREA_REQUIRE_THROW( op.validate(), fc::exception );
 
-      //FC_ASSERT( creativecoin_unit.value > 0 );
-      gp.pre_soft_cap_unit.creativecoin_unit = { { "qprst", 0 } };
+      //FC_ASSERT( crea_unit.value > 0 );
+      gp.pre_soft_cap_unit.crea_unit = { { "qprst", 0 } };
       gp.pre_soft_cap_unit.token_unit = { { "qprst", 67 } };
       op.initial_generation_policy = gp;
       CREA_REQUIRE_THROW( op.validate(), fc::exception );
 
-      gp.pre_soft_cap_unit.creativecoin_unit = { { "my_account2", 55 } };
+      gp.pre_soft_cap_unit.crea_unit = { { "my_account2", 55 } };
       gp.pre_soft_cap_unit.token_unit = { { "my_account", 0 } };
       op.initial_generation_policy = gp;
       CREA_REQUIRE_THROW( op.validate(), fc::exception );
 
-      gp.pre_soft_cap_unit.creativecoin_unit = { { "bob", 2 }, { "$from.vesting", 3 }, { "$from", 4 } };
+      gp.pre_soft_cap_unit.crea_unit = { { "bob", 2 }, { "$from.vesting", 3 }, { "$from", 4 } };
       gp.pre_soft_cap_unit.token_unit = { { "alice", 5 }, { "$from", 3 } };
       op.initial_generation_policy = gp;
       op.validate();
 
       //FC_ASSERT( lower_bound > 0 )
-      gp.min_creativecoin_units_commitment.lower_bound = 0;
+      gp.min_crea_units_commitment.lower_bound = 0;
       op.initial_generation_policy = gp;
       CREA_REQUIRE_THROW( op.validate(), fc::exception );
 
       //FC_ASSERT( lower_bound >= SMT_MIN_HARD_CAP_CREA_UNITS )
-      gp.min_creativecoin_units_commitment.lower_bound = SMT_MIN_HARD_CAP_CREA_UNITS - 1;
+      gp.min_crea_units_commitment.lower_bound = SMT_MIN_HARD_CAP_CREA_UNITS - 1;
       op.initial_generation_policy = gp;
       CREA_REQUIRE_THROW( op.validate(), fc::exception );
 
       //FC_ASSERT( upper_bound <= CREA_MAX_SHARE_SUPPLY )
-      gp.min_creativecoin_units_commitment.upper_bound = CREA_MAX_SHARE_SUPPLY + 1;
+      gp.min_crea_units_commitment.upper_bound = CREA_MAX_SHARE_SUPPLY + 1;
       op.initial_generation_policy = gp;
       CREA_REQUIRE_THROW( op.validate(), fc::exception );
 
       //FC_ASSERT( lower_bound <= upper_bound )
-      gp.min_creativecoin_units_commitment.lower_bound = CREA_MAX_SHARE_SUPPLY - 1;
-      gp.min_creativecoin_units_commitment.upper_bound = gp.min_creativecoin_units_commitment.lower_bound - 1;
+      gp.min_crea_units_commitment.lower_bound = CREA_MAX_SHARE_SUPPLY - 1;
+      gp.min_crea_units_commitment.upper_bound = gp.min_crea_units_commitment.lower_bound - 1;
       op.initial_generation_policy = gp;
       CREA_REQUIRE_THROW( op.validate(), fc::exception );
 
-      gp.min_creativecoin_units_commitment.lower_bound = 1 * SMT_MIN_HARD_CAP_CREA_UNITS;
-      gp.min_creativecoin_units_commitment.upper_bound = 2 * SMT_MIN_HARD_CAP_CREA_UNITS;
-      gp.hard_cap_creativecoin_units_commitment.lower_bound = 1 * SMT_MIN_HARD_CAP_CREA_UNITS;
-      gp.hard_cap_creativecoin_units_commitment.upper_bound = 2 * SMT_MIN_HARD_CAP_CREA_UNITS;
+      gp.min_crea_units_commitment.lower_bound = 1 * SMT_MIN_HARD_CAP_CREA_UNITS;
+      gp.min_crea_units_commitment.upper_bound = 2 * SMT_MIN_HARD_CAP_CREA_UNITS;
+      gp.hard_cap_crea_units_commitment.lower_bound = 1 * SMT_MIN_HARD_CAP_CREA_UNITS;
+      gp.hard_cap_crea_units_commitment.upper_bound = 2 * SMT_MIN_HARD_CAP_CREA_UNITS;
       op.initial_generation_policy = gp;
       gp.validate();
 
@@ -1124,56 +1124,56 @@ BOOST_AUTO_TEST_CASE( setup_validate )
       op.initial_generation_policy = gp;
       CREA_REQUIRE_THROW( op.validate(), fc::exception );
 
-      //FC_ASSERT( soft_cap_percent == CREA_100_PERCENT && post_soft_cap_unit.creativecoin_unit.size() == 0 )
+      //FC_ASSERT( soft_cap_percent == CREA_100_PERCENT && post_soft_cap_unit.crea_unit.size() == 0 )
       gp.soft_cap_percent = CREA_100_PERCENT;
-      gp.post_soft_cap_unit.creativecoin_unit = { { "bob", 2 } };
+      gp.post_soft_cap_unit.crea_unit = { { "bob", 2 } };
       gp.post_soft_cap_unit.token_unit = {};
       op.initial_generation_policy = gp;
       CREA_REQUIRE_THROW( op.validate(), fc::exception );
 
       //FC_ASSERT( soft_cap_percent == CREA_100_PERCENT && post_soft_cap_unit.token_unit.size() == 0 )
       gp.soft_cap_percent = CREA_100_PERCENT;
-      gp.post_soft_cap_unit.creativecoin_unit = {};
+      gp.post_soft_cap_unit.crea_unit = {};
       gp.post_soft_cap_unit.token_unit = { { "alice", 3 } };
       op.initial_generation_policy = gp;
       CREA_REQUIRE_THROW( op.validate(), fc::exception );
 
-      //FC_ASSERT( soft_cap_percent != CREA_100_PERCENT && post_soft_cap_unit.creativecoin_unit.size() > 0 )
+      //FC_ASSERT( soft_cap_percent != CREA_100_PERCENT && post_soft_cap_unit.crea_unit.size() > 0 )
       gp.soft_cap_percent = CREA_100_PERCENT / 2;
-      gp.post_soft_cap_unit.creativecoin_unit = {};
+      gp.post_soft_cap_unit.crea_unit = {};
       gp.post_soft_cap_unit.token_unit = {};
       op.initial_generation_policy = gp;
       CREA_REQUIRE_THROW( op.validate(), fc::exception );
 
       gp.soft_cap_percent = CREA_100_PERCENT;
-      gp.post_soft_cap_unit.creativecoin_unit = {};
+      gp.post_soft_cap_unit.crea_unit = {};
       gp.post_soft_cap_unit.token_unit = {};
       op.initial_generation_policy = gp;
       op.validate();
 
-      //FC_ASSERT( min_creativecoin_units_commitment.lower_bound <= hard_cap_creativecoin_units_commitment.lower_bound )
-      gp.min_creativecoin_units_commitment.lower_bound = 10 * SMT_MIN_HARD_CAP_CREA_UNITS;
-      gp.min_creativecoin_units_commitment.upper_bound = 20 * SMT_MIN_HARD_CAP_CREA_UNITS;
-      gp.hard_cap_creativecoin_units_commitment.lower_bound = 9 * SMT_MIN_HARD_CAP_CREA_UNITS;
-      gp.hard_cap_creativecoin_units_commitment.upper_bound = 20 * SMT_MIN_HARD_CAP_CREA_UNITS;
+      //FC_ASSERT( min_crea_units_commitment.lower_bound <= hard_cap_crea_units_commitment.lower_bound )
+      gp.min_crea_units_commitment.lower_bound = 10 * SMT_MIN_HARD_CAP_CREA_UNITS;
+      gp.min_crea_units_commitment.upper_bound = 20 * SMT_MIN_HARD_CAP_CREA_UNITS;
+      gp.hard_cap_crea_units_commitment.lower_bound = 9 * SMT_MIN_HARD_CAP_CREA_UNITS;
+      gp.hard_cap_crea_units_commitment.upper_bound = 20 * SMT_MIN_HARD_CAP_CREA_UNITS;
       op.initial_generation_policy = gp;
       CREA_REQUIRE_THROW( op.validate(), fc::exception );
 
-      //FC_ASSERT( min_creativecoin_units_commitment.upper_bound <= hard_cap_creativecoin_units_commitment.upper_bound )
-      gp.hard_cap_creativecoin_units_commitment.lower_bound = 11 * SMT_MIN_HARD_CAP_CREA_UNITS;
-      gp.hard_cap_creativecoin_units_commitment.upper_bound = 19 * SMT_MIN_HARD_CAP_CREA_UNITS;
+      //FC_ASSERT( min_crea_units_commitment.upper_bound <= hard_cap_crea_units_commitment.upper_bound )
+      gp.hard_cap_crea_units_commitment.lower_bound = 11 * SMT_MIN_HARD_CAP_CREA_UNITS;
+      gp.hard_cap_crea_units_commitment.upper_bound = 19 * SMT_MIN_HARD_CAP_CREA_UNITS;
       op.initial_generation_policy = gp;
       CREA_REQUIRE_THROW( op.validate(), fc::exception );
 
-      //FC_ASSERT( hard_cap_creativecoin_units_commitment.lower_bound >= SMT_MIN_SATURATION_CREA_UNITS * uint64_t( max_unit_ratio ) )
-      gp.hard_cap_creativecoin_units_commitment.lower_bound = 11 * SMT_MIN_HARD_CAP_CREA_UNITS;
-      gp.hard_cap_creativecoin_units_commitment.upper_bound = 21 * SMT_MIN_HARD_CAP_CREA_UNITS;
+      //FC_ASSERT( hard_cap_crea_units_commitment.lower_bound >= SMT_MIN_SATURATION_CREA_UNITS * uint64_t( max_unit_ratio ) )
+      gp.hard_cap_crea_units_commitment.lower_bound = 11 * SMT_MIN_HARD_CAP_CREA_UNITS;
+      gp.hard_cap_crea_units_commitment.upper_bound = 21 * SMT_MIN_HARD_CAP_CREA_UNITS;
       gp.max_unit_ratio = ( ( 11 * SMT_MIN_HARD_CAP_CREA_UNITS ) / SMT_MIN_SATURATION_CREA_UNITS ) * 2;
       op.initial_generation_policy = gp;
       CREA_REQUIRE_THROW( op.validate(), fc::exception );
 
-      gp.hard_cap_creativecoin_units_commitment.lower_bound = 11 * SMT_MIN_HARD_CAP_CREA_UNITS;
-      gp.hard_cap_creativecoin_units_commitment.upper_bound = 21 * SMT_MIN_HARD_CAP_CREA_UNITS;
+      gp.hard_cap_crea_units_commitment.lower_bound = 11 * SMT_MIN_HARD_CAP_CREA_UNITS;
+      gp.hard_cap_crea_units_commitment.upper_bound = 21 * SMT_MIN_HARD_CAP_CREA_UNITS;
       gp.max_unit_ratio = 2;
       op.initial_generation_policy = gp;
       op.validate();
@@ -1182,11 +1182,11 @@ BOOST_AUTO_TEST_CASE( setup_validate )
 
       //FC_ASSERT( min_soft_cap >= SMT_MIN_SOFT_CAP_CREA_UNITS )
       gp.soft_cap_percent = 1;
-      gp.min_creativecoin_units_commitment.lower_bound = 1 * SMT_MIN_HARD_CAP_CREA_UNITS;
-      gp.min_creativecoin_units_commitment.upper_bound = 2 * SMT_MIN_HARD_CAP_CREA_UNITS;
-      gp.hard_cap_creativecoin_units_commitment.lower_bound = 1 * SMT_MIN_HARD_CAP_CREA_UNITS;
-      gp.hard_cap_creativecoin_units_commitment.upper_bound = 2 * SMT_MIN_HARD_CAP_CREA_UNITS;
-      gp.post_soft_cap_unit.creativecoin_unit = { { "bob", 2 } };
+      gp.min_crea_units_commitment.lower_bound = 1 * SMT_MIN_HARD_CAP_CREA_UNITS;
+      gp.min_crea_units_commitment.upper_bound = 2 * SMT_MIN_HARD_CAP_CREA_UNITS;
+      gp.hard_cap_crea_units_commitment.lower_bound = 1 * SMT_MIN_HARD_CAP_CREA_UNITS;
+      gp.hard_cap_crea_units_commitment.upper_bound = 2 * SMT_MIN_HARD_CAP_CREA_UNITS;
+      gp.post_soft_cap_unit.crea_unit = { { "bob", 2 } };
       op.initial_generation_policy = gp;
       CREA_REQUIRE_THROW( op.validate(), fc::exception );
 
@@ -1200,20 +1200,20 @@ BOOST_AUTO_TEST_CASE( setup_validate )
       //FC_ASSERT( max_tokens_created <= max_share_supply_u128 )
       gp.soft_cap_percent = CREA_100_PERCENT - 1;
       gp.min_unit_ratio = max_val_32;
-      gp.post_soft_cap_unit.creativecoin_unit = { { "abc", 1 } };
+      gp.post_soft_cap_unit.crea_unit = { { "abc", 1 } };
       gp.post_soft_cap_unit.token_unit = { { "abc1", max_val_16 } };
       gp.pre_soft_cap_unit.token_unit = { { "abc2", max_val_16 } };
-      gp.min_creativecoin_units_commitment.upper_bound = CREA_MAX_SHARE_SUPPLY;
-      gp.hard_cap_creativecoin_units_commitment.upper_bound = CREA_MAX_SHARE_SUPPLY;
+      gp.min_crea_units_commitment.upper_bound = CREA_MAX_SHARE_SUPPLY;
+      gp.hard_cap_crea_units_commitment.upper_bound = CREA_MAX_SHARE_SUPPLY;
       op.initial_generation_policy = gp;
       CREA_REQUIRE_THROW( op.validate(), fc::exception );
 
-      //FC_ASSERT( max_creativecoin_accepted <= max_share_supply_u128 )
+      //FC_ASSERT( max_crea_accepted <= max_share_supply_u128 )
       gp.min_unit_ratio = 1;
       gp.post_soft_cap_unit.token_unit = { { "abc1", 1 } };
       gp.pre_soft_cap_unit.token_unit = { { "abc2", 1 } };
-      gp.post_soft_cap_unit.creativecoin_unit = { { "abc3", max_val_16 } };
-      gp.pre_soft_cap_unit.creativecoin_unit = { { "abc34", max_val_16 } };
+      gp.post_soft_cap_unit.crea_unit = { { "abc3", max_val_16 } };
+      gp.pre_soft_cap_unit.crea_unit = { { "abc34", max_val_16 } };
       op.initial_generation_policy = gp;
       CREA_REQUIRE_THROW( op.validate(), fc::exception );
    }
@@ -1263,8 +1263,8 @@ BOOST_AUTO_TEST_CASE( setup_apply )
       (
          get_generation_unit( { { "xyz", 1 } }, { { "xyz2", 2 } } )/*pre_soft_cap_unit*/,
          get_generation_unit()/*post_soft_cap_unit*/,
-         get_cap_commitment( 1 )/*min_creativecoin_units_commitment*/,
-         get_cap_commitment( SMT_MIN_HARD_CAP_CREA_UNITS + 1 )/*hard_cap_creativecoin_units_commitment*/,
+         get_cap_commitment( 1 )/*min_crea_units_commitment*/,
+         get_cap_commitment( SMT_MIN_HARD_CAP_CREA_UNITS + 1 )/*hard_cap_crea_units_commitment*/,
          CREA_100_PERCENT/*soft_cap_percent*/,
          1/*min_unit_ratio*/,
          2/*max_unit_ratio*/
@@ -1284,7 +1284,7 @@ BOOST_AUTO_TEST_CASE( setup_apply )
       //SMT doesn't exist
       tx.operations.push_back( op );
       tx.set_expiration( db->head_block_time() + CREA_MAX_TIME_UNTIL_EXPIRATION );
-      tx.sign( alice_private_key, db->get_chain_id() );
+      sign( tx, alice_private_key );
       CREA_REQUIRE_THROW( db->push_transaction( tx, 0 ), fc::exception );
       tx.operations.clear();
       tx.signatures.clear();
@@ -1299,7 +1299,7 @@ BOOST_AUTO_TEST_CASE( setup_apply )
       op.decimal_places = 3;
       tx.operations.push_back( op );
       tx.set_expiration( db->head_block_time() + CREA_MAX_TIME_UNTIL_EXPIRATION );
-      tx.sign( alice_private_key, db->get_chain_id() );
+      sign( tx, alice_private_key );
       db->push_transaction( tx, 0 );
       tx.operations.clear();
       tx.signatures.clear();
@@ -1310,10 +1310,10 @@ BOOST_AUTO_TEST_CASE( setup_apply )
       op.decimal_places = 5;
       tx.operations.push_back( op );
       tx.set_expiration( db->head_block_time() + CREA_MAX_TIME_UNTIL_EXPIRATION );
-      tx.sign( bob_private_key, db->get_chain_id() );
+      sign( tx, bob_private_key );
       db->push_transaction( tx, 0 );
 
-      const creativecoin::chain::smt_token_object* smt_token = db->find< creativecoin::chain::smt_token_object, by_control_account >( op.control_account );
+      const crea::chain::smt_token_object* smt_token = db->find< crea::chain::smt_token_object, by_control_account >( op.control_account );
       BOOST_REQUIRE( smt_token != nullptr );
       uint8_t decimals = smt_token->liquid_symbol.decimals();
       BOOST_REQUIRE( decimals == 5 );
@@ -1389,8 +1389,8 @@ void setup_smt_and_reveal_caps( const account_name_type& control_account, const 
       (
          dbf.get_generation_unit( { { "xyz", 1 } }, { { "xyz2", 2 } } )/*pre_soft_cap_unit*/,
          dbf.get_generation_unit()/*post_soft_cap_unit*/,
-         dbf.get_cap_commitment( min_cap_val, nonce )/*min_creativecoin_units_commitment*/,
-         dbf.get_cap_commitment( max_cap_val, nonce )/*hard_cap_creativecoin_units_commitment*/,
+         dbf.get_cap_commitment( min_cap_val, nonce )/*min_crea_units_commitment*/,
+         dbf.get_cap_commitment( max_cap_val, nonce )/*hard_cap_crea_units_commitment*/,
          CREA_100_PERCENT/*soft_cap_percent*/,
          1/*min_unit_ratio*/,
          2/*max_unit_ratio*/
@@ -1406,31 +1406,31 @@ void setup_smt_and_reveal_caps( const account_name_type& control_account, const 
    }
 
    const auto& smt_object = db->get< smt_token_object, by_symbol >( smt_symbol );
-   FC_ASSERT( smt_object.creativecoin_units_min_cap < 0 && smt_object.creativecoin_units_hard_cap < 0 );
+   FC_ASSERT( smt_object.crea_units_min_cap < 0 && smt_object.crea_units_hard_cap < 0 );
    // Try to reveal correct value with invalid nonce.
    op.cap.nonce = invalid_val;
    op.cap.amount = max_cap_val;
    FAIL_WITH_OP( op, private_key, fc::assert_exception );
-   FC_ASSERT( smt_object.creativecoin_units_min_cap < 0 && smt_object.creativecoin_units_hard_cap < 0 );
+   FC_ASSERT( smt_object.crea_units_min_cap < 0 && smt_object.crea_units_hard_cap < 0 );
    // Try to reveal invalid amount with correct nonce. Note that the value will be tested against both cap's commitments.
    op.cap.nonce = nonce;
    op.cap.amount = invalid_val.to_uint64();
    FAIL_WITH_OP( op, private_key, fc::assert_exception );
-   FC_ASSERT( smt_object.creativecoin_units_min_cap < 0 && smt_object.creativecoin_units_hard_cap < 0 );
+   FC_ASSERT( smt_object.crea_units_min_cap < 0 && smt_object.crea_units_hard_cap < 0 );
    // Reveal max hard cap.
    op.cap.amount = max_cap_val;
    PUSH_OP( op, private_key );
-   FC_ASSERT( smt_object.creativecoin_units_min_cap < 0 && smt_object.creativecoin_units_hard_cap == max_cap_val );
+   FC_ASSERT( smt_object.crea_units_min_cap < 0 && smt_object.crea_units_hard_cap == max_cap_val );
    // Try to reveal max hard cap again.
    FAIL_WITH_OP( op, private_key, fc::assert_exception );
    // Try to reveal invalid amount again. Note that this time it will be tested against min cap only (as max hard cap has been already revealed).
    op.cap.amount = invalid_val.to_uint64();
    FAIL_WITH_OP( op, private_key, fc::assert_exception );
-   FC_ASSERT( smt_object.creativecoin_units_min_cap < 0 && smt_object.creativecoin_units_hard_cap == max_cap_val );
+   FC_ASSERT( smt_object.crea_units_min_cap < 0 && smt_object.crea_units_hard_cap == max_cap_val );
    // Reveal min cap.
    op.cap.amount = min_cap_val;
    PUSH_OP( op, private_key );
-   FC_ASSERT( smt_object.creativecoin_units_min_cap == min_cap_val && smt_object.creativecoin_units_hard_cap == max_cap_val );
+   FC_ASSERT( smt_object.crea_units_min_cap == min_cap_val && smt_object.crea_units_hard_cap == max_cap_val );
    // Try to reveal min cap again.
    FAIL_WITH_OP( op, private_key, fc::assert_exception );
 }

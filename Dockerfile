@@ -4,6 +4,8 @@ FROM phusion/baseimage:0.9.19
 
 ARG CREA_STATIC_BUILD=ON
 ENV CREA_STATIC_BUILD ${CREA_STATIC_BUILD}
+ARG BUILD_STEP
+ENV BUILD_STEP ${BUILD_STEP}
 
 ENV LANG=en_US.UTF-8
 
@@ -20,6 +22,7 @@ RUN \
         gdb \
         git \
         libboost-all-dev \
+        libyajl-dev \
         libreadline-dev \
         libssl-dev \
         libtool \
@@ -51,7 +54,8 @@ RUN \
 ADD . /usr/local/src/creativecoin
 
 RUN \
-    cd /usr/local/src/creativecoin && \
+    if [ "$BUILD_STEP" = "1" ] || [ ! "$BUILD_STEP" ] ; then \
+    cd /usr/local/src/crea && \
     git submodule update --init --recursive && \
     mkdir build && \
     cd build && \
@@ -71,10 +75,12 @@ RUN \
     PYTHONPATH=programs/build_helpers \
     python3 -m creativecoin_build_helpers.check_reflect && \
     programs/build_helpers/get_config_check.sh && \
-    rm -rf /usr/local/src/creativecoin/build
+    rm -rf /usr/local/src/crea/build ; \
+    fi
 
 RUN \
-    cd /usr/local/src/creativecoin && \
+    if [ "$BUILD_STEP" = "2" ] || [ ! "$BUILD_STEP" ] ; then \
+    cd /usr/local/src/crea && \
     git submodule update --init --recursive && \
     mkdir build && \
     cd build && \
@@ -98,10 +104,12 @@ RUN \
     PYTHONPATH=programs/build_helpers \
     python3 -m creativecoin_build_helpers.check_reflect && \
     programs/build_helpers/get_config_check.sh && \
-    rm -rf /usr/local/src/creativecoin/build
+    rm -rf /usr/local/src/crea/build ; \
+    fi
 
 RUN \
-    cd /usr/local/src/creativecoin && \
+    if [ "$BUILD_STEP" = "1" ] || [ ! "$BUILD_STEP" ] ; then \
+    cd /usr/local/src/crea && \
     git submodule update --init --recursive && \
     mkdir build && \
     cd build && \
@@ -118,12 +126,14 @@ RUN \
     ./tests/chain_test && \
     ./tests/plugin_test && \
     mkdir -p /var/cobertura && \
-    gcovr --object-directory="../" --root=../ --xml-pretty --gcov-exclude=".*tests.*" --gcov-exclude=".*fc.*" --gcov-exclude=".*app*" --gcov-exclude=".*net*" --gcov-exclude=".*plugins*" --gcov-exclude=".*schema*" --gcov-exclude=".*time*" --gcov-exclude=".*utilities*" --gcov-exclude=".*wallet*" --gcov-exclude=".*programs*" --output="/var/cobertura/coverage.xml" && \
-    cd /usr/local/src/creativecoin && \
-    rm -rf /usr/local/src/creativecoin/build
+    gcovr --object-directory="../" --root=../ --xml-pretty --gcov-exclude=".*tests.*" --gcov-exclude=".*fc.*" --gcov-exclude=".*app*" --gcov-exclude=".*net*" --gcov-exclude=".*plugins*" --gcov-exclude=".*schema*" --gcov-exclude=".*time*" --gcov-exclude=".*utilities*" --gcov-exclude=".*wallet*" --gcov-exclude=".*programs*" --gcov-exclude=".*vendor*" --output="/var/cobertura/coverage.xml" && \
+    cd /usr/local/src/crea && \
+    rm -rf /usr/local/src/crea/build ; \
+    fi
 
 RUN \
-    cd /usr/local/src/creativecoin && \
+    if [ "$BUILD_STEP" = "2" ] || [ ! "$BUILD_STEP" ] ; then \
+    cd /usr/local/src/crea && \
     git submodule update --init --recursive && \
     mkdir build && \
     cd build && \
@@ -162,7 +172,8 @@ RUN \
     && \
     make -j$(nproc) && \
     make install && \
-    rm -rf /usr/local/src/creativecoin
+    rm -rf /usr/local/src/crea ; \
+    fi
 
 RUN \
     apt-get remove -y \
@@ -238,8 +249,6 @@ ADD contrib/fullnode.config.ini /etc/cread/fullnode.config.ini
 ADD contrib/fullnode.opswhitelist.config.ini /etc/cread/fullnode.opswhitelist.config.ini
 ADD contrib/config-for-broadcaster.ini /etc/cread/config-for-broadcaster.ini
 ADD contrib/config-for-ahnode.ini /etc/cread/config-for-ahnode.ini
-ADD contrib/testnet.config.ini /etc/cread/testnet.config.ini
-ADD contrib/fastgen.config.ini /etc/cread/fastgen.config.ini
 
 # add normal startup script that starts via sv
 ADD contrib/cread.run /usr/local/bin/creativecoin-sv-run.sh
@@ -251,12 +260,12 @@ ADD contrib/healthcheck.conf.template /etc/nginx/healthcheck.conf.template
 
 # add PaaS startup script and service script
 ADD contrib/startpaascread.sh /usr/local/bin/startpaascread.sh
-ADD contrib/testnetinit.sh /usr/local/bin/testnetinit.sh
+ADD contrib/pulltestnetscripts.sh /usr/local/bin/pulltestnetscripts.sh
 ADD contrib/paas-sv-run.sh /usr/local/bin/paas-sv-run.sh
 ADD contrib/sync-sv-run.sh /usr/local/bin/sync-sv-run.sh
 ADD contrib/healthcheck.sh /usr/local/bin/healthcheck.sh
 RUN chmod +x /usr/local/bin/startpaascread.sh
-RUN chmod +x /usr/local/bin/testnetinit.sh
+RUN chmod +x /usr/local/bin/pulltestnetscripts.sh
 RUN chmod +x /usr/local/bin/paas-sv-run.sh
 RUN chmod +x /usr/local/bin/sync-sv-run.sh
 RUN chmod +x /usr/local/bin/healthcheck.sh

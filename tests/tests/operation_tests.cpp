@@ -1,16 +1,16 @@
 #ifdef IS_TEST_NET
 #include <boost/test/unit_test.hpp>
 
-#include <creativecoin/protocol/exceptions.hpp>
-#include <creativecoin/protocol/hardfork.hpp>
+#include <crea/protocol/exceptions.hpp>
+#include <crea/protocol/hardfork.hpp>
 
-#include <creativecoin/chain/database.hpp>
-#include <creativecoin/chain/database_exceptions.hpp>
-#include <creativecoin/chain/creativecoin_objects.hpp>
+#include <crea/chain/database.hpp>
+#include <crea/chain/database_exceptions.hpp>
+#include <crea/chain/crea_objects.hpp>
 
-#include <creativecoin/chain/util/reward.hpp>
+#include <crea/chain/util/reward.hpp>
 
-#include <creativecoin/plugins/witness/witness_objects.hpp>
+#include <crea/plugins/witness/witness_objects.hpp>
 
 #include <fc/macros.hpp>
 #include <fc/crypto/digest.hpp>
@@ -21,9 +21,9 @@
 #include <iostream>
 #include <stdexcept>
 
-using namespace creativecoin;
-using namespace creativecoin::chain;
-using namespace creativecoin::protocol;
+using namespace crea;
+using namespace crea::chain;
+using namespace crea::protocol;
 using fc::string;
 
 BOOST_FIXTURE_TEST_SUITE( operation_tests, clean_database_fixture )
@@ -105,7 +105,7 @@ BOOST_AUTO_TEST_CASE( account_create_apply )
       const account_authority_object& acct_auth = db->get< account_authority_object, by_account >( "alice" );
 
       auto vest_shares = gpo.total_vesting_shares;
-      auto vests = gpo.total_vesting_fund_creativecoin;
+      auto vests = gpo.total_vesting_fund_crea;
 
       BOOST_REQUIRE( acct.name == "alice" );
       BOOST_REQUIRE( acct_auth.owner == authority( 1, priv_key.get_public_key(), 1 ) );
@@ -114,7 +114,7 @@ BOOST_AUTO_TEST_CASE( account_create_apply )
       BOOST_REQUIRE( acct.proxy == "" );
       BOOST_REQUIRE( acct.created == db->head_block_time() );
       BOOST_REQUIRE( acct.balance.amount.value == ASSET( "0.000 TESTS" ).amount.value );
-      BOOST_REQUIRE( acct.sbd_balance.amount.value == ASSET( "0.000 TBD" ).amount.value );
+      BOOST_REQUIRE( acct.cbd_balance.amount.value == ASSET( "0.000 TBD" ).amount.value );
       BOOST_REQUIRE( acct.id._id == acct_auth.id._id );
 
       /// because init_witness has created vesting shares and blocks have been produced, 100 CREA is worth less than 100 vesting shares due to rounding
@@ -134,7 +134,7 @@ BOOST_AUTO_TEST_CASE( account_create_apply )
       BOOST_REQUIRE( acct.proxy == "" );
       BOOST_REQUIRE( acct.created == db->head_block_time() );
       BOOST_REQUIRE( acct.balance.amount.value == ASSET( "0.000 TESTS " ).amount.value );
-      BOOST_REQUIRE( acct.sbd_balance.amount.value == ASSET( "0.000 TBD" ).amount.value );
+      BOOST_REQUIRE( acct.cbd_balance.amount.value == ASSET( "0.000 TBD" ).amount.value );
       BOOST_REQUIRE( acct.vesting_shares.amount.value == ( op.fee * ( vest_shares / vests ) ).amount.value );
       BOOST_REQUIRE( acct.vesting_withdraw_rate.amount.value == ASSET( "0.000000 VESTS" ).amount.value );
       BOOST_REQUIRE( acct.proxied_vsf_votes_total().value == 0 );
@@ -561,7 +561,7 @@ BOOST_AUTO_TEST_CASE( comment_apply )
 
       db->modify( db->get_dynamic_global_properties(), [&]( dynamic_global_property_object& o)
       {
-         o.total_reward_shares2 = creativecoin::chain::util::evaluate_reward_curve( 10 );
+         o.total_reward_shares2 = crea::chain::util::evaluate_reward_curve( 10 );
       });
 
       tx.signatures.clear();
@@ -1335,7 +1335,7 @@ BOOST_AUTO_TEST_CASE( transfer_to_vesting_apply )
       BOOST_REQUIRE( alice.balance == ASSET( "10.000 TESTS" ) );
 
       auto shares = asset( gpo.total_vesting_shares.amount, VESTS_SYMBOL );
-      auto vests = asset( gpo.total_vesting_fund_creativecoin.amount, CREA_SYMBOL );
+      auto vests = asset( gpo.total_vesting_fund_crea.amount, CREA_SYMBOL );
       auto alice_shares = alice.vesting_shares;
       auto bob_shares = bob.vesting_shares;
 
@@ -1357,7 +1357,7 @@ BOOST_AUTO_TEST_CASE( transfer_to_vesting_apply )
 
       BOOST_REQUIRE( alice.balance.amount.value == ASSET( "2.500 TESTS" ).amount.value );
       BOOST_REQUIRE( alice.vesting_shares.amount.value == alice_shares.amount.value );
-      BOOST_REQUIRE( gpo.total_vesting_fund_creativecoin.amount.value == vests.amount.value );
+      BOOST_REQUIRE( gpo.total_vesting_fund_crea.amount.value == vests.amount.value );
       BOOST_REQUIRE( gpo.total_vesting_shares.amount.value == shares.amount.value );
       validate_database();
 
@@ -1379,7 +1379,7 @@ BOOST_AUTO_TEST_CASE( transfer_to_vesting_apply )
       BOOST_REQUIRE( alice.vesting_shares.amount.value == alice_shares.amount.value );
       BOOST_REQUIRE( bob.balance.amount.value == ASSET( "0.000 TESTS" ).amount.value );
       BOOST_REQUIRE( bob.vesting_shares.amount.value == bob_shares.amount.value );
-      BOOST_REQUIRE( gpo.total_vesting_fund_creativecoin.amount.value == vests.amount.value );
+      BOOST_REQUIRE( gpo.total_vesting_fund_crea.amount.value == vests.amount.value );
       BOOST_REQUIRE( gpo.total_vesting_shares.amount.value == shares.amount.value );
       validate_database();
 
@@ -1389,7 +1389,7 @@ BOOST_AUTO_TEST_CASE( transfer_to_vesting_apply )
       BOOST_REQUIRE( alice.vesting_shares.amount.value == alice_shares.amount.value );
       BOOST_REQUIRE( bob.balance.amount.value == ASSET( "0.000 TESTS" ).amount.value );
       BOOST_REQUIRE( bob.vesting_shares.amount.value == bob_shares.amount.value );
-      BOOST_REQUIRE( gpo.total_vesting_fund_creativecoin.amount.value == vests.amount.value );
+      BOOST_REQUIRE( gpo.total_vesting_fund_crea.amount.value == vests.amount.value );
       BOOST_REQUIRE( gpo.total_vesting_shares.amount.value == shares.amount.value );
       validate_database();
    }
@@ -1563,8 +1563,8 @@ BOOST_AUTO_TEST_CASE( withdraw_vesting_apply )
 
          db.modify( db.get_dynamic_global_properties(), [&]( dynamic_global_property_object& gpo )
          {
-            gpo.current_supply += wso.median_props.account_creation_fee - ASSET( "0.001 TESTS" ) - gpo.total_vesting_fund_creativecoin;
-            gpo.total_vesting_fund_creativecoin = wso.median_props.account_creation_fee - ASSET( "0.001 TESTS" );
+            gpo.current_supply += wso.median_props.account_creation_fee - ASSET( "0.001 TESTS" ) - gpo.total_vesting_fund_crea;
+            gpo.total_vesting_fund_crea = wso.median_props.account_creation_fee - ASSET( "0.001 TESTS" );
          });
 
          db.update_virtual_supply();
@@ -1675,7 +1675,7 @@ BOOST_AUTO_TEST_CASE( witness_update_apply )
       op.url = "foo.bar";
       op.fee = ASSET( "1.000 TESTS" );
       op.block_signing_key = signing_key.get_public_key();
-      op.props.account_creation_fee = legacy_creativecoin_asset::from_asset( asset(CREA_MIN_ACCOUNT_CREATION_FEE + 10, CREA_SYMBOL) );
+      op.props.account_creation_fee = legacy_crea_asset::from_asset( asset(CREA_MIN_ACCOUNT_CREATION_FEE + 10, CREA_SYMBOL) );
       op.props.maximum_block_size = CREA_MIN_BLOCK_SIZE_LIMIT + 100;
 
       signed_transaction tx;
@@ -2315,8 +2315,8 @@ BOOST_AUTO_TEST_CASE( feed_publish_apply )
 
       witness_object& alice_witness = const_cast< witness_object& >( db->get_witness( "alice" ) );
 
-      BOOST_REQUIRE( alice_witness.sbd_exchange_rate == op.exchange_rate );
-      BOOST_REQUIRE( alice_witness.last_sbd_exchange_update == db->head_block_time() );
+      BOOST_REQUIRE( alice_witness.cbd_exchange_rate == op.exchange_rate );
+      BOOST_REQUIRE( alice_witness.last_cbd_exchange_update == db->head_block_time() );
       validate_database();
 
       BOOST_TEST_MESSAGE( "--- Test failure publishing to non-existent witness" );
@@ -2351,8 +2351,8 @@ BOOST_AUTO_TEST_CASE( feed_publish_apply )
       db->push_transaction( tx, 0 );
 
       alice_witness = const_cast< witness_object& >( db->get_witness( "alice" ) );
-      // BOOST_REQUIRE( std::abs( alice_witness.sbd_exchange_rate.to_real() - op.exchange_rate.to_real() ) < 0.0000005 );
-      BOOST_REQUIRE( alice_witness.last_sbd_exchange_update == db->head_block_time() );
+      // BOOST_REQUIRE( std::abs( alice_witness.cbd_exchange_rate.to_real() - op.exchange_rate.to_real() ) < 0.0000005 );
+      BOOST_REQUIRE( alice_witness.last_cbd_exchange_update == db->head_block_time() );
       validate_database();
    }
    FC_LOG_AND_RETHROW()
@@ -2450,7 +2450,7 @@ BOOST_AUTO_TEST_CASE( convert_apply )
       CREA_REQUIRE_THROW( db->push_transaction( tx, 0 ), fc::exception );
 
       BOOST_REQUIRE( new_bob.balance.amount.value == ASSET( "3.000 TESTS" ).amount.value );
-      BOOST_REQUIRE( new_bob.sbd_balance.amount.value == ASSET( "7.000 TBD" ).amount.value );
+      BOOST_REQUIRE( new_bob.cbd_balance.amount.value == ASSET( "7.000 TBD" ).amount.value );
       validate_database();
 
       BOOST_TEST_MESSAGE( "--- Test failure when account does not have the required TBD" );
@@ -2463,7 +2463,7 @@ BOOST_AUTO_TEST_CASE( convert_apply )
       CREA_REQUIRE_THROW( db->push_transaction( tx, 0 ), fc::exception );
 
       BOOST_REQUIRE( new_alice.balance.amount.value == ASSET( "7.500 TESTS" ).amount.value );
-      BOOST_REQUIRE( new_alice.sbd_balance.amount.value == ASSET( "2.500 TBD" ).amount.value );
+      BOOST_REQUIRE( new_alice.cbd_balance.amount.value == ASSET( "2.500 TBD" ).amount.value );
       validate_database();
 
       BOOST_TEST_MESSAGE( "--- Test failure when account does not exist" );
@@ -2485,7 +2485,7 @@ BOOST_AUTO_TEST_CASE( convert_apply )
       db->push_transaction( tx, 0 );
 
       BOOST_REQUIRE( new_bob.balance.amount.value == ASSET( "3.000 TESTS" ).amount.value );
-      BOOST_REQUIRE( new_bob.sbd_balance.amount.value == ASSET( "4.000 TBD" ).amount.value );
+      BOOST_REQUIRE( new_bob.cbd_balance.amount.value == ASSET( "4.000 TBD" ).amount.value );
 
       auto convert_request = convert_request_idx.find( std::make_tuple( op.owner, op.requestid ) );
       BOOST_REQUIRE( convert_request != convert_request_idx.end() );
@@ -2504,7 +2504,7 @@ BOOST_AUTO_TEST_CASE( convert_apply )
       CREA_REQUIRE_THROW( db->push_transaction( tx, 0 ), fc::exception );
 
       BOOST_REQUIRE( new_bob.balance.amount.value == ASSET( "3.000 TESTS" ).amount.value );
-      BOOST_REQUIRE( new_bob.sbd_balance.amount.value == ASSET( "4.000 TBD" ).amount.value );
+      BOOST_REQUIRE( new_bob.cbd_balance.amount.value == ASSET( "4.000 TBD" ).amount.value );
 
       convert_request = convert_request_idx.find( std::make_tuple( op.owner, op.requestid ) );
       BOOST_REQUIRE( convert_request != convert_request_idx.end() );
@@ -2621,7 +2621,7 @@ BOOST_AUTO_TEST_CASE( limit_order_create_apply )
 
       BOOST_REQUIRE( limit_order_idx.find( std::make_tuple( "bob", op.orderid ) ) == limit_order_idx.end() );
       BOOST_REQUIRE( bob.balance.amount.value == ASSET( "0.000 TESTS" ).amount.value );
-      BOOST_REQUIRE( bob.sbd_balance.amount.value == ASSET( "1000.000 TBD" ).amount.value );
+      BOOST_REQUIRE( bob.cbd_balance.amount.value == ASSET( "1000.000 TBD" ).amount.value );
       validate_database();
 
       BOOST_TEST_MESSAGE( "--- Test failure when amount to receive is 0" );
@@ -2636,7 +2636,7 @@ BOOST_AUTO_TEST_CASE( limit_order_create_apply )
 
       BOOST_REQUIRE( limit_order_idx.find( std::make_tuple( "alice", op.orderid ) ) == limit_order_idx.end() );
       BOOST_REQUIRE( alice.balance.amount.value == ASSET( "1000.000 TESTS" ).amount.value );
-      BOOST_REQUIRE( alice.sbd_balance.amount.value == ASSET( "0.000 TBD" ).amount.value );
+      BOOST_REQUIRE( alice.cbd_balance.amount.value == ASSET( "0.000 TBD" ).amount.value );
       validate_database();
 
       BOOST_TEST_MESSAGE( "--- Test failure when amount to sell is 0" );
@@ -2651,7 +2651,7 @@ BOOST_AUTO_TEST_CASE( limit_order_create_apply )
 
       BOOST_REQUIRE( limit_order_idx.find( std::make_tuple( "alice", op.orderid ) ) == limit_order_idx.end() );
       BOOST_REQUIRE( alice.balance.amount.value == ASSET( "1000.000 TESTS" ).amount.value );
-      BOOST_REQUIRE( alice.sbd_balance.amount.value == ASSET( "0.000 TBD" ).amount.value );
+      BOOST_REQUIRE( alice.cbd_balance.amount.value == ASSET( "0.000 TBD" ).amount.value );
       validate_database();
 
       BOOST_TEST_MESSAGE( "--- Test failure when expiration is too long" );
@@ -2681,7 +2681,7 @@ BOOST_AUTO_TEST_CASE( limit_order_create_apply )
       BOOST_REQUIRE( limit_order->sell_price == price( op.amount_to_sell / op.min_to_receive ) );
       BOOST_REQUIRE( limit_order->get_market() == std::make_pair( CBD_SYMBOL, CREA_SYMBOL ) );
       BOOST_REQUIRE( alice.balance.amount.value == ASSET( "990.000 TESTS" ).amount.value );
-      BOOST_REQUIRE( alice.sbd_balance.amount.value == ASSET( "0.000 TBD" ).amount.value );
+      BOOST_REQUIRE( alice.cbd_balance.amount.value == ASSET( "0.000 TBD" ).amount.value );
       validate_database();
 
       BOOST_TEST_MESSAGE( "--- Test failure creating limit order with duplicate id" );
@@ -2701,7 +2701,7 @@ BOOST_AUTO_TEST_CASE( limit_order_create_apply )
       BOOST_REQUIRE( limit_order->sell_price == price( ASSET( "10.000 TESTS" ), op.min_to_receive ) );
       BOOST_REQUIRE( limit_order->get_market() == std::make_pair( CBD_SYMBOL, CREA_SYMBOL ) );
       BOOST_REQUIRE( alice.balance.amount.value == ASSET( "990.000 TESTS" ).amount.value );
-      BOOST_REQUIRE( alice.sbd_balance.amount.value == ASSET( "0.000 TBD" ).amount.value );
+      BOOST_REQUIRE( alice.cbd_balance.amount.value == ASSET( "0.000 TBD" ).amount.value );
       validate_database();
 
       BOOST_TEST_MESSAGE( "--- Test sucess killing an order that will not be filled" );
@@ -2716,7 +2716,7 @@ BOOST_AUTO_TEST_CASE( limit_order_create_apply )
 
       BOOST_REQUIRE( limit_order_idx.find( std::make_tuple( "alice", op.orderid ) ) == limit_order_idx.end() );
       BOOST_REQUIRE( alice.balance.amount.value == ASSET( "990.000 TESTS" ).amount.value );
-      BOOST_REQUIRE( alice.sbd_balance.amount.value == ASSET( "0.000 TBD" ).amount.value );
+      BOOST_REQUIRE( alice.cbd_balance.amount.value == ASSET( "0.000 TBD" ).amount.value );
       validate_database();
 
       BOOST_TEST_MESSAGE( "--- Test having a partial match to limit order" );
@@ -2746,9 +2746,9 @@ BOOST_AUTO_TEST_CASE( limit_order_create_apply )
       BOOST_REQUIRE( limit_order->get_market() == std::make_pair( CBD_SYMBOL, CREA_SYMBOL ) );
       BOOST_REQUIRE( limit_order_idx.find( std::make_tuple( "bob", op.orderid ) ) == limit_order_idx.end() );
       BOOST_REQUIRE( alice.balance.amount.value == ASSET( "990.000 TESTS" ).amount.value );
-      BOOST_REQUIRE( alice.sbd_balance.amount.value == ASSET( "7.500 TBD" ).amount.value );
+      BOOST_REQUIRE( alice.cbd_balance.amount.value == ASSET( "7.500 TBD" ).amount.value );
       BOOST_REQUIRE( bob.balance.amount.value == ASSET( "5.000 TESTS" ).amount.value );
-      BOOST_REQUIRE( bob.sbd_balance.amount.value == ASSET( "992.500 TBD" ).amount.value );
+      BOOST_REQUIRE( bob.cbd_balance.amount.value == ASSET( "992.500 TBD" ).amount.value );
       BOOST_REQUIRE( fill_order_op.open_owner == "alice" );
       BOOST_REQUIRE( fill_order_op.open_orderid == 1 );
       BOOST_REQUIRE( fill_order_op.open_pays.amount.value == ASSET( "5.000 TESTS").amount.value );
@@ -2776,9 +2776,9 @@ BOOST_AUTO_TEST_CASE( limit_order_create_apply )
       BOOST_REQUIRE( limit_order->get_market() == std::make_pair( CBD_SYMBOL, CREA_SYMBOL ) );
       BOOST_REQUIRE( limit_order_idx.find( std::make_tuple( "alice", 1 ) ) == limit_order_idx.end() );
       BOOST_REQUIRE( alice.balance.amount.value == ASSET( "990.000 TESTS" ).amount.value );
-      BOOST_REQUIRE( alice.sbd_balance.amount.value == ASSET( "15.000 TBD" ).amount.value );
+      BOOST_REQUIRE( alice.cbd_balance.amount.value == ASSET( "15.000 TBD" ).amount.value );
       BOOST_REQUIRE( bob.balance.amount.value == ASSET( "10.000 TESTS" ).amount.value );
-      BOOST_REQUIRE( bob.sbd_balance.amount.value == ASSET( "977.500 TBD" ).amount.value );
+      BOOST_REQUIRE( bob.cbd_balance.amount.value == ASSET( "977.500 TBD" ).amount.value );
       validate_database();
 
       BOOST_TEST_MESSAGE( "--- Test filling an existing order and new order fully" );
@@ -2796,9 +2796,9 @@ BOOST_AUTO_TEST_CASE( limit_order_create_apply )
       BOOST_REQUIRE( limit_order_idx.find( std::make_tuple( "alice", 3 ) ) == limit_order_idx.end() );
       BOOST_REQUIRE( limit_order_idx.find( std::make_tuple( "bob", 1 ) ) == limit_order_idx.end() );
       BOOST_REQUIRE( alice.balance.amount.value == ASSET( "985.000 TESTS" ).amount.value );
-      BOOST_REQUIRE( alice.sbd_balance.amount.value == ASSET( "22.500 TBD" ).amount.value );
+      BOOST_REQUIRE( alice.cbd_balance.amount.value == ASSET( "22.500 TBD" ).amount.value );
       BOOST_REQUIRE( bob.balance.amount.value == ASSET( "15.000 TESTS" ).amount.value );
-      BOOST_REQUIRE( bob.sbd_balance.amount.value == ASSET( "977.500 TBD" ).amount.value );
+      BOOST_REQUIRE( bob.cbd_balance.amount.value == ASSET( "977.500 TBD" ).amount.value );
       validate_database();
 
       BOOST_TEST_MESSAGE( "--- Test filling limit order with better order when partial order is better." );
@@ -2832,9 +2832,9 @@ BOOST_AUTO_TEST_CASE( limit_order_create_apply )
       BOOST_REQUIRE( limit_order->sell_price == price( ASSET( "12.000 TBD" ), ASSET( "10.000 TESTS" ) ) );
       BOOST_REQUIRE( limit_order->get_market() == std::make_pair( CBD_SYMBOL, CREA_SYMBOL ) );
       BOOST_REQUIRE( alice.balance.amount.value == ASSET( "975.000 TESTS" ).amount.value );
-      BOOST_REQUIRE( alice.sbd_balance.amount.value == ASSET( "33.500 TBD" ).amount.value );
+      BOOST_REQUIRE( alice.cbd_balance.amount.value == ASSET( "33.500 TBD" ).amount.value );
       BOOST_REQUIRE( bob.balance.amount.value == ASSET( "25.000 TESTS" ).amount.value );
-      BOOST_REQUIRE( bob.sbd_balance.amount.value == ASSET( "965.500 TBD" ).amount.value );
+      BOOST_REQUIRE( bob.cbd_balance.amount.value == ASSET( "965.500 TBD" ).amount.value );
       validate_database();
 
       limit_order_cancel_operation can;
@@ -2849,7 +2849,7 @@ BOOST_AUTO_TEST_CASE( limit_order_create_apply )
       BOOST_TEST_MESSAGE( "--- Test filling limit order with better order when partial order is worse." );
 
       //auto gpo = db->get_dynamic_global_properties();
-      //auto start_sbd = gpo.current_sbd_supply;
+      //auto start_cbd = gpo.current_cbd_supply;
 
       op.owner = "alice";
       op.orderid = 5;
@@ -2880,9 +2880,9 @@ BOOST_AUTO_TEST_CASE( limit_order_create_apply )
       BOOST_REQUIRE( limit_order->sell_price == price( ASSET( "20.000 TESTS" ), ASSET( "22.000 TBD" ) ) );
       BOOST_REQUIRE( limit_order->get_market() == std::make_pair( CBD_SYMBOL, CREA_SYMBOL ) );
       BOOST_REQUIRE( alice.balance.amount.value == ASSET( "955.000 TESTS" ).amount.value );
-      BOOST_REQUIRE( alice.sbd_balance.amount.value == ASSET( "45.500 TBD" ).amount.value );
+      BOOST_REQUIRE( alice.cbd_balance.amount.value == ASSET( "45.500 TBD" ).amount.value );
       BOOST_REQUIRE( bob.balance.amount.value == ASSET( "35.909 TESTS" ).amount.value );
-      BOOST_REQUIRE( bob.sbd_balance.amount.value == ASSET( "954.500 TBD" ).amount.value );
+      BOOST_REQUIRE( bob.cbd_balance.amount.value == ASSET( "954.500 TBD" ).amount.value );
       validate_database();
    }
    FC_LOG_AND_RETHROW()
@@ -2966,7 +2966,7 @@ BOOST_AUTO_TEST_CASE( limit_order_create2_apply )
 
       BOOST_REQUIRE( limit_order_idx.find( std::make_tuple( "bob", op.orderid ) ) == limit_order_idx.end() );
       BOOST_REQUIRE( bob.balance.amount.value == ASSET( "0.000 TESTS" ).amount.value );
-      BOOST_REQUIRE( bob.sbd_balance.amount.value == ASSET( "1000.000 TBD" ).amount.value );
+      BOOST_REQUIRE( bob.cbd_balance.amount.value == ASSET( "1000.000 TBD" ).amount.value );
       validate_database();
 
       BOOST_TEST_MESSAGE( "--- Test failure when price is 0" );
@@ -3001,7 +3001,7 @@ BOOST_AUTO_TEST_CASE( limit_order_create2_apply )
 
       BOOST_REQUIRE( limit_order_idx.find( std::make_tuple( "alice", op.orderid ) ) == limit_order_idx.end() );
       BOOST_REQUIRE( alice.balance.amount.value == ASSET( "1000.000 TESTS" ).amount.value );
-      BOOST_REQUIRE( alice.sbd_balance.amount.value == ASSET( "0.000 TBD" ).amount.value );
+      BOOST_REQUIRE( alice.cbd_balance.amount.value == ASSET( "0.000 TBD" ).amount.value );
       validate_database();
 
       BOOST_TEST_MESSAGE( "--- Test failure when amount to sell is 0" );
@@ -3016,7 +3016,7 @@ BOOST_AUTO_TEST_CASE( limit_order_create2_apply )
 
       BOOST_REQUIRE( limit_order_idx.find( std::make_tuple( "alice", op.orderid ) ) == limit_order_idx.end() );
       BOOST_REQUIRE( alice.balance.amount.value == ASSET( "1000.000 TESTS" ).amount.value );
-      BOOST_REQUIRE( alice.sbd_balance.amount.value == ASSET( "0.000 TBD" ).amount.value );
+      BOOST_REQUIRE( alice.cbd_balance.amount.value == ASSET( "0.000 TBD" ).amount.value );
       validate_database();
 
       BOOST_TEST_MESSAGE( "--- Test failure when expiration is too long" );
@@ -3046,7 +3046,7 @@ BOOST_AUTO_TEST_CASE( limit_order_create2_apply )
       BOOST_REQUIRE( limit_order->sell_price == op.exchange_rate );
       BOOST_REQUIRE( limit_order->get_market() == std::make_pair( CBD_SYMBOL, CREA_SYMBOL ) );
       BOOST_REQUIRE( alice.balance.amount.value == ASSET( "990.000 TESTS" ).amount.value );
-      BOOST_REQUIRE( alice.sbd_balance.amount.value == ASSET( "0.000 TBD" ).amount.value );
+      BOOST_REQUIRE( alice.cbd_balance.amount.value == ASSET( "0.000 TBD" ).amount.value );
       validate_database();
 
       BOOST_TEST_MESSAGE( "--- Test failure creating limit order with duplicate id" );
@@ -3066,7 +3066,7 @@ BOOST_AUTO_TEST_CASE( limit_order_create2_apply )
       BOOST_REQUIRE( limit_order->sell_price == op.exchange_rate );
       BOOST_REQUIRE( limit_order->get_market() == std::make_pair( CBD_SYMBOL, CREA_SYMBOL ) );
       BOOST_REQUIRE( alice.balance.amount.value == ASSET( "990.000 TESTS" ).amount.value );
-      BOOST_REQUIRE( alice.sbd_balance.amount.value == ASSET( "0.000 TBD" ).amount.value );
+      BOOST_REQUIRE( alice.cbd_balance.amount.value == ASSET( "0.000 TBD" ).amount.value );
       validate_database();
 
       BOOST_TEST_MESSAGE( "--- Test sucess killing an order that will not be filled" );
@@ -3081,7 +3081,7 @@ BOOST_AUTO_TEST_CASE( limit_order_create2_apply )
 
       BOOST_REQUIRE( limit_order_idx.find( std::make_tuple( "alice", op.orderid ) ) == limit_order_idx.end() );
       BOOST_REQUIRE( alice.balance.amount.value == ASSET( "990.000 TESTS" ).amount.value );
-      BOOST_REQUIRE( alice.sbd_balance.amount.value == ASSET( "0.000 TBD" ).amount.value );
+      BOOST_REQUIRE( alice.cbd_balance.amount.value == ASSET( "0.000 TBD" ).amount.value );
       validate_database();
 
       BOOST_TEST_MESSAGE( "--- Test having a partial match to limit order" );
@@ -3111,9 +3111,9 @@ BOOST_AUTO_TEST_CASE( limit_order_create2_apply )
       BOOST_REQUIRE( limit_order->get_market() == std::make_pair( CBD_SYMBOL, CREA_SYMBOL ) );
       BOOST_REQUIRE( limit_order_idx.find( std::make_tuple( "bob", op.orderid ) ) == limit_order_idx.end() );
       BOOST_REQUIRE( alice.balance.amount.value == ASSET( "990.000 TESTS" ).amount.value );
-      BOOST_REQUIRE( alice.sbd_balance.amount.value == ASSET( "7.500 TBD" ).amount.value );
+      BOOST_REQUIRE( alice.cbd_balance.amount.value == ASSET( "7.500 TBD" ).amount.value );
       BOOST_REQUIRE( bob.balance.amount.value == ASSET( "5.000 TESTS" ).amount.value );
-      BOOST_REQUIRE( bob.sbd_balance.amount.value == ASSET( "992.500 TBD" ).amount.value );
+      BOOST_REQUIRE( bob.cbd_balance.amount.value == ASSET( "992.500 TBD" ).amount.value );
       BOOST_REQUIRE( fill_order_op.open_owner == "alice" );
       BOOST_REQUIRE( fill_order_op.open_orderid == 1 );
       BOOST_REQUIRE( fill_order_op.open_pays.amount.value == ASSET( "5.000 TESTS").amount.value );
@@ -3141,9 +3141,9 @@ BOOST_AUTO_TEST_CASE( limit_order_create2_apply )
       BOOST_REQUIRE( limit_order->get_market() == std::make_pair( CBD_SYMBOL, CREA_SYMBOL ) );
       BOOST_REQUIRE( limit_order_idx.find( std::make_tuple( "alice", 1 ) ) == limit_order_idx.end() );
       BOOST_REQUIRE( alice.balance.amount.value == ASSET( "990.000 TESTS" ).amount.value );
-      BOOST_REQUIRE( alice.sbd_balance.amount.value == ASSET( "15.000 TBD" ).amount.value );
+      BOOST_REQUIRE( alice.cbd_balance.amount.value == ASSET( "15.000 TBD" ).amount.value );
       BOOST_REQUIRE( bob.balance.amount.value == ASSET( "10.000 TESTS" ).amount.value );
-      BOOST_REQUIRE( bob.sbd_balance.amount.value == ASSET( "977.500 TBD" ).amount.value );
+      BOOST_REQUIRE( bob.cbd_balance.amount.value == ASSET( "977.500 TBD" ).amount.value );
       validate_database();
 
       BOOST_TEST_MESSAGE( "--- Test filling an existing order and new order fully" );
@@ -3161,9 +3161,9 @@ BOOST_AUTO_TEST_CASE( limit_order_create2_apply )
       BOOST_REQUIRE( limit_order_idx.find( std::make_tuple( "alice", 3 ) ) == limit_order_idx.end() );
       BOOST_REQUIRE( limit_order_idx.find( std::make_tuple( "bob", 1 ) ) == limit_order_idx.end() );
       BOOST_REQUIRE( alice.balance.amount.value == ASSET( "985.000 TESTS" ).amount.value );
-      BOOST_REQUIRE( alice.sbd_balance.amount.value == ASSET( "22.500 TBD" ).amount.value );
+      BOOST_REQUIRE( alice.cbd_balance.amount.value == ASSET( "22.500 TBD" ).amount.value );
       BOOST_REQUIRE( bob.balance.amount.value == ASSET( "15.000 TESTS" ).amount.value );
-      BOOST_REQUIRE( bob.sbd_balance.amount.value == ASSET( "977.500 TBD" ).amount.value );
+      BOOST_REQUIRE( bob.cbd_balance.amount.value == ASSET( "977.500 TBD" ).amount.value );
       validate_database();
 
       BOOST_TEST_MESSAGE( "--- Test filling limit order with better order when partial order is better." );
@@ -3197,9 +3197,9 @@ BOOST_AUTO_TEST_CASE( limit_order_create2_apply )
       BOOST_REQUIRE( limit_order->sell_price == op.exchange_rate );
       BOOST_REQUIRE( limit_order->get_market() == std::make_pair( CBD_SYMBOL, CREA_SYMBOL ) );
       BOOST_REQUIRE( alice.balance.amount.value == ASSET( "975.000 TESTS" ).amount.value );
-      BOOST_REQUIRE( alice.sbd_balance.amount.value == ASSET( "33.500 TBD" ).amount.value );
+      BOOST_REQUIRE( alice.cbd_balance.amount.value == ASSET( "33.500 TBD" ).amount.value );
       BOOST_REQUIRE( bob.balance.amount.value == ASSET( "25.000 TESTS" ).amount.value );
-      BOOST_REQUIRE( bob.sbd_balance.amount.value == ASSET( "965.500 TBD" ).amount.value );
+      BOOST_REQUIRE( bob.cbd_balance.amount.value == ASSET( "965.500 TBD" ).amount.value );
       validate_database();
 
       limit_order_cancel_operation can;
@@ -3214,7 +3214,7 @@ BOOST_AUTO_TEST_CASE( limit_order_create2_apply )
       BOOST_TEST_MESSAGE( "--- Test filling limit order with better order when partial order is worse." );
 
       //auto gpo = db->get_dynamic_global_properties();
-      //auto start_sbd = gpo.current_sbd_supply;
+      //auto start_cbd = gpo.current_cbd_supply;
 
 
       op.owner = "alice";
@@ -3246,9 +3246,9 @@ BOOST_AUTO_TEST_CASE( limit_order_create2_apply )
       BOOST_REQUIRE( limit_order->sell_price == price( ASSET( "1.000 TESTS" ), ASSET( "1.100 TBD" ) ) );
       BOOST_REQUIRE( limit_order->get_market() == std::make_pair( CBD_SYMBOL, CREA_SYMBOL ) );
       BOOST_REQUIRE( alice.balance.amount.value == ASSET( "955.000 TESTS" ).amount.value );
-      BOOST_REQUIRE( alice.sbd_balance.amount.value == ASSET( "45.500 TBD" ).amount.value );
+      BOOST_REQUIRE( alice.cbd_balance.amount.value == ASSET( "45.500 TBD" ).amount.value );
       BOOST_REQUIRE( bob.balance.amount.value == ASSET( "35.909 TESTS" ).amount.value );
-      BOOST_REQUIRE( bob.sbd_balance.amount.value == ASSET( "954.500 TBD" ).amount.value );
+      BOOST_REQUIRE( bob.cbd_balance.amount.value == ASSET( "954.500 TBD" ).amount.value );
 
       BOOST_TEST_MESSAGE( "--- Test filling best order with multiple matches." );
       ACTORS( (sam)(dave) )
@@ -3443,7 +3443,7 @@ BOOST_AUTO_TEST_CASE( limit_order_cancel_apply )
 
       BOOST_REQUIRE( limit_order_idx.find( std::make_tuple( "alice", 5 ) ) == limit_order_idx.end() );
       BOOST_REQUIRE( alice.balance.amount.value == ASSET( "10.000 TESTS" ).amount.value );
-      BOOST_REQUIRE( alice.sbd_balance.amount.value == ASSET( "0.000 TBD" ).amount.value );
+      BOOST_REQUIRE( alice.cbd_balance.amount.value == ASSET( "0.000 TBD" ).amount.value );
    }
    FC_LOG_AND_RETHROW()
 }
@@ -3829,8 +3829,8 @@ BOOST_AUTO_TEST_CASE( escrow_transfer_validate )
       escrow_transfer_operation op;
       op.from = "alice";
       op.to = "bob";
-      op.sbd_amount = ASSET( "1.000 TBD" );
-      op.creativecoin_amount = ASSET( "1.000 TESTS" );
+      op.cbd_amount = ASSET( "1.000 TBD" );
+      op.crea_amount = ASSET( "1.000 TESTS" );
       op.escrow_id = 0;
       op.agent = "sam";
       op.fee = ASSET( "0.100 TESTS" );
@@ -3839,37 +3839,37 @@ BOOST_AUTO_TEST_CASE( escrow_transfer_validate )
       op.escrow_expiration = db->head_block_time() + 200;
 
       BOOST_TEST_MESSAGE( "--- failure when sbd symbol != CBD" );
-      op.sbd_amount.symbol = CREA_SYMBOL;
+      op.cbd_amount.symbol = CREA_SYMBOL;
       CREA_REQUIRE_THROW( op.validate(), fc::exception );
 
-      BOOST_TEST_MESSAGE( "--- failure when creativecoin symbol != CREA" );
-      op.sbd_amount.symbol = CBD_SYMBOL;
-      op.creativecoin_amount.symbol = CBD_SYMBOL;
+      BOOST_TEST_MESSAGE( "--- failure when crea symbol != CREA" );
+      op.cbd_amount.symbol = CBD_SYMBOL;
+      op.crea_amount.symbol = CBD_SYMBOL;
       CREA_REQUIRE_THROW( op.validate(), fc::exception );
 
       BOOST_TEST_MESSAGE( "--- failure when fee symbol != CBD and fee symbol != CREA" );
-      op.creativecoin_amount.symbol = CREA_SYMBOL;
+      op.crea_amount.symbol = CREA_SYMBOL;
       op.fee.symbol = VESTS_SYMBOL;
       CREA_REQUIRE_THROW( op.validate(), fc::exception );
 
-      BOOST_TEST_MESSAGE( "--- failure when sbd == 0 and creativecoin == 0" );
+      BOOST_TEST_MESSAGE( "--- failure when sbd == 0 and crea == 0" );
       op.fee.symbol = CREA_SYMBOL;
-      op.sbd_amount.amount = 0;
-      op.creativecoin_amount.amount = 0;
+      op.cbd_amount.amount = 0;
+      op.crea_amount.amount = 0;
       CREA_REQUIRE_THROW( op.validate(), fc::exception );
 
       BOOST_TEST_MESSAGE( "--- failure when sbd < 0" );
-      op.sbd_amount.amount = -100;
-      op.creativecoin_amount.amount = 1000;
+      op.cbd_amount.amount = -100;
+      op.crea_amount.amount = 1000;
       CREA_REQUIRE_THROW( op.validate(), fc::exception );
 
-      BOOST_TEST_MESSAGE( "--- failure when creativecoin < 0" );
-      op.sbd_amount.amount = 1000;
-      op.creativecoin_amount.amount = -100;
+      BOOST_TEST_MESSAGE( "--- failure when crea < 0" );
+      op.cbd_amount.amount = 1000;
+      op.crea_amount.amount = -100;
       CREA_REQUIRE_THROW( op.validate(), fc::exception );
 
       BOOST_TEST_MESSAGE( "--- failure when fee < 0" );
-      op.creativecoin_amount.amount = 1000;
+      op.crea_amount.amount = 1000;
       op.fee.amount = -100;
       CREA_REQUIRE_THROW( op.validate(), fc::exception );
 
@@ -3898,8 +3898,8 @@ BOOST_AUTO_TEST_CASE( escrow_transfer_authorities )
       escrow_transfer_operation op;
       op.from = "alice";
       op.to = "bob";
-      op.sbd_amount = ASSET( "1.000 TBD" );
-      op.creativecoin_amount = ASSET( "1.000 TESTS" );
+      op.cbd_amount = ASSET( "1.000 TBD" );
+      op.crea_amount = ASSET( "1.000 TESTS" );
       op.escrow_id = 0;
       op.agent = "sam";
       op.fee = ASSET( "0.100 TESTS" );
@@ -3936,8 +3936,8 @@ BOOST_AUTO_TEST_CASE( escrow_transfer_apply )
       escrow_transfer_operation op;
       op.from = "alice";
       op.to = "bob";
-      op.sbd_amount = ASSET( "1.000 TBD" );
-      op.creativecoin_amount = ASSET( "1.000 TESTS" );
+      op.cbd_amount = ASSET( "1.000 TBD" );
+      op.crea_amount = ASSET( "1.000 TESTS" );
       op.escrow_id = 0;
       op.agent = "sam";
       op.fee = ASSET( "0.100 TESTS" );
@@ -3953,8 +3953,8 @@ BOOST_AUTO_TEST_CASE( escrow_transfer_apply )
       CREA_REQUIRE_THROW( db->push_transaction( tx, 0 ), fc::exception );
 
       BOOST_TEST_MESSAGE( "--- falure when from cannot cover amount + fee" );
-      op.sbd_amount.amount = 0;
-      op.creativecoin_amount.amount = 10000;
+      op.cbd_amount.amount = 0;
+      op.crea_amount.amount = 10000;
       tx.operations.clear();
       tx.signatures.clear();
       tx.operations.push_back( op );
@@ -3962,7 +3962,7 @@ BOOST_AUTO_TEST_CASE( escrow_transfer_apply )
       CREA_REQUIRE_THROW( db->push_transaction( tx, 0 ), fc::exception );
 
       BOOST_TEST_MESSAGE( "--- failure when ratification deadline is in the past" );
-      op.creativecoin_amount.amount = 1000;
+      op.crea_amount.amount = 1000;
       op.ratification_deadline = db->head_block_time() - 200;
       tx.operations.clear();
       tx.signatures.clear();
@@ -3986,12 +3986,12 @@ BOOST_AUTO_TEST_CASE( escrow_transfer_apply )
       tx.operations.push_back( op );
       tx.sign( alice_private_key, db->get_chain_id() );
 
-      auto alice_creativecoin_balance = alice.balance - op.creativecoin_amount - op.fee;
-      auto alice_sbd_balance = alice.sbd_balance - op.sbd_amount;
-      auto bob_creativecoin_balance = bob.balance;
-      auto bob_sbd_balance = bob.sbd_balance;
-      auto sam_creativecoin_balance = sam.balance;
-      auto sam_sbd_balance = sam.sbd_balance;
+      auto alice_crea_balance = alice.balance - op.crea_amount - op.fee;
+      auto alice_cbd_balance = alice.cbd_balance - op.cbd_amount;
+      auto bob_crea_balance = bob.balance;
+      auto bob_cbd_balance = bob.cbd_balance;
+      auto sam_crea_balance = sam.balance;
+      auto sam_cbd_balance = sam.cbd_balance;
 
       db->push_transaction( tx, 0 );
 
@@ -4003,18 +4003,18 @@ BOOST_AUTO_TEST_CASE( escrow_transfer_apply )
       BOOST_REQUIRE( escrow.agent == op.agent );
       BOOST_REQUIRE( escrow.ratification_deadline == op.ratification_deadline );
       BOOST_REQUIRE( escrow.escrow_expiration == op.escrow_expiration );
-      BOOST_REQUIRE( escrow.sbd_balance == op.sbd_amount );
-      BOOST_REQUIRE( escrow.creativecoin_balance == op.creativecoin_amount );
+      BOOST_REQUIRE( escrow.cbd_balance == op.cbd_amount );
+      BOOST_REQUIRE( escrow.crea_balance == op.crea_amount );
       BOOST_REQUIRE( escrow.pending_fee == op.fee );
       BOOST_REQUIRE( !escrow.to_approved );
       BOOST_REQUIRE( !escrow.agent_approved );
       BOOST_REQUIRE( !escrow.disputed );
-      BOOST_REQUIRE( alice.balance == alice_creativecoin_balance );
-      BOOST_REQUIRE( alice.sbd_balance == alice_sbd_balance );
-      BOOST_REQUIRE( bob.balance == bob_creativecoin_balance );
-      BOOST_REQUIRE( bob.sbd_balance == bob_sbd_balance );
-      BOOST_REQUIRE( sam.balance == sam_creativecoin_balance );
-      BOOST_REQUIRE( sam.sbd_balance == sam_sbd_balance );
+      BOOST_REQUIRE( alice.balance == alice_crea_balance );
+      BOOST_REQUIRE( alice.cbd_balance == alice_cbd_balance );
+      BOOST_REQUIRE( bob.balance == bob_crea_balance );
+      BOOST_REQUIRE( bob.cbd_balance == bob_cbd_balance );
+      BOOST_REQUIRE( sam.balance == sam_crea_balance );
+      BOOST_REQUIRE( sam.cbd_balance == sam_cbd_balance );
 
       validate_database();
    }
@@ -4102,7 +4102,7 @@ BOOST_AUTO_TEST_CASE( escrow_approve_apply )
       et_op.from = "alice";
       et_op.to = "bob";
       et_op.agent = "sam";
-      et_op.creativecoin_amount = ASSET( "1.000 TESTS" );
+      et_op.crea_amount = ASSET( "1.000 TESTS" );
       et_op.fee = ASSET( "0.100 TESTS" );
       et_op.json_meta = "";
       et_op.ratification_deadline = db->head_block_time() + 100;
@@ -4158,8 +4158,8 @@ BOOST_AUTO_TEST_CASE( escrow_approve_apply )
       BOOST_REQUIRE( escrow.agent == "sam" );
       BOOST_REQUIRE( escrow.ratification_deadline == et_op.ratification_deadline );
       BOOST_REQUIRE( escrow.escrow_expiration == et_op.escrow_expiration );
-      BOOST_REQUIRE( escrow.sbd_balance == ASSET( "0.000 TBD" ) );
-      BOOST_REQUIRE( escrow.creativecoin_balance == ASSET( "1.000 TESTS" ) );
+      BOOST_REQUIRE( escrow.cbd_balance == ASSET( "0.000 TBD" ) );
+      BOOST_REQUIRE( escrow.crea_balance == ASSET( "1.000 TESTS" ) );
       BOOST_REQUIRE( escrow.pending_fee == ASSET( "0.100 TESTS" ) );
       BOOST_REQUIRE( escrow.to_approved );
       BOOST_REQUIRE( !escrow.agent_approved );
@@ -4177,8 +4177,8 @@ BOOST_AUTO_TEST_CASE( escrow_approve_apply )
       BOOST_REQUIRE( escrow.agent == "sam" );
       BOOST_REQUIRE( escrow.ratification_deadline == et_op.ratification_deadline );
       BOOST_REQUIRE( escrow.escrow_expiration == et_op.escrow_expiration );
-      BOOST_REQUIRE( escrow.sbd_balance == ASSET( "0.000 TBD" ) );
-      BOOST_REQUIRE( escrow.creativecoin_balance == ASSET( "1.000 TESTS" ) );
+      BOOST_REQUIRE( escrow.cbd_balance == ASSET( "0.000 TBD" ) );
+      BOOST_REQUIRE( escrow.crea_balance == ASSET( "1.000 TESTS" ) );
       BOOST_REQUIRE( escrow.pending_fee == ASSET( "0.100 TESTS" ) );
       BOOST_REQUIRE( escrow.to_approved );
       BOOST_REQUIRE( !escrow.agent_approved );
@@ -4199,8 +4199,8 @@ BOOST_AUTO_TEST_CASE( escrow_approve_apply )
       BOOST_REQUIRE( escrow.agent == "sam" );
       BOOST_REQUIRE( escrow.ratification_deadline == et_op.ratification_deadline );
       BOOST_REQUIRE( escrow.escrow_expiration == et_op.escrow_expiration );
-      BOOST_REQUIRE( escrow.sbd_balance == ASSET( "0.000 TBD" ) );
-      BOOST_REQUIRE( escrow.creativecoin_balance == ASSET( "1.000 TESTS" ) );
+      BOOST_REQUIRE( escrow.cbd_balance == ASSET( "0.000 TBD" ) );
+      BOOST_REQUIRE( escrow.crea_balance == ASSET( "1.000 TESTS" ) );
       BOOST_REQUIRE( escrow.pending_fee == ASSET( "0.100 TESTS" ) );
       BOOST_REQUIRE( escrow.to_approved );
       BOOST_REQUIRE( !escrow.agent_approved );
@@ -4315,8 +4315,8 @@ BOOST_AUTO_TEST_CASE( escrow_approve_apply )
          BOOST_REQUIRE( escrow.agent == "sam" );
          BOOST_REQUIRE( escrow.ratification_deadline == et_op.ratification_deadline );
          BOOST_REQUIRE( escrow.escrow_expiration == et_op.escrow_expiration );
-         BOOST_REQUIRE( escrow.sbd_balance == ASSET( "0.000 TBD" ) );
-         BOOST_REQUIRE( escrow.creativecoin_balance == ASSET( "1.000 TESTS" ) );
+         BOOST_REQUIRE( escrow.cbd_balance == ASSET( "0.000 TBD" ) );
+         BOOST_REQUIRE( escrow.crea_balance == ASSET( "1.000 TESTS" ) );
          BOOST_REQUIRE( escrow.pending_fee == ASSET( "0.000 TESTS" ) );
          BOOST_REQUIRE( escrow.to_approved );
          BOOST_REQUIRE( escrow.agent_approved );
@@ -4336,8 +4336,8 @@ BOOST_AUTO_TEST_CASE( escrow_approve_apply )
          BOOST_REQUIRE( escrow.agent == "sam" );
          BOOST_REQUIRE( escrow.ratification_deadline == et_op.ratification_deadline );
          BOOST_REQUIRE( escrow.escrow_expiration == et_op.escrow_expiration );
-         BOOST_REQUIRE( escrow.sbd_balance == ASSET( "0.000 TBD" ) );
-         BOOST_REQUIRE( escrow.creativecoin_balance == ASSET( "1.000 TESTS" ) );
+         BOOST_REQUIRE( escrow.cbd_balance == ASSET( "0.000 TBD" ) );
+         BOOST_REQUIRE( escrow.crea_balance == ASSET( "1.000 TESTS" ) );
          BOOST_REQUIRE( escrow.pending_fee == ASSET( "0.000 TESTS" ) );
          BOOST_REQUIRE( escrow.to_approved );
          BOOST_REQUIRE( escrow.agent_approved );
@@ -4421,7 +4421,7 @@ BOOST_AUTO_TEST_CASE( escrow_dispute_apply )
       et_op.from = "alice";
       et_op.to = "bob";
       et_op.agent = "sam";
-      et_op.creativecoin_amount = ASSET( "1.000 TESTS" );
+      et_op.crea_amount = ASSET( "1.000 TESTS" );
       et_op.fee = ASSET( "0.100 TESTS" );
       et_op.ratification_deadline = db->head_block_time() + CREA_BLOCK_INTERVAL;
       et_op.escrow_expiration = db->head_block_time() + 2 * CREA_BLOCK_INTERVAL;
@@ -4460,8 +4460,8 @@ BOOST_AUTO_TEST_CASE( escrow_dispute_apply )
       BOOST_REQUIRE( escrow.agent == "sam" );
       BOOST_REQUIRE( escrow.ratification_deadline == et_op.ratification_deadline );
       BOOST_REQUIRE( escrow.escrow_expiration == et_op.escrow_expiration );
-      BOOST_REQUIRE( escrow.sbd_balance == et_op.sbd_amount );
-      BOOST_REQUIRE( escrow.creativecoin_balance == et_op.creativecoin_amount );
+      BOOST_REQUIRE( escrow.cbd_balance == et_op.cbd_amount );
+      BOOST_REQUIRE( escrow.crea_balance == et_op.crea_amount );
       BOOST_REQUIRE( escrow.pending_fee == et_op.fee );
       BOOST_REQUIRE( escrow.to_approved );
       BOOST_REQUIRE( !escrow.agent_approved );
@@ -4494,8 +4494,8 @@ BOOST_AUTO_TEST_CASE( escrow_dispute_apply )
       BOOST_REQUIRE( escrow.agent == "sam" );
       BOOST_REQUIRE( escrow.ratification_deadline == et_op.ratification_deadline );
       BOOST_REQUIRE( escrow.escrow_expiration == et_op.escrow_expiration );
-      BOOST_REQUIRE( escrow.sbd_balance == et_op.sbd_amount );
-      BOOST_REQUIRE( escrow.creativecoin_balance == et_op.creativecoin_amount );
+      BOOST_REQUIRE( escrow.cbd_balance == et_op.cbd_amount );
+      BOOST_REQUIRE( escrow.crea_balance == et_op.crea_amount );
       BOOST_REQUIRE( escrow.pending_fee == ASSET( "0.000 TESTS" ) );
       BOOST_REQUIRE( escrow.to_approved );
       BOOST_REQUIRE( escrow.agent_approved );
@@ -4516,8 +4516,8 @@ BOOST_AUTO_TEST_CASE( escrow_dispute_apply )
       BOOST_REQUIRE( escrow.agent == "sam" );
       BOOST_REQUIRE( escrow.ratification_deadline == et_op.ratification_deadline );
       BOOST_REQUIRE( escrow.escrow_expiration == et_op.escrow_expiration );
-      BOOST_REQUIRE( escrow.sbd_balance == et_op.sbd_amount );
-      BOOST_REQUIRE( escrow.creativecoin_balance == et_op.creativecoin_amount );
+      BOOST_REQUIRE( escrow.cbd_balance == et_op.cbd_amount );
+      BOOST_REQUIRE( escrow.crea_balance == et_op.crea_amount );
       BOOST_REQUIRE( escrow.pending_fee == ASSET( "0.000 TESTS" ) );
       BOOST_REQUIRE( escrow.to_approved );
       BOOST_REQUIRE( escrow.agent_approved );
@@ -4541,8 +4541,8 @@ BOOST_AUTO_TEST_CASE( escrow_dispute_apply )
          BOOST_REQUIRE( escrow.agent == "sam" );
          BOOST_REQUIRE( escrow.ratification_deadline == et_op.ratification_deadline );
          BOOST_REQUIRE( escrow.escrow_expiration == et_op.escrow_expiration );
-         BOOST_REQUIRE( escrow.sbd_balance == et_op.sbd_amount );
-         BOOST_REQUIRE( escrow.creativecoin_balance == et_op.creativecoin_amount );
+         BOOST_REQUIRE( escrow.cbd_balance == et_op.cbd_amount );
+         BOOST_REQUIRE( escrow.crea_balance == et_op.crea_amount );
          BOOST_REQUIRE( escrow.pending_fee == ASSET( "0.000 TESTS" ) );
          BOOST_REQUIRE( escrow.to_approved );
          BOOST_REQUIRE( escrow.agent_approved );
@@ -4580,8 +4580,8 @@ BOOST_AUTO_TEST_CASE( escrow_dispute_apply )
          BOOST_REQUIRE( escrow.agent == "sam" );
          BOOST_REQUIRE( escrow.ratification_deadline == et_op.ratification_deadline );
          BOOST_REQUIRE( escrow.escrow_expiration == et_op.escrow_expiration );
-         BOOST_REQUIRE( escrow.sbd_balance == et_op.sbd_amount );
-         BOOST_REQUIRE( escrow.creativecoin_balance == et_op.creativecoin_amount );
+         BOOST_REQUIRE( escrow.cbd_balance == et_op.cbd_amount );
+         BOOST_REQUIRE( escrow.crea_balance == et_op.crea_amount );
          BOOST_REQUIRE( escrow.pending_fee == ASSET( "0.000 TESTS" ) );
          BOOST_REQUIRE( escrow.to_approved );
          BOOST_REQUIRE( escrow.agent_approved );
@@ -4603,8 +4603,8 @@ BOOST_AUTO_TEST_CASE( escrow_dispute_apply )
          BOOST_REQUIRE( escrow.agent == "sam" );
          BOOST_REQUIRE( escrow.ratification_deadline == et_op.ratification_deadline );
          BOOST_REQUIRE( escrow.escrow_expiration == et_op.escrow_expiration );
-         BOOST_REQUIRE( escrow.sbd_balance == et_op.sbd_amount );
-         BOOST_REQUIRE( escrow.creativecoin_balance == et_op.creativecoin_amount );
+         BOOST_REQUIRE( escrow.cbd_balance == et_op.cbd_amount );
+         BOOST_REQUIRE( escrow.crea_balance == et_op.crea_amount );
          BOOST_REQUIRE( escrow.pending_fee == ASSET( "0.000 TESTS" ) );
          BOOST_REQUIRE( escrow.to_approved );
          BOOST_REQUIRE( escrow.agent_approved );
@@ -4627,35 +4627,35 @@ BOOST_AUTO_TEST_CASE( escrow_release_validate )
       op.receiver = "bob";
 
 
-      BOOST_TEST_MESSAGE( "--- failure when creativecoin < 0" );
-      op.creativecoin_amount.amount = -1;
+      BOOST_TEST_MESSAGE( "--- failure when crea < 0" );
+      op.crea_amount.amount = -1;
       CREA_REQUIRE_THROW( op.validate(), fc::exception );
 
 
       BOOST_TEST_MESSAGE( "--- failure when sbd < 0" );
-      op.creativecoin_amount.amount = 0;
-      op.sbd_amount.amount = -1;
+      op.crea_amount.amount = 0;
+      op.cbd_amount.amount = -1;
       CREA_REQUIRE_THROW( op.validate(), fc::exception );
 
 
-      BOOST_TEST_MESSAGE( "--- failure when creativecoin == 0 and sbd == 0" );
-      op.sbd_amount.amount = 0;
+      BOOST_TEST_MESSAGE( "--- failure when crea == 0 and sbd == 0" );
+      op.cbd_amount.amount = 0;
       CREA_REQUIRE_THROW( op.validate(), fc::exception );
 
 
       BOOST_TEST_MESSAGE( "--- failure when sbd is not sbd symbol" );
-      op.sbd_amount = ASSET( "1.000 TESTS" );
+      op.cbd_amount = ASSET( "1.000 TESTS" );
       CREA_REQUIRE_THROW( op.validate(), fc::exception );
 
 
-      BOOST_TEST_MESSAGE( "--- failure when creativecoin is not creativecoin symbol" );
-      op.sbd_amount.symbol = CBD_SYMBOL;
-      op.creativecoin_amount = ASSET( "1.000 TBD" );
+      BOOST_TEST_MESSAGE( "--- failure when crea is not crea symbol" );
+      op.cbd_amount.symbol = CBD_SYMBOL;
+      op.crea_amount = ASSET( "1.000 TBD" );
       CREA_REQUIRE_THROW( op.validate(), fc::exception );
 
 
       BOOST_TEST_MESSAGE( "--- success" );
-      op.creativecoin_amount.symbol = CREA_SYMBOL;
+      op.crea_amount.symbol = CREA_SYMBOL;
       op.validate();
    }
    FC_LOG_AND_RETHROW()
@@ -4714,7 +4714,7 @@ BOOST_AUTO_TEST_CASE( escrow_release_apply )
       et_op.from = "alice";
       et_op.to = "bob";
       et_op.agent = "sam";
-      et_op.creativecoin_amount = ASSET( "1.000 TESTS" );
+      et_op.crea_amount = ASSET( "1.000 TESTS" );
       et_op.fee = ASSET( "0.100 TESTS" );
       et_op.ratification_deadline = db->head_block_time() + CREA_BLOCK_INTERVAL;
       et_op.escrow_expiration = db->head_block_time() + 2 * CREA_BLOCK_INTERVAL;
@@ -4734,7 +4734,7 @@ BOOST_AUTO_TEST_CASE( escrow_release_apply )
       op.agent = et_op.agent;
       op.who = et_op.from;
       op.receiver = et_op.to;
-      op.creativecoin_amount = ASSET( "0.100 TESTS" );
+      op.crea_amount = ASSET( "0.100 TESTS" );
 
       tx.clear();
       tx.operations.push_back( op );
@@ -4850,7 +4850,7 @@ BOOST_AUTO_TEST_CASE( escrow_release_apply )
       tx.sign( bob_private_key, db->get_chain_id() );
       db->push_transaction( tx, 0 );
 
-      BOOST_REQUIRE( db->get_escrow( op.from, op.escrow_id ).creativecoin_balance == ASSET( "0.900 TESTS" ) );
+      BOOST_REQUIRE( db->get_escrow( op.from, op.escrow_id ).crea_balance == ASSET( "0.900 TESTS" ) );
       BOOST_REQUIRE( db->get_account( "alice" ).balance == ASSET( "9.000 TESTS" ) );
 
 
@@ -4890,12 +4890,12 @@ BOOST_AUTO_TEST_CASE( escrow_release_apply )
       tx.sign( alice_private_key, db->get_chain_id() );
       db->push_transaction( tx, 0 );
 
-      BOOST_REQUIRE( db->get_escrow( op.from, op.escrow_id ).creativecoin_balance == ASSET( "0.800 TESTS" ) );
+      BOOST_REQUIRE( db->get_escrow( op.from, op.escrow_id ).crea_balance == ASSET( "0.800 TESTS" ) );
       BOOST_REQUIRE( db->get_account( "bob" ).balance == ASSET( "0.100 TESTS" ) );
 
 
       BOOST_TEST_MESSAGE( "--- failure when releasing more sbd than available" );
-      op.creativecoin_amount = ASSET( "1.000 TESTS" );
+      op.crea_amount = ASSET( "1.000 TESTS" );
 
       tx.clear();
       tx.operations.push_back( op );
@@ -4903,9 +4903,9 @@ BOOST_AUTO_TEST_CASE( escrow_release_apply )
       CREA_REQUIRE_THROW( db->push_transaction( tx, 0 ), fc::exception );
 
 
-      BOOST_TEST_MESSAGE( "--- failure when releasing less creativecoin than available" );
-      op.creativecoin_amount = ASSET( "0.000 TESTS" );
-      op.sbd_amount = ASSET( "1.000 TBD" );
+      BOOST_TEST_MESSAGE( "--- failure when releasing less crea than available" );
+      op.crea_amount = ASSET( "0.000 TESTS" );
+      op.cbd_amount = ASSET( "1.000 TBD" );
 
       tx.clear();
       tx.operations.push_back( op );
@@ -4929,8 +4929,8 @@ BOOST_AUTO_TEST_CASE( escrow_release_apply )
       op.from = et_op.from;
       op.receiver = et_op.from;
       op.who = et_op.to;
-      op.creativecoin_amount = ASSET( "0.100 TESTS" );
-      op.sbd_amount = ASSET( "0.000 TBD" );
+      op.crea_amount = ASSET( "0.100 TESTS" );
+      op.cbd_amount = ASSET( "0.000 TBD" );
       tx.operations.push_back( op );
       tx.sign( bob_private_key, db->get_chain_id() );
       CREA_REQUIRE_THROW( db->push_transaction( tx, 0 ), fc::exception );
@@ -4972,7 +4972,7 @@ BOOST_AUTO_TEST_CASE( escrow_release_apply )
       db->push_transaction( tx, 0 );
 
       BOOST_REQUIRE( db->get_account( "bob" ).balance == ASSET( "0.200 TESTS" ) );
-      BOOST_REQUIRE( db->get_escrow( et_op.from, et_op.escrow_id ).creativecoin_balance == ASSET( "0.700 TESTS" ) );
+      BOOST_REQUIRE( db->get_escrow( et_op.from, et_op.escrow_id ).crea_balance == ASSET( "0.700 TESTS" ) );
 
 
       BOOST_TEST_MESSAGE( "--- success releasing disputed escrow with agent to 'from'" );
@@ -4984,7 +4984,7 @@ BOOST_AUTO_TEST_CASE( escrow_release_apply )
       db->push_transaction( tx, 0 );
 
       BOOST_REQUIRE( db->get_account( "alice" ).balance == ASSET( "9.100 TESTS" ) );
-      BOOST_REQUIRE( db->get_escrow( et_op.from, et_op.escrow_id ).creativecoin_balance == ASSET( "0.600 TESTS" ) );
+      BOOST_REQUIRE( db->get_escrow( et_op.from, et_op.escrow_id ).crea_balance == ASSET( "0.600 TESTS" ) );
 
 
       BOOST_TEST_MESSAGE( "--- failure when 'to' attempts to release disputed expired escrow" );
@@ -5017,12 +5017,12 @@ BOOST_AUTO_TEST_CASE( escrow_release_apply )
       db->push_transaction( tx, 0 );
 
       BOOST_REQUIRE( db->get_account( "alice" ).balance == ASSET( "9.200 TESTS" ) );
-      BOOST_REQUIRE( db->get_escrow( et_op.from, et_op.escrow_id ).creativecoin_balance == ASSET( "0.500 TESTS" ) );
+      BOOST_REQUIRE( db->get_escrow( et_op.from, et_op.escrow_id ).crea_balance == ASSET( "0.500 TESTS" ) );
 
 
       BOOST_TEST_MESSAGE( "--- success deleting escrow when balances are both zero" );
       tx.clear();
-      op.creativecoin_amount = ASSET( "0.500 TESTS" );
+      op.crea_amount = ASSET( "0.500 TESTS" );
       tx.operations.push_back( op );
       tx.sign( sam_private_key, db->get_chain_id() );
       db->push_transaction( tx, 0 );
@@ -5049,7 +5049,7 @@ BOOST_AUTO_TEST_CASE( escrow_release_apply )
       tx.clear();
       op.receiver = et_op.to;
       op.who = et_op.agent;
-      op.creativecoin_amount = ASSET( "0.100 TESTS" );
+      op.crea_amount = ASSET( "0.100 TESTS" );
       tx.operations.push_back( op );
       tx.sign( sam_private_key, db->get_chain_id() );
       CREA_REQUIRE_THROW( db->push_transaction( tx, 0 ), fc::exception );
@@ -5096,7 +5096,7 @@ BOOST_AUTO_TEST_CASE( escrow_release_apply )
       db->push_transaction( tx, 0 );
 
       BOOST_REQUIRE( db->get_account( "bob" ).balance == ASSET( "0.300 TESTS" ) );
-      BOOST_REQUIRE( db->get_escrow( et_op.from, et_op.escrow_id ).creativecoin_balance == ASSET( "0.900 TESTS" ) );
+      BOOST_REQUIRE( db->get_escrow( et_op.from, et_op.escrow_id ).crea_balance == ASSET( "0.900 TESTS" ) );
 
 
       BOOST_TEST_MESSAGE( "--- success release non-disputed expired escrow to 'from' from 'to'" );
@@ -5107,7 +5107,7 @@ BOOST_AUTO_TEST_CASE( escrow_release_apply )
       db->push_transaction( tx, 0 );
 
       BOOST_REQUIRE( db->get_account( "alice" ).balance == ASSET( "8.700 TESTS" ) );
-      BOOST_REQUIRE( db->get_escrow( et_op.from, et_op.escrow_id ).creativecoin_balance == ASSET( "0.800 TESTS" ) );
+      BOOST_REQUIRE( db->get_escrow( et_op.from, et_op.escrow_id ).crea_balance == ASSET( "0.800 TESTS" ) );
 
 
       BOOST_TEST_MESSAGE( "--- failure when 'from' attempts to release non-disputed expired escrow to 'agent'" );
@@ -5135,7 +5135,7 @@ BOOST_AUTO_TEST_CASE( escrow_release_apply )
       db->push_transaction( tx, 0 );
 
       BOOST_REQUIRE( db->get_account( "bob" ).balance == ASSET( "0.400 TESTS" ) );
-      BOOST_REQUIRE( db->get_escrow( et_op.from, et_op.escrow_id ).creativecoin_balance == ASSET( "0.700 TESTS" ) );
+      BOOST_REQUIRE( db->get_escrow( et_op.from, et_op.escrow_id ).crea_balance == ASSET( "0.700 TESTS" ) );
 
 
       BOOST_TEST_MESSAGE( "--- success release non-disputed expired escrow to 'from' from 'from'" );
@@ -5146,12 +5146,12 @@ BOOST_AUTO_TEST_CASE( escrow_release_apply )
       db->push_transaction( tx, 0 );
 
       BOOST_REQUIRE( db->get_account( "alice" ).balance == ASSET( "8.800 TESTS" ) );
-      BOOST_REQUIRE( db->get_escrow( et_op.from, et_op.escrow_id ).creativecoin_balance == ASSET( "0.600 TESTS" ) );
+      BOOST_REQUIRE( db->get_escrow( et_op.from, et_op.escrow_id ).crea_balance == ASSET( "0.600 TESTS" ) );
 
 
       BOOST_TEST_MESSAGE( "--- success deleting escrow when balances are zero on non-disputed escrow" );
       tx.clear();
-      op.creativecoin_amount = ASSET( "0.600 TESTS" );
+      op.crea_amount = ASSET( "0.600 TESTS" );
       tx.operations.push_back( op );
       tx.sign( alice_private_key, db->get_chain_id() );
       db->push_transaction( tx, 0 );
@@ -5255,7 +5255,7 @@ BOOST_AUTO_TEST_CASE( transfer_to_savings_apply )
       fund( "alice", ASSET( "10.000 TBD" ) );
 
       BOOST_REQUIRE( db->get_account( "alice" ).balance == ASSET( "10.000 TESTS" ) );
-      BOOST_REQUIRE( db->get_account( "alice" ).sbd_balance == ASSET( "10.000 TBD" ) );
+      BOOST_REQUIRE( db->get_account( "alice" ).cbd_balance == ASSET( "10.000 TBD" ) );
 
       transfer_to_savings_operation op;
       signed_transaction tx;
@@ -5304,8 +5304,8 @@ BOOST_AUTO_TEST_CASE( transfer_to_savings_apply )
       tx.sign( alice_private_key, db->get_chain_id() );
       db->push_transaction( tx, 0 );
 
-      BOOST_REQUIRE( db->get_account( "alice" ).sbd_balance == ASSET( "9.000 TBD" ) );
-      BOOST_REQUIRE( db->get_account( "alice" ).savings_sbd_balance == ASSET( "1.000 TBD" ) );
+      BOOST_REQUIRE( db->get_account( "alice" ).cbd_balance == ASSET( "9.000 TBD" ) );
+      BOOST_REQUIRE( db->get_account( "alice" ).savings_cbd_balance == ASSET( "1.000 TBD" ) );
       validate_database();
 
 
@@ -5331,8 +5331,8 @@ BOOST_AUTO_TEST_CASE( transfer_to_savings_apply )
       tx.sign( alice_private_key, db->get_chain_id() );
       db->push_transaction( tx, 0 );
 
-      BOOST_REQUIRE( db->get_account( "alice" ).sbd_balance == ASSET( "8.000 TBD" ) );
-      BOOST_REQUIRE( db->get_account( "bob" ).savings_sbd_balance == ASSET( "1.000 TBD" ) );
+      BOOST_REQUIRE( db->get_account( "alice" ).cbd_balance == ASSET( "8.000 TBD" ) );
+      BOOST_REQUIRE( db->get_account( "bob" ).savings_cbd_balance == ASSET( "1.000 TBD" ) );
       validate_database();
    }
    FC_LOG_AND_RETHROW()
@@ -5501,8 +5501,8 @@ BOOST_AUTO_TEST_CASE( transfer_from_savings_apply )
       tx.sign( alice_private_key, db->get_chain_id() );
       db->push_transaction( tx, 0 );
 
-      BOOST_REQUIRE( db->get_account( "alice" ).sbd_balance == ASSET( "0.000 TBD" ) );
-      BOOST_REQUIRE( db->get_account( "alice" ).savings_sbd_balance == ASSET( "9.000 TBD" ) );
+      BOOST_REQUIRE( db->get_account( "alice" ).cbd_balance == ASSET( "0.000 TBD" ) );
+      BOOST_REQUIRE( db->get_account( "alice" ).savings_cbd_balance == ASSET( "9.000 TBD" ) );
       BOOST_REQUIRE( db->get_account( "alice" ).savings_withdraw_requests == 2 );
       BOOST_REQUIRE( db->get_savings_withdraw( "alice", op.request_id ).from == op.from );
       BOOST_REQUIRE( db->get_savings_withdraw( "alice", op.request_id ).to == op.to );
@@ -5553,8 +5553,8 @@ BOOST_AUTO_TEST_CASE( transfer_from_savings_apply )
       tx.sign( alice_private_key, db->get_chain_id() );
       db->push_transaction( tx, 0 );
 
-      BOOST_REQUIRE( db->get_account( "alice" ).sbd_balance == ASSET( "0.000 TBD" ) );
-      BOOST_REQUIRE( db->get_account( "alice" ).savings_sbd_balance == ASSET( "8.000 TBD" ) );
+      BOOST_REQUIRE( db->get_account( "alice" ).cbd_balance == ASSET( "0.000 TBD" ) );
+      BOOST_REQUIRE( db->get_account( "alice" ).savings_cbd_balance == ASSET( "8.000 TBD" ) );
       BOOST_REQUIRE( db->get_account( "alice" ).savings_withdraw_requests == 4 );
       BOOST_REQUIRE( db->get_savings_withdraw( "alice", op.request_id ).from == op.from );
       BOOST_REQUIRE( db->get_savings_withdraw( "alice", op.request_id ).to == op.to );
@@ -5569,18 +5569,18 @@ BOOST_AUTO_TEST_CASE( transfer_from_savings_apply )
       generate_blocks( db->head_block_time() + CREA_SAVINGS_WITHDRAW_TIME - fc::seconds( CREA_BLOCK_INTERVAL ), true );
 
       BOOST_REQUIRE( db->get_account( "alice" ).balance == ASSET( "0.000 TESTS" ) );
-      BOOST_REQUIRE( db->get_account( "alice" ).sbd_balance == ASSET( "0.000 TBD" ) );
+      BOOST_REQUIRE( db->get_account( "alice" ).cbd_balance == ASSET( "0.000 TBD" ) );
       BOOST_REQUIRE( db->get_account( "bob" ).balance == ASSET( "0.000 TESTS" ) );
-      BOOST_REQUIRE( db->get_account( "bob" ).sbd_balance == ASSET( "0.000 TBD" ) );
+      BOOST_REQUIRE( db->get_account( "bob" ).cbd_balance == ASSET( "0.000 TBD" ) );
       BOOST_REQUIRE( db->get_account( "alice" ).savings_withdraw_requests == 4 );
       validate_database();
 
       generate_block();
 
       BOOST_REQUIRE( db->get_account( "alice" ).balance == ASSET( "1.000 TESTS" ) );
-      BOOST_REQUIRE( db->get_account( "alice" ).sbd_balance == ASSET( "1.000 TBD" ) );
+      BOOST_REQUIRE( db->get_account( "alice" ).cbd_balance == ASSET( "1.000 TBD" ) );
       BOOST_REQUIRE( db->get_account( "bob" ).balance == ASSET( "1.000 TESTS" ) );
-      BOOST_REQUIRE( db->get_account( "bob" ).sbd_balance == ASSET( "1.000 TBD" ) );
+      BOOST_REQUIRE( db->get_account( "bob" ).cbd_balance == ASSET( "1.000 TBD" ) );
       BOOST_REQUIRE( db->get_account( "alice" ).savings_withdraw_requests == 0 );
       validate_database();
 
@@ -5967,8 +5967,8 @@ BOOST_AUTO_TEST_CASE( claim_reward_balance_validate )
    {
       claim_reward_balance_operation op;
       op.account = "alice";
-      op.reward_creativecoin = ASSET( "0.000 TESTS" );
-      op.reward_sbd = ASSET( "0.000 TBD" );
+      op.reward_crea = ASSET( "0.000 TESTS" );
+      op.reward_cbd = ASSET( "0.000 TBD" );
       op.reward_vests = ASSET( "0.000000 VESTS" );
 
 
@@ -5977,14 +5977,14 @@ BOOST_AUTO_TEST_CASE( claim_reward_balance_validate )
 
 
       BOOST_TEST_MESSAGE( "Testing single reward claims" );
-      op.reward_creativecoin.amount = 1000;
+      op.reward_crea.amount = 1000;
       op.validate();
 
-      op.reward_creativecoin.amount = 0;
-      op.reward_sbd.amount = 1000;
+      op.reward_crea.amount = 0;
+      op.reward_cbd.amount = 1000;
       op.validate();
 
-      op.reward_sbd.amount = 0;
+      op.reward_cbd.amount = 0;
       op.reward_vests.amount = 1000;
       op.validate();
 
@@ -5992,25 +5992,25 @@ BOOST_AUTO_TEST_CASE( claim_reward_balance_validate )
 
 
       BOOST_TEST_MESSAGE( "Testing wrong CREA symbol" );
-      op.reward_creativecoin = ASSET( "1.000 TBD" );
+      op.reward_crea = ASSET( "1.000 TBD" );
       CREA_REQUIRE_THROW( op.validate(), fc::assert_exception );
 
 
       BOOST_TEST_MESSAGE( "Testing wrong CBD symbol" );
-      op.reward_creativecoin = ASSET( "1.000 TESTS" );
-      op.reward_sbd = ASSET( "1.000 TESTS" );
+      op.reward_crea = ASSET( "1.000 TESTS" );
+      op.reward_cbd = ASSET( "1.000 TESTS" );
       CREA_REQUIRE_THROW( op.validate(), fc::assert_exception );
 
 
       BOOST_TEST_MESSAGE( "Testing wrong VESTS symbol" );
-      op.reward_sbd = ASSET( "1.000 TBD" );
+      op.reward_cbd = ASSET( "1.000 TBD" );
       op.reward_vests = ASSET( "1.000 TESTS" );
       CREA_REQUIRE_THROW( op.validate(), fc::assert_exception );
 
 
       BOOST_TEST_MESSAGE( "Testing a single negative amount" );
-      op.reward_creativecoin.amount = 1000;
-      op.reward_sbd.amount = -1000;
+      op.reward_crea.amount = 1000;
+      op.reward_cbd.amount = -1000;
       CREA_REQUIRE_THROW( op.validate(), fc::assert_exception );
    }
    FC_LOG_AND_RETHROW()
@@ -6131,27 +6131,27 @@ BOOST_AUTO_TEST_CASE( claim_reward_balance_apply )
       {
          db.modify( db.get_account( "alice" ), []( account_object& a )
          {
-            a.reward_creativecoin_balance = ASSET( "10.000 TESTS" );
-            a.reward_sbd_balance = ASSET( "10.000 TBD" );
+            a.reward_crea_balance = ASSET( "10.000 TESTS" );
+            a.reward_cbd_balance = ASSET( "10.000 TBD" );
             a.reward_vesting_balance = ASSET( "10.000000 VESTS" );
-            a.reward_vesting_creativecoin = ASSET( "10.000 TESTS" );
+            a.reward_vesting_crea = ASSET( "10.000 TESTS" );
          });
 
          db.modify( db.get_dynamic_global_properties(), []( dynamic_global_property_object& gpo )
          {
             gpo.current_supply += ASSET( "20.000 TESTS" );
-            gpo.current_sbd_supply += ASSET( "10.000 TBD" );
+            gpo.current_cbd_supply += ASSET( "10.000 TBD" );
             gpo.virtual_supply += ASSET( "20.000 TESTS" );
             gpo.pending_rewarded_vesting_shares += ASSET( "10.000000 VESTS" );
-            gpo.pending_rewarded_vesting_creativecoin += ASSET( "10.000 TESTS" );
+            gpo.pending_rewarded_vesting_crea += ASSET( "10.000 TESTS" );
          });
       });
 
       generate_block();
       validate_database();
 
-      auto alice_creativecoin = db->get_account( "alice" ).balance;
-      auto alice_sbd = db->get_account( "alice" ).sbd_balance;
+      auto alice_crea = db->get_account( "alice" ).balance;
+      auto alice_cbd = db->get_account( "alice" ).cbd_balance;
       auto alice_vests = db->get_account( "alice" ).vesting_shares;
 
 
@@ -6161,8 +6161,8 @@ BOOST_AUTO_TEST_CASE( claim_reward_balance_apply )
       signed_transaction tx;
 
       op.account = "alice";
-      op.reward_creativecoin = ASSET( "20.000 TESTS" );
-      op.reward_sbd = ASSET( "0.000 TBD" );
+      op.reward_crea = ASSET( "20.000 TESTS" );
+      op.reward_cbd = ASSET( "0.000 TBD" );
       op.reward_vests = ASSET( "0.000000 VESTS" );
 
       tx.operations.push_back( op );
@@ -6173,20 +6173,20 @@ BOOST_AUTO_TEST_CASE( claim_reward_balance_apply )
 
       BOOST_TEST_MESSAGE( "--- Claiming a partial reward balance" );
 
-      op.reward_creativecoin = ASSET( "0.000 TESTS" );
+      op.reward_crea = ASSET( "0.000 TESTS" );
       op.reward_vests = ASSET( "5.000000 VESTS" );
       tx.clear();
       tx.operations.push_back( op );
       tx.sign( alice_private_key, db->get_chain_id() );
       db->push_transaction( tx, 0 );
 
-      BOOST_REQUIRE( db->get_account( "alice" ).balance == alice_creativecoin + op.reward_creativecoin );
-      BOOST_REQUIRE( db->get_account( "alice" ).reward_creativecoin_balance == ASSET( "10.000 TESTS" ) );
-      BOOST_REQUIRE( db->get_account( "alice" ).sbd_balance == alice_sbd + op.reward_sbd );
-      BOOST_REQUIRE( db->get_account( "alice" ).reward_sbd_balance == ASSET( "10.000 TBD" ) );
+      BOOST_REQUIRE( db->get_account( "alice" ).balance == alice_crea + op.reward_crea );
+      BOOST_REQUIRE( db->get_account( "alice" ).reward_crea_balance == ASSET( "10.000 TESTS" ) );
+      BOOST_REQUIRE( db->get_account( "alice" ).cbd_balance == alice_cbd + op.reward_cbd );
+      BOOST_REQUIRE( db->get_account( "alice" ).reward_cbd_balance == ASSET( "10.000 TBD" ) );
       BOOST_REQUIRE( db->get_account( "alice" ).vesting_shares == alice_vests + op.reward_vests );
       BOOST_REQUIRE( db->get_account( "alice" ).reward_vesting_balance == ASSET( "5.000000 VESTS" ) );
-      BOOST_REQUIRE( db->get_account( "alice" ).reward_vesting_creativecoin == ASSET( "5.000 TESTS" ) );
+      BOOST_REQUIRE( db->get_account( "alice" ).reward_vesting_crea == ASSET( "5.000 TESTS" ) );
       validate_database();
 
       alice_vests += op.reward_vests;
@@ -6194,20 +6194,20 @@ BOOST_AUTO_TEST_CASE( claim_reward_balance_apply )
 
       BOOST_TEST_MESSAGE( "--- Claiming the full reward balance" );
 
-      op.reward_creativecoin = ASSET( "10.000 TESTS" );
-      op.reward_sbd = ASSET( "10.000 TBD" );
+      op.reward_crea = ASSET( "10.000 TESTS" );
+      op.reward_cbd = ASSET( "10.000 TBD" );
       tx.clear();
       tx.operations.push_back( op );
       tx.sign( alice_private_key, db->get_chain_id() );
       db->push_transaction( tx, 0 );
 
-      BOOST_REQUIRE( db->get_account( "alice" ).balance == alice_creativecoin + op.reward_creativecoin );
-      BOOST_REQUIRE( db->get_account( "alice" ).reward_creativecoin_balance == ASSET( "0.000 TESTS" ) );
-      BOOST_REQUIRE( db->get_account( "alice" ).sbd_balance == alice_sbd + op.reward_sbd );
-      BOOST_REQUIRE( db->get_account( "alice" ).reward_sbd_balance == ASSET( "0.000 TBD" ) );
+      BOOST_REQUIRE( db->get_account( "alice" ).balance == alice_crea + op.reward_crea );
+      BOOST_REQUIRE( db->get_account( "alice" ).reward_crea_balance == ASSET( "0.000 TESTS" ) );
+      BOOST_REQUIRE( db->get_account( "alice" ).cbd_balance == alice_cbd + op.reward_cbd );
+      BOOST_REQUIRE( db->get_account( "alice" ).reward_cbd_balance == ASSET( "0.000 TBD" ) );
       BOOST_REQUIRE( db->get_account( "alice" ).vesting_shares == alice_vests + op.reward_vests );
       BOOST_REQUIRE( db->get_account( "alice" ).reward_vesting_balance == ASSET( "0.000000 VESTS" ) );
-      BOOST_REQUIRE( db->get_account( "alice" ).reward_vesting_creativecoin == ASSET( "0.000 TESTS" ) );
+      BOOST_REQUIRE( db->get_account( "alice" ).reward_vesting_crea == ASSET( "0.000 TESTS" ) );
             validate_database();
    }
    FC_LOG_AND_RETHROW()
@@ -6712,19 +6712,19 @@ BOOST_AUTO_TEST_CASE( comment_beneficiaries_apply )
       {
          db.modify( db.get_dynamic_global_properties(), [=]( dynamic_global_property_object& gpo )
          {
-            gpo.current_supply -= gpo.total_reward_fund_creativecoin;
-            gpo.total_reward_fund_creativecoin = ASSET( "100.000 TESTS" );
-            gpo.current_supply += gpo.total_reward_fund_creativecoin;
+            gpo.current_supply -= gpo.total_reward_fund_crea;
+            gpo.total_reward_fund_crea = ASSET( "100.000 TESTS" );
+            gpo.current_supply += gpo.total_reward_fund_crea;
          });
       });
 
       generate_block();
 
-      BOOST_REQUIRE( db->get_account( "bob" ).reward_creativecoin_balance == ASSET( "0.000 TESTS" ) );
-      BOOST_REQUIRE( db->get_account( "bob" ).reward_sbd_balance == ASSET( "0.000 TBD" ) );
-      BOOST_REQUIRE( db->get_account( "bob" ).reward_vesting_creativecoin.amount + db->get_account( "sam" ).reward_vesting_creativecoin.amount == db->get_comment( "alice", string( "test" ) ).beneficiary_payout_value.amount );
-      BOOST_REQUIRE( ( db->get_account( "alice" ).reward_sbd_balance.amount + db->get_account( "alice" ).reward_vesting_creativecoin.amount ) == db->get_account( "bob" ).reward_vesting_creativecoin.amount + 2 );
-      BOOST_REQUIRE( ( db->get_account( "alice" ).reward_sbd_balance.amount + db->get_account( "alice" ).reward_vesting_creativecoin.amount ) * 2 == db->get_account( "sam" ).reward_vesting_creativecoin.amount + 3 );
+      BOOST_REQUIRE( db->get_account( "bob" ).reward_crea_balance == ASSET( "0.000 TESTS" ) );
+      BOOST_REQUIRE( db->get_account( "bob" ).reward_cbd_balance == ASSET( "0.000 TBD" ) );
+      BOOST_REQUIRE( db->get_account( "bob" ).reward_vesting_crea.amount + db->get_account( "sam" ).reward_vesting_crea.amount == db->get_comment( "alice", string( "test" ) ).beneficiary_payout_value.amount );
+      BOOST_REQUIRE( ( db->get_account( "alice" ).reward_cbd_balance.amount + db->get_account( "alice" ).reward_vesting_crea.amount ) == db->get_account( "bob" ).reward_vesting_crea.amount + 2 );
+      BOOST_REQUIRE( ( db->get_account( "alice" ).reward_cbd_balance.amount + db->get_account( "alice" ).reward_vesting_crea.amount ) * 2 == db->get_account( "sam" ).reward_vesting_crea.amount + 3 );
    }
    FC_LOG_AND_RETHROW()
 }
@@ -6744,7 +6744,7 @@ BOOST_AUTO_TEST_CASE( witness_set_properties_validate )
       op.url = "foo.bar";
       op.fee = ASSET( "1.000 TESTS" );
       op.block_signing_key = signing_key.get_public_key();
-      op.props.account_creation_fee = legacy_creativecoin_asset::from_asset( asset(CREA_MIN_ACCOUNT_CREATION_FEE + 10, CREA_SYMBOL) );
+      op.props.account_creation_fee = legacy_crea_asset::from_asset( asset(CREA_MIN_ACCOUNT_CREATION_FEE + 10, CREA_SYMBOL) );
       op.props.maximum_block_size = CREA_MIN_BLOCK_SIZE_LIMIT + 100;
 
       signed_transaction tx;
@@ -6769,23 +6769,23 @@ BOOST_AUTO_TEST_CASE( witness_set_properties_validate )
       prop_op.props[ "maximum_block_size" ] = fc::raw::pack_to_vector( CREA_MIN_BLOCK_SIZE_LIMIT - 1 );
       CREA_REQUIRE_THROW( prop_op.validate(), fc::assert_exception );
 
-      BOOST_TEST_MESSAGE( "--- failure when setting sbd_interest_rate with negative number" );
+      BOOST_TEST_MESSAGE( "--- failure when setting cbd_interest_rate with negative number" );
       prop_op.props.erase( "maximum_block_size" );
-      prop_op.props[ "sbd_interest_rate" ] = fc::raw::pack_to_vector( -700 );
+      prop_op.props[ "cbd_interest_rate" ] = fc::raw::pack_to_vector( -700 );
       CREA_REQUIRE_THROW( prop_op.validate(), fc::assert_exception );
 
-      BOOST_TEST_MESSAGE( "--- failure when setting sbd_interest_rate to CREA_100_PERCENT + 1" );
-      prop_op.props[ "sbd_interest_rate" ].clear();
-      prop_op.props[ "sbd_interest_rate" ] = fc::raw::pack_to_vector( CREA_100_PERCENT + 1 );
+      BOOST_TEST_MESSAGE( "--- failure when setting cbd_interest_rate to CREA_100_PERCENT + 1" );
+      prop_op.props[ "cbd_interest_rate" ].clear();
+      prop_op.props[ "cbd_interest_rate" ] = fc::raw::pack_to_vector( CREA_100_PERCENT + 1 );
       CREA_REQUIRE_THROW( prop_op.validate(), fc::assert_exception );
 
-      BOOST_TEST_MESSAGE( "--- failure when setting new sbd_exchange_rate with CBD / CREA" );
-      prop_op.props.erase( "sbd_interest_rate" );
-      prop_op.props[ "sbd_exchange_rate" ] = fc::raw::pack_to_vector( price( ASSET( "1.000 TESTS" ), ASSET( "10.000 TBD" ) ) );
+      BOOST_TEST_MESSAGE( "--- failure when setting new cbd_exchange_rate with CBD / CREA" );
+      prop_op.props.erase( "cbd_interest_rate" );
+      prop_op.props[ "cbd_exchange_rate" ] = fc::raw::pack_to_vector( price( ASSET( "1.000 TESTS" ), ASSET( "10.000 TBD" ) ) );
       CREA_REQUIRE_THROW( prop_op.validate(), fc::assert_exception );
 
       BOOST_TEST_MESSAGE( "--- failure when setting new url with length of zero" );
-      prop_op.props.erase( "sbd_exchange_rate" );
+      prop_op.props.erase( "cbd_exchange_rate" );
       prop_op.props[ "url" ] = fc::raw::pack_to_vector( "" );
       CREA_REQUIRE_THROW( prop_op.validate(), fc::assert_exception );
 
@@ -6862,7 +6862,7 @@ BOOST_AUTO_TEST_CASE( witness_set_properties_apply )
       op.url = "foo.bar";
       op.fee = ASSET( "1.000 TESTS" );
       op.block_signing_key = signing_key.get_public_key();
-      op.props.account_creation_fee = legacy_creativecoin_asset::from_asset( asset(CREA_MIN_ACCOUNT_CREATION_FEE + 10, CREA_SYMBOL) );
+      op.props.account_creation_fee = legacy_crea_asset::from_asset( asset(CREA_MIN_ACCOUNT_CREATION_FEE + 10, CREA_SYMBOL) );
       op.props.maximum_block_size = CREA_MIN_BLOCK_SIZE_LIMIT + 100;
 
       signed_transaction tx;
@@ -6894,20 +6894,20 @@ BOOST_AUTO_TEST_CASE( witness_set_properties_apply )
       db->push_transaction( tx, 0 );
       BOOST_REQUIRE( alice_witness.props.maximum_block_size == CREA_MIN_BLOCK_SIZE_LIMIT + 1 );
 
-      // Setting sbd_interest_rate
+      // Setting cbd_interest_rate
       prop_op.props.erase( "maximim_block_size" );
-      prop_op.props[ "sbd_interest_rate" ] = fc::raw::pack_to_vector( 700 );
+      prop_op.props[ "cbd_interest_rate" ] = fc::raw::pack_to_vector( 700 );
       tx.clear();
       tx.operations.push_back( prop_op );
       tx.sign( signing_key, db->get_chain_id() );
       db->push_transaction( tx, 0 );
-      BOOST_REQUIRE( alice_witness.props.sbd_interest_rate == 700 );
+      BOOST_REQUIRE( alice_witness.props.cbd_interest_rate == 700 );
 
       // Setting new signing_key
       private_key_type old_signing_key = signing_key;
       signing_key = generate_private_key( "new_key" );
       public_key_type alice_pub = signing_key.get_public_key();
-      prop_op.props.erase( "sbd_interest_rate" );
+      prop_op.props.erase( "cbd_interest_rate" );
       prop_op.props[ "new_signing_key" ] = fc::raw::pack_to_vector( alice_pub );
       tx.clear();
       tx.operations.push_back( prop_op );
@@ -6915,20 +6915,20 @@ BOOST_AUTO_TEST_CASE( witness_set_properties_apply )
       db->push_transaction( tx, 0 );
       BOOST_REQUIRE( alice_witness.signing_key == alice_pub );
 
-      // Setting new sbd_exchange_rate
+      // Setting new cbd_exchange_rate
       prop_op.props.erase( "new_signing_key" );
       prop_op.props[ "key" ].clear();
       prop_op.props[ "key" ] = fc::raw::pack_to_vector( signing_key.get_public_key() );
-      prop_op.props[ "sbd_exchange_rate" ] = fc::raw::pack_to_vector( price( ASSET(" 1.000 TBD" ), ASSET( "100.000 TESTS" ) ) );
+      prop_op.props[ "cbd_exchange_rate" ] = fc::raw::pack_to_vector( price( ASSET(" 1.000 TBD" ), ASSET( "100.000 TESTS" ) ) );
       tx.clear();
       tx.operations.push_back( prop_op );
       tx.sign( signing_key, db->get_chain_id() );
       db->push_transaction( tx, 0 );
-      BOOST_REQUIRE( alice_witness.sbd_exchange_rate == price( ASSET( "1.000 TBD" ), ASSET( "100.000 TESTS" ) ) );
-      BOOST_REQUIRE( alice_witness.last_sbd_exchange_update == db->head_block_time() );
+      BOOST_REQUIRE( alice_witness.cbd_exchange_rate == price( ASSET( "1.000 TBD" ), ASSET( "100.000 TESTS" ) ) );
+      BOOST_REQUIRE( alice_witness.last_cbd_exchange_update == db->head_block_time() );
 
       // Setting new url
-      prop_op.props.erase( "sbd_exchange_rate" );
+      prop_op.props.erase( "cbd_exchange_rate" );
       prop_op.props[ "url" ] = fc::raw::pack_to_vector( "foo.bar" );
       tx.clear();
       tx.operations.push_back( prop_op );
@@ -6937,7 +6937,7 @@ BOOST_AUTO_TEST_CASE( witness_set_properties_apply )
       BOOST_REQUIRE( alice_witness.url == "foo.bar" );
 
       // Setting new extranious_property
-      prop_op.props.erase( "sbd_exchange_rate" );
+      prop_op.props.erase( "cbd_exchange_rate" );
       prop_op.props[ "extraneous_property" ] = fc::raw::pack_to_vector( "foo" );
       tx.clear();
       tx.operations.push_back( prop_op );
@@ -7294,7 +7294,7 @@ BOOST_AUTO_TEST_CASE( create_claimed_account_apply )
       BOOST_REQUIRE( bob.recovery_account == "alice" );
       BOOST_REQUIRE( bob.created == db->head_block_time() );
       BOOST_REQUIRE( bob.balance.amount.value == ASSET( "0.000 TESTS" ).amount.value );
-      BOOST_REQUIRE( bob.sbd_balance.amount.value == ASSET( "0.000 TBD" ).amount.value );
+      BOOST_REQUIRE( bob.cbd_balance.amount.value == ASSET( "0.000 TBD" ).amount.value );
       BOOST_REQUIRE( bob.vesting_shares.amount.value == ASSET( "0.000000 VESTS" ).amount.value );
       BOOST_REQUIRE( bob.id._id == bob_auth.id._id );
 

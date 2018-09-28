@@ -2,7 +2,6 @@
 
 #include <crea/chain/database.hpp>
 #include <crea/chain/index.hpp>
-#include <crea/chain/operation_notification.hpp>
 
 #include <fc/io/json.hpp>
 

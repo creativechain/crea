@@ -1,16 +1,16 @@
 #ifdef IS_TEST_NET
 #include <boost/test/unit_test.hpp>
 
-#include <creativecoin/protocol/exceptions.hpp>
-#include <creativecoin/protocol/hardfork.hpp>
+#include <crea/protocol/exceptions.hpp>
+#include <crea/protocol/hardfork.hpp>
 
-#include <creativecoin/chain/database.hpp>
-#include <creativecoin/chain/database_exceptions.hpp>
-#include <creativecoin/chain/creativecoin_objects.hpp>
+#include <crea/chain/database.hpp>
+#include <crea/chain/database_exceptions.hpp>
+#include <crea/chain/crea_objects.hpp>
 
-#include <creativecoin/chain/util/reward.hpp>
+#include <crea/chain/util/reward.hpp>
 
-#include <creativecoin/plugins/witness/witness_objects.hpp>
+#include <crea/plugins/witness/witness_objects.hpp>
 
 #include <fc/macros.hpp>
 #include <fc/crypto/digest.hpp>
@@ -22,9 +22,9 @@
 #include <iostream>
 #include <stdexcept>
 
-using namespace creativecoin;
-using namespace creativecoin::chain;
-using namespace creativecoin::protocol;
+using namespace crea;
+using namespace crea::chain;
+using namespace crea::protocol;
 using fc::string;
 
 BOOST_FIXTURE_TEST_SUITE( undo_tests, clean_database_fixture )
@@ -160,7 +160,7 @@ BOOST_AUTO_TEST_CASE( undo_object_disapear )
       */
       //Temporary. After fix, this line should be enabled.
       //CREA_REQUIRE_THROW( ao.modify( obj1, [&]( account_object& obj ){ obj.name = "name00"; obj.proxy = "proxy00"; } ), boost::exception );
-      
+
       //Temporary. After fix, this line should be removed.
       ao.modify( obj1, [&]( account_object& obj ){ obj.name = "nameXYZ"; obj.proxy = "proxyXYZ"; } );
 
@@ -432,7 +432,7 @@ BOOST_AUTO_TEST_CASE( undo_generate_blocks )
       tx.operations.push_back( op );
 
       tx.set_expiration( db->head_block_time() + CREA_MAX_TIME_UNTIL_EXPIRATION );
-      tx.sign( bob_private_key, db->get_chain_id() );
+      sign( tx, bob_private_key );
       db->push_transaction( tx, 0 );
       generate_blocks( 1 );
       tx.operations.clear();
@@ -449,7 +449,7 @@ BOOST_AUTO_TEST_CASE( undo_generate_blocks )
       tx.operations.push_back( op );
 
       tx.set_expiration( db->head_block_time() + CREA_MAX_TIME_UNTIL_EXPIRATION );
-      tx.sign( alice_private_key, db->get_chain_id() );
+      sign( tx, alice_private_key );
 
       db->push_transaction( tx, 0 );
       generate_blocks( 1 );
@@ -469,8 +469,8 @@ BOOST_AUTO_TEST_CASE( undo_generate_blocks )
       tx.operations.push_back( op );
 
       tx.set_expiration( db->head_block_time() + CREA_MAX_TIME_UNTIL_EXPIRATION );
-      tx.sign( dan_private_key, db->get_chain_id() );
-      tx.sign( chuck_private_key, db->get_chain_id() );
+      sign( tx, dan_private_key );
+      sign( tx, chuck_private_key );
 
       db->push_transaction( tx, 0 );
       generate_blocks( 1 );

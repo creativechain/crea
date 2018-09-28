@@ -7,7 +7,6 @@
 
 #include <crea/chain/database.hpp>
 #include <crea/chain/index.hpp>
-#include <crea/chain/operation_notification.hpp>
 #include <crea/chain/account_object.hpp>
 #include <crea/chain/comment_object.hpp>
 

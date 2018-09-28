@@ -24,6 +24,7 @@ add_library( crea_protocol
              smt_operations.cpp
              crea_operations.cpp
              types.cpp
+             schema_types.cpp
              authority.cpp
              operations.cpp
              sign_state.cpp
@@ -38,7 +39,7 @@ add_library( crea_protocol
              "${CMAKE_CURRENT_BINARY_DIR}/include/crea/protocol/hardfork.hpp"
            )
 
-target_link_libraries( crea_protocol fc )
+target_link_libraries( crea_protocol crea_schema fc )
 target_include_directories( crea_protocol
                             PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/include" "${CMAKE_CURRENT_BINARY_DIR}/include" )
 

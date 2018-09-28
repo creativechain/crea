@@ -19,6 +19,7 @@ add_library( crea_chain
 
              generic_custom_operation_interpreter.cpp
 
+             util/rd.cpp
              util/reward.cpp
              util/impacted.cpp
              util/advanced_benchmark_dumper.cpp

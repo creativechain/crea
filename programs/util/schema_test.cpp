@@ -1,6 +1,17 @@
-#include <graphene/db/schema.hpp>
-#include <graphene/db/schema_impl.hpp>
-#include <graphene/db/schema_types.hpp>
+
+namespace crea { namespace protocol {
+struct votable_asset_info_v1;
+} }
+
+#include <crea/protocol/types_fwd.hpp>
+
+#include <crea/schema/schema.hpp>
+#include <crea/schema/schema_impl.hpp>
+#include <crea/schema/schema_types.hpp>
+
+#include <crea/chain/schema_types/oid.hpp>
+#include <crea/protocol/schema_types/account_name_type.hpp>
+#include <crea/protocol/schema_types/asset_symbol_type.hpp>
 
 #include <iostream>
 #include <memory>
@@ -10,7 +21,7 @@
 #include <crea/chain/account_object.hpp>
 #include <crea/chain/crea_objects.hpp>
 
-using namespace graphene::db;
+using namespace crea::schema;
 
 struct mystruct
 {
@@ -47,7 +58,7 @@ void process( std::shared_ptr< abstract_schema > s )
 int main( int argc, char** argv, char** envp )
 {
    std::vector< std::shared_ptr< abstract_schema > > schemas;
-
+   schemas.push_back( get_schema_for_type< mystruct >() );
    schemas.push_back( get_schema_for_type< crea::chain::account_object >() );
    schemas.push_back( get_schema_for_type< crea::chain::comment_object >() );
    add_dependent_schemas( schemas );

@@ -10,18 +10,21 @@
 #include <crea/chain/global_property_object.hpp>
 #include <crea/chain/history_object.hpp>
 #include <crea/chain/index.hpp>
+#include <crea/chain/pending_required_action_object.hpp>
+#include <crea/chain/pending_optional_action_object.hpp>
 #include <crea/chain/smt_objects.hpp>
 #include <crea/chain/crea_evaluator.hpp>
 #include <crea/chain/crea_objects.hpp>
 #include <crea/chain/transaction_object.hpp>
 #include <crea/chain/shared_db_merkle.hpp>
-#include <crea/chain/operation_notification.hpp>
 #include <crea/chain/witness_schedule.hpp>
 
 #include <crea/chain/util/asset.hpp>
 #include <crea/chain/util/reward.hpp>
 #include <crea/chain/util/uint256.hpp>
 #include <crea/chain/util/reward.hpp>
+#include <crea/chain/util/manabar.hpp>
+#include <crea/chain/util/rd_setup.hpp>
 
 #include <fc/smart_ref_impl.hpp>
 #include <fc/uint128.hpp>
@@ -89,10 +92,7 @@ database_impl::database_impl( database& self )
    : _self(self), _evaluator_registry(self) {}
 
 database::database()
-   : _my( new database_impl(*this) )
-{
-   set_chain_id( CREA_CHAIN_ID_NAME );
-}
+   : _my( new database_impl(*this) ) {}
 
 database::~database()
 {
@@ -358,10 +358,10 @@ optional<signed_block> database::fetch_block_by_id( const block_id_type& id )con
 optional<signed_block> database::fetch_block_by_number( uint32_t block_num )const
 { try {
    optional< signed_block > b;
+   shared_ptr< fork_item > fitem = _fork_db.fetch_block_on_main_branch_by_number( block_num );
 
-   auto results = _fork_db.fetch_block_by_number( block_num );
-   if( results.size() == 1 )
-      b = results[0]->data;
+   if( fitem )
+      b = fitem->data;
    else
       b = _block_log.read_block_by_num( block_num );
 
@@ -401,9 +401,11 @@ chain_id_type database::get_chain_id() const
    return crea_chain_id;
 }
 
-void database::set_chain_id( const std::string& _chain_id_name )
+void database::set_chain_id( const chain_id_type& chain_id )
 {
-   crea_chain_id = generate_chain_id( _chain_id_name );
+   crea_chain_id = chain_id;
+
+   idump( (crea_chain_id) );
 }
 
 void database::foreach_block(std::function<bool(const signed_block_header&, const signed_block&)> processor) const
@@ -629,6 +631,29 @@ bool database::push_block(const signed_block& new_block, uint32_t skip)
 {
    //fc::time_point begin_time = fc::time_point::now();
 
+   auto block_num = new_block.block_num();
+   if( _checkpoints.size() && _checkpoints.rbegin()->second != block_id_type() )
+   {
+      auto itr = _checkpoints.find( block_num );
+      if( itr != _checkpoints.end() )
+         FC_ASSERT( new_block.id() == itr->second, "Block did not match checkpoint", ("checkpoint",*itr)("block_id",new_block.id()) );
+
+      if( _checkpoints.rbegin()->first >= block_num )
+         skip = skip_witness_signature
+              | skip_transaction_signatures
+              | skip_transaction_dupe_check
+              /*| skip_fork_db Fork db cannot be skipped or else blocks will not be written out to block log */
+              | skip_block_size_check
+              | skip_tapos_check
+              | skip_authority_check
+              /* | skip_merkle_check While blockchain is being downloaded, txs need to be validated against block headers */
+              | skip_undo_history_check
+              | skip_witness_schedule_check
+              | skip_validate
+              | skip_validate_invariants
+              ;
+   }
+
    bool result;
    detail::with_skip_flags( *this, skip, [&]()
    {
@@ -688,7 +713,7 @@ bool database::_push_block(const signed_block& new_block)
          //Only switch forks if new_head is actually higher than head
          if( new_head->data.block_num() > head_block_num() )
          {
-            // wlog( "Switching to fork: ${id}", ("id",new_head->data.id()) );
+            wlog( "Switching to fork: ${id}", ("id",new_head->data.id()) );
             auto branches = _fork_db.fetch_branch_from(new_head->data.id(), head_block_id());
 
             // pop blocks until we hit the forked block
@@ -698,10 +723,11 @@ bool database::_push_block(const signed_block& new_block)
             // push all blocks on the new fork
             for( auto ritr = branches.first.rbegin(); ritr != branches.first.rend(); ++ritr )
             {
-                // ilog( "pushing blocks from fork ${n} ${id}", ("n",(*ritr)->data.block_num())("id",(*ritr)->data.id()) );
+                ilog( "pushing blocks from fork ${n} ${id}", ("n",(*ritr)->data.block_num())("id",(*ritr)->data.id()) );
                 optional<fc::exception> except;
                 try
                 {
+                   _fork_db.set_head( *ritr );
                    auto session = start_undo_session();
                    apply_block( (*ritr)->data, skip );
                    session.push();
@@ -709,14 +735,13 @@ bool database::_push_block(const signed_block& new_block)
                 catch ( const fc::exception& e ) { except = e; }
                 if( except )
                 {
-                   // wlog( "exception thrown while switching forks ${e}", ("e",except->to_detail_string() ) );
+                   wlog( "exception thrown while switching forks ${e}", ("e",except->to_detail_string() ) );
                    // remove the rest of branches.first from the fork_db, those blocks are invalid
                    while( ritr != branches.first.rend() )
                    {
                       _fork_db.remove( (*ritr)->data.id() );
                       ++ritr;
                    }
-                   _fork_db.set_head( branches.second.front() );
 
                    // pop all blocks from the bad fork
                    while( head_block_id() != branches.second.back()->data.previous )
@@ -725,6 +750,7 @@ bool database::_push_block(const signed_block& new_block)
                    // restore all blocks from the good fork
                    for( auto ritr = branches.second.rbegin(); ritr != branches.second.rend(); ++ritr )
                    {
+                      _fork_db.set_head( *ritr );
                       auto session = start_undo_session();
                       apply_block( (*ritr)->data, skip );
                       session.push();
@@ -772,16 +798,19 @@ void database::push_transaction( const signed_transaction& trx, uint32_t skip )
       {
          FC_ASSERT( fc::raw::pack_size(trx) <= (get_dynamic_global_properties().maximum_block_size - 256) );
          set_producing( true );
+         set_pending_tx( true );
          detail::with_skip_flags( *this, skip,
             [&]()
             {
                _push_transaction( trx );
             });
          set_producing( false );
+         set_pending_tx( false );
       }
       catch( ... )
       {
          set_producing( false );
+         set_pending_tx( false );
          throw;
       }
    }
@@ -846,11 +875,38 @@ signed_block database::_generate_block(
    if( !(skip & skip_witness_signature) )
       FC_ASSERT( witness_obj.signing_key == block_signing_private_key.get_public_key() );
 
-   static const size_t max_block_header_size = fc::raw::pack_size( signed_block_header() ) + 4;
-   auto maximum_block_size = get_dynamic_global_properties().maximum_block_size; //CREA_MAX_BLOCK_SIZE;
-   size_t total_block_size = max_block_header_size;
-
    signed_block pending_block;
+
+   pending_block.previous = head_block_id();
+   pending_block.timestamp = when;
+   pending_block.witness = witness_owner;
+
+   if( has_hardfork( CREA_HARDFORK_0_5__54 ) )
+   {
+      const auto& witness = get_witness( witness_owner );
+
+      if( witness.running_version != CREA_BLOCKCHAIN_VERSION )
+         pending_block.extensions.insert( block_header_extensions( CREA_BLOCKCHAIN_VERSION ) );
+
+      const auto& hfp = get_hardfork_property_object();
+
+      if( hfp.current_hardfork_version < CREA_BLOCKCHAIN_VERSION // Binary is newer hardfork than has been applied
+         && ( witness.hardfork_version_vote != _hardfork_versions[ hfp.last_hardfork + 1 ] || witness.hardfork_time_vote != _hardfork_times[ hfp.last_hardfork + 1 ] ) ) // Witness vote does not match binary configuration
+      {
+         // Make vote match binary configuration
+         pending_block.extensions.insert( block_header_extensions( hardfork_version_vote( _hardfork_versions[ hfp.last_hardfork + 1 ], _hardfork_times[ hfp.last_hardfork + 1 ] ) ) );
+      }
+      else if( hfp.current_hardfork_version == CREA_BLOCKCHAIN_VERSION // Binary does not know of a new hardfork
+         && witness.hardfork_version_vote > CREA_BLOCKCHAIN_VERSION ) // Voting for hardfork in the future, that we do not know of...
+      {
+         // Make vote match binary configuration. This is vote to not apply the new hardfork.
+         pending_block.extensions.insert( block_header_extensions( hardfork_version_vote( _hardfork_versions[ hfp.last_hardfork ], _hardfork_times[ hfp.last_hardfork ] ) ) );
+      }
+   }
+
+   // The 4 is for the max size of the transaction vector length
+   size_t total_block_size = fc::raw::pack_size( pending_block ) + 4;
+   auto maximum_block_size = get_dynamic_global_properties().maximum_block_size; //CREA_MAX_BLOCK_SIZE;
 
    //
    // The following code throws away existing pending_tx_session and
@@ -865,6 +921,16 @@ signed_block database::_generate_block(
    //
    _pending_tx_session.reset();
    _pending_tx_session = start_undo_session();
+
+   FC_TODO( "Safe to remove after HF20 occurs because no more pre HF20 blocks will be generated" );
+   if( has_hardfork( CREA_HARDFORK_0_20 ) )
+   {
+      /// modify current witness so transaction evaluators can know who included the transaction
+      modify( get_dynamic_global_properties(), [&]( dynamic_global_property_object& dgp )
+      {
+         dgp.current_witness = scheduled_witness;
+      });
+   }
 
    uint64_t postponed_tx_count = 0;
    // pop pending state (reset to head block state)
@@ -914,35 +980,10 @@ signed_block database::_generate_block(
    // However, the push_block() call below will re-create the
    // _pending_tx_session.
 
-   pending_block.previous = head_block_id();
-   pending_block.timestamp = when;
    pending_block.transaction_merkle_root = pending_block.calculate_merkle_root();
-   pending_block.witness = witness_owner;
-   if( has_hardfork( CREA_HARDFORK_0_5__54 ) )
-   {
-      const auto& witness = get_witness( witness_owner );
-
-      if( witness.running_version != CREA_BLOCKCHAIN_VERSION )
-         pending_block.extensions.insert( block_header_extensions( CREA_BLOCKCHAIN_VERSION ) );
-
-      const auto& hfp = get_hardfork_property_object();
-
-      if( hfp.current_hardfork_version < CREA_BLOCKCHAIN_VERSION // Binary is newer hardfork than has been applied
-         && ( witness.hardfork_version_vote != _hardfork_versions[ hfp.last_hardfork + 1 ] || witness.hardfork_time_vote != _hardfork_times[ hfp.last_hardfork + 1 ] ) ) // Witness vote does not match binary configuration
-      {
-         // Make vote match binary configuration
-         pending_block.extensions.insert( block_header_extensions( hardfork_version_vote( _hardfork_versions[ hfp.last_hardfork + 1 ], _hardfork_times[ hfp.last_hardfork + 1 ] ) ) );
-      }
-      else if( hfp.current_hardfork_version == CREA_BLOCKCHAIN_VERSION // Binary does not know of a new hardfork
-         && witness.hardfork_version_vote > CREA_BLOCKCHAIN_VERSION ) // Voting for hardfork in the future, that we do not know of...
-      {
-         // Make vote match binary configuration. This is vote to not apply the new hardfork.
-         pending_block.extensions.insert( block_header_extensions( hardfork_version_vote( _hardfork_versions[ hfp.last_hardfork ], _hardfork_times[ hfp.last_hardfork ] ) ) );
-      }
-   }
 
    if( !(skip & skip_witness_signature) )
-      pending_block.sign( block_signing_private_key );
+      pending_block.sign( block_signing_private_key, has_hardfork( CREA_HARDFORK_0_20__1944 ) ? fc::ecc::bip_0062 : fc::ecc::fc_canonical );
 
    // TODO:  Move this to _push_block() so session is restored.
    if( !(skip & skip_block_size_check) )
@@ -990,33 +1031,72 @@ void database::clear_pending()
    FC_CAPTURE_AND_RETHROW()
 }
 
-inline const void database::push_virtual_operation( const operation& op, bool force )
+void database::push_virtual_operation( const operation& op )
 {
-   /*
-   if( !force )
-   {
-      #if defined( IS_LOW_MEM ) && ! defined( IS_TEST_NET )
-      return;
-      #endif
-   }
-   */
-
    FC_ASSERT( is_virtual_operation( op ) );
-   operation_notification note(op);
+   operation_notification note = create_operation_notification( op );
    ++_current_virtual_op;
    note.virtual_op = _current_virtual_op;
    notify_pre_apply_operation( note );
    notify_post_apply_operation( note );
 }
 
-void database::notify_pre_apply_operation( operation_notification& note )
+void database::pre_push_virtual_operation( const operation& op )
 {
-   note.trx_id       = _current_trx_id;
-   note.block        = _current_block_num;
-   note.trx_in_block = _current_trx_in_block;
-   note.op_in_trx    = _current_op_in_trx;
+   FC_ASSERT( is_virtual_operation( op ) );
+   operation_notification note = create_operation_notification( op );
+   ++_current_virtual_op;
+   note.virtual_op = _current_virtual_op;
+   notify_pre_apply_operation( note );
+}
 
+void database::post_push_virtual_operation( const operation& op )
+{
+   FC_ASSERT( is_virtual_operation( op ) );
+   operation_notification note = create_operation_notification( op );
+   note.virtual_op = _current_virtual_op;
+   notify_post_apply_operation( note );
+}
+
+void database::notify_pre_apply_operation( const operation_notification& note )
+{
    CREA_TRY_NOTIFY( _pre_apply_operation_signal, note )
+}
+
+void database::push_required_action( const required_automated_action& a )
+{
+   create< pending_required_action_object >( [&]( pending_required_action_object& pending_action )
+   {
+      pending_action.action = a;
+   });
+}
+
+void database::push_optional_action( const optional_automated_action& a )
+{
+   create< pending_optional_action_object >( [&]( pending_optional_action_object& pending_action )
+   {
+      pending_action.action = a;
+   });
+}
+
+void database::notify_pre_apply_required_action( const required_action_notification& note )
+{
+   CREA_TRY_NOTIFY( _pre_apply_required_action_signal, note );
+}
+
+void database::notify_post_apply_required_action( const required_action_notification& note )
+{
+   CREA_TRY_NOTIFY( _post_apply_required_action_signal, note );
+}
+
+void database::notify_pre_apply_optional_action( const optional_action_notification& note )
+{
+   CREA_TRY_NOTIFY( _pre_apply_optional_action_signal, note );
+}
+
+void database::notify_post_apply_optional_action( const optional_action_notification& note )
+{
+   CREA_TRY_NOTIFY( _post_apply_optional_action_signal, note );
 }
 
 void database::notify_post_apply_operation( const operation_notification& note )
@@ -1140,11 +1220,11 @@ std::pair< asset, asset > database::create_cbd( const account_object& to_account
    return assets;
 }
 
-/**
- * @param to_account - the account to receive the new vesting shares
- * @param liquid     - CREA or liquid SMT to be converted to vesting shares
- */
-asset database::create_vesting( const account_object& to_account, asset liquid, bool to_reward_balance )
+// Create vesting, then a caller-supplied callback after determining how many shares to create, but before
+// we modify the database.
+// This allows us to implement virtual op pre-notifications in the Before function.
+template< typename Before >
+asset create_vesting2( database& db, const account_object& to_account, asset liquid, bool to_reward_balance, Before&& before_vesting_callback )
 {
    try
    {
@@ -1172,18 +1252,19 @@ asset database::create_vesting( const account_object& to_account, asset liquid, 
       {
          FC_ASSERT( liquid.symbol.is_vesting() == false );
          // Get share price.
-         const auto& smt = get< smt_token_object, by_symbol >( liquid.symbol );
+         const auto& smt = db.get< smt_token_object, by_symbol >( liquid.symbol );
          FC_ASSERT( smt.allow_voting == to_reward_balance, "No voting - no rewards" );
          price vesting_share_price = to_reward_balance ? smt.get_reward_vesting_share_price() : smt.get_vesting_share_price();
          // Calculate new vesting from provided liquid using share price.
          asset new_vesting = calculate_new_vesting( vesting_share_price );
+         before_vesting_callback( new_vesting );
          // Add new vesting to owner's balance.
          if( to_reward_balance )
-            adjust_reward_balance( to_account, liquid, new_vesting );
+            db.adjust_reward_balance( to_account, liquid, new_vesting );
          else
-            adjust_balance( to_account, new_vesting );
+            db.adjust_balance( to_account, new_vesting );
          // Update global vesting pool numbers.
-         modify( smt, [&]( smt_token_object& smt_object )
+         db.modify( smt, [&]( smt_token_object& smt_object )
          {
             if( to_reward_balance )
             {
@@ -1206,17 +1287,32 @@ asset database::create_vesting( const account_object& to_account, asset liquid, 
       FC_ASSERT( liquid.symbol == CREA_SYMBOL );
       // ^ A novelty, needed but risky in case someone managed to slip CBD/TESTS here in blockchain history.
       // Get share price.
-      const auto& cprops = get_dynamic_global_properties();
+      const auto& cprops = db.get_dynamic_global_properties();
       price vesting_share_price = to_reward_balance ? cprops.get_reward_vesting_share_price() : cprops.get_vesting_share_price();
       // Calculate new vesting from provided liquid using share price.
       asset new_vesting = calculate_new_vesting( vesting_share_price );
+      before_vesting_callback( new_vesting );
       // Add new vesting to owner's balance.
       if( to_reward_balance )
-         adjust_reward_balance( to_account, liquid, new_vesting );
+      {
+         db.adjust_reward_balance( to_account, liquid, new_vesting );
+      }
       else
-         adjust_balance( to_account, new_vesting );
+      {
+         if( db.has_hardfork( CREA_HARDFORK_0_20__2539 ) )
+         {
+            db.modify( to_account, [&]( account_object& a )
+            {
+               util::manabar_params params( util::get_effective_vesting_shares( a ), CREA_VOTING_MANA_REGENERATION_SECONDS );
+               a.voting_manabar.regenerate_mana( params, db.head_block_time() );
+               a.voting_manabar.use_mana( -new_vesting.amount.value );
+            });
+         }
+
+         db.adjust_balance( to_account, new_vesting );
+      }
       // Update global vesting pool numbers.
-      modify( cprops, [&]( dynamic_global_property_object& props )
+      db.modify( cprops, [&]( dynamic_global_property_object& props )
       {
          if( to_reward_balance )
          {
@@ -1231,11 +1327,20 @@ asset database::create_vesting( const account_object& to_account, asset liquid, 
       } );
       // Update witness voting numbers.
       if( !to_reward_balance )
-         adjust_proxied_witness_votes( to_account, new_vesting.amount );
+         db.adjust_proxied_witness_votes( to_account, new_vesting.amount );
 
       return new_vesting;
    }
    FC_CAPTURE_AND_RETHROW( (to_account.name)(liquid) )
+}
+
+/**
+ * @param to_account - the account to receive the new vesting shares
+ * @param liquid     - CREA or liquid SMT to be converted to vesting shares
+ */
+asset database::create_vesting( const account_object& to_account, asset liquid, bool to_reward_balance )
+{
+   return create_vesting2( *this, to_account, liquid, to_reward_balance, []( asset vests_created ) {} );
 }
 
 fc::sha256 database::get_pow_target()const
@@ -1378,68 +1483,118 @@ void database::clear_null_account_balance()
    const auto& null_account = get_account( CREA_NULL_ACCOUNT );
    asset total_crea( 0, CREA_SYMBOL );
    asset total_cbd( 0, CBD_SYMBOL );
+   asset total_vests( 0, VESTS_SYMBOL );
+
+   asset vesting_shares_crea_value = asset( 0, CREA_SYMBOL );
 
    if( null_account.balance.amount > 0 )
    {
       total_crea += null_account.balance;
-      adjust_balance( null_account, -null_account.balance );
    }
 
    if( null_account.savings_balance.amount > 0 )
    {
       total_crea += null_account.savings_balance;
-      adjust_savings_balance( null_account, -null_account.savings_balance );
    }
 
    if( null_account.cbd_balance.amount > 0 )
    {
       total_cbd += null_account.cbd_balance;
-      adjust_balance( null_account, -null_account.cbd_balance );
    }
 
    if( null_account.savings_cbd_balance.amount > 0 )
    {
       total_cbd += null_account.savings_cbd_balance;
+   }
+
+   if( null_account.vesting_shares.amount > 0 )
+   {
+      const auto& gpo = get_dynamic_global_properties();
+      vesting_shares_crea_value = null_account.vesting_shares * gpo.get_vesting_share_price();
+      total_crea += vesting_shares_crea_value;
+      total_vests += null_account.vesting_shares;
+   }
+
+   if( null_account.reward_crea_balance.amount > 0 )
+   {
+      total_crea += null_account.reward_crea_balance;
+   }
+
+   if( null_account.reward_cbd_balance.amount > 0 )
+   {
+      total_cbd += null_account.reward_cbd_balance;
+   }
+
+   if( null_account.reward_vesting_balance.amount > 0 )
+   {
+      total_crea += null_account.reward_vesting_crea;
+      total_vests += null_account.reward_vesting_balance;
+   }
+
+   if( (total_crea.amount.value == 0) && (total_cbd.amount.value == 0) && (total_vests.amount.value == 0) )
+      return;
+
+   operation vop_op = clear_null_account_balance_operation();
+   clear_null_account_balance_operation& vop = vop_op.get< clear_null_account_balance_operation >();
+   if( total_crea.amount.value > 0 )
+      vop.total_cleared.push_back( total_crea );
+   if( total_vests.amount.value > 0 )
+      vop.total_cleared.push_back( total_vests );
+   if( total_cbd.amount.value > 0 )
+      vop.total_cleared.push_back( total_cbd );
+   pre_push_virtual_operation( vop_op );
+
+   /////////////////////////////////////////////////////////////////////////////////////
+
+   if( null_account.balance.amount > 0 )
+   {
+      adjust_balance( null_account, -null_account.balance );
+   }
+
+   if( null_account.savings_balance.amount > 0 )
+   {
+      adjust_savings_balance( null_account, -null_account.savings_balance );
+   }
+
+   if( null_account.cbd_balance.amount > 0 )
+   {
+      adjust_balance( null_account, -null_account.cbd_balance );
+   }
+
+   if( null_account.savings_cbd_balance.amount > 0 )
+   {
       adjust_savings_balance( null_account, -null_account.savings_cbd_balance );
    }
 
    if( null_account.vesting_shares.amount > 0 )
    {
       const auto& gpo = get_dynamic_global_properties();
-      auto converted_crea = null_account.vesting_shares * gpo.get_vesting_share_price();
 
       modify( gpo, [&]( dynamic_global_property_object& g )
       {
          g.total_vesting_shares -= null_account.vesting_shares;
-         g.total_vesting_fund_crea -= converted_crea;
+         g.total_vesting_fund_crea -= vesting_shares_crea_value;
       });
 
       modify( null_account, [&]( account_object& a )
       {
          a.vesting_shares.amount = 0;
       });
-
-      total_crea += converted_crea;
    }
 
    if( null_account.reward_crea_balance.amount > 0 )
    {
-      total_crea += null_account.reward_crea_balance;
       adjust_reward_balance( null_account, -null_account.reward_crea_balance );
    }
 
    if( null_account.reward_cbd_balance.amount > 0 )
    {
-      total_cbd += null_account.reward_cbd_balance;
       adjust_reward_balance( null_account, -null_account.reward_cbd_balance );
    }
 
    if( null_account.reward_vesting_balance.amount > 0 )
    {
       const auto& gpo = get_dynamic_global_properties();
-
-      total_crea += null_account.reward_vesting_crea;
-
       modify( gpo, [&]( dynamic_global_property_object& g )
       {
          g.pending_rewarded_vesting_shares -= null_account.reward_vesting_balance;
@@ -1453,11 +1608,15 @@ void database::clear_null_account_balance()
       });
    }
 
+   //////////////////////////////////////////////////////////////
+
    if( total_crea.amount > 0 )
       adjust_supply( -total_crea );
 
    if( total_cbd.amount > 0 )
       adjust_supply( -total_cbd );
+
+   post_push_virtual_operation( vop_op );
 }
 
 /**
@@ -1538,6 +1697,10 @@ void database::process_vesting_withdrawals()
             {
                const auto& to_account = get< account_object, by_name >( itr->to_account );
 
+               operation vop = fill_vesting_withdraw_operation( from_account.name, to_account.name, asset( to_deposit, VESTS_SYMBOL ), asset( to_deposit, VESTS_SYMBOL ) );
+
+               pre_push_virtual_operation( vop );
+
                modify( to_account, [&]( account_object& a )
                {
                   a.vesting_shares.amount += to_deposit;
@@ -1545,7 +1708,7 @@ void database::process_vesting_withdrawals()
 
                adjust_proxied_witness_votes( to_account, to_deposit );
 
-               push_virtual_operation( fill_vesting_withdraw_operation( from_account.name, to_account.name, asset( to_deposit, VESTS_SYMBOL ), asset( to_deposit, VESTS_SYMBOL ) ) );
+               post_push_virtual_operation( vop );
             }
          }
       }
@@ -1565,6 +1728,10 @@ void database::process_vesting_withdrawals()
 
             if( to_deposit > 0 )
             {
+               operation vop = fill_vesting_withdraw_operation( from_account.name, to_account.name, asset( to_deposit, VESTS_SYMBOL), converted_crea );
+
+               pre_push_virtual_operation( vop );
+
                modify( to_account, [&]( account_object& a )
                {
                   a.balance += converted_crea;
@@ -1576,7 +1743,7 @@ void database::process_vesting_withdrawals()
                   o.total_vesting_shares.amount -= to_deposit;
                });
 
-               push_virtual_operation( fill_vesting_withdraw_operation( from_account.name, to_account.name, asset( to_deposit, VESTS_SYMBOL), converted_crea ) );
+               post_push_virtual_operation( vop );
             }
          }
       }
@@ -1585,6 +1752,8 @@ void database::process_vesting_withdrawals()
       FC_ASSERT( to_convert >= 0, "Deposited more vests than were supposed to be withdrawn" );
 
       auto converted_crea = asset( to_convert, VESTS_SYMBOL ) * cprops.get_vesting_share_price();
+      operation vop = fill_vesting_withdraw_operation( from_account.name, from_account.name, asset( to_convert, VESTS_SYMBOL ), converted_crea );
+      pre_push_virtual_operation( vop );
 
       modify( from_account, [&]( account_object& a )
       {
@@ -1612,7 +1781,7 @@ void database::process_vesting_withdrawals()
       if( to_withdraw > 0 )
          adjust_proxied_witness_votes( from_account, -to_withdraw );
 
-      push_virtual_operation( fill_vesting_withdraw_operation( from_account.name, from_account.name, asset( to_convert, VESTS_SYMBOL ), converted_crea ) );
+      post_push_virtual_operation( vop );
    }
 }
 
@@ -1678,9 +1847,13 @@ share_type database::pay_curators( const comment_object& c, share_type& max_rewa
             {
                unclaimed_rewards -= claim;
                const auto& voter = get( item->voter );
-               auto reward = create_vesting( voter, asset( claim, CREA_SYMBOL ), has_hardfork( CREA_HARDFORK_0_17__659 ) );
-
-               push_virtual_operation( curation_reward_operation( voter.name, reward, c.author, to_string( c.permlink ) ) );
+               operation vop = curation_reward_operation( voter.name, asset(0, VESTS_SYMBOL), c.author, to_string( c.permlink ) );
+               create_vesting2( *this, voter, asset( claim, CREA_SYMBOL ), has_hardfork( CREA_HARDFORK_0_17__659 ),
+                  [&]( const asset& reward )
+                  {
+                     vop.get< curation_reward_operation >().reward = reward;
+                     pre_push_virtual_operation( vop );
+                  } );
 
                #ifndef IS_LOW_MEM
                   modify( voter, [&]( account_object& a )
@@ -1688,6 +1861,7 @@ share_type database::pay_curators( const comment_object& c, share_type& max_rewa
                      a.curation_rewards += claim;
                   });
                #endif
+               post_push_virtual_operation( vop );
             }
          }
       }
@@ -1740,8 +1914,27 @@ share_type database::cashout_comment_helper( util::comment_reward_context& ctx, 
             for( auto& b : comment.beneficiaries )
             {
                auto benefactor_tokens = ( author_tokens * b.weight ) / CREA_100_PERCENT;
-               auto vest_created = create_vesting( get_account( b.account ), asset( benefactor_tokens, CREA_SYMBOL ), has_hardfork( CREA_HARDFORK_0_17__659 ) );
-               push_virtual_operation( comment_benefactor_reward_operation( b.account, comment.author, to_string( comment.permlink ), vest_created ) );
+               auto benefactor_vesting_crea = benefactor_tokens;
+               auto vop = comment_benefactor_reward_operation( b.account, comment.author, to_string( comment.permlink ), asset( 0, CBD_SYMBOL ), asset( 0, CREA_SYMBOL ), asset( 0, VESTS_SYMBOL ) );
+
+               if( has_hardfork( CREA_HARDFORK_0_20__2022 ) )
+               {
+                  auto benefactor_cbd_crea = ( benefactor_tokens * comment.percent_crea_dollars ) / ( 2 * CREA_100_PERCENT ) ;
+                  benefactor_vesting_crea  = benefactor_tokens - benefactor_cbd_crea;
+                  auto cbd_payout           = create_cbd( get_account( b.account ), asset( benefactor_cbd_crea, CREA_SYMBOL ), true );
+
+                  vop.cbd_payout   = cbd_payout.first; // CBD portion
+                  vop.crea_payout = cbd_payout.second; // CREA portion
+               }
+
+               create_vesting2( *this, get_account( b.account ), asset( benefactor_vesting_crea, CREA_SYMBOL ), has_hardfork( CREA_HARDFORK_0_17__659 ),
+               [&]( const asset& reward )
+               {
+                  vop.vesting_payout = reward;
+                  pre_push_virtual_operation( vop );
+               });
+
+               post_push_virtual_operation( vop );
                total_beneficiary += benefactor_tokens;
             }
 
@@ -1751,13 +1944,21 @@ share_type database::cashout_comment_helper( util::comment_reward_context& ctx, 
             auto vesting_crea = author_tokens - cbd_crea;
 
             const auto& author = get_account( comment.author );
-            auto vest_created = create_vesting( author, asset( vesting_crea, CREA_SYMBOL ), has_hardfork( CREA_HARDFORK_0_17__659 ) );
             auto cbd_payout = create_cbd( author, asset( cbd_crea, CREA_SYMBOL ), has_hardfork( CREA_HARDFORK_0_17__659 ) );
+            operation vop = author_reward_operation( comment.author, to_string( comment.permlink ), cbd_payout.first, cbd_payout.second, asset( 0, VESTS_SYMBOL ) );
+
+            create_vesting2( *this, author, asset( vesting_crea, CREA_SYMBOL ), has_hardfork( CREA_HARDFORK_0_17__659 ),
+               [&]( const asset& vesting_payout )
+               {
+                  vop.get< author_reward_operation >().vesting_payout = vesting_payout;
+                  pre_push_virtual_operation( vop );
+               } );
 
             adjust_total_payout( comment, cbd_payout.first + to_cbd( cbd_payout.second + asset( vesting_crea, CREA_SYMBOL ) ), to_cbd( asset( curation_tokens, CREA_SYMBOL ) ), to_cbd( asset( total_beneficiary, CREA_SYMBOL ) ) );
-
-            push_virtual_operation( author_reward_operation( comment.author, to_string( comment.permlink ), cbd_payout.first, cbd_payout.second, vest_created ) );
-            push_virtual_operation( comment_reward_operation( comment.author, to_string( comment.permlink ), to_cbd( asset( claimed_reward, CREA_SYMBOL ) ) ) );
+            post_push_virtual_operation( vop );
+            vop = comment_reward_operation( comment.author, to_string( comment.permlink ), to_cbd( asset( claimed_reward, CREA_SYMBOL ) ) );
+            pre_push_virtual_operation( vop );
+            post_push_virtual_operation( vop );
 
             #ifndef IS_LOW_MEM
                modify( comment, [&]( comment_object& c )
@@ -2002,8 +2203,8 @@ void database::process_funds()
          witness_reward *= wso.timeshare_weight;
       else if( cwit.schedule == witness_object::miner )
          witness_reward *= wso.miner_weight;
-      else if( cwit.schedule == witness_object::top19 )
-         witness_reward *= wso.top19_weight;
+      else if( cwit.schedule == witness_object::elected )
+         witness_reward *= wso.elected_weight;
       else
          wlog( "Encountered unknown witness type for witness: ${w}", ("w", cwit.owner) );
 
@@ -2020,9 +2221,14 @@ void database::process_funds()
          p.virtual_supply           += asset( new_crea, CREA_SYMBOL );
       });
 
-      const auto& producer_reward = create_vesting( get_account( cwit.owner ), asset( witness_reward, CREA_SYMBOL ) );
-      push_virtual_operation( producer_reward_operation( cwit.owner, producer_reward ) );
-
+      operation vop = producer_reward_operation( cwit.owner, asset( 0, VESTS_SYMBOL ) );
+      create_vesting2( *this, get_account( cwit.owner ), asset( witness_reward, CREA_SYMBOL ), false,
+         [&]( const asset& vesting_shares )
+         {
+            vop.get< producer_reward_operation >().vesting_shares = vesting_shares;
+            pre_push_virtual_operation( vop );
+         } );
+      post_push_virtual_operation( vop );
    }
    else
    {
@@ -2067,6 +2273,28 @@ void database::process_savings_withdraws()
      remove( *itr );
      itr = idx.begin();
   }
+}
+
+void database::process_subsidized_accounts()
+{
+   const witness_schedule_object& wso = get_witness_schedule_object();
+   const dynamic_global_property_object& gpo = get_dynamic_global_properties();
+
+   // Update global pool.
+   modify( gpo, [&]( dynamic_global_property_object& g )
+   {
+      g.available_account_subsidies = rd_apply( wso.account_subsidy_rd, g.available_account_subsidies );
+   } );
+
+   // Update per-witness pool for current witness.
+   const witness_object& current_witness = get_witness( gpo.current_witness );
+   if( current_witness.schedule == witness_object::elected )
+   {
+      modify( current_witness, [&]( witness_object& w )
+      {
+         w.available_witness_account_subsidies = rd_apply( wso.account_subsidy_witness_rd, w.available_witness_account_subsidies );
+      } );
+   }
 }
 
 #ifdef CREA_ENABLE_SMT
@@ -2139,10 +2367,17 @@ asset database::get_producer_reward()
    const auto& witness_account = get_account( props.current_witness );
 
    /// pay witness in vesting shares
-   if( props.head_block_number >= CREA_START_MINER_VOTING_BLOCK || (witness_account.vesting_shares.amount.value == 0) ) {
+   if( props.head_block_number >= CREA_START_MINER_VOTING_BLOCK || (witness_account.vesting_shares.amount.value == 0) )
+   {
       // const auto& witness_obj = get_witness( props.current_witness );
-      const auto& producer_reward = create_vesting( witness_account, pay );
-      push_virtual_operation( producer_reward_operation( witness_account.name, producer_reward ) );
+      operation vop = producer_reward_operation( witness_account.name, asset( 0, VESTS_SYMBOL ) );
+      create_vesting2( *this, witness_account, pay, false,
+         [&]( const asset& vesting_shares )
+         {
+            vop.get< producer_reward_operation >().vesting_shares = vesting_shares;
+            pre_push_virtual_operation( vop );
+         } );
+      post_push_virtual_operation( vop );
    }
    else
    {
@@ -2508,6 +2743,8 @@ void database::initialize_indexes()
    add_core_index< reward_fund_index                       >(*this);
    add_core_index< vesting_delegation_index                >(*this);
    add_core_index< vesting_delegation_expiration_index     >(*this);
+   add_core_index< pending_required_action_index           >(*this);
+   add_core_index< pending_optional_action_index           >(*this);
 #ifdef CREA_ENABLE_SMT
    add_core_index< smt_token_index                         >(*this);
    add_core_index< smt_event_token_index                   >(*this);
@@ -2670,6 +2907,9 @@ void database::init_genesis( uint64_t init_supply )
          p.current_supply = asset( init_supply, CREA_SYMBOL );
          p.virtual_supply = p.current_supply;
          p.maximum_block_size = CREA_MAX_BLOCK_SIZE;
+         p.reverse_auction_seconds = CREA_REVERSE_AUCTION_WINDOW_SECONDS_HF6;
+         p.cbd_stop_percent = CREA_CBD_STOP_PERCENT_HF14;
+         p.cbd_start_percent = CREA_CBD_START_PERCENT_HF14;
       } );
 
       // Nothing to do
@@ -2684,7 +2924,28 @@ void database::init_genesis( uint64_t init_supply )
       // Create witness scheduler
       create< witness_schedule_object >( [&]( witness_schedule_object& wso )
       {
+         FC_TODO( "Copied from witness_schedule.cpp, do we want to abstract this to a separate function?" );
          wso.current_shuffled_witnesses[0] = CREA_INIT_MINER_NAME;
+         util::rd_system_params account_subsidy_system_params;
+         account_subsidy_system_params.resource_unit = CREA_ACCOUNT_SUBSIDY_PRECISION;
+         account_subsidy_system_params.decay_per_time_unit_denom_shift = CREA_RD_DECAY_DENOM_SHIFT;
+         util::rd_user_params account_subsidy_user_params;
+         account_subsidy_user_params.budget_per_time_unit = wso.median_props.account_subsidy_budget;
+         account_subsidy_user_params.decay_per_time_unit = wso.median_props.account_subsidy_decay;
+
+         util::rd_user_params account_subsidy_per_witness_user_params;
+         int64_t w_budget = wso.median_props.account_subsidy_budget;
+         w_budget = (w_budget * CREA_WITNESS_SUBSIDY_BUDGET_PERCENT) / CREA_100_PERCENT;
+         w_budget = std::min( w_budget, int64_t(std::numeric_limits<int32_t>::max()) );
+         uint64_t w_decay = wso.median_props.account_subsidy_decay;
+         w_decay = (w_decay * CREA_WITNESS_SUBSIDY_DECAY_PERCENT) / CREA_100_PERCENT;
+         w_decay = std::min( w_decay, uint64_t(std::numeric_limits<uint32_t>::max()) );
+
+         account_subsidy_per_witness_user_params.budget_per_time_unit = int32_t(w_budget);
+         account_subsidy_per_witness_user_params.decay_per_time_unit = uint32_t(w_decay);
+
+         util::rd_setup_dynamics_params( account_subsidy_user_params, account_subsidy_system_params, wso.account_subsidy_rd );
+         util::rd_setup_dynamics_params( account_subsidy_per_witness_user_params, account_subsidy_system_params, wso.account_subsidy_witness_rd );
       } );
    }
    FC_CAPTURE_AND_RETHROW()
@@ -2742,29 +3003,6 @@ void database::apply_block( const signed_block& next_block, uint32_t skip )
 { try {
    //fc::time_point begin_time = fc::time_point::now();
 
-   auto block_num = next_block.block_num();
-   if( _checkpoints.size() && _checkpoints.rbegin()->second != block_id_type() )
-   {
-      auto itr = _checkpoints.find( block_num );
-      if( itr != _checkpoints.end() )
-         FC_ASSERT( next_block.id() == itr->second, "Block did not match checkpoint", ("checkpoint",*itr)("block_id",next_block.id()) );
-
-      if( _checkpoints.rbegin()->first >= block_num )
-         skip = skip_witness_signature
-              | skip_transaction_signatures
-              | skip_transaction_dupe_check
-              | skip_fork_db
-              | skip_block_size_check
-              | skip_tapos_check
-              | skip_authority_check
-              /* | skip_merkle_check While blockchain is being downloaded, txs need to be validated against block headers */
-              | skip_undo_history_check
-              | skip_witness_schedule_check
-              | skip_validate
-              | skip_validate_invariants
-              ;
-   }
-
    detail::with_skip_flags( *this, skip, [&]()
    {
       _apply_block( next_block );
@@ -2777,6 +3015,8 @@ void database::apply_block( const signed_block& next_block, uint32_t skip )
       validate_invariants();
    }
    FC_CAPTURE_AND_RETHROW( (next_block) );*/
+
+   auto block_num = next_block.block_num();
 
    //fc::time_point end_time = fc::time_point::now();
    //fc::microseconds dt = end_time - begin_time;
@@ -2994,6 +3234,7 @@ void database::_apply_block( const signed_block& next_block )
    process_comment_cashout();
    process_vesting_withdrawals();
    process_savings_withdraws();
+   process_subsidized_accounts();
    pay_liquidity_reward();
    update_virtual_supply();
 
@@ -3007,9 +3248,13 @@ void database::_apply_block( const signed_block& next_block )
    notify_post_apply_block( note );
 
    notify_changed_objects();
-} //FC_CAPTURE_AND_RETHROW( (next_block.block_num()) )  }
-FC_CAPTURE_LOG_AND_RETHROW( (next_block.block_num()) )
-}
+
+   // This moves newly irreversible blocks from the fork db to the block log
+   // and commits irreversible state to the database. This should always be the
+   // last call of applying a block because it is the only thing that is not
+   // reversible.
+   migrate_irreversible_state();
+} FC_CAPTURE_LOG_AND_RETHROW( (next_block.block_num()) ) }
 
 struct process_header_visitor
 {
@@ -3052,10 +3297,14 @@ struct process_header_visitor
          });
    }
 
-   template<typename T>
-   void operator()( const T& unknown_obj ) const
+   void operator()( const required_automated_actions& req_actions ) const
    {
-      FC_ASSERT( false, "Unknown extension in block header" );
+      FC_ASSERT( _db.has_hardfork( CREA_SMT_HARDFORK ), "Automated actions are not enabled until SMT hardfork." );
+   }
+
+   void operator()( const optional_automated_actions& opt_actions ) const
+   {
+      FC_ASSERT( _db.has_hardfork( CREA_SMT_HARDFORK ), "Automated actions are not enabled until SMT hardfork." );
    }
 };
 
@@ -3126,8 +3375,16 @@ try {
 #endif
             if( has_hardfork( CREA_HARDFORK_0_14__230 ) )
             {
+               // This block limits the effective median price to force CBD to remain at or
+               // below 10% of the combined market cap of CREA and CBD.
+               //
+               // For example, if we have 500 CREA and 100 CBD, the price is limited to
+               // 900 CBD / 500 CREA which works out to be $1.80.  At this price, 500 Crea
+               // would be valued at 500 * $1.80 = $900.  100 CBD is by definition always $100,
+               // so the combined market cap is $900 + $100 = $1000.
+
                const auto& gpo = get_dynamic_global_properties();
-               price min_price( asset( 9 * gpo.current_cbd_supply.amount, CBD_SYMBOL ), gpo.current_supply ); // This price limits CBD to 10% market cap
+               price min_price( asset( 9 * gpo.current_cbd_supply.amount, CBD_SYMBOL ), gpo.current_supply );
 
                if( min_price > fho.current_median_history )
                   fho.current_median_history = min_price;
@@ -3169,7 +3426,10 @@ void database::_apply_transaction(const signed_transaction& trx)
 
       try
       {
-         trx.verify_authority( chain_id, get_active, get_owner, get_posting, CREA_MAX_SIG_CHECK_DEPTH );
+         trx.verify_authority( chain_id, get_active, get_owner, get_posting, CREA_MAX_SIG_CHECK_DEPTH,
+            has_hardfork( CREA_HARDFORK_0_20 ) || is_producing() ? CREA_MAX_AUTHORITY_MEMBERSHIP : 0,
+            has_hardfork( CREA_HARDFORK_0_20 ) || is_producing() ? CREA_MAX_SIG_CHECK_ACCOUNTS : 0,
+            has_hardfork( CREA_HARDFORK_0_20__1944 ) ? fc::ecc::bip_0062 : fc::ecc::fc_canonical );
       }
       catch( protocol::tx_missing_active_auth& e )
       {
@@ -3228,7 +3488,7 @@ void database::_apply_transaction(const signed_transaction& trx)
 
 void database::apply_operation(const operation& op)
 {
-   operation_notification note(op);
+   operation_notification note = create_operation_notification( op );
    notify_pre_apply_operation( note );
 
    if( _benchmark_dumper.is_enabled() )
@@ -3322,6 +3582,30 @@ boost::signals2::connection database::any_apply_operation_handler_impl( const ap
       return _post_apply_operation_signal.connect(group, complex_func);
 }
 
+boost::signals2::connection database::add_pre_apply_required_action_handler( const apply_required_action_handler_t& func,
+   const abstract_plugin& plugin, int32_t group )
+{
+   return connect_impl(_pre_apply_required_action_signal, func, plugin, group, "->required_action");
+}
+
+boost::signals2::connection database::add_post_apply_required_action_handler( const apply_required_action_handler_t& func,
+   const abstract_plugin& plugin, int32_t group )
+{
+   return connect_impl(_post_apply_required_action_signal, func, plugin, group, "<-required_action");
+}
+
+boost::signals2::connection database::add_pre_apply_optional_action_handler( const apply_optional_action_handler_t& func,
+   const abstract_plugin& plugin, int32_t group )
+{
+   return connect_impl(_pre_apply_optional_action_signal, func, plugin, group, "->optional_action");
+}
+
+boost::signals2::connection database::add_post_apply_optional_action_handler( const apply_optional_action_handler_t& func,
+   const abstract_plugin& plugin, int32_t group )
+{
+   return connect_impl(_post_apply_optional_action_signal, func, plugin, group, "<-optional_action");
+}
+
 boost::signals2::connection database::add_pre_apply_operation_handler( const apply_operation_handler_t& func,
    const abstract_plugin& plugin, int32_t group )
 {
@@ -3383,7 +3667,8 @@ const witness_object& database::validate_block_header( uint32_t skip, const sign
    const witness_object& witness = get_witness( next_block.witness );
 
    if( !(skip&skip_witness_signature) )
-      FC_ASSERT( next_block.validate_signee( witness.signing_key ) );
+      FC_ASSERT( next_block.validate_signee( witness.signing_key,
+         has_hardfork( CREA_HARDFORK_0_20__1944 ) ? fc::ecc::bip_0062 : fc::ecc::fc_canonical ) );
 
    if( !(skip&skip_witness_schedule_check) )
    {
@@ -3426,7 +3711,9 @@ void database::update_global_dynamic_data( const signed_block& b )
             modify( witness_missed, [&]( witness_object& w )
             {
                w.total_missed++;
-               if( has_hardfork( CREA_HARDFORK_0_14__278 ) )
+FC_TODO( "#ifndef not needed after HF 20 is live" );
+#ifndef IS_TEST_NET
+               if( has_hardfork( CREA_HARDFORK_0_14__278 ) && !has_hardfork( CREA_HARDFORK_0_20__SP190 ) )
                {
                   if( head_block_num() - w.last_confirmed_block_num  > CREA_BLOCKS_PER_DAY )
                   {
@@ -3434,6 +3721,7 @@ void database::update_global_dynamic_data( const signed_block& b )
                      push_virtual_operation( shutdown_witness_operation( w.owner ) );
                   }
                }
+#endif
             } );
          }
       }
@@ -3482,12 +3770,12 @@ void database::update_virtual_supply()
          auto percent_cbd = uint16_t( ( ( fc::uint128_t( ( dgp.current_cbd_supply * get_feed_history().current_median_history ).amount.value ) * CREA_100_PERCENT )
             / dgp.virtual_supply.amount.value ).to_uint64() );
 
-         if( percent_cbd <= CREA_CBD_START_PERCENT )
+         if( percent_cbd <= dgp.cbd_start_percent )
             dgp.cbd_print_rate = CREA_100_PERCENT;
-         else if( percent_cbd >= CREA_CBD_STOP_PERCENT )
+         else if( percent_cbd >= dgp.cbd_stop_percent )
             dgp.cbd_print_rate = 0;
          else
-            dgp.cbd_print_rate = ( ( CREA_CBD_STOP_PERCENT - percent_cbd ) * CREA_100_PERCENT ) / ( CREA_CBD_STOP_PERCENT - CREA_CBD_START_PERCENT );
+            dgp.cbd_print_rate = ( ( dgp.cbd_stop_percent - percent_cbd ) * CREA_100_PERCENT ) / ( dgp.cbd_stop_percent - dgp.cbd_start_percent );
       }
    });
 } FC_CAPTURE_AND_RETHROW() }
@@ -3555,38 +3843,66 @@ void database::update_last_irreversible_block()
       }
    }
 
-   commit( dpo.last_irreversible_block_num );
-
    for( uint32_t i = old_last_irreversible; i <= dpo.last_irreversible_block_num; ++i )
    {
       notify_irreversible_block( i );
    }
-
-   if( !( get_node_properties().skip_flags & skip_block_log ) )
-   {
-      // output to block log based on new last irreverisible block num
-      const auto& tmp_head = _block_log.head();
-      uint64_t log_head_num = 0;
-
-      if( tmp_head )
-         log_head_num = tmp_head->block_num();
-
-      if( log_head_num < dpo.last_irreversible_block_num )
-      {
-         while( log_head_num < dpo.last_irreversible_block_num )
-         {
-            shared_ptr< fork_item > block = _fork_db.fetch_block_on_main_branch_by_number( log_head_num+1 );
-            FC_ASSERT( block, "Current fork in the fork database does not contain the last_irreversible_block" );
-            _block_log.append( block->data );
-            log_head_num++;
-         }
-
-         _block_log.flush();
-      }
-   }
-
-   _fork_db.set_max_size( dpo.head_block_number - dpo.last_irreversible_block_num + 1 );
 } FC_CAPTURE_AND_RETHROW() }
+
+void database::migrate_irreversible_state()
+{
+   // This method should happen atomically. We cannot prevent unclean shutdown in the middle
+   // of the call, but all side effects happen at the end to minize the chance that state
+   // invariants will be violated.
+   try
+   {
+      const dynamic_global_property_object& dpo = get_dynamic_global_properties();
+
+      auto fork_head = _fork_db.head();
+      if( fork_head )
+      {
+         FC_ASSERT( fork_head->num == dpo.head_block_number, "Fork Head: ${f} Chain Head: ${c}", ("f",fork_head->num)("c", dpo.head_block_number) );
+      }
+
+      if( !( get_node_properties().skip_flags & skip_block_log ) )
+      {
+         // output to block log based on new last irreverisible block num
+         const auto& tmp_head = _block_log.head();
+         uint64_t log_head_num = 0;
+         vector< item_ptr > blocks_to_write;
+
+         if( tmp_head )
+            log_head_num = tmp_head->block_num();
+
+         if( log_head_num < dpo.last_irreversible_block_num )
+         {
+            // Check for all blocks that we want to write out to the block log but don't write any
+            // unless we are certain they all exist in the fork db
+            while( log_head_num < dpo.last_irreversible_block_num )
+            {
+               item_ptr block_ptr = _fork_db.fetch_block_on_main_branch_by_number( log_head_num+1 );
+               FC_ASSERT( block_ptr, "Current fork in the fork database does not contain the last_irreversible_block" );
+               blocks_to_write.push_back( block_ptr );
+               log_head_num++;
+            }
+
+            for( auto block_itr = blocks_to_write.begin(); block_itr != blocks_to_write.end(); ++block_itr )
+            {
+               _block_log.append( block_itr->get()->data );
+            }
+
+            _block_log.flush();
+         }
+      }
+
+      // This deletes blocks from the fork db
+      _fork_db.set_max_size( dpo.head_block_number - dpo.last_irreversible_block_num + 1 );
+
+      // This deletes undo state
+      commit( dpo.last_irreversible_block_num );
+   }
+   FC_CAPTURE_AND_RETHROW()
+}
 
 
 bool database::apply_order( const limit_order_object& new_order_object )
@@ -3827,12 +4143,22 @@ void database::clear_expired_delegations()
    auto itr = delegations_by_exp.begin();
    while( itr != delegations_by_exp.end() && itr->expiration < now )
    {
+      operation vop = return_vesting_delegation_operation( itr->delegator, itr->vesting_shares );
+      pre_push_virtual_operation( vop );
+
       modify( get_account( itr->delegator ), [&]( account_object& a )
       {
+         if( has_hardfork( CREA_HARDFORK_0_20__2539 ) )
+         {
+            util::manabar_params params( util::get_effective_vesting_shares( a ), CREA_VOTING_MANA_REGENERATION_SECONDS );
+            a.voting_manabar.regenerate_mana( params, head_block_time() );
+            a.voting_manabar.use_mana( -itr->vesting_shares.amount.value );
+         }
+
          a.delegated_vesting_shares -= itr->vesting_shares;
       });
 
-      push_virtual_operation( return_vesting_delegation_operation( itr->delegator, itr->vesting_shares ) );
+      post_push_virtual_operation( vop );
 
       remove( *itr );
       itr = delegations_by_exp.begin();
@@ -4330,10 +4656,10 @@ void database::init_hardforks()
    FC_ASSERT( CREA_HARDFORK_0_19 == 19, "Invalid hardfork configuration" );
    _hardfork_times[ CREA_HARDFORK_0_19 ] = fc::time_point_sec( CREA_HARDFORK_0_19_TIME );
    _hardfork_versions[ CREA_HARDFORK_0_19 ] = CREA_HARDFORK_0_19_VERSION;
-#ifdef IS_TEST_NET
    FC_ASSERT( CREA_HARDFORK_0_20 == 20, "Invalid hardfork configuration" );
    _hardfork_times[ CREA_HARDFORK_0_20 ] = fc::time_point_sec( CREA_HARDFORK_0_20_TIME );
    _hardfork_versions[ CREA_HARDFORK_0_20 ] = CREA_HARDFORK_0_20_VERSION;
+#ifdef IS_TEST_NET
    FC_ASSERT( CREA_HARDFORK_0_21 == 21, "Invalid hardfork configuration" );
    _hardfork_times[ CREA_HARDFORK_0_21 ] = fc::time_point_sec( CREA_HARDFORK_0_21_TIME );
    _hardfork_versions[ CREA_HARDFORK_0_21 ] = CREA_HARDFORK_0_21_VERSION;
@@ -4415,24 +4741,14 @@ void database::apply_hardfork( uint32_t hardfork )
 {
    if( _log_hardforks )
       elog( "HARDFORK ${hf} at block ${b}", ("hf", hardfork)("b", head_block_num()) );
+   operation hardfork_vop = hardfork_operation( hardfork );
+
+   pre_push_virtual_operation( hardfork_vop );
 
    switch( hardfork )
    {
       case CREA_HARDFORK_0_1:
          perform_vesting_share_split( 1000000 );
-#ifdef IS_TEST_NET
-         {
-            custom_operation test_op;
-            string op_msg = "Testnet: Hardfork applied";
-            test_op.data = vector< char >( op_msg.begin(), op_msg.end() );
-            test_op.required_auths.insert( CREA_INIT_MINER_NAME );
-            operation op = test_op;   // we need the operation object to live to the end of this scope
-            operation_notification note( op );
-            notify_pre_apply_operation( note );
-            notify_post_apply_operation( note );
-         }
-         break;
-#endif
          break;
       case CREA_HARDFORK_0_2:
          retally_witness_votes();
@@ -4462,12 +4778,12 @@ void database::apply_hardfork( uint32_t hardfork )
                if( account == nullptr )
                   continue;
 
-               update_owner_authority( *account, authority( 1, public_key_type( "STM7sw22HqsXbz7D2CmJfmMwt9rimtk518dRzsR1f8Cgw52dQR1pR" ), 1 ) );
+               update_owner_authority( *account, authority( 1, public_key_type( "CREA7sw22HqsXbz7D2CmJfmMwt9rimtk518dRzsR1f8Cgw52dQR1pR" ), 1 ) );
 
                modify( get< account_authority_object, by_account >( account->name ), [&]( account_authority_object& auth )
                {
-                  auth.active  = authority( 1, public_key_type( "STM7sw22HqsXbz7D2CmJfmMwt9rimtk518dRzsR1f8Cgw52dQR1pR" ), 1 );
-                  auth.posting = authority( 1, public_key_type( "STM7sw22HqsXbz7D2CmJfmMwt9rimtk518dRzsR1f8Cgw52dQR1pR" ), 1 );
+                  auth.active  = authority( 1, public_key_type( "CREA7sw22HqsXbz7D2CmJfmMwt9rimtk518dRzsR1f8Cgw52dQR1pR" ), 1 );
+                  auth.posting = authority( 1, public_key_type( "CREA7sw22HqsXbz7D2CmJfmMwt9rimtk518dRzsR1f8Cgw52dQR1pR" ), 1 );
                });
             }
          }
@@ -4667,12 +4983,15 @@ void database::apply_hardfork( uint32_t hardfork )
             }
          }
          break;
-#ifdef IS_TEST_NET
       case CREA_HARDFORK_0_20:
          {
             modify( get_dynamic_global_properties(), [&]( dynamic_global_property_object& gpo )
             {
                gpo.delegation_return_period = CREA_DELEGATION_RETURN_PERIOD_HF20;
+               gpo.reverse_auction_seconds = CREA_REVERSE_AUCTION_WINDOW_SECONDS_HF20;
+               gpo.cbd_stop_percent = CREA_CBD_STOP_PERCENT_HF20;
+               gpo.cbd_start_percent = CREA_CBD_START_PERCENT_HF20;
+               gpo.available_account_subsidies = 0;
             });
 
             const auto& wso = get_witness_schedule_object();
@@ -4695,6 +5014,7 @@ void database::apply_hardfork( uint32_t hardfork )
             });
          }
          break;
+   #ifdef IS_TEST_NET
       case CREA_HARDFORK_0_21:
          break;
 #endif
@@ -4712,7 +5032,7 @@ void database::apply_hardfork( uint32_t hardfork )
       FC_ASSERT( hfp.processed_hardforks[ hfp.last_hardfork ] == _hardfork_times[ hfp.last_hardfork ], "Hardfork processing failed sanity check..." );
    } );
 
-   push_virtual_operation( hardfork_operation( hardfork ), true );
+   post_push_virtual_operation( hardfork_vop );
 }
 
 void database::retally_liquidity_weight() {
@@ -5151,5 +5471,8 @@ vector< asset_symbol_type > database::get_smt_next_identifier()
    return vector< asset_symbol_type >( 1, new_symbol );
 }
 #endif
+
+index_info::index_info() {}
+index_info::~index_info() {}
 
 } } //crea::chain

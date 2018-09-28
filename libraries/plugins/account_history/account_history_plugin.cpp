@@ -4,7 +4,6 @@
 
 #include <crea/protocol/config.hpp>
 
-#include <crea/chain/operation_notification.hpp>
 #include <crea/chain/history_object.hpp>
 
 #include <crea/utilities/plugin_utilities.hpp>

@@ -6,61 +6,61 @@
 
 namespace crea { namespace plugins { namespace statsd { namespace util {
 
-using crea::plugins::statsd::statsd_plugin;
+                using crea::plugins::statsd::statsd_plugin;
 
-bool statsd_enabled();
-const statsd_plugin& get_statsd();
+                bool statsd_enabled();
+                const statsd_plugin& get_statsd();
 
-class statsd_timer_helper
-{
-   public:
-      statsd_timer_helper( const std::string& ns, const std::string& stat, const std::string& key, float freq, const statsd_plugin& statsd ) :
-         _ns( ns ),
-         _stat( stat ),
-         _key( key ),
-         _freq( freq ),
-         _statsd( statsd )
-      {
-         _start = fc::time_point::now();
-      }
+                class statsd_timer_helper
+                {
+                public:
+                    statsd_timer_helper( const std::string& ns, const std::string& stat, const std::string& key, float freq, const statsd_plugin& statsd ) :
+                            _ns( ns ),
+                            _stat( stat ),
+                            _key( key ),
+                            _freq( freq ),
+                            _statsd( statsd )
+                    {
+                       _start = fc::time_point::now();
+                    }
 
-      ~statsd_timer_helper()
-      {
-         record();
-      }
+                    ~statsd_timer_helper()
+                    {
+                       record();
+                    }
 
-      void record()
-      {
-         fc::time_point stop = fc::time_point::now();
-         if( !_recorded )
-         {
-            _statsd.timing( _ns, _stat, _key, (stop - _start).count() / 1000 , _freq );
-            _recorded = true;
-         }
-      }
+                    void record()
+                    {
+                       fc::time_point stop = fc::time_point::now();
+                       if( !_recorded )
+                       {
+                          _statsd.timing( _ns, _stat, _key, (stop - _start).count() / 1000 , _freq );
+                          _recorded = true;
+                       }
+                    }
 
-   private:
-      std::string          _ns;
-      std::string          _stat;
-      std::string          _key;
-      float                _freq = 1.0f;
-      fc::time_point       _start;
-      const statsd_plugin& _statsd;
-      bool                 _recorded = false;
-};
+                private:
+                    std::string          _ns;
+                    std::string          _stat;
+                    std::string          _key;
+                    float                _freq = 1.0f;
+                    fc::time_point       _start;
+                    const statsd_plugin& _statsd;
+                    bool                 _recorded = false;
+                };
 
-inline uint32_t timing_helper( const fc::microseconds& time ) { return time.count() / 1000; }
-inline uint32_t timing_helper( const fc::time_point& time ) { return time.time_since_epoch().count() / 1000; }
-inline uint32_t timing_helper( const fc::time_point_sec& time ) { return time.sec_since_epoch() * 1000; }
-inline uint32_t timing_helper( uint32_t time ) { return time; }
+                inline uint32_t timing_helper( const fc::microseconds& time ) { return time.count() / 1000; }
+                inline uint32_t timing_helper( const fc::time_point& time ) { return time.time_since_epoch().count() / 1000; }
+                inline uint32_t timing_helper( const fc::time_point_sec& time ) { return time.sec_since_epoch() * 1000; }
+                inline uint32_t timing_helper( uint32_t time ) { return time; }
 
-} } } } // crea::plugins::statsd::util
+            } } } } // crea::plugins::statsd::util
 
 #define STATSD_INCREMENT( NAMESPACE, STAT, KEY, FREQ )   \
 if( crea::plugins::statsd::util::statsd_enabled() )     \
 {                                                        \
    crea::plugins::statsd::util::get_statsd().increment( \
-      #NAMESPACE, #STAT, #KEY, FREQ                      \
+      NAMESPACE, STAT, KEY, FREQ                         \
    );                                                    \
 }
 
@@ -68,7 +68,7 @@ if( crea::plugins::statsd::util::statsd_enabled() )     \
 if( crea::plugins::statsd::util::statsd_enabled() )     \
 {                                                        \
    crea::plugins::statsd::util::get_statsd().decrement( \
-      #NAMESPACE, #STAT, #KEY, FREQ                      \
+      NAMESPACE, STAT, KEY, FREQ                         \
    );                                                    \
 }
 
@@ -76,7 +76,7 @@ if( crea::plugins::statsd::util::statsd_enabled() )     \
 if( crea::plugins::statsd::util::statsd_enabled() )     \
 {                                                        \
    crea::plugins::statsd::util::get_statsd().count(     \
-      #NAMESPACE, #STAT, #KEY, VAL, FREQ                 \
+      NAMESPACE, STAT, KEY, VAL, FREQ                    \
    );                                                    \
 }
 
@@ -84,21 +84,22 @@ if( crea::plugins::statsd::util::statsd_enabled() )     \
 if( crea::plugins::statsd::util::statsd_enabled() )     \
 {                                                        \
    crea::plugins::statsd::util::get_statsd().gauge(     \
-      #NAMESPACE, #STAT, #KEY, VAL, FREQ                 \
+      NAMESPACE, STAT, KEY, VAL, FREQ                    \
    );                                                    \
 }
 
-#define STATSD_START_TIMER( NAMESPACE, STAT, KEY, FREQ )                                              \
-fc::optional< crea::plugins::statsd::util::statsd_timer_helper > NAMESPACE ## STAT ## KEY ## _timer; \
-if( crea::plugins::statsd::util::statsd_enabled() )                                                  \
-{                                                                                                     \
-   NAMESPACE ## STAT ## KEY ## _timer = crea::plugins::statsd::util::statsd_timer_helper(            \
-      #NAMESPACE, #STAT, #KEY, FREQ, crea::plugins::statsd::util::get_statsd()                       \
-   );                                                                                                 \
+// You can only have one statsd timer in the current scope at a time
+#define STATSD_START_TIMER( NAMESPACE, STAT, KEY, FREQ )                         \
+fc::optional< crea::plugins::statsd::util::statsd_timer_helper > statsd_timer;  \
+if( crea::plugins::statsd::util::statsd_enabled() )                             \
+{                                                                                \
+   statsd_timer = crea::plugins::statsd::util::statsd_timer_helper(             \
+      NAMESPACE, STAT, KEY, FREQ, crea::plugins::statsd::util::get_statsd()     \
+   );                                                                            \
 }
 
 #define STATSD_STOP_TIMER( NAMESPACE, STAT, KEY )        \
-   NAMESPACE ## STAT ## KEY ## _timer.reset();
+   statsd_timer.reset();
 
 #define STATSD_TIMER( NAMESPACE, STAT, KEY, VAL, FREQ )  \
 if( crea::plugins::statsd::util::statsd_enabled() )     \

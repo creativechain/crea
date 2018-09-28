@@ -3,17 +3,17 @@
 
 #include <boost/test/unit_test.hpp>
 
-#include <creativecoin/protocol/exceptions.hpp>
-#include <creativecoin/protocol/hardfork.hpp>
+#include <crea/protocol/exceptions.hpp>
+#include <crea/protocol/hardfork.hpp>
 
-#include <creativecoin/chain/block_summary_object.hpp>
-#include <creativecoin/chain/database.hpp>
-#include <creativecoin/chain/history_object.hpp>
-#include <creativecoin/chain/creativecoin_objects.hpp>
+#include <crea/chain/block_summary_object.hpp>
+#include <crea/chain/database.hpp>
+#include <crea/chain/history_object.hpp>
+#include <crea/chain/crea_objects.hpp>
 
-#include <creativecoin/chain/util/reward.hpp>
+#include <crea/chain/util/reward.hpp>
 
-#include <creativecoin/plugins/debug_node/debug_node_plugin.hpp>
+#include <crea/plugins/debug_node/debug_node_plugin.hpp>
 
 #include <fc/crypto/digest.hpp>
 
@@ -21,9 +21,9 @@
 
 #include <cmath>
 
-using namespace creativecoin;
-using namespace creativecoin::chain;
-using namespace creativecoin::protocol;
+using namespace crea;
+using namespace crea::chain;
+using namespace crea::protocol;
 
 BOOST_FIXTURE_TEST_SUITE( smt_operation_time_tests, smt_database_fixture )
 
@@ -42,10 +42,10 @@ BOOST_AUTO_TEST_CASE( smt_liquidity_rewards )
       asset_symbol_type any_smt_symbol = create_smt( "smtcreator", smtcreator_private_key, 3);
 
       generate_block();
-      vest( "alice", ASSET( "10.000 TESTS" ) );
-      vest( "bob", ASSET( "10.000 TESTS" ) );
-      vest( "sam", ASSET( "10.000 TESTS" ) );
-      vest( "dave", ASSET( "10.000 TESTS" ) );
+      vest( CREA_INIT_MINER_NAME, "alice", ASSET( "10.000 TESTS" ) );
+      vest( CREA_INIT_MINER_NAME, "bob", ASSET( "10.000 TESTS" ) );
+      vest( CREA_INIT_MINER_NAME, "sam", ASSET( "10.000 TESTS" ) );
+      vest( CREA_INIT_MINER_NAME, "dave", ASSET( "10.000 TESTS" ) );
 
       tx.operations.clear();
       tx.signatures.clear();
@@ -64,16 +64,16 @@ BOOST_AUTO_TEST_CASE( smt_liquidity_rewards )
       FUND( "dave", alice_smt.amount );
 
       int64_t alice_smt_volume = 0;
-      int64_t alice_creativecoin_volume = 0;
+      int64_t alice_crea_volume = 0;
       time_point_sec alice_reward_last_update = fc::time_point_sec::min();
       int64_t bob_smt_volume = 0;
-      int64_t bob_creativecoin_volume = 0;
+      int64_t bob_crea_volume = 0;
       time_point_sec bob_reward_last_update = fc::time_point_sec::min();
       int64_t sam_smt_volume = 0;
-      int64_t sam_creativecoin_volume = 0;
+      int64_t sam_crea_volume = 0;
       time_point_sec sam_reward_last_update = fc::time_point_sec::min();
       int64_t dave_smt_volume = 0;
-      int64_t dave_creativecoin_volume = 0;
+      int64_t dave_crea_volume = 0;
       time_point_sec dave_reward_last_update = fc::time_point_sec::min();
 
       BOOST_TEST_MESSAGE( "Creating Limit Order for CREA that will stay on the books for 30 minutes exactly." );
@@ -89,7 +89,7 @@ BOOST_AUTO_TEST_CASE( smt_liquidity_rewards )
       tx.operations.clear();
       tx.set_expiration( db->head_block_time() + CREA_MAX_TIME_UNTIL_EXPIRATION );
       tx.operations.push_back( op );
-      tx.sign( alice_private_key, db->get_chain_id() );
+      sign( tx, alice_private_key );
       db->push_transaction( tx, 0 );
 
       BOOST_TEST_MESSAGE( "Waiting 10 minutes" );
@@ -108,12 +108,12 @@ BOOST_AUTO_TEST_CASE( smt_liquidity_rewards )
       tx.operations.clear();
       tx.set_expiration( db->head_block_time() + CREA_MAX_TIME_UNTIL_EXPIRATION );
       tx.operations.push_back( op );
-      tx.sign( bob_private_key, db->get_chain_id() );
+      sign( tx, bob_private_key );
       db->push_transaction( tx, 0 );
 
-      alice_creativecoin_volume += ( asset( alice_smt.amount / 20, any_smt_symbol ) * exchange_rate ).amount.value;
+      alice_crea_volume += ( asset( alice_smt.amount / 20, any_smt_symbol ) * exchange_rate ).amount.value;
       alice_reward_last_update = db->head_block_time();
-      bob_creativecoin_volume -= ( asset( alice_smt.amount / 20, any_smt_symbol ) * exchange_rate ).amount.value;
+      bob_crea_volume -= ( asset( alice_smt.amount / 20, any_smt_symbol ) * exchange_rate ).amount.value;
       bob_reward_last_update = db->head_block_time();
 
       auto ops = get_last_operations( 1 );
@@ -123,15 +123,15 @@ BOOST_AUTO_TEST_CASE( smt_liquidity_rewards )
       auto reward = liquidity_idx.find( db->get_account( "alice" ).id );
       BOOST_REQUIRE( reward == liquidity_idx.end() );
       /*BOOST_REQUIRE( reward->owner == db->get_account( "alice" ).id );
-      BOOST_REQUIRE( reward->sbd_volume == alice_smt_volume );
-      BOOST_REQUIRE( reward->creativecoin_volume == alice_creativecoin_volume );
+      BOOST_REQUIRE( reward->cbd_volume == alice_smt_volume );
+      BOOST_REQUIRE( reward->crea_volume == alice_crea_volume );
       BOOST_CHECK( reward->last_update == alice_reward_last_update );*/
 
       reward = liquidity_idx.find( db->get_account( "bob" ).id );
       BOOST_REQUIRE( reward == liquidity_idx.end() );
       /*BOOST_REQUIRE( reward->owner == db->get_account( "bob" ).id );
-      BOOST_REQUIRE( reward->sbd_volume == bob_smt_volume );
-      BOOST_REQUIRE( reward->creativecoin_volume == bob_creativecoin_volume );
+      BOOST_REQUIRE( reward->cbd_volume == bob_smt_volume );
+      BOOST_REQUIRE( reward->crea_volume == bob_crea_volume );
       BOOST_CHECK( reward->last_update == bob_reward_last_update );*/
 
       auto fill_order_op = ops[0].get< fill_order_operation >();
@@ -156,7 +156,7 @@ BOOST_AUTO_TEST_CASE( smt_liquidity_rewards )
       tx.signatures.clear();
       tx.operations.clear();
       tx.operations.push_back( op );
-      tx.sign( sam_private_key, db->get_chain_id() );
+      sign( tx, sam_private_key );
       db->push_transaction( tx, 0 );
 
       BOOST_TEST_MESSAGE( "Waiting 10 minutes" );
@@ -174,7 +174,7 @@ BOOST_AUTO_TEST_CASE( smt_liquidity_rewards )
       tx.operations.clear();
       tx.set_expiration( db->head_block_time() + CREA_MAX_TIME_UNTIL_EXPIRATION );
       tx.operations.push_back( op );
-      tx.sign( bob_private_key, db->get_chain_id() );
+      sign( tx, bob_private_key );
       db->push_transaction( tx, 0 );
 
       BOOST_TEST_MESSAGE( "Waiting 30 minutes" );
@@ -192,7 +192,7 @@ BOOST_AUTO_TEST_CASE( smt_liquidity_rewards )
       tx.operations.clear();
       tx.set_expiration( db->head_block_time() + CREA_MAX_TIME_UNTIL_EXPIRATION );
       tx.operations.push_back( op );
-      tx.sign( alice_private_key, db->get_chain_id() );
+      sign( tx, alice_private_key );
       db->push_transaction( tx, 0 );
 
       alice_smt_volume -= ( alice_smt.amount.value / 10 ) * 3;
@@ -222,22 +222,22 @@ BOOST_AUTO_TEST_CASE( smt_liquidity_rewards )
       reward = liquidity_idx.find( db->get_account( "alice" ).id );
       BOOST_REQUIRE( reward == liquidity_idx.end() );
       /*BOOST_REQUIRE( reward->owner == db->get_account( "alice" ).id );
-      BOOST_REQUIRE( reward->sbd_volume == alice_smt_volume );
-      BOOST_REQUIRE( reward->creativecoin_volume == alice_creativecoin_volume );
+      BOOST_REQUIRE( reward->cbd_volume == alice_smt_volume );
+      BOOST_REQUIRE( reward->crea_volume == alice_crea_volume );
       BOOST_CHECK( reward->last_update == alice_reward_last_update );*/
 
       reward = liquidity_idx.find( db->get_account( "bob" ).id );
       BOOST_REQUIRE( reward == liquidity_idx.end() );
       /*BOOST_REQUIRE( reward->owner == db->get_account( "bob" ).id );
-      BOOST_REQUIRE( reward->sbd_volume == bob_smt_volume );
-      BOOST_REQUIRE( reward->creativecoin_volume == bob_creativecoin_volume );
+      BOOST_REQUIRE( reward->cbd_volume == bob_smt_volume );
+      BOOST_REQUIRE( reward->crea_volume == bob_crea_volume );
       BOOST_CHECK( reward->last_update == bob_reward_last_update );*/
 
       reward = liquidity_idx.find( db->get_account( "sam" ).id );
       BOOST_REQUIRE( reward == liquidity_idx.end() );
       /*BOOST_REQUIRE( reward->owner == db->get_account( "sam" ).id );
-      BOOST_REQUIRE( reward->sbd_volume == sam_smt_volume );
-      BOOST_REQUIRE( reward->creativecoin_volume == sam_creativecoin_volume );
+      BOOST_REQUIRE( reward->cbd_volume == sam_smt_volume );
+      BOOST_REQUIRE( reward->crea_volume == sam_crea_volume );
       BOOST_CHECK( reward->last_update == sam_reward_last_update );*/
 
       BOOST_TEST_MESSAGE( "Testing a partial fill before minimum time and full fill after minimum time" );
@@ -250,7 +250,7 @@ BOOST_AUTO_TEST_CASE( smt_liquidity_rewards )
       tx.operations.clear();
       tx.set_expiration( db->head_block_time() + CREA_MAX_TIME_UNTIL_EXPIRATION );
       tx.operations.push_back( op );
-      tx.sign( alice_private_key, db->get_chain_id() );
+      sign( tx, alice_private_key );
       db->push_transaction( tx, 0 );
 
       generate_blocks( db->head_block_time() + fc::seconds( CREA_MIN_LIQUIDITY_REWARD_PERIOD_SEC_HF10.to_seconds() / 2 ), true );
@@ -264,7 +264,7 @@ BOOST_AUTO_TEST_CASE( smt_liquidity_rewards )
       tx.operations.clear();
       tx.set_expiration( db->head_block_time() + CREA_MAX_TIME_UNTIL_EXPIRATION );
       tx.operations.push_back( op );
-      tx.sign( bob_private_key, db->get_chain_id() );
+      sign( tx, bob_private_key );
       db->push_transaction( tx, 0 );
 
       generate_blocks( db->head_block_time() + fc::seconds( CREA_MIN_LIQUIDITY_REWARD_PERIOD_SEC_HF10.to_seconds() / 2 ), true );
@@ -282,22 +282,22 @@ BOOST_AUTO_TEST_CASE( smt_liquidity_rewards )
       reward = liquidity_idx.find( db->get_account( "alice" ).id );
       BOOST_REQUIRE( reward == liquidity_idx.end() );
       /*BOOST_REQUIRE( reward->owner == db->get_account( "alice" ).id );
-      BOOST_REQUIRE( reward->sbd_volume == alice_smt_volume );
-      BOOST_REQUIRE( reward->creativecoin_volume == alice_creativecoin_volume );
+      BOOST_REQUIRE( reward->cbd_volume == alice_smt_volume );
+      BOOST_REQUIRE( reward->crea_volume == alice_crea_volume );
       BOOST_CHECK( reward->last_update == alice_reward_last_update );*/
 
       reward = liquidity_idx.find( db->get_account( "bob" ).id );
       BOOST_REQUIRE( reward == liquidity_idx.end() );
       /*BOOST_REQUIRE( reward->owner == db->get_account( "bob" ).id );
-      BOOST_REQUIRE( reward->sbd_volume == bob_smt_volume );
-      BOOST_REQUIRE( reward->creativecoin_volume == bob_creativecoin_volume );
+      BOOST_REQUIRE( reward->cbd_volume == bob_smt_volume );
+      BOOST_REQUIRE( reward->crea_volume == bob_crea_volume );
       BOOST_CHECK( reward->last_update == bob_reward_last_update );*/
 
       reward = liquidity_idx.find( db->get_account( "sam" ).id );
       BOOST_REQUIRE( reward == liquidity_idx.end() );
       /*BOOST_REQUIRE( reward->owner == db->get_account( "sam" ).id );
-      BOOST_REQUIRE( reward->sbd_volume == sam_smt_volume );
-      BOOST_REQUIRE( reward->creativecoin_volume == sam_creativecoin_volume );
+      BOOST_REQUIRE( reward->cbd_volume == sam_smt_volume );
+      BOOST_REQUIRE( reward->crea_volume == sam_crea_volume );
       BOOST_CHECK( reward->last_update == sam_reward_last_update );*/
 
       generate_blocks( db->head_block_time() + CREA_MIN_LIQUIDITY_REWARD_PERIOD_SEC_HF10, true );
@@ -309,12 +309,12 @@ BOOST_AUTO_TEST_CASE( smt_liquidity_rewards )
       tx.operations.clear();
       tx.set_expiration( db->head_block_time() + CREA_MAX_TIME_UNTIL_EXPIRATION );
       tx.operations.push_back( op );
-      tx.sign( sam_private_key, db->get_chain_id() );
+      sign( tx, sam_private_key );
       db->push_transaction( tx, 0 );
 
-      alice_creativecoin_volume += alice_smt.amount.value / 20;
+      alice_crea_volume += alice_smt.amount.value / 20;
       alice_reward_last_update = db->head_block_time();
-      sam_creativecoin_volume -= alice_smt.amount.value / 20;
+      sam_crea_volume -= alice_smt.amount.value / 20;
       sam_reward_last_update = db->head_block_time();
 
       ops = get_last_operations( 2 );
@@ -330,22 +330,22 @@ BOOST_AUTO_TEST_CASE( smt_liquidity_rewards )
       reward = liquidity_idx.find( db->get_account( "alice" ).id );
       BOOST_REQUIRE( reward == liquidity_idx.end() );
       /*BOOST_REQUIRE( reward->owner == db->get_account( "alice" ).id );
-      BOOST_REQUIRE( reward->sbd_volume == alice_smt_volume );
-      BOOST_REQUIRE( reward->creativecoin_volume == alice_creativecoin_volume );
+      BOOST_REQUIRE( reward->cbd_volume == alice_smt_volume );
+      BOOST_REQUIRE( reward->crea_volume == alice_crea_volume );
       BOOST_CHECK( reward->last_update == alice_reward_last_update );*/
 
       reward = liquidity_idx.find( db->get_account( "bob" ).id );
       BOOST_REQUIRE( reward == liquidity_idx.end() );
       /*BOOST_REQUIRE( reward->owner == db->get_account( "bob" ).id );
-      BOOST_REQUIRE( reward->sbd_volume == bob_smt_volume );
-      BOOST_REQUIRE( reward->creativecoin_volume == bob_creativecoin_volume );
+      BOOST_REQUIRE( reward->cbd_volume == bob_smt_volume );
+      BOOST_REQUIRE( reward->crea_volume == bob_crea_volume );
       BOOST_CHECK( reward->last_update == bob_reward_last_update );*/
 
       reward = liquidity_idx.find( db->get_account( "sam" ).id );
       BOOST_REQUIRE( reward == liquidity_idx.end() );
       /*BOOST_REQUIRE( reward->owner == db->get_account( "sam" ).id );
-      BOOST_REQUIRE( reward->sbd_volume == sam_smt_volume );
-      BOOST_REQUIRE( reward->creativecoin_volume == sam_creativecoin_volume );
+      BOOST_REQUIRE( reward->cbd_volume == sam_smt_volume );
+      BOOST_REQUIRE( reward->crea_volume == sam_crea_volume );
       BOOST_CHECK( reward->last_update == sam_reward_last_update );*/
 
       BOOST_TEST_MESSAGE( "Trading to give Alice and Bob positive volumes to receive rewards" );
@@ -358,8 +358,9 @@ BOOST_AUTO_TEST_CASE( smt_liquidity_rewards )
       tx.operations.clear();
       tx.signatures.clear();
       tx.operations.push_back( transfer );
+
       tx.set_expiration( db->head_block_time() + CREA_MAX_TIME_UNTIL_EXPIRATION );
-      tx.sign( alice_private_key, db->get_chain_id() );
+      sign( tx, alice_private_key );
       db->push_transaction( tx, 0 );
 
       op.owner = "alice";
@@ -369,7 +370,7 @@ BOOST_AUTO_TEST_CASE( smt_liquidity_rewards )
       tx.operations.clear();
       tx.signatures.clear();
       tx.operations.push_back( op );
-      tx.sign( alice_private_key, db->get_chain_id() );
+      sign( tx, alice_private_key );
       db->push_transaction( tx, 0 );
 
       generate_blocks( db->head_block_time() + CREA_MIN_LIQUIDITY_REWARD_PERIOD_SEC_HF10, true );
@@ -381,8 +382,9 @@ BOOST_AUTO_TEST_CASE( smt_liquidity_rewards )
       tx.operations.clear();
       tx.signatures.clear();
       tx.operations.push_back( op );
+
       tx.set_expiration( db->head_block_time() + CREA_MAX_TIME_UNTIL_EXPIRATION );
-      tx.sign( dave_private_key, db->get_chain_id() );
+      sign( tx, dave_private_key );
       db->push_transaction( tx, 0 );
 
       alice_smt_volume += op.amount_to_sell.amount.value;
@@ -403,29 +405,29 @@ BOOST_AUTO_TEST_CASE( smt_liquidity_rewards )
       reward = liquidity_idx.find( db->get_account( "alice" ).id );
       BOOST_REQUIRE( reward == liquidity_idx.end() );
       /*BOOST_REQUIRE( reward->owner == db->get_account( "alice" ).id );
-      BOOST_REQUIRE( reward->sbd_volume == alice_smt_volume );
-      BOOST_REQUIRE( reward->creativecoin_volume == alice_creativecoin_volume );
+      BOOST_REQUIRE( reward->cbd_volume == alice_smt_volume );
+      BOOST_REQUIRE( reward->crea_volume == alice_crea_volume );
       BOOST_CHECK( reward->last_update == alice_reward_last_update );*/
 
       reward = liquidity_idx.find( db->get_account( "bob" ).id );
       BOOST_REQUIRE( reward == liquidity_idx.end() );
       /*BOOST_REQUIRE( reward->owner == db->get_account( "bob" ).id );
-      BOOST_REQUIRE( reward->sbd_volume == bob_smt_volume );
-      BOOST_REQUIRE( reward->creativecoin_volume == bob_creativecoin_volume );
+      BOOST_REQUIRE( reward->cbd_volume == bob_smt_volume );
+      BOOST_REQUIRE( reward->crea_volume == bob_crea_volume );
       BOOST_CHECK( reward->last_update == bob_reward_last_update );*/
 
       reward = liquidity_idx.find( db->get_account( "sam" ).id );
       BOOST_REQUIRE( reward == liquidity_idx.end() );
       /*BOOST_REQUIRE( reward->owner == db->get_account( "sam" ).id );
-      BOOST_REQUIRE( reward->sbd_volume == sam_smt_volume );
-      BOOST_REQUIRE( reward->creativecoin_volume == sam_creativecoin_volume );
+      BOOST_REQUIRE( reward->cbd_volume == sam_smt_volume );
+      BOOST_REQUIRE( reward->crea_volume == sam_crea_volume );
       BOOST_CHECK( reward->last_update == sam_reward_last_update );*/
 
       reward = liquidity_idx.find( db->get_account( "dave" ).id );
       BOOST_REQUIRE( reward == liquidity_idx.end() );
       /*BOOST_REQUIRE( reward->owner == db->get_account( "dave" ).id );
-      BOOST_REQUIRE( reward->sbd_volume == dave_smt_volume );
-      BOOST_REQUIRE( reward->creativecoin_volume == dave_creativecoin_volume );
+      BOOST_REQUIRE( reward->cbd_volume == dave_smt_volume );
+      BOOST_REQUIRE( reward->crea_volume == dave_crea_volume );
       BOOST_CHECK( reward->last_update == dave_reward_last_update );*/
 
       op.owner = "bob";
@@ -435,7 +437,7 @@ BOOST_AUTO_TEST_CASE( smt_liquidity_rewards )
       tx.operations.clear();
       tx.signatures.clear();
       tx.operations.push_back( op );
-      tx.sign( bob_private_key, db->get_chain_id() );
+      sign( tx, bob_private_key );
       db->push_transaction( tx, 0 );
 
       alice_smt_volume += op.amount_to_sell.amount.value;
@@ -456,29 +458,29 @@ BOOST_AUTO_TEST_CASE( smt_liquidity_rewards )
       reward = liquidity_idx.find( db->get_account( "alice" ).id );
       BOOST_REQUIRE( reward == liquidity_idx.end() );
       /*BOOST_REQUIRE( reward->owner == db->get_account( "alice" ).id );
-      BOOST_REQUIRE( reward->sbd_volume == alice_smt_volume );
-      BOOST_REQUIRE( reward->creativecoin_volume == alice_creativecoin_volume );
+      BOOST_REQUIRE( reward->cbd_volume == alice_smt_volume );
+      BOOST_REQUIRE( reward->crea_volume == alice_crea_volume );
       BOOST_CHECK( reward->last_update == alice_reward_last_update );*/
 
       reward = liquidity_idx.find( db->get_account( "bob" ).id );
       BOOST_REQUIRE( reward == liquidity_idx.end() );
       /*BOOST_REQUIRE( reward->owner == db->get_account( "bob" ).id );
-      BOOST_REQUIRE( reward->sbd_volume == bob_smt_volume );
-      BOOST_REQUIRE( reward->creativecoin_volume == bob_creativecoin_volume );
+      BOOST_REQUIRE( reward->cbd_volume == bob_smt_volume );
+      BOOST_REQUIRE( reward->crea_volume == bob_crea_volume );
       BOOST_CHECK( reward->last_update == bob_reward_last_update );*/
 
       reward = liquidity_idx.find( db->get_account( "sam" ).id );
       BOOST_REQUIRE( reward == liquidity_idx.end() );
       /*BOOST_REQUIRE( reward->owner == db->get_account( "sam" ).id );
-      BOOST_REQUIRE( reward->sbd_volume == sam_smt_volume );
-      BOOST_REQUIRE( reward->creativecoin_volume == sam_creativecoin_volume );
+      BOOST_REQUIRE( reward->cbd_volume == sam_smt_volume );
+      BOOST_REQUIRE( reward->crea_volume == sam_crea_volume );
       BOOST_CHECK( reward->last_update == sam_reward_last_update );*/
 
       reward = liquidity_idx.find( db->get_account( "dave" ).id );
       BOOST_REQUIRE( reward == liquidity_idx.end() );
       /*BOOST_REQUIRE( reward->owner == db->get_account( "dave" ).id );
-      BOOST_REQUIRE( reward->sbd_volume == dave_smt_volume );
-      BOOST_REQUIRE( reward->creativecoin_volume == dave_creativecoin_volume );
+      BOOST_REQUIRE( reward->cbd_volume == dave_smt_volume );
+      BOOST_REQUIRE( reward->crea_volume == dave_crea_volume );
       BOOST_CHECK( reward->last_update == dave_reward_last_update );*/
 
       transfer.to = "bob";
@@ -488,7 +490,7 @@ BOOST_AUTO_TEST_CASE( smt_liquidity_rewards )
       tx.signatures.clear();
       tx.operations.push_back( transfer );
       tx.set_expiration( db->head_block_time() + CREA_MAX_TIME_UNTIL_EXPIRATION );
-      tx.sign( alice_private_key, db->get_chain_id() );
+      sign( tx, alice_private_key );
       db->push_transaction( tx, 0 );
 
       op.owner = "bob";
@@ -498,7 +500,7 @@ BOOST_AUTO_TEST_CASE( smt_liquidity_rewards )
       tx.operations.clear();
       tx.signatures.clear();
       tx.operations.push_back( op );
-      tx.sign( bob_private_key, db->get_chain_id() );
+      sign( tx, bob_private_key );
       db->push_transaction( tx, 0 );
 
       generate_blocks( db->head_block_time() + CREA_MIN_LIQUIDITY_REWARD_PERIOD_SEC_HF10, true );
@@ -510,12 +512,12 @@ BOOST_AUTO_TEST_CASE( smt_liquidity_rewards )
       tx.operations.clear();
       tx.signatures.clear();
       tx.operations.push_back( op );
-      tx.sign( dave_private_key, db->get_chain_id() );
+      sign( tx, dave_private_key );
       db->push_transaction( tx, 0 );
 
-      bob_creativecoin_volume += op.amount_to_sell.amount.value;
+      bob_crea_volume += op.amount_to_sell.amount.value;
       bob_reward_last_update = db->head_block_time();
-      dave_creativecoin_volume -= op.amount_to_sell.amount.value;
+      dave_crea_volume -= op.amount_to_sell.amount.value;
       dave_reward_last_update = db->head_block_time();
 
       ops = get_last_operations( 1 );
@@ -531,29 +533,29 @@ BOOST_AUTO_TEST_CASE( smt_liquidity_rewards )
       reward = liquidity_idx.find( db->get_account( "alice" ).id );
       BOOST_REQUIRE( reward == liquidity_idx.end() );
       /*BOOST_REQUIRE( reward->owner == db->get_account( "alice" ).id );
-      BOOST_REQUIRE( reward->sbd_volume == alice_smt_volume );
-      BOOST_REQUIRE( reward->creativecoin_volume == alice_creativecoin_volume );
+      BOOST_REQUIRE( reward->cbd_volume == alice_smt_volume );
+      BOOST_REQUIRE( reward->crea_volume == alice_crea_volume );
       BOOST_CHECK( reward->last_update == alice_reward_last_update );*/
 
       reward = liquidity_idx.find( db->get_account( "bob" ).id );
       BOOST_REQUIRE( reward == liquidity_idx.end() );
       /*BOOST_REQUIRE( reward->owner == db->get_account( "bob" ).id );
-      BOOST_REQUIRE( reward->sbd_volume == bob_smt_volume );
-      BOOST_REQUIRE( reward->creativecoin_volume == bob_creativecoin_volume );
+      BOOST_REQUIRE( reward->cbd_volume == bob_smt_volume );
+      BOOST_REQUIRE( reward->crea_volume == bob_crea_volume );
       BOOST_CHECK( reward->last_update == bob_reward_last_update );*/
 
       reward = liquidity_idx.find( db->get_account( "sam" ).id );
       BOOST_REQUIRE( reward == liquidity_idx.end() );
       /*BOOST_REQUIRE( reward->owner == db->get_account( "sam" ).id );
-      BOOST_REQUIRE( reward->sbd_volume == sam_smt_volume );
-      BOOST_REQUIRE( reward->creativecoin_volume == sam_creativecoin_volume );
+      BOOST_REQUIRE( reward->cbd_volume == sam_smt_volume );
+      BOOST_REQUIRE( reward->crea_volume == sam_crea_volume );
       BOOST_CHECK( reward->last_update == sam_reward_last_update );*/
 
       reward = liquidity_idx.find( db->get_account( "dave" ).id );
       BOOST_REQUIRE( reward == liquidity_idx.end() );
       /*BOOST_REQUIRE( reward->owner == db->get_account( "dave" ).id );
-      BOOST_REQUIRE( reward->sbd_volume == dave_smt_volume );
-      BOOST_REQUIRE( reward->creativecoin_volume == dave_creativecoin_volume );
+      BOOST_REQUIRE( reward->cbd_volume == dave_smt_volume );
+      BOOST_REQUIRE( reward->crea_volume == dave_crea_volume );
       BOOST_CHECK( reward->last_update == dave_reward_last_update );*/
 
       auto alice_balance = db->get_account( "alice" ).balance;
@@ -600,9 +602,9 @@ BOOST_AUTO_TEST_CASE( smt_liquidity_rewards )
       CREA_REQUIRE_THROW( ops[0].get< liquidity_reward_operation>(), fc::exception );
       //BOOST_REQUIRE( ops[0].get< liquidity_reward_operation>().payout.amount.value == CREA_MIN_LIQUIDITY_REWARD.amount.value );
 
-      alice_creativecoin_volume = 0;
+      alice_crea_volume = 0;
       alice_smt_volume = 0;
-      bob_creativecoin_volume = 0;
+      bob_crea_volume = 0;
       bob_smt_volume = 0;
 
       BOOST_TEST_MESSAGE( "Testing liquidity timeout" );
@@ -616,8 +618,9 @@ BOOST_AUTO_TEST_CASE( smt_liquidity_rewards )
       tx.operations.clear();
       tx.signatures.clear();
       tx.operations.push_back( op );
+
       tx.set_expiration( db->head_block_time() + CREA_MAX_TIME_UNTIL_EXPIRATION );
-      tx.sign( sam_private_key, db->get_chain_id() );
+      sign( tx, sam_private_key );
       db->push_transaction( tx, 0 );
 
       generate_blocks( db->head_block_time() + ( CREA_BLOCK_INTERVAL / 2 ) + CREA_LIQUIDITY_TIMEOUT_SEC, true );
@@ -625,8 +628,8 @@ BOOST_AUTO_TEST_CASE( smt_liquidity_rewards )
       reward = liquidity_idx.find( db->get_account( "sam" ).id );
       /*BOOST_REQUIRE( reward == liquidity_idx.end() );
       BOOST_REQUIRE( reward->owner == db->get_account( "sam" ).id );
-      BOOST_REQUIRE( reward->sbd_volume == sam_smt_volume );
-      BOOST_REQUIRE( reward->creativecoin_volume == sam_creativecoin_volume );
+      BOOST_REQUIRE( reward->cbd_volume == sam_smt_volume );
+      BOOST_REQUIRE( reward->crea_volume == sam_crea_volume );
       BOOST_CHECK( reward->last_update == sam_reward_last_update );*/
 
       generate_block();
@@ -639,18 +642,18 @@ BOOST_AUTO_TEST_CASE( smt_liquidity_rewards )
       tx.signatures.clear();
       tx.operations.push_back( op );
       tx.set_expiration( db->head_block_time() + CREA_MAX_TIME_UNTIL_EXPIRATION );
-      tx.sign( alice_private_key, db->get_chain_id() );
+      sign( tx, alice_private_key );
       db->push_transaction( tx, 0 );
 
       sam_smt_volume = ASSET( "1.000 TBD" ).amount.value;
-      sam_creativecoin_volume = 0;
+      sam_crea_volume = 0;
       sam_reward_last_update = db->head_block_time();
 
       reward = liquidity_idx.find( db->get_account( "sam" ).id );
       /*BOOST_REQUIRE( reward == liquidity_idx.end() );
       BOOST_REQUIRE( reward->owner == db->get_account( "sam" ).id );
-      BOOST_REQUIRE( reward->sbd_volume == sam_smt_volume );
-      BOOST_REQUIRE( reward->creativecoin_volume == sam_creativecoin_volume );
+      BOOST_REQUIRE( reward->cbd_volume == sam_smt_volume );
+      BOOST_REQUIRE( reward->crea_volume == sam_crea_volume );
       BOOST_CHECK( reward->last_update == sam_reward_last_update );*/
 
       validate_database();

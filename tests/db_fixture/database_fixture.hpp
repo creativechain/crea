@@ -1,17 +1,17 @@
 #pragma once
 
 #include <appbase/application.hpp>
-#include <creativecoin/chain/database.hpp>
+#include <crea/chain/database.hpp>
 #include <fc/io/json.hpp>
 #include <fc/smart_ref_impl.hpp>
 
-#include <creativecoin/plugins/debug_node/debug_node_plugin.hpp>
+#include <crea/plugins/debug_node/debug_node_plugin.hpp>
 
-#include <creativecoin/utilities/key_conversion.hpp>
+#include <crea/utilities/key_conversion.hpp>
 
-#include <creativecoin/plugins/block_api/block_api_plugin.hpp>
-#include <creativecoin/plugins/condenser_api/condenser_api_legacy_asset.hpp>
-#include <creativecoin/plugins/database_api/database_api_plugin.hpp>
+#include <crea/plugins/block_api/block_api_plugin.hpp>
+#include <crea/plugins/condenser_api/condenser_api_legacy_asset.hpp>
+#include <crea/plugins/database_api/database_api_plugin.hpp>
 
 #include <fc/network/http/connection.hpp>
 #include <fc/network/ip.hpp>
@@ -24,10 +24,10 @@
 extern uint32_t ( CREA_TESTING_GENESIS_TIMESTAMP );
 
 #define PUSH_TX \
-   creativecoin::chain::test::_push_transaction
+   crea::chain::test::_push_transaction
 
 #define PUSH_BLOCK \
-   creativecoin::chain::test::_push_block
+   crea::chain::test::_push_block
 
 // See below
 #define REQUIRE_OP_VALIDATION_SUCCESS( op, field, value ) \
@@ -138,7 +138,7 @@ extern uint32_t ( CREA_TESTING_GENESIS_TIMESTAMP );
    asset_symbol_type name ## _symbol = get_new_smt_symbol( decimal_places, db );
 
 #define ASSET( s ) \
-   creativecoin::plugins::condenser_api::legacy_asset::from_string( s ).to_asset()
+   crea::plugins::condenser_api::legacy_asset::from_string( s ).to_asset()
 
 #define FUND( account_name, amount ) \
    fund( account_name, amount ); \
@@ -154,7 +154,7 @@ extern uint32_t ( CREA_TESTING_GENESIS_TIMESTAMP );
 #define OP2TX(OP,TX,KEY) \
 TX.operations.push_back( OP ); \
 TX.set_expiration( db->head_block_time() + CREA_MAX_TIME_UNTIL_EXPIRATION ); \
-TX.sign( KEY, db->get_chain_id() );
+TX.sign( KEY, db->get_chain_id(), fc::ecc::bip_0062 );
 
 #define PUSH_OP(OP,KEY) \
 { \
@@ -178,9 +178,9 @@ TX.sign( KEY, db->get_chain_id() );
    CREA_REQUIRE_THROW( db->push_transaction( tx, 0 ), EXCEPTION ); \
 }
 
-namespace creativecoin { namespace chain {
+namespace crea { namespace chain {
 
-using namespace creativecoin::protocol;
+using namespace crea::protocol;
 
 struct database_fixture {
    // the reason we use an app is to exercise the indexes of built-in
@@ -191,9 +191,10 @@ struct database_fixture {
    account_id_type committee_account;
    fc::ecc::private_key private_key = fc::ecc::private_key::generate();
    fc::ecc::private_key init_account_priv_key = fc::ecc::private_key::regenerate( fc::sha256::hash( string( "init_key" ) ) );
-   string debug_key = creativecoin::utilities::key_to_wif( init_account_priv_key );
+   string debug_key = crea::utilities::key_to_wif( init_account_priv_key );
    public_key_type init_account_pub_key = init_account_priv_key.get_public_key();
    uint32_t default_skip = 0 | database::skip_undo_history_check | database::skip_authority_check;
+   fc::ecc::canonical_signature_type default_sig_canon = fc::ecc::fc_canonical;
 
    plugins::debug_node::debug_node_plugin* db_plugin;
 
@@ -260,8 +261,8 @@ struct database_fixture {
    void fund( const string& account_name, const asset& amount );
    void transfer( const string& from, const string& to, const asset& amount );
    void convert( const string& account_name, const asset& amount );
+   void vest( const string& from, const string& to, const asset& amount );
    void vest( const string& from, const share_type& amount );
-   void vest( const string& account, const asset& amount );
    void proxy( const string& account, const string& proxy );
    void set_price_feed( const price& new_price );
    void set_witness_props( const flat_map< string, vector< char > >& new_props );
@@ -270,7 +271,7 @@ struct database_fixture {
 
    vector< operation > get_last_operations( uint32_t ops );
 
-   void validate_database( void );
+   void validate_database();
 };
 
 struct clean_database_fixture : public database_fixture
@@ -279,6 +280,7 @@ struct clean_database_fixture : public database_fixture
    virtual ~clean_database_fixture();
 
    void resize_shared_mem( uint64_t size );
+   void validate_database();
 };
 
 struct live_database_fixture : public database_fixture
@@ -313,14 +315,14 @@ struct t_smt_database_fixture : public T
    void create_conflicting_smt( const asset_symbol_type existing_smt, const char* control_account_name, const fc::ecc::private_key& key );
 
    //smt_setup_operation
-   smt_generation_unit get_generation_unit ( const units& creativecoin_unit = units(), const units& token_unit = units() );
+   smt_generation_unit get_generation_unit ( const units& crea_unit = units(), const units& token_unit = units() );
    smt_cap_commitment get_cap_commitment( share_type amount = 0, uint128_t nonce = 0 );
    smt_capped_generation_policy get_capped_generation_policy
    (
       const smt_generation_unit& pre_soft_cap_unit = smt_generation_unit(),
       const smt_generation_unit& post_soft_cap_unit = smt_generation_unit(),
-      const smt_cap_commitment& min_creativecoin_units_commitment = smt_cap_commitment(),
-      const smt_cap_commitment& hard_cap_creativecoin_units_commitment = smt_cap_commitment(),
+      const smt_cap_commitment& min_crea_units_commitment = smt_cap_commitment(),
+      const smt_cap_commitment& hard_cap_crea_units_commitment = smt_cap_commitment(),
       uint16_t soft_cap_percent = 0,
       uint32_t min_unit_ratio = 0,
       uint32_t max_unit_ratio = 0
@@ -335,7 +337,7 @@ using smt_database_fixture_for_plugin = t_smt_database_fixture< database_fixture
 struct json_rpc_database_fixture : public database_fixture
 {
    private:
-      creativecoin::plugins::json_rpc::json_rpc_plugin* rpc_plugin;
+      crea::plugins::json_rpc::json_rpc_plugin* rpc_plugin;
 
       fc::variant get_answer( std::string& request );
       void review_answer( fc::variant& answer, int64_t code, bool is_warning, bool is_fail, fc::optional< fc::variant > id );

@@ -87,7 +87,9 @@ namespace crea { namespace plugins { namespace condenser_api {
       api_chain_properties( const chain::chain_properties& c ) :
          account_creation_fee( legacy_asset::from_asset( c.account_creation_fee ) ),
          maximum_block_size( c.maximum_block_size ),
-         cbd_interest_rate( c.cbd_interest_rate )
+         cbd_interest_rate( c.cbd_interest_rate ),
+         account_subsidy_budget( c.account_subsidy_budget ),
+         account_subsidy_decay( c.account_subsidy_decay )
       {}
 
       operator legacy_chain_properties() const
@@ -102,6 +104,8 @@ namespace crea { namespace plugins { namespace condenser_api {
       legacy_asset   account_creation_fee;
       uint32_t       maximum_block_size = CREA_MIN_BLOCK_SIZE_LIMIT * 2;
       uint16_t       cbd_interest_rate = CREA_DEFAULT_CBD_INTEREST_RATE;
+      int32_t        account_subsidy_budget = CREA_DEFAULT_ACCOUNT_SUBSIDY_BUDGET;
+      uint32_t       account_subsidy_decay = CREA_DEFAULT_ACCOUNT_SUBSIDY_DECAY;
    };
 
    struct legacy_account_create_operation
@@ -195,6 +199,7 @@ namespace crea { namespace plugins { namespace condenser_api {
          author( op.author ),
          permlink( op.permlink ),
          max_accepted_payout( legacy_asset::from_asset( op.max_accepted_payout ) ),
+         percent_crea_dollars( op.percent_crea_dollars ),
          allow_votes( op.allow_votes ),
          allow_curation_rewards( op.allow_curation_rewards )
       {
@@ -915,7 +920,9 @@ namespace crea { namespace plugins { namespace condenser_api {
          benefactor( op.benefactor ),
          author( op.author ),
          permlink( op.permlink ),
-         reward( legacy_asset::from_asset( op.reward ) )
+         cbd_payout( legacy_asset::from_asset( op.cbd_payout ) ),
+         crea_payout( legacy_asset::from_asset( op.crea_payout ) ),
+         vesting_payout( legacy_asset::from_asset( op.vesting_payout ) )
       {}
 
       operator comment_benefactor_reward_operation()const
@@ -924,14 +931,18 @@ namespace crea { namespace plugins { namespace condenser_api {
          op.benefactor = benefactor;
          op.author = author;
          op.permlink = permlink;
-         op.reward = reward;
+         op.cbd_payout = cbd_payout;
+         op.crea_payout = crea_payout;
+         op.vesting_payout = vesting_payout;
          return op;
       }
 
       account_name_type benefactor;
       account_name_type author;
       string            permlink;
-      legacy_asset      reward;
+      legacy_asset      cbd_payout;
+      legacy_asset      crea_payout;
+      legacy_asset      vesting_payout;
    };
 
    struct legacy_producer_reward_operation
@@ -1494,7 +1505,7 @@ void old_sv_from_variant( const fc::variant& v, T& sv )
 }
 
 FC_REFLECT( crea::plugins::condenser_api::api_chain_properties,
-            (account_creation_fee)(maximum_block_size)(cbd_interest_rate)
+            (account_creation_fee)(maximum_block_size)(cbd_interest_rate)(account_subsidy_budget)(account_subsidy_decay)
           )
 
 FC_REFLECT( crea::plugins::condenser_api::legacy_price, (base)(quote) )
@@ -1547,7 +1558,7 @@ FC_REFLECT( crea::plugins::condenser_api::legacy_fill_vesting_withdraw_operation
 FC_REFLECT( crea::plugins::condenser_api::legacy_fill_order_operation, (current_owner)(current_orderid)(current_pays)(open_owner)(open_orderid)(open_pays) )
 FC_REFLECT( crea::plugins::condenser_api::legacy_fill_transfer_from_savings_operation, (from)(to)(amount)(request_id)(memo) )
 FC_REFLECT( crea::plugins::condenser_api::legacy_return_vesting_delegation_operation, (account)(vesting_shares) )
-FC_REFLECT( crea::plugins::condenser_api::legacy_comment_benefactor_reward_operation, (benefactor)(author)(permlink)(reward) )
+FC_REFLECT( crea::plugins::condenser_api::legacy_comment_benefactor_reward_operation, (benefactor)(author)(permlink)(cbd_payout)(crea_payout)(vesting_payout) )
 FC_REFLECT( crea::plugins::condenser_api::legacy_producer_reward_operation, (producer)(vesting_shares) )
 FC_REFLECT( crea::plugins::condenser_api::legacy_claim_account_operation, (creator)(fee)(extensions) )
 

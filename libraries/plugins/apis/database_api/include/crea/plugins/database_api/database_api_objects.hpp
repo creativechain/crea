@@ -176,8 +176,7 @@ struct api_account_object
       lifetime_vote_count( a.lifetime_vote_count ),
       post_count( a.post_count ),
       can_vote( a.can_vote ),
-      voting_power( a.voting_power ),
-      last_vote_time( a.last_vote_time ),
+      voting_manabar( a.voting_manabar ),
       balance( a.balance ),
       savings_balance( a.savings_balance ),
       cbd_balance( a.cbd_balance ),
@@ -205,7 +204,10 @@ struct api_account_object
       withdraw_routes( a.withdraw_routes ),
       witnesses_voted_for( a.witnesses_voted_for ),
       last_post( a.last_post ),
-      last_root_post( a.last_root_post )
+      last_root_post( a.last_root_post ),
+      last_vote_time( a.last_vote_time ),
+      post_bandwidth( a.post_bandwidth ),
+      pending_claimed_accounts( a.pending_claimed_accounts )
    {
       size_t n = a.proxied_vsf_votes.size();
       proxied_vsf_votes.reserve( n );
@@ -250,8 +252,7 @@ struct api_account_object
    uint32_t          post_count = 0;
 
    bool              can_vote = false;
-   uint16_t          voting_power = 0;
-   time_point_sec    last_vote_time;
+   util::manabar     voting_manabar;
 
    asset             balance;
    asset             savings_balance;
@@ -287,10 +288,14 @@ struct api_account_object
 
    vector< share_type > proxied_vsf_votes;
 
-   uint16_t          witnesses_voted_for;
+   uint16_t          witnesses_voted_for = 0;
 
    time_point_sec    last_post;
    time_point_sec    last_root_post;
+   time_point_sec    last_vote_time;
+   uint32_t          post_bandwidth = 0;
+
+   share_type        pending_claimed_accounts = 0;
 
    bool              is_smt = false;
 };
@@ -395,7 +400,8 @@ struct api_witness_object
       last_work( w.last_work ),
       running_version( w.running_version ),
       hardfork_version_vote( w.hardfork_version_vote ),
-      hardfork_time_vote( w.hardfork_time_vote )
+      hardfork_time_vote( w.hardfork_time_vote ),
+      available_witness_account_subsidies( w.available_witness_account_subsidies )
    {}
 
    api_witness_object() {}
@@ -420,6 +426,7 @@ struct api_witness_object
    version           running_version;
    hardfork_version  hardfork_version_vote;
    time_point_sec    hardfork_time_vote;
+   int64_t           available_witness_account_subsidies = 0;
 };
 
 struct api_witness_schedule_object
@@ -431,7 +438,7 @@ struct api_witness_schedule_object
       current_virtual_time( wso.current_virtual_time ),
       next_shuffle_block_num( wso.next_shuffle_block_num ),
       num_scheduled_witnesses( wso.num_scheduled_witnesses ),
-      top19_weight( wso.top19_weight ),
+      elected_weight( wso.elected_weight ),
       timeshare_weight( wso.timeshare_weight ),
       miner_weight( wso.miner_weight ),
       witness_pay_normalization_factor( wso.witness_pay_normalization_factor ),
@@ -440,7 +447,10 @@ struct api_witness_schedule_object
       max_voted_witnesses( wso.max_voted_witnesses ),
       max_miner_witnesses( wso.max_miner_witnesses ),
       max_runner_witnesses( wso.max_runner_witnesses ),
-      hardfork_required_witnesses( wso.hardfork_required_witnesses )
+      hardfork_required_witnesses( wso.hardfork_required_witnesses ),
+      account_subsidy_rd( wso.account_subsidy_rd ),
+      account_subsidy_witness_rd( wso.account_subsidy_witness_rd ),
+      min_witness_account_subsidy_decay( wso.min_witness_account_subsidy_decay )
    {
       size_t n = wso.current_shuffled_witnesses.size();
       current_shuffled_witnesses.reserve( n );
@@ -456,7 +466,7 @@ struct api_witness_schedule_object
    uint32_t                   next_shuffle_block_num;
    vector<string>             current_shuffled_witnesses;   // fc::array<account_name_type,...> -> vector<string>
    uint8_t                    num_scheduled_witnesses;
-   uint8_t                    top19_weight;
+   uint8_t                    elected_weight;
    uint8_t                    timeshare_weight;
    uint8_t                    miner_weight;
    uint32_t                   witness_pay_normalization_factor;
@@ -467,6 +477,10 @@ struct api_witness_schedule_object
    uint8_t                    max_miner_witnesses;
    uint8_t                    max_runner_witnesses;
    uint8_t                    hardfork_required_witnesses;
+
+   rd_dynamics_params         account_subsidy_rd;
+   rd_dynamics_params         account_subsidy_witness_rd;
+   int64_t                    min_witness_account_subsidy_decay = 0;
 };
 
 struct api_signed_block_object : public signed_block
@@ -552,7 +566,7 @@ FC_REFLECT( crea::plugins::database_api::api_account_object,
              (id)(name)(owner)(active)(posting)(memo_key)(json_metadata)(proxy)(last_owner_update)(last_account_update)
              (created)(mined)
              (recovery_account)(last_account_recovery)(reset_account)
-             (comment_count)(lifetime_vote_count)(post_count)(can_vote)(voting_power)(last_vote_time)
+             (comment_count)(lifetime_vote_count)(post_count)(can_vote)(voting_manabar)
              (balance)
              (savings_balance)
              (cbd_balance)(cbd_seconds)(cbd_seconds_last_update)(cbd_last_interest_payment)
@@ -562,7 +576,8 @@ FC_REFLECT( crea::plugins::database_api::api_account_object,
              (curation_rewards)
              (posting_rewards)
              (proxied_vsf_votes)(witnesses_voted_for)
-             (last_post)(last_root_post)
+             (last_post)(last_root_post)(last_vote_time)
+             (post_bandwidth)(pending_claimed_accounts)
              (is_smt)
           )
 
@@ -607,6 +622,7 @@ FC_REFLECT( crea::plugins::database_api::api_witness_object,
              (last_work)
              (running_version)
              (hardfork_version_vote)(hardfork_time_vote)
+             (available_witness_account_subsidies)
           )
 
 FC_REFLECT( crea::plugins::database_api::api_witness_schedule_object,
@@ -615,7 +631,7 @@ FC_REFLECT( crea::plugins::database_api::api_witness_schedule_object,
              (next_shuffle_block_num)
              (current_shuffled_witnesses)
              (num_scheduled_witnesses)
-             (top19_weight)
+             (elected_weight)
              (timeshare_weight)
              (miner_weight)
              (witness_pay_normalization_factor)
@@ -625,6 +641,9 @@ FC_REFLECT( crea::plugins::database_api::api_witness_schedule_object,
              (max_miner_witnesses)
              (max_runner_witnesses)
              (hardfork_required_witnesses)
+             (account_subsidy_rd)
+             (account_subsidy_witness_rd)
+             (min_witness_account_subsidy_decay)
           )
 
 FC_REFLECT_DERIVED( crea::plugins::database_api::api_signed_block_object, (crea::protocol::signed_block),

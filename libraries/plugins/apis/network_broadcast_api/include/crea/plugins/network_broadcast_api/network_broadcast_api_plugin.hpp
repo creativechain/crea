@@ -2,6 +2,7 @@
 #include <crea/plugins/json_rpc/json_rpc_plugin.hpp>
 #include <crea/plugins/chain/chain_plugin.hpp>
 #include <crea/plugins/p2p/p2p_plugin.hpp>
+#include <crea/plugins/rc/rc_plugin.hpp>
 
 #include <appbase/application.hpp>
 
@@ -16,6 +17,7 @@ class network_broadcast_api_plugin : public appbase::plugin< network_broadcast_a
 public:
    APPBASE_PLUGIN_REQUIRES(
       (crea::plugins::json_rpc::json_rpc_plugin)
+      (crea::plugins::rc::rc_plugin)
       (crea::plugins::chain::chain_plugin)
       (crea::plugins::p2p::p2p_plugin)
    )

@@ -5,7 +5,7 @@ add_library( witness_plugin
              ${HEADERS}
            )
 
-target_link_libraries( witness_plugin p2p_plugin chain_plugin block_data_export_plugin appbase crea_chain crea_utilities crea_utilities )
+target_link_libraries( witness_plugin p2p_plugin chain_plugin rc_plugin block_data_export_plugin appbase crea_chain crea_utilities crea_utilities )
 target_include_directories( witness_plugin
                             PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/include" )
 

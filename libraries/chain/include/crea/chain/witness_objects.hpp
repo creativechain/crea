@@ -3,6 +3,8 @@
 #include <crea/protocol/authority.hpp>
 #include <crea/protocol/crea_operations.hpp>
 
+#include <crea/chain/util/rd_dynamics.hpp>
+
 #include <crea/chain/crea_object_types.hpp>
 
 #include <boost/multi_index/composite_key.hpp>
@@ -16,6 +18,7 @@ namespace crea { namespace chain {
    using crea::protocol::price;
    using crea::protocol::asset;
    using crea::protocol::asset_symbol_type;
+   using crea::chain::util::rd_dynamics_params;
 
    /**
     * Witnesses must vote on how to set certain chain properties to ensure a smooth
@@ -39,7 +42,18 @@ namespace crea { namespace chain {
        */
       uint32_t          maximum_block_size = CREA_MIN_BLOCK_SIZE_LIMIT * 2;
       uint16_t          cbd_interest_rate  = CREA_DEFAULT_CBD_INTEREST_RATE;
-      uint32_t          account_subsidy_limit = 0;
+      /**
+       * How many free accounts should be created per elected witness block.
+       * Scaled so that CREA_ACCOUNT_SUBSIDY_PRECISION represents one account.
+       */
+      int32_t           account_subsidy_budget = CREA_DEFAULT_ACCOUNT_SUBSIDY_BUDGET;
+
+      /**
+       * What fraction of the "stockpiled" free accounts "expire" per elected witness block.
+       * Scaled so that 1 << CREA_RD_DECAY_DENOM_SHIFT represents 100% of accounts
+       * expiring.
+       */
+      uint32_t          account_subsidy_decay = CREA_DEFAULT_ACCOUNT_SUBSIDY_DECAY;
    };
 
    /**
@@ -54,7 +68,7 @@ namespace crea { namespace chain {
       public:
          enum witness_schedule_type
          {
-            top19,
+            elected,
             timeshare,
             miner,
             none
@@ -139,7 +153,10 @@ namespace crea { namespace chain {
          version           running_version;
 
          hardfork_version  hardfork_version_vote;
+
          time_point_sec    hardfork_time_vote = CREA_GENESIS_TIME;
+
+         int64_t           available_witness_account_subsidies = 0;
    };
 
 
@@ -177,7 +194,7 @@ namespace crea { namespace chain {
          uint32_t                                                          next_shuffle_block_num = 1;
          fc::array< account_name_type, CREA_MAX_WITNESSES >             current_shuffled_witnesses;
          uint8_t                                                           num_scheduled_witnesses = 1;
-         uint8_t                                                           top19_weight = 1;
+         uint8_t                                                           elected_weight = 1;
          uint8_t                                                           timeshare_weight = 5;
          uint8_t                                                           miner_weight = 1;
          uint32_t                                                          witness_pay_normalization_factor = 25;
@@ -188,6 +205,11 @@ namespace crea { namespace chain {
          uint8_t max_miner_witnesses            = CREA_MAX_MINER_WITNESSES_HF0;
          uint8_t max_runner_witnesses           = CREA_MAX_RUNNER_WITNESSES_HF0;
          uint8_t hardfork_required_witnesses    = CREA_HARDFORK_REQUIRED_WITNESSES;
+
+         // Derived fields that are stored for easy caching and reading of values.
+         rd_dynamics_params account_subsidy_rd;
+         rd_dynamics_params account_subsidy_witness_rd;
+         int64_t            min_witness_account_subsidy_decay = 0;
    };
 
 
@@ -257,13 +279,14 @@ namespace crea { namespace chain {
 
 } }
 
-FC_REFLECT_ENUM( crea::chain::witness_object::witness_schedule_type, (top19)(timeshare)(miner)(none) )
+FC_REFLECT_ENUM( crea::chain::witness_object::witness_schedule_type, (elected)(timeshare)(miner)(none) )
 
 FC_REFLECT( crea::chain::chain_properties,
              (account_creation_fee)
              (maximum_block_size)
              (cbd_interest_rate)
-             (account_subsidy_limit)
+             (account_subsidy_budget)
+             (account_subsidy_decay)
           )
 
 FC_REFLECT( crea::chain::witness_object,
@@ -277,6 +300,7 @@ FC_REFLECT( crea::chain::witness_object,
              (last_work)
              (running_version)
              (hardfork_version_vote)(hardfork_time_vote)
+             (available_witness_account_subsidies)
           )
 CHAINBASE_SET_INDEX_TYPE( crea::chain::witness_object, crea::chain::witness_index )
 
@@ -285,11 +309,14 @@ CHAINBASE_SET_INDEX_TYPE( crea::chain::witness_vote_object, crea::chain::witness
 
 FC_REFLECT( crea::chain::witness_schedule_object,
              (id)(current_virtual_time)(next_shuffle_block_num)(current_shuffled_witnesses)(num_scheduled_witnesses)
-             (top19_weight)(timeshare_weight)(miner_weight)(witness_pay_normalization_factor)
+             (elected_weight)(timeshare_weight)(miner_weight)(witness_pay_normalization_factor)
              (median_props)(majority_version)
              (max_voted_witnesses)
              (max_miner_witnesses)
              (max_runner_witnesses)
              (hardfork_required_witnesses)
+             (account_subsidy_rd)
+             (account_subsidy_witness_rd)
+             (min_witness_account_subsidy_decay)
           )
 CHAINBASE_SET_INDEX_TYPE( crea::chain::witness_schedule_object, crea::chain::witness_schedule_index )

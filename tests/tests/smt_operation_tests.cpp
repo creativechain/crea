@@ -4,18 +4,18 @@
 
 #include <boost/test/unit_test.hpp>
 
-#include <creativecoin/protocol/exceptions.hpp>
-#include <creativecoin/protocol/hardfork.hpp>
+#include <crea/protocol/exceptions.hpp>
+#include <crea/protocol/hardfork.hpp>
 
-#include <creativecoin/chain/database.hpp>
-#include <creativecoin/chain/database_exceptions.hpp>
-#include <creativecoin/chain/creativecoin_objects.hpp>
-#include <creativecoin/chain/smt_objects.hpp>
+#include <crea/chain/database.hpp>
+#include <crea/chain/database_exceptions.hpp>
+#include <crea/chain/crea_objects.hpp>
+#include <crea/chain/smt_objects.hpp>
 
 #include "../db_fixture/database_fixture.hpp"
 
-using namespace creativecoin::chain;
-using namespace creativecoin::protocol;
+using namespace crea::chain;
+using namespace crea::protocol;
 using fc::string;
 using boost::container::flat_set;
 
@@ -50,22 +50,22 @@ BOOST_AUTO_TEST_CASE( smt_limit_order_create_authorities )
       CREA_REQUIRE_THROW( db->push_transaction( tx, database::skip_transaction_dupe_check ), tx_missing_active_auth );
 
       BOOST_TEST_MESSAGE( "--- Test success with account signature" );
-      tx.sign( alice_private_key, db->get_chain_id() );
+      sign( tx, alice_private_key );
       db->push_transaction( tx, database::skip_transaction_dupe_check );
 
       BOOST_TEST_MESSAGE( "--- Test failure with duplicate signature" );
-      tx.sign( alice_private_key, db->get_chain_id() );
+      sign( tx, alice_private_key );
       CREA_REQUIRE_THROW( db->push_transaction( tx, database::skip_transaction_dupe_check ), tx_duplicate_sig );
 
       BOOST_TEST_MESSAGE( "--- Test failure with additional incorrect signature" );
       tx.signatures.clear();
-      tx.sign( alice_private_key, db->get_chain_id() );
-      tx.sign( bob_private_key, db->get_chain_id() );
+      sign( tx, alice_private_key );
+      sign( tx, bob_private_key );
       CREA_REQUIRE_THROW( db->push_transaction( tx, database::skip_transaction_dupe_check ), tx_irrelevant_sig );
 
       BOOST_TEST_MESSAGE( "--- Test failure with incorrect signature" );
       tx.signatures.clear();
-      tx.sign( alice_post_key, db->get_chain_id() );
+      sign( tx, alice_post_key );
       CREA_REQUIRE_THROW( db->push_transaction( tx, database::skip_transaction_dupe_check ), tx_missing_active_auth );
 
       validate_database();
@@ -102,22 +102,22 @@ BOOST_AUTO_TEST_CASE( smt_limit_order_create2_authorities )
       CREA_REQUIRE_THROW( db->push_transaction( tx, database::skip_transaction_dupe_check ), tx_missing_active_auth );
 
       BOOST_TEST_MESSAGE( "--- Test success with account signature" );
-      tx.sign( alice_private_key, db->get_chain_id() );
+      sign( tx, alice_private_key );
       db->push_transaction( tx, database::skip_transaction_dupe_check );
 
       BOOST_TEST_MESSAGE( "--- Test failure with duplicate signature" );
-      tx.sign( alice_private_key, db->get_chain_id() );
+      sign( tx, alice_private_key );
       CREA_REQUIRE_THROW( db->push_transaction( tx, database::skip_transaction_dupe_check ), tx_duplicate_sig );
 
       BOOST_TEST_MESSAGE( "--- Test failure with additional incorrect signature" );
       tx.signatures.clear();
-      tx.sign( alice_private_key, db->get_chain_id() );
-      tx.sign( bob_private_key, db->get_chain_id() );
+      sign( tx, alice_private_key );
+      sign( tx, bob_private_key );
       CREA_REQUIRE_THROW( db->push_transaction( tx, database::skip_transaction_dupe_check ), tx_irrelevant_sig );
 
       BOOST_TEST_MESSAGE( "--- Test failure with incorrect signature" );
       tx.signatures.clear();
-      tx.sign( alice_post_key, db->get_chain_id() );
+      sign( tx, alice_post_key );
       CREA_REQUIRE_THROW( db->push_transaction( tx, database::skip_transaction_dupe_check ), tx_missing_active_auth );
 
       validate_database();
@@ -172,7 +172,7 @@ BOOST_AUTO_TEST_CASE( smt_limit_order_create_apply )
       op.expiration = db->head_block_time() + fc::seconds( CREA_MAX_LIMIT_ORDER_EXPIRATION );
       tx.operations.push_back( op );
       tx.set_expiration( db->head_block_time() + CREA_MAX_TIME_UNTIL_EXPIRATION );
-      tx.sign( bob_private_key, db->get_chain_id() );
+      sign( tx, bob_private_key );
       CREA_REQUIRE_THROW( db->push_transaction( tx, 0 ), fc::exception );
 
       BOOST_REQUIRE( limit_order_idx.find( std::make_tuple( "bob", op.orderid ) ) == limit_order_idx.end() );
@@ -187,7 +187,7 @@ BOOST_AUTO_TEST_CASE( smt_limit_order_create_apply )
       tx.operations.clear();
       tx.signatures.clear();
       tx.operations.push_back( op );
-      tx.sign( alice_private_key, db->get_chain_id() );
+      sign( tx, alice_private_key );
       CREA_REQUIRE_THROW( db->push_transaction( tx, 0 ), fc::exception );
 
       BOOST_REQUIRE( limit_order_idx.find( std::make_tuple( "alice", op.orderid ) ) == limit_order_idx.end() );
@@ -202,7 +202,7 @@ BOOST_AUTO_TEST_CASE( smt_limit_order_create_apply )
       tx.operations.clear();
       tx.signatures.clear();
       tx.operations.push_back( op );
-      tx.sign( alice_private_key, db->get_chain_id() );
+      sign( tx, alice_private_key );
       CREA_REQUIRE_THROW( db->push_transaction( tx, 0 ), fc::exception );
 
       BOOST_REQUIRE( limit_order_idx.find( std::make_tuple( "alice", op.orderid ) ) == limit_order_idx.end() );
@@ -217,7 +217,7 @@ BOOST_AUTO_TEST_CASE( smt_limit_order_create_apply )
       tx.operations.clear();
       tx.signatures.clear();
       tx.operations.push_back( op );
-      tx.sign( alice_private_key, db->get_chain_id() );
+      sign( tx, alice_private_key );
       CREA_REQUIRE_THROW( db->push_transaction( tx, 0 ), fc::exception );
 
       BOOST_TEST_MESSAGE( "--- Test success creating limit order that will not be filled" );
@@ -228,7 +228,7 @@ BOOST_AUTO_TEST_CASE( smt_limit_order_create_apply )
       tx.operations.clear();
       tx.signatures.clear();
       tx.operations.push_back( op );
-      tx.sign( alice_private_key, db->get_chain_id() );
+      sign( tx, alice_private_key );
       db->push_transaction( tx, 0 );
 
       alice_balance -= ASSET( "10.000 TESTS" );
@@ -250,7 +250,7 @@ BOOST_AUTO_TEST_CASE( smt_limit_order_create_apply )
       tx.operations.clear();
       tx.signatures.clear();
       tx.operations.push_back( op );
-      tx.sign( alice_private_key, db->get_chain_id() );
+      sign( tx, alice_private_key );
       CREA_REQUIRE_THROW( db->push_transaction( tx, 0 ), fc::exception );
 
       limit_order = limit_order_idx.find( std::make_tuple( "alice", op.orderid ) );
@@ -271,7 +271,7 @@ BOOST_AUTO_TEST_CASE( smt_limit_order_create_apply )
       tx.operations.clear();
       tx.signatures.clear();
       tx.operations.push_back( op );
-      tx.sign( alice_private_key, db->get_chain_id() );
+      sign( tx, alice_private_key );
       CREA_REQUIRE_THROW( db->push_transaction( tx, 0 ), fc::exception );
 
       BOOST_REQUIRE( limit_order_idx.find( std::make_tuple( "alice", op.orderid ) ) == limit_order_idx.end() );
@@ -291,7 +291,7 @@ BOOST_AUTO_TEST_CASE( smt_limit_order_create_apply )
       tx.operations.clear();
       tx.signatures.clear();
       tx.operations.push_back( op );
-      tx.sign( bob_private_key, db->get_chain_id() );
+      sign( tx, bob_private_key );
       db->push_transaction( tx, 0 );
 
       bob_smt_balance -= asset (7500, alice_symbol );
@@ -328,7 +328,7 @@ BOOST_AUTO_TEST_CASE( smt_limit_order_create_apply )
       tx.operations.clear();
       tx.signatures.clear();
       tx.operations.push_back( op );
-      tx.sign( bob_private_key, db->get_chain_id() );
+      sign( tx, bob_private_key );
       db->push_transaction( tx, 0 );
 
       bob_smt_balance -= asset( 15000, alice_symbol );
@@ -358,7 +358,7 @@ BOOST_AUTO_TEST_CASE( smt_limit_order_create_apply )
       tx.operations.clear();
       tx.signatures.clear();
       tx.operations.push_back( op );
-      tx.sign( alice_private_key, db->get_chain_id() );
+      sign( tx, alice_private_key );
       db->push_transaction( tx, 0 );
 
       alice_balance -= ASSET( "5.000 TESTS" );
@@ -382,7 +382,7 @@ BOOST_AUTO_TEST_CASE( smt_limit_order_create_apply )
       tx.operations.clear();
       tx.signatures.clear();
       tx.operations.push_back( op );
-      tx.sign( alice_private_key, db->get_chain_id() );
+      sign( tx, alice_private_key );
       db->push_transaction( tx, 0 );
 
       op.owner = "bob";
@@ -392,7 +392,7 @@ BOOST_AUTO_TEST_CASE( smt_limit_order_create_apply )
       tx.operations.clear();
       tx.signatures.clear();
       tx.operations.push_back( op );
-      tx.sign( bob_private_key, db->get_chain_id() );
+      sign( tx, bob_private_key );
       db->push_transaction( tx, 0 );
 
       alice_balance -= ASSET( "10.000 TESTS" );
@@ -420,13 +420,13 @@ BOOST_AUTO_TEST_CASE( smt_limit_order_create_apply )
       tx.operations.clear();
       tx.signatures.clear();
       tx.operations.push_back( can );
-      tx.sign( bob_private_key, db->get_chain_id() );
+      sign( tx, bob_private_key );
       db->push_transaction( tx, 0 );
 
       BOOST_TEST_MESSAGE( "--- Test filling limit order with better order when partial order is worse." );
 
       //auto gpo = db->get_dynamic_global_properties();
-      //auto start_sbd = gpo.current_sbd_supply;
+      //auto start_cbd = gpo.current_cbd_supply;
 
       op.owner = "alice";
       op.orderid = 5;
@@ -435,7 +435,7 @@ BOOST_AUTO_TEST_CASE( smt_limit_order_create_apply )
       tx.operations.clear();
       tx.signatures.clear();
       tx.operations.push_back( op );
-      tx.sign( alice_private_key, db->get_chain_id() );
+      sign( tx, alice_private_key );
       db->push_transaction( tx, 0 );
 
       op.owner = "bob";
@@ -445,7 +445,7 @@ BOOST_AUTO_TEST_CASE( smt_limit_order_create_apply )
       tx.operations.clear();
       tx.signatures.clear();
       tx.operations.push_back( op );
-      tx.sign( bob_private_key, db->get_chain_id() );
+      sign( tx, bob_private_key );
       db->push_transaction( tx, 0 );
 
       alice_balance -= ASSET( "20.000 TESTS" );
@@ -497,7 +497,7 @@ BOOST_AUTO_TEST_CASE( smt_limit_order_cancel_authorities )
 
       tx.operations.push_back( c );
       tx.set_expiration( db->head_block_time() + CREA_MAX_TIME_UNTIL_EXPIRATION );
-      tx.sign( alice_private_key, db->get_chain_id() );
+      sign( tx, alice_private_key );
       db->push_transaction( tx, 0 );
 
       limit_order_cancel_operation op;
@@ -512,22 +512,22 @@ BOOST_AUTO_TEST_CASE( smt_limit_order_cancel_authorities )
       CREA_REQUIRE_THROW( db->push_transaction( tx, database::skip_transaction_dupe_check ), tx_missing_active_auth );
 
       BOOST_TEST_MESSAGE( "--- Test success with account signature" );
-      tx.sign( alice_private_key, db->get_chain_id() );
+      sign( tx, alice_private_key );
       db->push_transaction( tx, database::skip_transaction_dupe_check );
 
       BOOST_TEST_MESSAGE( "--- Test failure with duplicate signature" );
-      tx.sign( alice_private_key, db->get_chain_id() );
+      sign( tx, alice_private_key );
       CREA_REQUIRE_THROW( db->push_transaction( tx, database::skip_transaction_dupe_check ), tx_duplicate_sig );
 
       BOOST_TEST_MESSAGE( "--- Test failure with additional incorrect signature" );
       tx.signatures.clear();
-      tx.sign( alice_private_key, db->get_chain_id() );
-      tx.sign( bob_private_key, db->get_chain_id() );
+      sign( tx, alice_private_key );
+      sign( tx, bob_private_key );
       CREA_REQUIRE_THROW( db->push_transaction( tx, database::skip_transaction_dupe_check ), tx_irrelevant_sig );
 
       BOOST_TEST_MESSAGE( "--- Test failure with incorrect signature" );
       tx.signatures.clear();
-      tx.sign( alice_post_key, db->get_chain_id() );
+      sign( tx, alice_post_key );
       CREA_REQUIRE_THROW( db->push_transaction( tx, database::skip_transaction_dupe_check ), tx_missing_active_auth );
 
       validate_database();
@@ -567,7 +567,7 @@ BOOST_AUTO_TEST_CASE( smt_limit_order_cancel_apply )
       op.orderid = 5;
       tx.operations.push_back( op );
       tx.set_expiration( db->head_block_time() + CREA_MAX_TIME_UNTIL_EXPIRATION );
-      tx.sign( alice_private_key, db->get_chain_id() );
+      sign( tx, alice_private_key );
       CREA_REQUIRE_THROW( db->push_transaction( tx, 0 ), fc::exception );
 
       BOOST_TEST_MESSAGE( "--- Test cancel order" );
@@ -581,7 +581,7 @@ BOOST_AUTO_TEST_CASE( smt_limit_order_cancel_apply )
       tx.operations.clear();
       tx.signatures.clear();
       tx.operations.push_back( create );
-      tx.sign( alice_private_key, db->get_chain_id() );
+      sign( tx, alice_private_key );
       db->push_transaction( tx, 0 );
 
       BOOST_REQUIRE( limit_order_idx.find( std::make_tuple( "alice", 5 ) ) != limit_order_idx.end() );
@@ -589,7 +589,7 @@ BOOST_AUTO_TEST_CASE( smt_limit_order_cancel_apply )
       tx.operations.clear();
       tx.signatures.clear();
       tx.operations.push_back( op );
-      tx.sign( alice_private_key, db->get_chain_id() );
+      sign( tx, alice_private_key );
       db->push_transaction( tx, 0 );
 
       BOOST_REQUIRE( limit_order_idx.find( std::make_tuple( "alice", 5 ) ) == limit_order_idx.end() );
@@ -646,7 +646,7 @@ BOOST_AUTO_TEST_CASE( smt_limit_order_create2_apply )
       op.expiration = db->head_block_time() + fc::seconds( CREA_MAX_LIMIT_ORDER_EXPIRATION );
       tx.operations.push_back( op );
       tx.set_expiration( db->head_block_time() + CREA_MAX_TIME_UNTIL_EXPIRATION );
-      tx.sign( bob_private_key, db->get_chain_id() );
+      sign( tx, bob_private_key );
       CREA_REQUIRE_THROW( db->push_transaction( tx, 0 ), fc::exception );
 
       BOOST_REQUIRE( limit_order_idx.find( std::make_tuple( "bob", op.orderid ) ) == limit_order_idx.end() );
@@ -662,7 +662,7 @@ BOOST_AUTO_TEST_CASE( smt_limit_order_create2_apply )
       tx.operations.clear();
       tx.signatures.clear();
       tx.operations.push_back( op );
-      tx.sign( alice_private_key, db->get_chain_id() );
+      sign( tx, alice_private_key );
       CREA_REQUIRE_THROW( db->push_transaction( tx, 0 ), fc::exception );
 
       BOOST_REQUIRE( limit_order_idx.find( std::make_tuple( "alice", op.orderid ) ) == limit_order_idx.end() );
@@ -677,7 +677,7 @@ BOOST_AUTO_TEST_CASE( smt_limit_order_create2_apply )
       tx.operations.clear();
       tx.signatures.clear();
       tx.operations.push_back( op );
-      tx.sign( alice_private_key, db->get_chain_id() );
+      sign( tx, alice_private_key );
       CREA_REQUIRE_THROW( db->push_transaction( tx, 0 ), fc::exception );
 
       BOOST_REQUIRE( limit_order_idx.find( std::make_tuple( "alice", op.orderid ) ) == limit_order_idx.end() );
@@ -692,7 +692,7 @@ BOOST_AUTO_TEST_CASE( smt_limit_order_create2_apply )
       tx.operations.clear();
       tx.signatures.clear();
       tx.operations.push_back( op );
-      tx.sign( alice_private_key, db->get_chain_id() );
+      sign( tx, alice_private_key );
       CREA_REQUIRE_THROW( db->push_transaction( tx, 0 ), fc::exception );
 
       BOOST_TEST_MESSAGE( "--- Test success creating limit order that will not be filled" );
@@ -703,7 +703,7 @@ BOOST_AUTO_TEST_CASE( smt_limit_order_create2_apply )
       tx.operations.clear();
       tx.signatures.clear();
       tx.operations.push_back( op );
-      tx.sign( alice_private_key, db->get_chain_id() );
+      sign( tx, alice_private_key );
       db->push_transaction( tx, 0 );
 
       alice_balance -= ASSET( "10.000 TESTS" );
@@ -725,7 +725,7 @@ BOOST_AUTO_TEST_CASE( smt_limit_order_create2_apply )
       tx.operations.clear();
       tx.signatures.clear();
       tx.operations.push_back( op );
-      tx.sign( alice_private_key, db->get_chain_id() );
+      sign( tx, alice_private_key );
       CREA_REQUIRE_THROW( db->push_transaction( tx, 0 ), fc::exception );
 
       limit_order = limit_order_idx.find( std::make_tuple( "alice", op.orderid ) );
@@ -746,7 +746,7 @@ BOOST_AUTO_TEST_CASE( smt_limit_order_create2_apply )
       tx.operations.clear();
       tx.signatures.clear();
       tx.operations.push_back( op );
-      tx.sign( alice_private_key, db->get_chain_id() );
+      sign( tx, alice_private_key );
       CREA_REQUIRE_THROW( db->push_transaction( tx, 0 ), fc::exception );
 
       BOOST_REQUIRE( limit_order_idx.find( std::make_tuple( "alice", op.orderid ) ) == limit_order_idx.end() );
@@ -766,7 +766,7 @@ BOOST_AUTO_TEST_CASE( smt_limit_order_create2_apply )
       tx.operations.clear();
       tx.signatures.clear();
       tx.operations.push_back( op );
-      tx.sign( bob_private_key, db->get_chain_id() );
+      sign( tx, bob_private_key );
       db->push_transaction( tx, 0 );
 
       bob_smt_balance -= asset (7500, alice_symbol );
@@ -803,7 +803,7 @@ BOOST_AUTO_TEST_CASE( smt_limit_order_create2_apply )
       tx.operations.clear();
       tx.signatures.clear();
       tx.operations.push_back( op );
-      tx.sign( bob_private_key, db->get_chain_id() );
+      sign( tx, bob_private_key );
       db->push_transaction( tx, 0 );
 
       bob_smt_balance -= asset( 15000, alice_symbol );
@@ -833,7 +833,7 @@ BOOST_AUTO_TEST_CASE( smt_limit_order_create2_apply )
       tx.operations.clear();
       tx.signatures.clear();
       tx.operations.push_back( op );
-      tx.sign( alice_private_key, db->get_chain_id() );
+      sign( tx, alice_private_key );
       db->push_transaction( tx, 0 );
 
       alice_balance -= ASSET( "5.000 TESTS" );
@@ -857,7 +857,7 @@ BOOST_AUTO_TEST_CASE( smt_limit_order_create2_apply )
       tx.operations.clear();
       tx.signatures.clear();
       tx.operations.push_back( op );
-      tx.sign( alice_private_key, db->get_chain_id() );
+      sign( tx, alice_private_key );
       db->push_transaction( tx, 0 );
 
       op.owner = "bob";
@@ -867,7 +867,7 @@ BOOST_AUTO_TEST_CASE( smt_limit_order_create2_apply )
       tx.operations.clear();
       tx.signatures.clear();
       tx.operations.push_back( op );
-      tx.sign( bob_private_key, db->get_chain_id() );
+      sign( tx, bob_private_key );
       db->push_transaction( tx, 0 );
 
       alice_balance -= ASSET( "10.000 TESTS" );
@@ -895,13 +895,13 @@ BOOST_AUTO_TEST_CASE( smt_limit_order_create2_apply )
       tx.operations.clear();
       tx.signatures.clear();
       tx.operations.push_back( can );
-      tx.sign( bob_private_key, db->get_chain_id() );
+      sign( tx, bob_private_key );
       db->push_transaction( tx, 0 );
 
       BOOST_TEST_MESSAGE( "--- Test filling limit order with better order when partial order is worse." );
 
       //auto gpo = db->get_dynamic_global_properties();
-      //auto start_sbd = gpo.current_sbd_supply;
+      //auto start_cbd = gpo.current_cbd_supply;
 
       op.owner = "alice";
       op.orderid = 5;
@@ -910,7 +910,7 @@ BOOST_AUTO_TEST_CASE( smt_limit_order_create2_apply )
       tx.operations.clear();
       tx.signatures.clear();
       tx.operations.push_back( op );
-      tx.sign( alice_private_key, db->get_chain_id() );
+      sign( tx, alice_private_key );
       db->push_transaction( tx, 0 );
 
       op.owner = "bob";
@@ -920,7 +920,7 @@ BOOST_AUTO_TEST_CASE( smt_limit_order_create2_apply )
       tx.operations.clear();
       tx.signatures.clear();
       tx.operations.push_back( op );
-      tx.sign( bob_private_key, db->get_chain_id() );
+      sign( tx, bob_private_key );
       db->push_transaction( tx, 0 );
 
       alice_balance -= ASSET( "20.000 TESTS" );
@@ -1112,27 +1112,27 @@ BOOST_AUTO_TEST_CASE( claim_reward_balance2_apply )
       {
          db.modify( db.get_account( "alice" ), []( account_object& a )
          {
-            a.reward_sbd_balance = ASSET( "10.000 TBD" );
-            a.reward_creativecoin_balance = ASSET( "10.000 TESTS" );
+            a.reward_cbd_balance = ASSET( "10.000 TBD" );
+            a.reward_crea_balance = ASSET( "10.000 TESTS" );
             a.reward_vesting_balance = ASSET( "10.000000 VESTS" );
-            a.reward_vesting_creativecoin = ASSET( "10.000 TESTS" );
+            a.reward_vesting_crea = ASSET( "10.000 TESTS" );
          });
 
          db.modify( db.get_dynamic_global_properties(), []( dynamic_global_property_object& gpo )
          {
-            gpo.current_sbd_supply += ASSET( "10.000 TBD" );
+            gpo.current_cbd_supply += ASSET( "10.000 TBD" );
             gpo.current_supply += ASSET( "20.000 TESTS" );
             gpo.virtual_supply += ASSET( "20.000 TESTS" );
             gpo.pending_rewarded_vesting_shares += ASSET( "10.000000 VESTS" );
-            gpo.pending_rewarded_vesting_creativecoin += ASSET( "10.000 TESTS" );
+            gpo.pending_rewarded_vesting_crea += ASSET( "10.000 TESTS" );
          });
       });
 
       generate_block();
       validate_database();
 
-      auto alice_creativecoin = db->get_account( "alice" ).balance;
-      auto alice_sbd = db->get_account( "alice" ).sbd_balance;
+      auto alice_crea = db->get_account( "alice" ).balance;
+      auto alice_cbd = db->get_account( "alice" ).cbd_balance;
       auto alice_vests = db->get_account( "alice" ).vesting_shares;
       auto alice_smt1 = db->get_balance( "alice", smt1 );
       auto alice_smt2 = db->get_balance( "alice", smt2 );
@@ -1162,13 +1162,13 @@ BOOST_AUTO_TEST_CASE( claim_reward_balance2_apply )
       op.reward_tokens.push_back( ASSET( "0.000 TESTS" ) );
       op.reward_tokens.push_back( partial_vests );
       PUSH_OP(op, alice_private_key);
-      BOOST_REQUIRE( db->get_account( "alice" ).balance == alice_creativecoin + ASSET( "0.000 TESTS" ) );
-      BOOST_REQUIRE( db->get_account( "alice" ).reward_creativecoin_balance == ASSET( "10.000 TESTS" ) );
-      BOOST_REQUIRE( db->get_account( "alice" ).sbd_balance == alice_sbd + ASSET( "0.000 TBD" ) );
-      BOOST_REQUIRE( db->get_account( "alice" ).reward_sbd_balance == ASSET( "10.000 TBD" ) );
+      BOOST_REQUIRE( db->get_account( "alice" ).balance == alice_crea + ASSET( "0.000 TESTS" ) );
+      BOOST_REQUIRE( db->get_account( "alice" ).reward_crea_balance == ASSET( "10.000 TESTS" ) );
+      BOOST_REQUIRE( db->get_account( "alice" ).cbd_balance == alice_cbd + ASSET( "0.000 TBD" ) );
+      BOOST_REQUIRE( db->get_account( "alice" ).reward_cbd_balance == ASSET( "10.000 TBD" ) );
       BOOST_REQUIRE( db->get_account( "alice" ).vesting_shares == alice_vests + partial_vests );
       BOOST_REQUIRE( db->get_account( "alice" ).reward_vesting_balance == ASSET( "5.000000 VESTS" ) );
-      BOOST_REQUIRE( db->get_account( "alice" ).reward_vesting_creativecoin == ASSET( "5.000 TESTS" ) );
+      BOOST_REQUIRE( db->get_account( "alice" ).reward_vesting_crea == ASSET( "5.000 TESTS" ) );
       validate_database();
       alice_vests += partial_vests;
       op.reward_tokens.clear();
@@ -1187,19 +1187,19 @@ BOOST_AUTO_TEST_CASE( claim_reward_balance2_apply )
 
       BOOST_TEST_MESSAGE( "--- Claiming the full reward balance" );
       // Legacy symbols
-      asset full_creativecoin = ASSET( "10.000 TESTS" );
-      asset full_sbd = ASSET( "10.000 TBD" );
-      op.reward_tokens.push_back( full_sbd );
-      op.reward_tokens.push_back( full_creativecoin );
+      asset full_crea = ASSET( "10.000 TESTS" );
+      asset full_cbd = ASSET( "10.000 TBD" );
+      op.reward_tokens.push_back( full_cbd );
+      op.reward_tokens.push_back( full_crea );
       op.reward_tokens.push_back( partial_vests );
       PUSH_OP(op, alice_private_key);
-      BOOST_REQUIRE( db->get_account( "alice" ).balance == alice_creativecoin + full_creativecoin );
-      BOOST_REQUIRE( db->get_account( "alice" ).reward_creativecoin_balance == ASSET( "0.000 TESTS" ) );
-      BOOST_REQUIRE( db->get_account( "alice" ).sbd_balance == alice_sbd + full_sbd );
-      BOOST_REQUIRE( db->get_account( "alice" ).reward_sbd_balance == ASSET( "0.000 TBD" ) );
+      BOOST_REQUIRE( db->get_account( "alice" ).balance == alice_crea + full_crea );
+      BOOST_REQUIRE( db->get_account( "alice" ).reward_crea_balance == ASSET( "0.000 TESTS" ) );
+      BOOST_REQUIRE( db->get_account( "alice" ).cbd_balance == alice_cbd + full_cbd );
+      BOOST_REQUIRE( db->get_account( "alice" ).reward_cbd_balance == ASSET( "0.000 TBD" ) );
       BOOST_REQUIRE( db->get_account( "alice" ).vesting_shares == alice_vests + partial_vests );
       BOOST_REQUIRE( db->get_account( "alice" ).reward_vesting_balance == ASSET( "0.000000 VESTS" ) );
-      BOOST_REQUIRE( db->get_account( "alice" ).reward_vesting_creativecoin == ASSET( "0.000 TESTS" ) );
+      BOOST_REQUIRE( db->get_account( "alice" ).reward_vesting_crea == ASSET( "0.000 TESTS" ) );
       validate_database();
       op.reward_tokens.clear();
       // SMTs

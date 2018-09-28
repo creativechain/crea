@@ -2,6 +2,7 @@
 
 #include <crea/plugins/chain/chain_plugin.hpp>
 #include <crea/plugins/p2p/p2p_plugin.hpp>
+#include <crea/plugins/rc/rc_plugin.hpp>
 
 #include <appbase/application.hpp>
 
@@ -37,6 +38,7 @@ public:
    APPBASE_PLUGIN_REQUIRES(
       (crea::plugins::chain::chain_plugin)
       (crea::plugins::p2p::p2p_plugin)
+      (crea::plugins::rc::rc_plugin)
    )
 
    witness_plugin();

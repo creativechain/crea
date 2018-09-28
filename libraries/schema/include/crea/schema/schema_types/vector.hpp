@@ -16,7 +16,7 @@ template< typename E >
 struct schema_vector_impl
    : public abstract_schema
 {
-   GRAPHENE_SCHEMA_CLASS_BODY( schema_vector_impl )
+   CREA_SCHEMA_TEMPLATE_CLASS_BODY( schema_vector_impl )
 };
 
 template< typename E >

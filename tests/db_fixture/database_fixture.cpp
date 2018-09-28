@@ -1,15 +1,15 @@
 #include <boost/test/unit_test.hpp>
 #include <boost/program_options.hpp>
 
-#include <creativecoin/utilities/tempdir.hpp>
+#include <crea/utilities/tempdir.hpp>
 
-#include <creativecoin/chain/creativecoin_objects.hpp>
-#include <creativecoin/chain/history_object.hpp>
-#include <creativecoin/plugins/account_history/account_history_plugin.hpp>
-#include <creativecoin/plugins/witness/witness_plugin.hpp>
-#include <creativecoin/plugins/chain/chain_plugin.hpp>
-#include <creativecoin/plugins/webserver/webserver_plugin.hpp>
-#include <creativecoin/plugins/condenser_api/condenser_api_plugin.hpp>
+#include <crea/chain/crea_objects.hpp>
+#include <crea/chain/history_object.hpp>
+#include <crea/plugins/account_history/account_history_plugin.hpp>
+#include <crea/plugins/witness/witness_plugin.hpp>
+#include <crea/plugins/chain/chain_plugin.hpp>
+#include <crea/plugins/webserver/webserver_plugin.hpp>
+#include <crea/plugins/condenser_api/condenser_api_plugin.hpp>
 
 #include <fc/crypto/digest.hpp>
 #include <fc/smart_ref_impl.hpp>
@@ -20,16 +20,16 @@
 
 #include "database_fixture.hpp"
 
-//using namespace creativecoin::chain::test;
+//using namespace crea::chain::test;
 
 uint32_t CREA_TESTING_GENESIS_TIMESTAMP = 1431700000;
 
-using namespace creativecoin::plugins::webserver;
-using namespace creativecoin::plugins::database_api;
-using namespace creativecoin::plugins::block_api;
-using creativecoin::plugins::condenser_api::condenser_api_plugin;
+using namespace crea::plugins::webserver;
+using namespace crea::plugins::database_api;
+using namespace crea::plugins::block_api;
+using crea::plugins::condenser_api::condenser_api_plugin;
 
-namespace creativecoin { namespace chain {
+namespace crea { namespace chain {
 
 using std::cout;
 using std::cerr;
@@ -48,18 +48,18 @@ clean_database_fixture::clean_database_fixture()
          std::cout << "running test " << boost::unit_test::framework::current_test_case().p_name << std::endl;
    }
 
-   appbase::app().register_plugin< creativecoin::plugins::account_history::account_history_plugin >();
-   db_plugin = &appbase::app().register_plugin< creativecoin::plugins::debug_node::debug_node_plugin >();
-   appbase::app().register_plugin< creativecoin::plugins::witness::witness_plugin >();
+   appbase::app().register_plugin< crea::plugins::account_history::account_history_plugin >();
+   db_plugin = &appbase::app().register_plugin< crea::plugins::debug_node::debug_node_plugin >();
+   appbase::app().register_plugin< crea::plugins::witness::witness_plugin >();
 
    db_plugin->logging = false;
    appbase::app().initialize<
-      creativecoin::plugins::account_history::account_history_plugin,
-      creativecoin::plugins::debug_node::debug_node_plugin,
-      creativecoin::plugins::witness::witness_plugin
+      crea::plugins::account_history::account_history_plugin,
+      crea::plugins::debug_node::debug_node_plugin,
+      crea::plugins::witness::witness_plugin
       >( argc, argv );
 
-   db = &appbase::app().get_plugin< creativecoin::plugins::chain::chain_plugin >().db();
+   db = &appbase::app().get_plugin< crea::plugins::chain::chain_plugin >().db();
    BOOST_REQUIRE( db );
 
    init_account_pub_key = init_account_priv_key.get_public_key();
@@ -161,12 +161,12 @@ live_database_fixture::live_database_fixture()
       _chain_dir = fc::current_path() / "test_blockchain";
       FC_ASSERT( fc::exists( _chain_dir ), "Requires blockchain to test on in ./test_blockchain" );
 
-      appbase::app().register_plugin< creativecoin::plugins::account_history::account_history_plugin >();
+      appbase::app().register_plugin< crea::plugins::account_history::account_history_plugin >();
       appbase::app().initialize<
-         creativecoin::plugins::account_history::account_history_plugin
+         crea::plugins::account_history::account_history_plugin
          >( argc, argv );
 
-      db = &appbase::app().get_plugin< creativecoin::plugins::chain::chain_plugin >().db();
+      db = &appbase::app().get_plugin< crea::plugins::chain::chain_plugin >().db();
       BOOST_REQUIRE( db );
 
       {
@@ -234,7 +234,7 @@ void database_fixture::open_database()
 {
    if( !data_dir )
    {
-      data_dir = fc::temp_directory( creativecoin::utilities::temp_directory_path() );
+      data_dir = fc::temp_directory( crea::utilities::temp_directory_path() );
       db->_log_hardforks = false;
 
       database::open_args args;
@@ -249,7 +249,7 @@ void database_fixture::open_database()
 void database_fixture::generate_block(uint32_t skip, const fc::ecc::private_key& key, int miss_blocks)
 {
    skip |= default_skip;
-   db_plugin->debug_generate_blocks( creativecoin::utilities::key_to_wif( key ), 1, skip, miss_blocks );
+   db_plugin->debug_generate_blocks( crea::utilities::key_to_wif( key ), 1, skip, miss_blocks );
 }
 
 void database_fixture::generate_blocks( uint32_t block_count )
@@ -393,8 +393,8 @@ void database_fixture::fund(
                a.balance += amount;
             else if( amount.symbol == CBD_SYMBOL )
             {
-               a.sbd_balance += amount;
-               a.sbd_seconds_last_update = db.head_block_time();
+               a.cbd_balance += amount;
+               a.cbd_seconds_last_update = db.head_block_time();
             }
          });
 
@@ -403,7 +403,7 @@ void database_fixture::fund(
             if( amount.symbol == CREA_SYMBOL )
                gpo.current_supply += amount;
             else if( amount.symbol == CBD_SYMBOL )
-               gpo.current_sbd_supply += amount;
+               gpo.current_cbd_supply += amount;
          });
 
          if( amount.symbol == CBD_SYMBOL )
@@ -431,16 +431,16 @@ void database_fixture::convert(
       if ( amount.symbol == CREA_SYMBOL )
       {
          db->adjust_balance( account_name, -amount );
-         db->adjust_balance( account_name, db->to_sbd( amount ) );
+         db->adjust_balance( account_name, db->to_cbd( amount ) );
          db->adjust_supply( -amount );
-         db->adjust_supply( db->to_sbd( amount ) );
+         db->adjust_supply( db->to_cbd( amount ) );
       }
       else if ( amount.symbol == CBD_SYMBOL )
       {
          db->adjust_balance( account_name, -amount );
-         db->adjust_balance( account_name, db->to_creativecoin( amount ) );
+         db->adjust_balance( account_name, db->to_crea( amount ) );
          db->adjust_supply( -amount );
-         db->adjust_supply( db->to_creativecoin( amount ) );
+         db->adjust_supply( db->to_crea( amount ) );
       }
    } FC_CAPTURE_AND_RETHROW( (account_name)(amount) )
 }
@@ -516,7 +516,7 @@ void database_fixture::proxy( const string& account, const string& proxy )
 void database_fixture::set_price_feed( const price& new_price )
 {
    flat_map< string, vector< char > > props;
-   props[ "sbd_exchange_rate" ] = fc::raw::pack_to_vector( new_price );
+   props[ "cbd_exchange_rate" ] = fc::raw::pack_to_vector( new_price );
 
    set_witness_props( props );
 
@@ -573,7 +573,7 @@ vector< operation > database_fixture::get_last_operations( uint32_t num_ops )
       std::vector<char> serialized_op;
       serialized_op.reserve( _serialized_op.size() );
       std::copy( _serialized_op.begin(), _serialized_op.end(), std::back_inserter( serialized_op ) );
-      ops.push_back( fc::raw::unpack_from_vector< creativecoin::chain::operation >( serialized_op ) );
+      ops.push_back( fc::raw::unpack_from_vector< crea::chain::operation >( serialized_op ) );
    }
 
    return ops;
@@ -714,11 +714,11 @@ void t_smt_database_fixture< T >::create_conflicting_smt( const asset_symbol_typ
 }
 
 template< typename T >
-smt_generation_unit t_smt_database_fixture< T >::get_generation_unit( const units& creativecoin_unit, const units& token_unit )
+smt_generation_unit t_smt_database_fixture< T >::get_generation_unit( const units& crea_unit, const units& token_unit )
 {
    smt_generation_unit ret;
 
-   ret.creativecoin_unit = creativecoin_unit;
+   ret.crea_unit = crea_unit;
    ret.token_unit = token_unit;
 
    return ret;
@@ -749,8 +749,8 @@ smt_capped_generation_policy t_smt_database_fixture< T >::get_capped_generation_
 (
    const smt_generation_unit& pre_soft_cap_unit,
    const smt_generation_unit& post_soft_cap_unit,
-   const smt_cap_commitment& min_creativecoin_units_commitment,
-   const smt_cap_commitment& hard_cap_creativecoin_units_commitment,
+   const smt_cap_commitment& min_crea_units_commitment,
+   const smt_cap_commitment& hard_cap_crea_units_commitment,
    uint16_t soft_cap_percent,
    uint32_t min_unit_ratio,
    uint32_t max_unit_ratio
@@ -761,8 +761,8 @@ smt_capped_generation_policy t_smt_database_fixture< T >::get_capped_generation_
    ret.pre_soft_cap_unit = pre_soft_cap_unit;
    ret.post_soft_cap_unit = post_soft_cap_unit;
 
-   ret.min_creativecoin_units_commitment = min_creativecoin_units_commitment;
-   ret.hard_cap_creativecoin_units_commitment = hard_cap_creativecoin_units_commitment;
+   ret.min_crea_units_commitment = min_crea_units_commitment;
+   ret.hard_cap_crea_units_commitment = hard_cap_crea_units_commitment;
 
    ret.soft_cap_percent = soft_cap_percent;
 
@@ -780,14 +780,14 @@ template void t_smt_database_fixture< clean_database_fixture >::create_invalid_s
 template void t_smt_database_fixture< clean_database_fixture >::create_conflicting_smt( const asset_symbol_type existing_smt, const char* control_account_name, const fc::ecc::private_key& key );
 template std::array<asset_symbol_type, 3> t_smt_database_fixture< clean_database_fixture >::create_smt_3( const char* control_account_name, const fc::ecc::private_key& key );
 
-template smt_generation_unit t_smt_database_fixture< clean_database_fixture >::get_generation_unit( const units& creativecoin_unit, const units& token_unit );
+template smt_generation_unit t_smt_database_fixture< clean_database_fixture >::get_generation_unit( const units& crea_unit, const units& token_unit );
 template smt_cap_commitment t_smt_database_fixture< clean_database_fixture >::get_cap_commitment( share_type amount, uint128_t nonce );
 template smt_capped_generation_policy t_smt_database_fixture< clean_database_fixture >::get_capped_generation_policy
 (
    const smt_generation_unit& pre_soft_cap_unit,
    const smt_generation_unit& post_soft_cap_unit,
-   const smt_cap_commitment& min_creativecoin_units_commitment,
-   const smt_cap_commitment& hard_cap_creativecoin_units_commitment,
+   const smt_cap_commitment& min_crea_units_commitment,
+   const smt_cap_commitment& hard_cap_crea_units_commitment,
    uint16_t soft_cap_percent,
    uint32_t min_unit_ratio,
    uint32_t max_unit_ratio
@@ -809,28 +809,28 @@ json_rpc_database_fixture::json_rpc_database_fixture()
          std::cout << "running test " << boost::unit_test::framework::current_test_case().p_name << std::endl;
    }
 
-   appbase::app().register_plugin< creativecoin::plugins::account_history::account_history_plugin >();
-   db_plugin = &appbase::app().register_plugin< creativecoin::plugins::debug_node::debug_node_plugin >();
-   appbase::app().register_plugin< creativecoin::plugins::witness::witness_plugin >();
-   rpc_plugin = &appbase::app().register_plugin< creativecoin::plugins::json_rpc::json_rpc_plugin >();
-   appbase::app().register_plugin< creativecoin::plugins::block_api::block_api_plugin >();
-   appbase::app().register_plugin< creativecoin::plugins::database_api::database_api_plugin >();
-   appbase::app().register_plugin< creativecoin::plugins::condenser_api::condenser_api_plugin >();
+   appbase::app().register_plugin< crea::plugins::account_history::account_history_plugin >();
+   db_plugin = &appbase::app().register_plugin< crea::plugins::debug_node::debug_node_plugin >();
+   appbase::app().register_plugin< crea::plugins::witness::witness_plugin >();
+   rpc_plugin = &appbase::app().register_plugin< crea::plugins::json_rpc::json_rpc_plugin >();
+   appbase::app().register_plugin< crea::plugins::block_api::block_api_plugin >();
+   appbase::app().register_plugin< crea::plugins::database_api::database_api_plugin >();
+   appbase::app().register_plugin< crea::plugins::condenser_api::condenser_api_plugin >();
 
    db_plugin->logging = false;
    appbase::app().initialize<
-      creativecoin::plugins::account_history::account_history_plugin,
-      creativecoin::plugins::debug_node::debug_node_plugin,
-      creativecoin::plugins::witness::witness_plugin,
-      creativecoin::plugins::json_rpc::json_rpc_plugin,
-      creativecoin::plugins::block_api::block_api_plugin,
-      creativecoin::plugins::database_api::database_api_plugin,
-      creativecoin::plugins::condenser_api::condenser_api_plugin
+      crea::plugins::account_history::account_history_plugin,
+      crea::plugins::debug_node::debug_node_plugin,
+      crea::plugins::witness::witness_plugin,
+      crea::plugins::json_rpc::json_rpc_plugin,
+      crea::plugins::block_api::block_api_plugin,
+      crea::plugins::database_api::database_api_plugin,
+      crea::plugins::condenser_api::condenser_api_plugin
       >( argc, argv );
 
-   appbase::app().get_plugin< creativecoin::plugins::condenser_api::condenser_api_plugin >().plugin_startup();
+   appbase::app().get_plugin< crea::plugins::condenser_api::condenser_api_plugin >().plugin_startup();
 
-   db = &appbase::app().get_plugin< creativecoin::plugins::chain::chain_plugin >().db();
+   db = &appbase::app().get_plugin< crea::plugins::chain::chain_plugin >().db();
    BOOST_REQUIRE( db );
 
    init_account_pub_key = init_account_priv_key.get_public_key();
@@ -991,6 +991,6 @@ void _push_transaction( database& db, const signed_transaction& tx, uint32_t ski
    db.push_transaction( tx, skip_flags );
 } FC_CAPTURE_AND_RETHROW((tx)) }
 
-} // creativecoin::chain::test
+} // crea::chain::test
 
-} } // creativecoin::chain
+} } // crea::chain

@@ -1,22 +1,22 @@
 #if defined IS_TEST_NET && defined CREA_ENABLE_SMT
 #include <boost/test/unit_test.hpp>
 
-#include <creativecoin/chain/account_object.hpp>
-#include <creativecoin/chain/comment_object.hpp>
-#include <creativecoin/protocol/creativecoin_operations.hpp>
+#include <crea/chain/account_object.hpp>
+#include <crea/chain/comment_object.hpp>
+#include <crea/protocol/crea_operations.hpp>
 
-#include <creativecoin/plugins/market_history/market_history_plugin.hpp>
+#include <crea/plugins/market_history/market_history_plugin.hpp>
 
 #include "../db_fixture/database_fixture.hpp"
 
-using namespace creativecoin::chain;
-using namespace creativecoin::protocol;
+using namespace crea::chain;
+using namespace crea::protocol;
 
 BOOST_FIXTURE_TEST_SUITE( smt_market_history, smt_database_fixture_for_plugin )
 
 BOOST_AUTO_TEST_CASE( smt_mh_test )
 {
-   using namespace creativecoin::plugins::market_history;
+   using namespace crea::plugins::market_history;
 
    try
    {
@@ -32,16 +32,16 @@ BOOST_AUTO_TEST_CASE( smt_mh_test )
       }
 
       appbase::app().register_plugin< market_history_plugin >();
-      db_plugin = &appbase::app().register_plugin< creativecoin::plugins::debug_node::debug_node_plugin >();
+      db_plugin = &appbase::app().register_plugin< crea::plugins::debug_node::debug_node_plugin >();
       init_account_pub_key = init_account_priv_key.get_public_key();
 
       db_plugin->logging = false;
       appbase::app().initialize<
-         creativecoin::plugins::market_history::market_history_plugin,
-         creativecoin::plugins::debug_node::debug_node_plugin
+         crea::plugins::market_history::market_history_plugin,
+         crea::plugins::debug_node::debug_node_plugin
       >( argc, argv );
 
-      db = &appbase::app().get_plugin< creativecoin::plugins::chain::chain_plugin >().db();
+      db = &appbase::app().get_plugin< crea::plugins::chain::chain_plugin >().db();
       BOOST_REQUIRE( db );
 
       open_database();
@@ -92,7 +92,7 @@ BOOST_AUTO_TEST_CASE( smt_mh_test )
       op.expiration = db->head_block_time() + fc::seconds( CREA_MAX_LIMIT_ORDER_EXPIRATION );
       tx.operations.push_back( op );
       tx.set_expiration( db->head_block_time() + CREA_MAX_TIME_UNTIL_EXPIRATION );
-      tx.sign( alice_private_key, db->get_chain_id() );
+      sign( tx, alice_private_key );
       db->push_transaction( tx, 0 );
 
       tx.operations.clear();
@@ -102,7 +102,7 @@ BOOST_AUTO_TEST_CASE( smt_mh_test )
       op.amount_to_sell = ASSET( "1.500 TESTS" );
       op.min_to_receive = asset( 750, any_smt_symbol );
       tx.operations.push_back( op );
-      tx.sign( bob_private_key, db->get_chain_id() );
+      sign( tx, bob_private_key );
       db->push_transaction( tx, 0 );
 
       generate_blocks( db->head_block_time() + ( 60 * 90 ) );
@@ -117,7 +117,7 @@ BOOST_AUTO_TEST_CASE( smt_mh_test )
       op.min_to_receive = asset( 500, any_smt_symbol );
       tx.operations.push_back( op );
       tx.set_expiration( db->head_block_time() + CREA_MAX_TIME_UNTIL_EXPIRATION );
-      tx.sign( sam_private_key, db->get_chain_id() );
+      sign( tx, sam_private_key );
       db->push_transaction( tx, 0 );
 
       generate_blocks( db->head_block_time() + 60 );
@@ -132,7 +132,7 @@ BOOST_AUTO_TEST_CASE( smt_mh_test )
       op.min_to_receive = ASSET( "0.900 TESTS" );
       tx.operations.push_back( op );
       tx.set_expiration( db->head_block_time() + CREA_MAX_TIME_UNTIL_EXPIRATION );
-      tx.sign( alice_private_key, db->get_chain_id() );
+      sign( tx, alice_private_key );
       db->push_transaction( tx, 0 );
 
       tx.operations.clear();
@@ -143,7 +143,7 @@ BOOST_AUTO_TEST_CASE( smt_mh_test )
       op.min_to_receive = asset( 250, any_smt_symbol );
       tx.operations.push_back( op );
       tx.set_expiration( db->head_block_time() + CREA_MAX_TIME_UNTIL_EXPIRATION );
-      tx.sign( bob_private_key, db->get_chain_id() );
+      sign( tx, bob_private_key );
       db->push_transaction( tx, 0 );
       validate_database();
 
@@ -151,156 +151,156 @@ BOOST_AUTO_TEST_CASE( smt_mh_test )
 
       BOOST_REQUIRE( bucket->seconds == 15 );
       BOOST_REQUIRE( bucket->open == time_a );
-      BOOST_REQUIRE( bucket->creativecoin.high == ASSET( "1.500 TESTS " ).amount );
-      BOOST_REQUIRE( bucket->non_creativecoin.high == asset( 750, any_smt_symbol ).amount );
-      BOOST_REQUIRE( bucket->creativecoin.low == ASSET( "1.500 TESTS" ).amount );
-      BOOST_REQUIRE( bucket->non_creativecoin.low == asset( 750, any_smt_symbol ).amount );
-      BOOST_REQUIRE( bucket->creativecoin.open == ASSET( "1.500 TESTS" ).amount );
-      BOOST_REQUIRE( bucket->non_creativecoin.open == asset( 750, any_smt_symbol ).amount );
-      BOOST_REQUIRE( bucket->creativecoin.close == ASSET( "1.500 TESTS").amount );
-      BOOST_REQUIRE( bucket->non_creativecoin.close == asset( 750, any_smt_symbol ).amount );
-      BOOST_REQUIRE( bucket->creativecoin.volume == ASSET( "1.500 TESTS" ).amount );
-      BOOST_REQUIRE( bucket->non_creativecoin.volume == asset( 750, any_smt_symbol ).amount );
+      BOOST_REQUIRE( bucket->crea.high == ASSET( "1.500 TESTS " ).amount );
+      BOOST_REQUIRE( bucket->non_crea.high == asset( 750, any_smt_symbol ).amount );
+      BOOST_REQUIRE( bucket->crea.low == ASSET( "1.500 TESTS" ).amount );
+      BOOST_REQUIRE( bucket->non_crea.low == asset( 750, any_smt_symbol ).amount );
+      BOOST_REQUIRE( bucket->crea.open == ASSET( "1.500 TESTS" ).amount );
+      BOOST_REQUIRE( bucket->non_crea.open == asset( 750, any_smt_symbol ).amount );
+      BOOST_REQUIRE( bucket->crea.close == ASSET( "1.500 TESTS").amount );
+      BOOST_REQUIRE( bucket->non_crea.close == asset( 750, any_smt_symbol ).amount );
+      BOOST_REQUIRE( bucket->crea.volume == ASSET( "1.500 TESTS" ).amount );
+      BOOST_REQUIRE( bucket->non_crea.volume == asset( 750, any_smt_symbol ).amount );
       bucket++;
 
       BOOST_REQUIRE( bucket->seconds == 15 );
       BOOST_REQUIRE( bucket->open == time_a + ( 60 * 90 ) );
-      BOOST_REQUIRE( bucket->creativecoin.high == ASSET( "0.500 TESTS " ).amount );
-      BOOST_REQUIRE( bucket->non_creativecoin.high == asset( 250, any_smt_symbol ).amount );
-      BOOST_REQUIRE( bucket->creativecoin.low == ASSET( "0.500 TESTS" ).amount );
-      BOOST_REQUIRE( bucket->non_creativecoin.low == asset( 250, any_smt_symbol ).amount );
-      BOOST_REQUIRE( bucket->creativecoin.open == ASSET( "0.500 TESTS" ).amount );
-      BOOST_REQUIRE( bucket->non_creativecoin.open == asset( 250, any_smt_symbol ).amount );
-      BOOST_REQUIRE( bucket->creativecoin.close == ASSET( "0.500 TESTS").amount );
-      BOOST_REQUIRE( bucket->non_creativecoin.close == asset( 250, any_smt_symbol ).amount );
-      BOOST_REQUIRE( bucket->creativecoin.volume == ASSET( "0.500 TESTS" ).amount );
-      BOOST_REQUIRE( bucket->non_creativecoin.volume == asset( 250, any_smt_symbol ).amount );
+      BOOST_REQUIRE( bucket->crea.high == ASSET( "0.500 TESTS " ).amount );
+      BOOST_REQUIRE( bucket->non_crea.high == asset( 250, any_smt_symbol ).amount );
+      BOOST_REQUIRE( bucket->crea.low == ASSET( "0.500 TESTS" ).amount );
+      BOOST_REQUIRE( bucket->non_crea.low == asset( 250, any_smt_symbol ).amount );
+      BOOST_REQUIRE( bucket->crea.open == ASSET( "0.500 TESTS" ).amount );
+      BOOST_REQUIRE( bucket->non_crea.open == asset( 250, any_smt_symbol ).amount );
+      BOOST_REQUIRE( bucket->crea.close == ASSET( "0.500 TESTS").amount );
+      BOOST_REQUIRE( bucket->non_crea.close == asset( 250, any_smt_symbol ).amount );
+      BOOST_REQUIRE( bucket->crea.volume == ASSET( "0.500 TESTS" ).amount );
+      BOOST_REQUIRE( bucket->non_crea.volume == asset( 250, any_smt_symbol ).amount );
       bucket++;
 
       BOOST_REQUIRE( bucket->seconds == 15 );
       BOOST_REQUIRE( bucket->open == time_a + ( 60 * 90 ) + 60 );
-      BOOST_REQUIRE( bucket->creativecoin.high == ASSET( "0.450 TESTS " ).amount );
-      BOOST_REQUIRE( bucket->non_creativecoin.high == asset( 250, any_smt_symbol ).amount );
-      BOOST_REQUIRE( bucket->creativecoin.low == ASSET( "0.500 TESTS" ).amount );
-      BOOST_REQUIRE( bucket->non_creativecoin.low == asset( 250, any_smt_symbol ).amount );
-      BOOST_REQUIRE( bucket->creativecoin.open == ASSET( "0.500 TESTS" ).amount );
-      BOOST_REQUIRE( bucket->non_creativecoin.open == asset( 250, any_smt_symbol ).amount );
-      BOOST_REQUIRE( bucket->creativecoin.close == ASSET( "0.450 TESTS").amount );
-      BOOST_REQUIRE( bucket->non_creativecoin.close == asset( 250, any_smt_symbol ).amount );
-      BOOST_REQUIRE( bucket->creativecoin.volume == ASSET( "0.950 TESTS" ).amount );
-      BOOST_REQUIRE( bucket->non_creativecoin.volume == asset( 500, any_smt_symbol ).amount );
+      BOOST_REQUIRE( bucket->crea.high == ASSET( "0.450 TESTS " ).amount );
+      BOOST_REQUIRE( bucket->non_crea.high == asset( 250, any_smt_symbol ).amount );
+      BOOST_REQUIRE( bucket->crea.low == ASSET( "0.500 TESTS" ).amount );
+      BOOST_REQUIRE( bucket->non_crea.low == asset( 250, any_smt_symbol ).amount );
+      BOOST_REQUIRE( bucket->crea.open == ASSET( "0.500 TESTS" ).amount );
+      BOOST_REQUIRE( bucket->non_crea.open == asset( 250, any_smt_symbol ).amount );
+      BOOST_REQUIRE( bucket->crea.close == ASSET( "0.450 TESTS").amount );
+      BOOST_REQUIRE( bucket->non_crea.close == asset( 250, any_smt_symbol ).amount );
+      BOOST_REQUIRE( bucket->crea.volume == ASSET( "0.950 TESTS" ).amount );
+      BOOST_REQUIRE( bucket->non_crea.volume == asset( 500, any_smt_symbol ).amount );
       bucket++;
 
       BOOST_REQUIRE( bucket->seconds == 60 );
       BOOST_REQUIRE( bucket->open == time_a );
-      BOOST_REQUIRE( bucket->creativecoin.high == ASSET( "1.500 TESTS " ).amount );
-      BOOST_REQUIRE( bucket->non_creativecoin.high == asset( 750, any_smt_symbol ).amount );
-      BOOST_REQUIRE( bucket->creativecoin.low == ASSET( "1.500 TESTS" ).amount );
-      BOOST_REQUIRE( bucket->non_creativecoin.low == asset( 750, any_smt_symbol ).amount );
-      BOOST_REQUIRE( bucket->creativecoin.open == ASSET( "1.500 TESTS" ).amount );
-      BOOST_REQUIRE( bucket->non_creativecoin.open == asset( 750, any_smt_symbol ).amount );
-      BOOST_REQUIRE( bucket->creativecoin.close == ASSET( "1.500 TESTS").amount );
-      BOOST_REQUIRE( bucket->non_creativecoin.close == asset( 750, any_smt_symbol ).amount );
-      BOOST_REQUIRE( bucket->creativecoin.volume == ASSET( "1.500 TESTS" ).amount );
-      BOOST_REQUIRE( bucket->non_creativecoin.volume == asset( 750, any_smt_symbol ).amount );
+      BOOST_REQUIRE( bucket->crea.high == ASSET( "1.500 TESTS " ).amount );
+      BOOST_REQUIRE( bucket->non_crea.high == asset( 750, any_smt_symbol ).amount );
+      BOOST_REQUIRE( bucket->crea.low == ASSET( "1.500 TESTS" ).amount );
+      BOOST_REQUIRE( bucket->non_crea.low == asset( 750, any_smt_symbol ).amount );
+      BOOST_REQUIRE( bucket->crea.open == ASSET( "1.500 TESTS" ).amount );
+      BOOST_REQUIRE( bucket->non_crea.open == asset( 750, any_smt_symbol ).amount );
+      BOOST_REQUIRE( bucket->crea.close == ASSET( "1.500 TESTS").amount );
+      BOOST_REQUIRE( bucket->non_crea.close == asset( 750, any_smt_symbol ).amount );
+      BOOST_REQUIRE( bucket->crea.volume == ASSET( "1.500 TESTS" ).amount );
+      BOOST_REQUIRE( bucket->non_crea.volume == asset( 750, any_smt_symbol ).amount );
       bucket++;
 
       BOOST_REQUIRE( bucket->seconds == 60 );
       BOOST_REQUIRE( bucket->open == time_a + ( 60 * 90 ) );
-      BOOST_REQUIRE( bucket->creativecoin.high == ASSET( "0.500 TESTS " ).amount );
-      BOOST_REQUIRE( bucket->non_creativecoin.high == asset( 250, any_smt_symbol ).amount );
-      BOOST_REQUIRE( bucket->creativecoin.low == ASSET( "0.500 TESTS" ).amount );
-      BOOST_REQUIRE( bucket->non_creativecoin.low == asset( 250, any_smt_symbol ).amount );
-      BOOST_REQUIRE( bucket->creativecoin.open == ASSET( "0.500 TESTS" ).amount );
-      BOOST_REQUIRE( bucket->non_creativecoin.open == asset( 250, any_smt_symbol ).amount );
-      BOOST_REQUIRE( bucket->creativecoin.close == ASSET( "0.500 TESTS").amount );
-      BOOST_REQUIRE( bucket->non_creativecoin.close == asset( 250, any_smt_symbol ).amount );
-      BOOST_REQUIRE( bucket->creativecoin.volume == ASSET( "0.500 TESTS" ).amount );
-      BOOST_REQUIRE( bucket->non_creativecoin.volume == asset( 250, any_smt_symbol ).amount );
+      BOOST_REQUIRE( bucket->crea.high == ASSET( "0.500 TESTS " ).amount );
+      BOOST_REQUIRE( bucket->non_crea.high == asset( 250, any_smt_symbol ).amount );
+      BOOST_REQUIRE( bucket->crea.low == ASSET( "0.500 TESTS" ).amount );
+      BOOST_REQUIRE( bucket->non_crea.low == asset( 250, any_smt_symbol ).amount );
+      BOOST_REQUIRE( bucket->crea.open == ASSET( "0.500 TESTS" ).amount );
+      BOOST_REQUIRE( bucket->non_crea.open == asset( 250, any_smt_symbol ).amount );
+      BOOST_REQUIRE( bucket->crea.close == ASSET( "0.500 TESTS").amount );
+      BOOST_REQUIRE( bucket->non_crea.close == asset( 250, any_smt_symbol ).amount );
+      BOOST_REQUIRE( bucket->crea.volume == ASSET( "0.500 TESTS" ).amount );
+      BOOST_REQUIRE( bucket->non_crea.volume == asset( 250, any_smt_symbol ).amount );
       bucket++;
 
       BOOST_REQUIRE( bucket->seconds == 60 );
       BOOST_REQUIRE( bucket->open == time_a + ( 60 * 90 ) + 60 );
-      BOOST_REQUIRE( bucket->creativecoin.high == ASSET( "0.450 TESTS " ).amount );
-      BOOST_REQUIRE( bucket->non_creativecoin.high == asset( 250, any_smt_symbol ).amount );
-      BOOST_REQUIRE( bucket->creativecoin.low == ASSET( "0.500 TESTS" ).amount );
-      BOOST_REQUIRE( bucket->non_creativecoin.low == asset( 250, any_smt_symbol ).amount );
-      BOOST_REQUIRE( bucket->creativecoin.open == ASSET( "0.500 TESTS" ).amount );
-      BOOST_REQUIRE( bucket->non_creativecoin.open == asset( 250, any_smt_symbol ).amount );
-      BOOST_REQUIRE( bucket->creativecoin.close == ASSET( "0.450 TESTS").amount );
-      BOOST_REQUIRE( bucket->non_creativecoin.close == asset( 250, any_smt_symbol ).amount );
-      BOOST_REQUIRE( bucket->creativecoin.volume == ASSET( "0.950 TESTS" ).amount );
-      BOOST_REQUIRE( bucket->non_creativecoin.volume == asset( 500, any_smt_symbol ).amount );
+      BOOST_REQUIRE( bucket->crea.high == ASSET( "0.450 TESTS " ).amount );
+      BOOST_REQUIRE( bucket->non_crea.high == asset( 250, any_smt_symbol ).amount );
+      BOOST_REQUIRE( bucket->crea.low == ASSET( "0.500 TESTS" ).amount );
+      BOOST_REQUIRE( bucket->non_crea.low == asset( 250, any_smt_symbol ).amount );
+      BOOST_REQUIRE( bucket->crea.open == ASSET( "0.500 TESTS" ).amount );
+      BOOST_REQUIRE( bucket->non_crea.open == asset( 250, any_smt_symbol ).amount );
+      BOOST_REQUIRE( bucket->crea.close == ASSET( "0.450 TESTS").amount );
+      BOOST_REQUIRE( bucket->non_crea.close == asset( 250, any_smt_symbol ).amount );
+      BOOST_REQUIRE( bucket->crea.volume == ASSET( "0.950 TESTS" ).amount );
+      BOOST_REQUIRE( bucket->non_crea.volume == asset( 500, any_smt_symbol ).amount );
       bucket++;
 
       BOOST_REQUIRE( bucket->seconds == 300 );
       BOOST_REQUIRE( bucket->open == time_a );
-      BOOST_REQUIRE( bucket->creativecoin.high == ASSET( "1.500 TESTS " ).amount );
-      BOOST_REQUIRE( bucket->non_creativecoin.high == asset( 750, any_smt_symbol ).amount );
-      BOOST_REQUIRE( bucket->creativecoin.low == ASSET( "1.500 TESTS" ).amount );
-      BOOST_REQUIRE( bucket->non_creativecoin.low == asset( 750, any_smt_symbol ).amount );
-      BOOST_REQUIRE( bucket->creativecoin.open == ASSET( "1.500 TESTS" ).amount );
-      BOOST_REQUIRE( bucket->non_creativecoin.open == asset( 750, any_smt_symbol ).amount );
-      BOOST_REQUIRE( bucket->creativecoin.close == ASSET( "1.500 TESTS").amount );
-      BOOST_REQUIRE( bucket->non_creativecoin.close == asset( 750, any_smt_symbol ).amount );
-      BOOST_REQUIRE( bucket->creativecoin.volume == ASSET( "1.500 TESTS" ).amount );
-      BOOST_REQUIRE( bucket->non_creativecoin.volume == asset( 750, any_smt_symbol ).amount );
+      BOOST_REQUIRE( bucket->crea.high == ASSET( "1.500 TESTS " ).amount );
+      BOOST_REQUIRE( bucket->non_crea.high == asset( 750, any_smt_symbol ).amount );
+      BOOST_REQUIRE( bucket->crea.low == ASSET( "1.500 TESTS" ).amount );
+      BOOST_REQUIRE( bucket->non_crea.low == asset( 750, any_smt_symbol ).amount );
+      BOOST_REQUIRE( bucket->crea.open == ASSET( "1.500 TESTS" ).amount );
+      BOOST_REQUIRE( bucket->non_crea.open == asset( 750, any_smt_symbol ).amount );
+      BOOST_REQUIRE( bucket->crea.close == ASSET( "1.500 TESTS").amount );
+      BOOST_REQUIRE( bucket->non_crea.close == asset( 750, any_smt_symbol ).amount );
+      BOOST_REQUIRE( bucket->crea.volume == ASSET( "1.500 TESTS" ).amount );
+      BOOST_REQUIRE( bucket->non_crea.volume == asset( 750, any_smt_symbol ).amount );
       bucket++;
 
       BOOST_REQUIRE( bucket->seconds == 300 );
       BOOST_REQUIRE( bucket->open == time_a + ( 60 * 90 ) );
-      BOOST_REQUIRE( bucket->creativecoin.high == ASSET( "0.450 TESTS " ).amount );
-      BOOST_REQUIRE( bucket->non_creativecoin.high == asset( 250, any_smt_symbol ).amount );
-      BOOST_REQUIRE( bucket->creativecoin.low == ASSET( "0.500 TESTS" ).amount );
-      BOOST_REQUIRE( bucket->non_creativecoin.low == asset( 250, any_smt_symbol ).amount );
-      BOOST_REQUIRE( bucket->creativecoin.open == ASSET( "0.500 TESTS" ).amount );
-      BOOST_REQUIRE( bucket->non_creativecoin.open == asset( 250, any_smt_symbol ).amount );
-      BOOST_REQUIRE( bucket->creativecoin.close == ASSET( "0.450 TESTS").amount );
-      BOOST_REQUIRE( bucket->non_creativecoin.close == asset( 250, any_smt_symbol ).amount );
-      BOOST_REQUIRE( bucket->creativecoin.volume == ASSET( "1.450 TESTS" ).amount );
-      BOOST_REQUIRE( bucket->non_creativecoin.volume == asset( 750, any_smt_symbol ).amount );
+      BOOST_REQUIRE( bucket->crea.high == ASSET( "0.450 TESTS " ).amount );
+      BOOST_REQUIRE( bucket->non_crea.high == asset( 250, any_smt_symbol ).amount );
+      BOOST_REQUIRE( bucket->crea.low == ASSET( "0.500 TESTS" ).amount );
+      BOOST_REQUIRE( bucket->non_crea.low == asset( 250, any_smt_symbol ).amount );
+      BOOST_REQUIRE( bucket->crea.open == ASSET( "0.500 TESTS" ).amount );
+      BOOST_REQUIRE( bucket->non_crea.open == asset( 250, any_smt_symbol ).amount );
+      BOOST_REQUIRE( bucket->crea.close == ASSET( "0.450 TESTS").amount );
+      BOOST_REQUIRE( bucket->non_crea.close == asset( 250, any_smt_symbol ).amount );
+      BOOST_REQUIRE( bucket->crea.volume == ASSET( "1.450 TESTS" ).amount );
+      BOOST_REQUIRE( bucket->non_crea.volume == asset( 750, any_smt_symbol ).amount );
       bucket++;
 
       BOOST_REQUIRE( bucket->seconds == 3600 );
       BOOST_REQUIRE( bucket->open == time_a );
-      BOOST_REQUIRE( bucket->creativecoin.high == ASSET( "1.500 TESTS " ).amount );
-      BOOST_REQUIRE( bucket->non_creativecoin.high == asset( 750, any_smt_symbol ).amount );
-      BOOST_REQUIRE( bucket->creativecoin.low == ASSET( "1.500 TESTS" ).amount );
-      BOOST_REQUIRE( bucket->non_creativecoin.low == asset( 750, any_smt_symbol ).amount );
-      BOOST_REQUIRE( bucket->creativecoin.open == ASSET( "1.500 TESTS" ).amount );
-      BOOST_REQUIRE( bucket->non_creativecoin.open == asset( 750, any_smt_symbol ).amount );
-      BOOST_REQUIRE( bucket->creativecoin.close == ASSET( "1.500 TESTS").amount );
-      BOOST_REQUIRE( bucket->non_creativecoin.close == asset( 750, any_smt_symbol ).amount );
-      BOOST_REQUIRE( bucket->creativecoin.volume == ASSET( "1.500 TESTS" ).amount );
-      BOOST_REQUIRE( bucket->non_creativecoin.volume == asset( 750, any_smt_symbol ).amount );
+      BOOST_REQUIRE( bucket->crea.high == ASSET( "1.500 TESTS " ).amount );
+      BOOST_REQUIRE( bucket->non_crea.high == asset( 750, any_smt_symbol ).amount );
+      BOOST_REQUIRE( bucket->crea.low == ASSET( "1.500 TESTS" ).amount );
+      BOOST_REQUIRE( bucket->non_crea.low == asset( 750, any_smt_symbol ).amount );
+      BOOST_REQUIRE( bucket->crea.open == ASSET( "1.500 TESTS" ).amount );
+      BOOST_REQUIRE( bucket->non_crea.open == asset( 750, any_smt_symbol ).amount );
+      BOOST_REQUIRE( bucket->crea.close == ASSET( "1.500 TESTS").amount );
+      BOOST_REQUIRE( bucket->non_crea.close == asset( 750, any_smt_symbol ).amount );
+      BOOST_REQUIRE( bucket->crea.volume == ASSET( "1.500 TESTS" ).amount );
+      BOOST_REQUIRE( bucket->non_crea.volume == asset( 750, any_smt_symbol ).amount );
       bucket++;
 
       BOOST_REQUIRE( bucket->seconds == 3600 );
       BOOST_REQUIRE( bucket->open == time_a + ( 60 * 60 ) );
-      BOOST_REQUIRE( bucket->creativecoin.high == ASSET( "0.450 TESTS " ).amount );
-      BOOST_REQUIRE( bucket->non_creativecoin.high == asset( 250, any_smt_symbol ).amount );
-      BOOST_REQUIRE( bucket->creativecoin.low == ASSET( "0.500 TESTS" ).amount );
-      BOOST_REQUIRE( bucket->non_creativecoin.low == asset( 250, any_smt_symbol ).amount );
-      BOOST_REQUIRE( bucket->creativecoin.open == ASSET( "0.500 TESTS" ).amount );
-      BOOST_REQUIRE( bucket->non_creativecoin.open == asset( 250, any_smt_symbol ).amount );
-      BOOST_REQUIRE( bucket->creativecoin.close == ASSET( "0.450 TESTS").amount );
-      BOOST_REQUIRE( bucket->non_creativecoin.close == asset( 250, any_smt_symbol ).amount );
-      BOOST_REQUIRE( bucket->creativecoin.volume == ASSET( "1.450 TESTS" ).amount );
-      BOOST_REQUIRE( bucket->non_creativecoin.volume == asset( 750, any_smt_symbol ).amount );
+      BOOST_REQUIRE( bucket->crea.high == ASSET( "0.450 TESTS " ).amount );
+      BOOST_REQUIRE( bucket->non_crea.high == asset( 250, any_smt_symbol ).amount );
+      BOOST_REQUIRE( bucket->crea.low == ASSET( "0.500 TESTS" ).amount );
+      BOOST_REQUIRE( bucket->non_crea.low == asset( 250, any_smt_symbol ).amount );
+      BOOST_REQUIRE( bucket->crea.open == ASSET( "0.500 TESTS" ).amount );
+      BOOST_REQUIRE( bucket->non_crea.open == asset( 250, any_smt_symbol ).amount );
+      BOOST_REQUIRE( bucket->crea.close == ASSET( "0.450 TESTS").amount );
+      BOOST_REQUIRE( bucket->non_crea.close == asset( 250, any_smt_symbol ).amount );
+      BOOST_REQUIRE( bucket->crea.volume == ASSET( "1.450 TESTS" ).amount );
+      BOOST_REQUIRE( bucket->non_crea.volume == asset( 750, any_smt_symbol ).amount );
       bucket++;
 
       BOOST_REQUIRE( bucket->seconds == 86400 );
       BOOST_REQUIRE( bucket->open == CREA_GENESIS_TIME );
-      BOOST_REQUIRE( bucket->creativecoin.high == ASSET( "0.450 TESTS " ).amount );
-      BOOST_REQUIRE( bucket->non_creativecoin.high == asset( 250, any_smt_symbol ).amount );
-      BOOST_REQUIRE( bucket->creativecoin.low == ASSET( "1.500 TESTS" ).amount );
-      BOOST_REQUIRE( bucket->non_creativecoin.low == asset( 750, any_smt_symbol ).amount );
-      BOOST_REQUIRE( bucket->creativecoin.open == ASSET( "1.500 TESTS" ).amount );
-      BOOST_REQUIRE( bucket->non_creativecoin.open == asset( 750, any_smt_symbol ).amount );
-      BOOST_REQUIRE( bucket->creativecoin.close == ASSET( "0.450 TESTS").amount );
-      BOOST_REQUIRE( bucket->non_creativecoin.close == asset( 250, any_smt_symbol ).amount );
-      BOOST_REQUIRE( bucket->creativecoin.volume == ASSET( "2.950 TESTS" ).amount );
-      BOOST_REQUIRE( bucket->non_creativecoin.volume == asset( 1500, any_smt_symbol ).amount );
+      BOOST_REQUIRE( bucket->crea.high == ASSET( "0.450 TESTS " ).amount );
+      BOOST_REQUIRE( bucket->non_crea.high == asset( 250, any_smt_symbol ).amount );
+      BOOST_REQUIRE( bucket->crea.low == ASSET( "1.500 TESTS" ).amount );
+      BOOST_REQUIRE( bucket->non_crea.low == asset( 750, any_smt_symbol ).amount );
+      BOOST_REQUIRE( bucket->crea.open == ASSET( "1.500 TESTS" ).amount );
+      BOOST_REQUIRE( bucket->non_crea.open == asset( 750, any_smt_symbol ).amount );
+      BOOST_REQUIRE( bucket->crea.close == ASSET( "0.450 TESTS").amount );
+      BOOST_REQUIRE( bucket->non_crea.close == asset( 250, any_smt_symbol ).amount );
+      BOOST_REQUIRE( bucket->crea.volume == ASSET( "2.950 TESTS" ).amount );
+      BOOST_REQUIRE( bucket->non_crea.volume == asset( 1500, any_smt_symbol ).amount );
       bucket++;
 
       BOOST_REQUIRE( bucket == bucket_idx.end() );

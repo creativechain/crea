@@ -116,8 +116,7 @@ struct api_account_object
       lifetime_vote_count( a.lifetime_vote_count ),
       post_count( a.post_count ),
       can_vote( a.can_vote ),
-      voting_power( a.voting_power ),
-      last_vote_time( a.last_vote_time ),
+      voting_manabar( a.voting_manabar ),
       balance( legacy_asset::from_asset( a.balance ) ),
       savings_balance( legacy_asset::from_asset( a.savings_balance ) ),
       cbd_balance( legacy_asset::from_asset( a.cbd_balance ) ),
@@ -145,13 +144,18 @@ struct api_account_object
       withdraw_routes( a.withdraw_routes ),
       witnesses_voted_for( a.witnesses_voted_for ),
       last_post( a.last_post ),
-      last_root_post( a.last_root_post )
+      last_root_post( a.last_root_post ),
+      last_vote_time( a.last_vote_time ),
+      post_bandwidth( a.post_bandwidth ),
+      pending_claimed_accounts( a.pending_claimed_accounts )
    {
+      voting_power = _compute_voting_power(a);
       proxied_vsf_votes.insert( proxied_vsf_votes.end(), a.proxied_vsf_votes.begin(), a.proxied_vsf_votes.end() );
    }
 
-
    api_account_object(){}
+
+   uint16_t _compute_voting_power( const database_api::api_account_object& a );
 
    account_id_type   id;
 
@@ -176,8 +180,8 @@ struct api_account_object
    uint32_t          post_count = 0;
 
    bool              can_vote = false;
+   util::manabar     voting_manabar;
    uint16_t          voting_power = 0;
-   time_point_sec    last_vote_time;
 
    legacy_asset      balance;
    legacy_asset      savings_balance;
@@ -213,10 +217,14 @@ struct api_account_object
 
    vector< share_type > proxied_vsf_votes;
 
-   uint16_t          witnesses_voted_for;
+   uint16_t          witnesses_voted_for = 0;
 
    time_point_sec    last_post;
    time_point_sec    last_root_post;
+   time_point_sec    last_vote_time;
+   uint32_t          post_bandwidth = 0;
+
+   share_type        pending_claimed_accounts = 0;
 };
 
 struct extended_account : public api_account_object
@@ -372,7 +380,11 @@ struct extended_dynamic_global_properties
       recent_slots_filled( o.recent_slots_filled ),
       participation_count( o.participation_count ),
       last_irreversible_block_num( o.last_irreversible_block_num ),
-      vote_power_reserve_rate( o.vote_power_reserve_rate )
+      vote_power_reserve_rate( o.vote_power_reserve_rate ),
+      delegation_return_period( o.delegation_return_period ),
+      reverse_auction_seconds( o.reverse_auction_seconds ),
+      cbd_stop_percent( o.cbd_stop_percent ),
+      cbd_start_percent( o.cbd_start_percent )
    {}
 
    uint32_t          head_block_number = 0;
@@ -405,8 +417,14 @@ struct extended_dynamic_global_properties
    uint8_t           participation_count = 0;
 
    uint32_t          last_irreversible_block_num = 0;
-
+    
    uint32_t          vote_power_reserve_rate = CREA_INITIAL_VOTE_POWER_RATE;
+   uint32_t          delegation_return_period = CREA_DELEGATION_RETURN_PERIOD_HF0;
+
+   uint64_t          reverse_auction_seconds = 0;
+
+   uint16_t          cbd_stop_percent = 0;
+   uint16_t          cbd_start_percent = 0;
 
    int32_t           average_block_size = 0;
    int64_t           current_reserve_ratio = 1;
@@ -436,7 +454,8 @@ struct api_witness_object
       last_work( w.last_work ),
       running_version( w.running_version ),
       hardfork_version_vote( w.hardfork_version_vote ),
-      hardfork_time_vote( w.hardfork_time_vote )
+      hardfork_time_vote( w.hardfork_time_vote ),
+      available_witness_account_subsidies( w.available_witness_account_subsidies )
    {}
 
    witness_id_type  id;
@@ -459,6 +478,7 @@ struct api_witness_object
    version                 running_version;
    hardfork_version        hardfork_version_vote;
    time_point_sec          hardfork_time_vote = CREA_GENESIS_TIME;
+   int64_t                 available_witness_account_subsidies = 0;
 };
 
 struct api_witness_schedule_object
@@ -469,7 +489,7 @@ struct api_witness_schedule_object
       current_virtual_time( w.current_virtual_time ),
       next_shuffle_block_num( w.next_shuffle_block_num ),
       num_scheduled_witnesses( w.num_scheduled_witnesses ),
-      top19_weight( w.top19_weight ),
+      elected_weight( w.elected_weight ),
       timeshare_weight( w.timeshare_weight ),
       miner_weight( w.miner_weight ),
       witness_pay_normalization_factor( w.witness_pay_normalization_factor ),
@@ -478,7 +498,10 @@ struct api_witness_schedule_object
       max_voted_witnesses( w.max_voted_witnesses ),
       max_miner_witnesses( w.max_miner_witnesses ),
       max_runner_witnesses( w.max_runner_witnesses ),
-      hardfork_required_witnesses( w.hardfork_required_witnesses )
+      hardfork_required_witnesses( w.hardfork_required_witnesses ),
+      account_subsidy_rd( w.account_subsidy_rd ),
+      account_subsidy_witness_rd( w.account_subsidy_witness_rd ),
+      min_witness_account_subsidy_decay( w.min_witness_account_subsidy_decay )
    {
       current_shuffled_witnesses.insert( current_shuffled_witnesses.begin(), w.current_shuffled_witnesses.begin(), w.current_shuffled_witnesses.end() );
    }
@@ -488,7 +511,7 @@ struct api_witness_schedule_object
    uint32_t                      next_shuffle_block_num = 1;
    vector< account_name_type >   current_shuffled_witnesses;
    uint8_t                       num_scheduled_witnesses = 1;
-   uint8_t                       top19_weight = 1;
+   uint8_t                       elected_weight = 1;
    uint8_t                       timeshare_weight = 5;
    uint8_t                       miner_weight = 1;
    uint32_t                      witness_pay_normalization_factor = 25;
@@ -498,6 +521,10 @@ struct api_witness_schedule_object
    uint8_t                       max_miner_witnesses           = CREA_MAX_MINER_WITNESSES_HF0;
    uint8_t                       max_runner_witnesses          = CREA_MAX_RUNNER_WITNESSES_HF0;
    uint8_t                       hardfork_required_witnesses   = CREA_HARDFORK_REQUIRED_WITNESSES;
+
+   rd_dynamics_params            account_subsidy_rd;
+   rd_dynamics_params            account_subsidy_witness_rd;
+   int64_t                       min_witness_account_subsidy_decay = 0;
 };
 
 struct api_feed_history_object
@@ -1125,7 +1152,7 @@ FC_REFLECT( crea::plugins::condenser_api::api_account_object,
              (id)(name)(owner)(active)(posting)(memo_key)(json_metadata)(proxy)(last_owner_update)(last_account_update)
              (created)(mined)
              (recovery_account)(last_account_recovery)(reset_account)
-             (comment_count)(lifetime_vote_count)(post_count)(can_vote)(voting_power)(last_vote_time)
+             (comment_count)(lifetime_vote_count)(post_count)(can_vote)(voting_manabar)(voting_power)
              (balance)
              (savings_balance)
              (cbd_balance)(cbd_seconds)(cbd_seconds_last_update)(cbd_last_interest_payment)
@@ -1135,7 +1162,8 @@ FC_REFLECT( crea::plugins::condenser_api::api_account_object,
              (curation_rewards)
              (posting_rewards)
              (proxied_vsf_votes)(witnesses_voted_for)
-             (last_post)(last_root_post)
+             (last_post)(last_root_post)(last_vote_time)
+             (post_bandwidth)(pending_claimed_accounts)
           )
 
 FC_REFLECT_DERIVED( crea::plugins::condenser_api::extended_account, (crea::plugins::condenser_api::api_account_object),
@@ -1163,6 +1191,7 @@ FC_REFLECT( crea::plugins::condenser_api::extended_dynamic_global_properties,
             (total_reward_fund_crea)(total_reward_shares2)(pending_rewarded_vesting_shares)(pending_rewarded_vesting_crea)
             (cbd_interest_rate)(cbd_print_rate)
             (maximum_block_size)(current_aslot)(recent_slots_filled)(participation_count)(last_irreversible_block_num)(vote_power_reserve_rate)
+            (delegation_return_period)(reverse_auction_seconds)(cbd_stop_percent)(cbd_start_percent)
             (average_block_size)(current_reserve_ratio)(max_virtual_bandwidth) )
 
 FC_REFLECT( crea::plugins::condenser_api::api_witness_object,
@@ -1176,6 +1205,7 @@ FC_REFLECT( crea::plugins::condenser_api::api_witness_object,
              (last_work)
              (running_version)
              (hardfork_version_vote)(hardfork_time_vote)
+             (available_witness_account_subsidies)
           )
 
 FC_REFLECT( crea::plugins::condenser_api::api_witness_schedule_object,
@@ -1184,7 +1214,7 @@ FC_REFLECT( crea::plugins::condenser_api::api_witness_schedule_object,
              (next_shuffle_block_num)
              (current_shuffled_witnesses)
              (num_scheduled_witnesses)
-             (top19_weight)
+             (elected_weight)
              (timeshare_weight)
              (miner_weight)
              (witness_pay_normalization_factor)
@@ -1194,6 +1224,9 @@ FC_REFLECT( crea::plugins::condenser_api::api_witness_schedule_object,
              (max_miner_witnesses)
              (max_runner_witnesses)
              (hardfork_required_witnesses)
+             (account_subsidy_rd)
+             (account_subsidy_witness_rd)
+             (min_witness_account_subsidy_decay)
           )
 
 FC_REFLECT( crea::plugins::condenser_api::api_feed_history_object,

@@ -121,6 +121,15 @@ inline void from_variant( const fc::variant& v, crea::protocol::legacy_crea_asse
    leg = crea::protocol::legacy_crea_asset::from_asset( a );
 }
 
+template<>
+struct get_typename< crea::protocol::legacy_crea_asset_symbol_type >
+{
+   static const char* name()
+   {
+      return "crea::protocol::legacy_crea_asset_symbol_type";
+   }
+};
+
 } // fc
 
 FC_REFLECT( crea::protocol::legacy_crea_asset,

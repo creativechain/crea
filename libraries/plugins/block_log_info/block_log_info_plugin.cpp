@@ -5,7 +5,6 @@
 #include <crea/chain/database.hpp>
 #include <crea/chain/global_property_object.hpp>
 #include <crea/chain/index.hpp>
-#include <crea/chain/operation_notification.hpp>
 
 #include <fstream>
 #include <iostream>

@@ -108,9 +108,9 @@ struct write_request_visitor
 
       try
       {
-         STATSD_START_TIMER( chain, write_time, push_block, 1.0f )
+         STATSD_START_TIMER( "chain", "write_time", "push_block", 1.0f )
          result = db->push_block( *block, skip );
-         STATSD_STOP_TIMER( chain, write_time, push_block )
+         STATSD_STOP_TIMER( "chain", "write_time", "push_block" )
       }
       catch( fc::exception& e )
       {
@@ -131,9 +131,9 @@ struct write_request_visitor
 
       try
       {
-         STATSD_START_TIMER( chain, write_time, push_tx, 1.0f )
+         STATSD_START_TIMER( "chain", "write_time", "push_transaction", 1.0f )
          db->push_transaction( *trx );
-         STATSD_STOP_TIMER( chain, write_time, push_tx )
+         STATSD_STOP_TIMER( "chain", "write_time", "push_transaction" )
 
          result = true;
       }
@@ -156,14 +156,14 @@ struct write_request_visitor
 
       try
       {
-         STATSD_START_TIMER( chain, write_time, generate_block, 1.0f )
+         STATSD_START_TIMER( "chain", "write_time", "generate_block", 1.0f )
          req->block = db->generate_block(
             req->when,
             req->witness_owner,
             req->block_signing_private_key,
             req->skip
             );
-         STATSD_STOP_TIMER( chain, write_time, generate_block )
+         STATSD_STOP_TIMER( "chain", "write_time", "generate_block" )
 
          result = true;
       }
@@ -234,7 +234,7 @@ void chain_plugin_impl::start_write_processing()
          {
             db.with_write_lock( [&]()
             {
-               STATSD_START_TIMER( chain, lock_time, write_lock, 1.0f )
+               STATSD_START_TIMER( "chain", "lock_time", "write_lock", 1.0f )
                while( true )
                {
                   req_visitor.skip = cxt->skip;
@@ -296,7 +296,7 @@ void chain_plugin::set_program_options(options_description& cli, options_descrip
    cfg.add_options()
          ("shared-file-dir", bpo::value<bfs::path>()->default_value("blockchain"),
             "the location of the chain shared memory files (absolute path or relative to application data dir)")
-         ("shared-file-size", bpo::value<string>()->default_value("24G"), "Size of the shared memory file. Default: 24G. If running a full node, increase this value to 200G.")
+         ("shared-file-size", bpo::value<string>()->default_value("54G"), "Size of the shared memory file. Default: 54G. If running a full node, increase this value to 200G.")
          ("shared-file-full-threshold", bpo::value<uint16_t>()->default_value(0),
             "A 2 precision percentage (0-10000) that defines the threshold for when to autoscale the shared memory file. Setting this to 0 disables autoscaling. Recommended value for consensus node is 9500 (95%). Full node is 9900 (99%)" )
          ("shared-file-scale-rate", bpo::value<uint16_t>()->default_value(0),
@@ -315,7 +315,7 @@ void chain_plugin::set_program_options(options_description& cli, options_descrip
          ("check-locks", bpo::bool_switch()->default_value(false), "Check correctness of chainbase locking" )
          ("validate-database-invariants", bpo::bool_switch()->default_value(false), "Validate all supply invariants check out" )
 #ifdef IS_TEST_NET
-         ("chain-id", bpo::value< std::string >()->default_value( CREA_CHAIN_ID_NAME ), "chain ID to connect to")
+         ("chain-id", bpo::value< std::string >()->default_value( CREA_CHAIN_ID ), "chain ID to connect to")
 #endif
          ;
 }
@@ -374,7 +374,18 @@ void chain_plugin::plugin_initialize(const variables_map& options) {
 
 #ifdef IS_TEST_NET
    if( options.count( "chain-id" ) )
-      my->db.set_chain_id( options.at("chain-id").as< std::string >() );
+   {
+      auto chain_id_str = options.at("chain-id").as< std::string >();
+
+      try
+      {
+         my->db.set_chain_id( chain_id_type( chain_id_str) );
+      }
+      catch( fc::exception& )
+      {
+         FC_ASSERT( false, "Could not parse chain_id as hex string. Chain ID String: ${s}", ("s", chain_id_str) );
+      }
+   }
 #endif
 }
 
@@ -392,8 +403,6 @@ void chain_plugin::plugin_startup()
    }
 
    ilog( "Starting chain with shared_file_size: ${n} bytes", ("n", my->shared_memory_size) );
-
-   my->start_write_processing();
 
    if(my->resync)
    {
@@ -490,8 +499,7 @@ void chain_plugin::plugin_startup()
       if( my->stop_replay_at > 0 && my->stop_replay_at == last_block_number )
       {
          ilog("Stopped blockchain replaying on user request. Last applied block number: ${n}.", ("n", last_block_number));
-         appbase::app().quit();
-         return;
+         exit(EXIT_SUCCESS);
       }
    }
    else
@@ -509,22 +517,15 @@ void chain_plugin::plugin_startup()
       }
       catch( const fc::exception& e )
       {
-         wlog("Error opening database, attempting to replay blockchain. Error: ${e}", ("e", e));
-
-         try
-         {
-            my->db.reindex( db_open_args );
-         }
-         catch( crea::chain::block_log_exception& )
-         {
-            wlog( "Error opening block log. Having to resync from network..." );
-            my->db.open( db_open_args );
-         }
+         wlog("Error opening database. If the binary or configuration has changed, replay the blockchain explicitly. Error: ${e}", ("e", e));
+         exit(EXIT_FAILURE);
       }
    }
 
    ilog( "Started on blockchain with ${n} blocks", ("n", my->db.head_block_num()) );
    on_sync();
+
+   my->start_write_processing();
 }
 
 void chain_plugin::plugin_shutdown()

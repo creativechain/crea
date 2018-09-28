@@ -4,7 +4,6 @@
 #include <crea/chain/account_object.hpp>
 #include <crea/chain/database.hpp>
 #include <crea/chain/index.hpp>
-#include <crea/chain/operation_notification.hpp>
 
 namespace crea { namespace plugins { namespace account_by_key {
 
@@ -151,7 +150,7 @@ struct post_operation_visitor
 
             db.create< key_lookup_object >( [&]( key_lookup_object& o )
             {
-               o.key = public_key_type( "STM7sw22HqsXbz7D2CmJfmMwt9rimtk518dRzsR1f8Cgw52dQR1pR" );
+               o.key = public_key_type( "CREA7sw22HqsXbz7D2CmJfmMwt9rimtk518dRzsR1f8Cgw52dQR1pR" );
                o.account = account->name;
             });
          }

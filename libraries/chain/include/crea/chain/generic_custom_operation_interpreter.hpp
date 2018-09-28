@@ -1,6 +1,10 @@
 
 #pragma once
 
+#include <crea/protocol/schema_types.hpp>
+#include <crea/chain/schema_types.hpp>
+#include <crea/schema/schema.hpp>
+
 #include <crea/protocol/crea_operations.hpp>
 #include <crea/protocol/operation_util_impl.hpp>
 #include <crea/protocol/types.hpp>
@@ -8,8 +12,6 @@
 #include <crea/chain/evaluator.hpp>
 #include <crea/chain/evaluator_registry.hpp>
 #include <crea/chain/custom_operation_interpreter.hpp>
-
-#include <crea/schema/schema.hpp>
 
 #include <fc/variant.hpp>
 
