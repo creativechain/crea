@@ -11,4 +11,4 @@ const std::vector< std::string > default_seeds = {
 };
 #endif
 
-} } } // steem::plugins::p2p
+} } } // crea::plugins::p2p
