@@ -43,7 +43,7 @@
 
 #else // IS LIVE CREA NETWORK
 
-#define CREA_BLOCKCHAIN_VERSION              ( version(0, 20, 3) )
+#define CREA_BLOCKCHAIN_VERSION              ( version(0, 20, 5) )
 
 #define CREA_INIT_PRIVATE_KEY                (fc::ecc::private_key::regenerate(fc::sha256::hash(std::string("init_key"))))
 #define CREA_INIT_PUBLIC_KEY_STR             (std::string( crea::protocol::public_key_type(CREA_INIT_PRIVATE_KEY.get_public_key()) ))
