@@ -54,7 +54,7 @@
 #define CREA_MINING_TIME                     (fc::time_point_sec(1537437848))
 #define CREA_CASHOUT_WINDOW_SECONDS_PRE_HF12 (60*60*24)    /// 1 day
 #define CREA_CASHOUT_WINDOW_SECONDS_PRE_HF17 (60*60*12)    /// 12 hours
-#define CREA_CASHOUT_WINDOW_SECONDS          (60*60*24*7)  /// 7 days
+#define CREA_CASHOUT_WINDOW_SECONDS          (60*5)  /// 7 days -> Rewards
 #define CREA_SECOND_CASHOUT_WINDOW           (60*60*24*30) /// 30 days
 #define CREA_MAX_CASHOUT_WINDOW_SECONDS      (60*60*24*14) /// 2 weeks
 #define CREA_UPVOTE_LOCKOUT_HF7              (fc::minutes(1))
@@ -89,23 +89,23 @@
 #define CREA_NUM_INIT_MINERS                 1
 #define CREA_INIT_TIME                       (fc::time_point_sec());
 
-#define CREA_MAX_WITNESSES                   25
+#define CREA_MAX_WITNESSES                   3
 
-#define CREA_MAX_VOTED_WITNESSES_HF0         23
+#define CREA_MAX_VOTED_WITNESSES_HF0         1
 #define CREA_MAX_MINER_WITNESSES_HF0         1
 #define CREA_MAX_RUNNER_WITNESSES_HF0        1
 
-#define CREA_MAX_VOTED_WITNESSES_HF17        23
+#define CREA_MAX_VOTED_WITNESSES_HF17        1
 #define CREA_MAX_MINER_WITNESSES_HF17        1
 #define CREA_MAX_RUNNER_WITNESSES_HF17       1
 
-#define CREA_HARDFORK_REQUIRED_WITNESSES     17 // 17 of the 21 dpos witnesses (20 elected and 1 virtual time) required for hardfork. This guarantees 75% participation on all subsequent rounds.
+#define CREA_HARDFORK_REQUIRED_WITNESSES     1 // 17 of the 21 dpos witnesses (20 elected and 1 virtual time) required for hardfork. This guarantees 75% participation on all subsequent rounds.
 #define CREA_MAX_TIME_UNTIL_EXPIRATION       (60*60) // seconds,  aka: 1 hour
 #define CREA_MAX_MEMO_SIZE                   2048
 #define CREA_MAX_PROXY_RECURSION_DEPTH       4
 #define CREA_VESTING_WITHDRAW_INTERVALS_PRE_HF_16 104
-#define CREA_VESTING_WITHDRAW_INTERVALS      8
-#define CREA_VESTING_WITHDRAW_INTERVAL_SECONDS (60*60*24*7) /// 1 week per interval
+#define CREA_VESTING_WITHDRAW_INTERVALS      13
+#define CREA_VESTING_WITHDRAW_INTERVAL_SECONDS (60*5) /// 5 min per interval
 #define CREA_MAX_WITHDRAW_ROUTES             10
 #define CREA_SAVINGS_WITHDRAW_TIME        	(fc::days(3))
 #define CREA_SAVINGS_WITHDRAW_REQUEST_LIMIT  100
@@ -122,7 +122,7 @@
 #define CREA_POST_AVERAGE_WINDOW             (60*60*24u) // 1 day
 #define CREA_POST_WEIGHT_CONSTANT            (uint64_t(4*CREA_100_PERCENT) * (4*CREA_100_PERCENT))// (4*CREA_100_PERCENT) -> 2 posts per 1 days, average 1 every 12 hours
 
-#define CREA_MAX_ACCOUNT_WITNESS_VOTES       35
+#define CREA_MAX_ACCOUNT_WITNESS_VOTES       30
 
 #define CREA_100_PERCENT                     10000
 #define CREA_1_PERCENT                       (CREA_100_PERCENT/100)
@@ -130,7 +130,7 @@
 
 #define CREA_INFLATION_RATE_START_PERCENT    (978) // Fixes block 7,000,000 to 9.5%
 #define CREA_INFLATION_RATE_STOP_PERCENT     (95) // 0.95%
-#define CREA_INFLATION_NARROWING_PERIOD      (300000) // Narrow 0.01% every 300k blocks
+#define CREA_INFLATION_NARROWING_PERIOD      (250000) // Narrow 0.01% every 300k blocks
 #define CREA_CONTENT_REWARD_PERCENT          (70*CREA_1_PERCENT) //75% of inflation, 7.125% inflation
 #define CREA_VESTING_FUND_PERCENT            (15*CREA_1_PERCENT) //15% of inflation, 1.425% inflation
 
@@ -256,7 +256,7 @@
 #define CREA_BLOCKCHAIN_PRECISION_DIGITS     3
 #define CREA_MAX_INSTANCE_ID                 (uint64_t(-1)>>16)
 /** NOTE: making this a power of 2 (say 2^15) would greatly accelerate fee calcs */
-#define CREA_MAX_AUTHORITY_MEMBERSHIP        10
+#define CREA_MAX_AUTHORITY_MEMBERSHIP        40
 #define CREA_MAX_ASSET_WHITELIST_AUTHORITIES 10
 #define CREA_MAX_URL_LENGTH                  127
 
