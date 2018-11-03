@@ -112,7 +112,7 @@ void database::open( const open_args& args )
       if( !find< dynamic_global_property_object >() )
          with_write_lock( [&]()
          {
-            init_genesis( args.initial_supply );
+            init_genesis( args.initial_supply, args.cbd_initial_supply );
          });
 
       _benchmark_dumper.set_enabled( args.benchmark_is_enabled );
@@ -2822,7 +2822,7 @@ void database::init_schema()
    return;*/
 }
 
-void database::init_genesis( uint64_t init_supply )
+void database::init_genesis( uint64_t init_supply, uint64_t cbd_init_supply )
 {
    try
    {
@@ -2877,9 +2877,10 @@ void database::init_genesis( uint64_t init_supply )
       {
          create< account_object >( [&]( account_object& a )
          {
-            a.name = CREA_INIT_MINER_NAME + ( i ? fc::to_string( i ) : std::string() );
-            a.memo_key = init_public_key;
-            a.balance  = asset( i ? 0 : init_supply, CREA_SYMBOL );
+             a.name = CREA_INIT_MINER_NAME + ( i ? fc::to_string( i ) : std::string() );
+             a.memo_key = init_public_key;
+             a.balance  = asset( i ? 0 : init_supply, CREA_SYMBOL );
+             a.cbd_balance = asset(i ? 0 : cbd_init_supply, CBD_SYMBOL);
          } );
 
          create< account_authority_object >( [&]( account_authority_object& auth )
@@ -2906,7 +2907,8 @@ void database::init_genesis( uint64_t init_supply )
          p.recent_slots_filled = fc::uint128::max_value();
          p.participation_count = 128;
          p.current_supply = asset( init_supply, CREA_SYMBOL );
-         p.virtual_supply = p.current_supply;
+         p.virtual_supply = asset(CREA_TOTAL_INIT_SUPPLY, CREA_SYMBOL);
+         p.current_cbd_supply = asset( cbd_init_supply, CBD_SYMBOL);
          p.maximum_block_size = CREA_MAX_BLOCK_SIZE;
          p.reverse_auction_seconds = CREA_REVERSE_AUCTION_WINDOW_SECONDS_HF6;
          p.cbd_stop_percent = CREA_CBD_STOP_PERCENT_HF14;

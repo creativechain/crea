@@ -82,7 +82,12 @@ fc::variant_object get_config()
    // we need this line present but inactivated so CI check for all constants in config.hpp doesn't complain.
    result["CREA_INIT_PRIVATE_KEY"] = CREA_INIT_PRIVATE_KEY;
 #endif
+   result["CREA_TOTAL_INIT_SUPPLY"] = CREA_TOTAL_INIT_SUPPLY;
+   result["CREA_CBD_PERCENT_SUPPLY"] = CREA_CBD_PERCENT_SUPPLY;
+   result["CREA_TO_CBD_SUPPLY"] = CREA_TO_CBD_SUPPLY;
+   result["CREA_INIT_PRICE"] = CREA_INIT_PRICE;
    result["CREA_INIT_SUPPLY"] = CREA_INIT_SUPPLY;
+   result["CREA_CBD_INIT_SUPPLY"] = CREA_CBD_INIT_SUPPLY;
    result["CREA_INIT_TIME"] = CREA_INIT_TIME;
    result["CREA_IRREVERSIBLE_THRESHOLD"] = CREA_IRREVERSIBLE_THRESHOLD;
    result["CREA_LIQUIDITY_APR_PERCENT"] = CREA_LIQUIDITY_APR_PERCENT;
