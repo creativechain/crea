@@ -2402,7 +2402,7 @@ asset database::get_pow_reward()const
 #endif
 
    static_assert( CREA_BLOCK_INTERVAL == 3, "this code assumes a 3-second time interval" );
-   static_assert( CREA_MAX_WITNESSES == 333, "this code assumes 25 per round" );
+   static_assert( CREA_MAX_WITNESSES == 25, "this code assumes 25 per round" );
    asset percent( calc_percent_reward_per_round< CREA_POW_APR_PERCENT >( props.virtual_supply.amount ), CREA_SYMBOL);
    return std::max( percent, CREA_MIN_POW_REWARD );
 }
