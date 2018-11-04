@@ -39,10 +39,10 @@
 //Supply for CREA and CBD
 #define CREA_TOTAL_INIT_SUPPLY               (int64_t( 250 ) * int64_t( 1000000 ) * int64_t( 1000 ))
 #define CREA_CBD_PERCENT_SUPPLY              (int64_t(5)) //5% of total supply is CBD
-#define CREA_TO_CBD_SUPPLY                   (int64_t(CREA_TOTAL_INIT_SUPPLY * 5 / 100)) //Total CREA to convert as CBD
-#define CREA_INIT_PRICE                      (int64_t(230)) //CBD per 1 CREA at start
+#define CREA_TO_CBD_SUPPLY                   (int64_t(CREA_TOTAL_INIT_SUPPLY * CREA_CBD_PERCENT_SUPPLY / 100)) //Total CREA to convert as CBD
+#define CREA_INIT_PRICE                      (int64_t(23)) //CBD per 1 CREA at start
 #define CREA_INIT_SUPPLY                     (int64_t(CREA_TOTAL_INIT_SUPPLY - CREA_TO_CBD_SUPPLY))
-#define CREA_CBD_INIT_SUPPLY                 (CREA_TO_CBD_SUPPLY * CREA_INIT_PRICE)
+#define CREA_CBD_INIT_SUPPLY                 (CREA_TO_CBD_SUPPLY / CREA_INIT_PRICE)
 
 /// Allows to limit number of total produced blocks.
 #define TESTNET_BLOCK_LIMIT                   (3000000)
@@ -76,12 +76,12 @@
 #define CREA_OWNER_AUTH_HISTORY_TRACKING_START_BLOCK_NUM 3186477
 
 //Supply for CREA and CBD
-#define CREA_TOTAL_INIT_SUPPLY               (int64_t( 250 ) * int64_t( 1000000 ) * int64_t( 1000 ))
+#define CREA_TOTAL_INIT_SUPPLY               (int64_t( 17 ) * int64_t( 1000000 ) * int64_t( 1000 ))
 #define CREA_CBD_PERCENT_SUPPLY              (int64_t(5)) //5% of total supply is CBD
-#define CREA_TO_CBD_SUPPLY                   (int64_t(CREA_TOTAL_INIT_SUPPLY * 5 / 100)) //Total CREA to convert as CBD
-#define CREA_INIT_PRICE                      (int64_t(230)) //CBD per 1 CREA at start
+#define CREA_TO_CBD_SUPPLY                   (int64_t(CREA_TOTAL_INIT_SUPPLY * CREA_CBD_PERCENT_SUPPLY / 100)) //Total CREA to convert as CBD
+#define CREA_INIT_PRICE                      (int64_t(23)) //CBD per 1 CREA at start
 #define CREA_INIT_SUPPLY                     (int64_t(CREA_TOTAL_INIT_SUPPLY - CREA_TO_CBD_SUPPLY))
-#define CREA_CBD_INIT_SUPPLY                 (CREA_TO_CBD_SUPPLY * CREA_INIT_PRICE)
+#define CREA_CBD_INIT_SUPPLY                 (CREA_TO_CBD_SUPPLY / CREA_INIT_PRICE)
 
 #endif
 
