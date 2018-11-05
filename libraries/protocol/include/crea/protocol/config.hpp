@@ -56,11 +56,11 @@
 #define CREA_CHAIN_ID fc::sha256()
 #define CREA_ADDRESS_PREFIX                  "CREA"
 
-#define CREA_GENESIS_TIME                    (fc::time_point_sec(1541371917))
-#define CREA_MINING_TIME                     (fc::time_point_sec(1541371917))
+#define CREA_GENESIS_TIME                    (fc::time_point_sec(1541376739))
+#define CREA_MINING_TIME                     (fc::time_point_sec(1541376739))
 #define CREA_CASHOUT_WINDOW_SECONDS_PRE_HF12 (60*60*24)    /// 1 day
 #define CREA_CASHOUT_WINDOW_SECONDS_PRE_HF17 (60*60*12)    /// 12 hours
-#define CREA_CASHOUT_WINDOW_SECONDS          (60*60*24*7)  /// 7 days -> Rewards
+#define CREA_CASHOUT_WINDOW_SECONDS          (60*60*10)  /// 7 days -> Rewards
 #define CREA_SECOND_CASHOUT_WINDOW           (60*60*24*30) /// 30 days
 #define CREA_MAX_CASHOUT_WINDOW_SECONDS      (60*60*24*14) /// 2 weeks
 #define CREA_UPVOTE_LOCKOUT_HF7              (fc::minutes(1))
@@ -111,7 +111,7 @@
 #define CREA_MAX_MINER_WITNESSES_HF17        1
 #define CREA_MAX_RUNNER_WITNESSES_HF17       1
 
-#define CREA_HARDFORK_REQUIRED_WITNESSES     17 // 17 of the 21 dpos witnesses (20 elected and 1 virtual time) required for hardfork. This guarantees 75% participation on all subsequent rounds.
+#define CREA_HARDFORK_REQUIRED_WITNESSES     1 // 17 of the 21 dpos witnesses (20 elected and 1 virtual time) required for hardfork. This guarantees 75% participation on all subsequent rounds.
 #define CREA_MAX_TIME_UNTIL_EXPIRATION       (60*60) // seconds,  aka: 1 hour
 #define CREA_MAX_MEMO_SIZE                   2048
 #define CREA_MAX_PROXY_RECURSION_DEPTH       4
