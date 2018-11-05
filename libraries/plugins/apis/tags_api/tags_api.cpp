@@ -551,6 +551,7 @@ void tags_api_impl::set_pending_payout( discussion& d )
    else
       pot = props.total_reward_fund_crea;
 
+   ilog("pot=${v}", ("v",pot));
    if( !hist.current_median_history.is_null() ) pot = pot * hist.current_median_history;
 
    u256 total_r2 = 0;
@@ -559,6 +560,7 @@ void tags_api_impl::set_pending_payout( discussion& d )
    else
       total_r2 = chain::util::to256( props.total_reward_shares2 );
 
+   ilog("total_r2=${v}", ("v",total_r2));
    if( total_r2 > 0 )
    {
       uint128_t vshares;
@@ -570,10 +572,12 @@ void tags_api_impl::set_pending_payout( discussion& d )
       else
          vshares = d.net_rshares.value > 0 ? chain::util::evaluate_reward_curve( d.net_rshares.value ) : 0;
 
+      ilog("vshares=${v}", ("v",vshares));
       u256 r2 = chain::util::to256( vshares ); //to256(abs_net_rshares);
       r2 *= pot.amount.value;
       r2 /= total_r2;
 
+      ilog("r2=${v}", ("v",vshares));
       d.pending_payout_value = asset( static_cast<uint64_t>(r2), pot.symbol );
 
       if( _follow_api )
