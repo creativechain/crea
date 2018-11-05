@@ -64,7 +64,7 @@
 #define CREA_SECOND_CASHOUT_WINDOW           (60*60*24*30) /// 30 days
 #define CREA_MAX_CASHOUT_WINDOW_SECONDS      (60*60*24*14) /// 2 weeks
 #define CREA_UPVOTE_LOCKOUT_HF7              (fc::minutes(1))
-#define CREA_UPVOTE_LOCKOUT_SECONDS          (60*60*12)    /// 12 hours
+#define CREA_UPVOTE_LOCKOUT_SECONDS          (0)    /// 12 hours
 #define CREA_UPVOTE_LOCKOUT_HF17             (60)
 
 #define CREA_MIN_ACCOUNT_CREATION_FEE           1
