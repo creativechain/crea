@@ -2918,7 +2918,7 @@ void database::init_genesis( uint64_t init_supply, uint64_t cbd_init_supply )
       // Nothing to do
       create< feed_history_object >( [&]( feed_history_object& o ) {
           asset base = asset(CREA_INIT_PRICE, CBD_SYMBOL);
-          asset quote = asset(1, CREA_SYMBOL);
+          asset quote = asset(1000, CREA_SYMBOL);
           price p = price(base, quote);
           o.current_median_history = p;
       });
