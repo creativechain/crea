@@ -1,5 +1,5 @@
 #pragma once
-#include <crea/chain/util/manabar.hpp>
+#include <crea/chain/util/flowbar.hpp>
 
 #include <crea/plugins/rc/rc_utility.hpp>
 #include <crea/plugins/rc/resource_count.hpp>
@@ -66,7 +66,7 @@ class rc_account_object : public object< rc_account_object_type, rc_account_obje
       id_type               id;
 
       account_name_type     account;
-      crea::chain::util::manabar   rc_manabar;
+      crea::chain::util::flowbar   rc_flowbar;
       asset                 max_rc_creation_adjustment = asset( 0, VESTS_SYMBOL );
 
       // This is used for bug-catching, to match that the vesting shares in a
@@ -114,7 +114,7 @@ CHAINBASE_SET_INDEX_TYPE( crea::plugins::rc::rc_pool_object, crea::plugins::rc::
 FC_REFLECT( crea::plugins::rc::rc_account_object,
    (id)
    (account)
-   (rc_manabar)
+   (rc_flowbar)
    (max_rc_creation_adjustment)
    (last_max_rc)
    )

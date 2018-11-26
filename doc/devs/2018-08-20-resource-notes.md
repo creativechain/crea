@@ -52,7 +52,7 @@ respond appropriately."  This is a slightly fuzzy concept, because the "detectio
 
 # Resource credits
 
-Every user has a "manabar" called *resource credits* (RC).
+Every user has a "flowbar" called *resource credits* (RC).
 
 - The maximum RC an account can have is equal to its Crea Energy (technically, VESTS).
 - It takes 5 days for RC to regenerate from 0% to 100%.  (So more SP means more RC's per hour.)

@@ -43,7 +43,7 @@ struct get_resource_pool_return
 struct rc_account_api_object
 {
    account_name_type     account;
-   crea::chain::util::manabar   rc_manabar;
+   crea::chain::util::flowbar   rc_flowbar;
    asset                 max_rc_creation_adjustment = asset( 0, VESTS_SYMBOL );
    int64_t               max_rc = 0;
 
@@ -103,7 +103,7 @@ FC_REFLECT( crea::plugins::rc::get_resource_pool_return,
 
 FC_REFLECT( crea::plugins::rc::rc_account_api_object,
    (account)
-   (rc_manabar)
+   (rc_flowbar)
    (max_rc_creation_adjustment)
    (max_rc)
    )

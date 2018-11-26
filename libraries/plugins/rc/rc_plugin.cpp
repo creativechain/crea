@@ -22,7 +22,7 @@ using crea::plugins::block_data_export::block_data_export_plugin;
 namespace detail {
 
 using chain::plugin_exception;
-using crea::chain::util::manabar_params;
+using crea::chain::util::flowbar_params;
 
 class rc_plugin_impl
 {
@@ -121,10 +121,10 @@ void create_rc_account( database& db, uint32_t now, const account_object& accoun
    db.create< rc_account_object >( [&]( rc_account_object& rca )
    {
       rca.account = account.name;
-      rca.rc_manabar.last_update_time = now;
+      rca.rc_flowbar.last_update_time = now;
       rca.max_rc_creation_adjustment = max_rc_creation_adjustment;
       int64_t max_rc = get_maximum_rc( account, rca );
-      rca.rc_manabar.current_mana = max_rc;
+      rca.rc_flowbar.current_flow = max_rc;
       rca.last_max_rc = max_rc;
    } );
 }
@@ -232,36 +232,36 @@ void use_account_rcs(
    const account_object& account = db.get< account_object, by_name >( account_name );
    const rc_account_object& rc_account = db.get< rc_account_object, by_name >( account_name );
 
-   manabar_params mbparams;
-   mbparams.max_mana = get_maximum_rc( account, rc_account );
+   flowbar_params mbparams;
+   mbparams.max_flow = get_maximum_rc( account, rc_account );
    mbparams.regen_time = CREA_RC_REGEN_TIME;
 
    db.modify( rc_account, [&]( rc_account_object& rca )
    {
-      rca.rc_manabar.regenerate_mana< true >( mbparams, gpo.time.sec_since_epoch() );
+      rca.rc_flowbar.regenerate_flow< true >( mbparams, gpo.time.sec_since_epoch() );
 
-      bool has_mana = rc_account.rc_manabar.has_mana( rc );
+      bool has_flow = rc_account.rc_flowbar.has_flow( rc );
 
       if( (!skip.skip_reject_not_enough_rc) && db.has_hardfork( CREA_HARDFORK_0_20 ) )
       {
          if( db.is_producing() )
          {
-            CREA_ASSERT( has_mana, plugin_exception,
+            CREA_ASSERT( has_flow, plugin_exception,
                "Account: ${account} has ${rc_current} RC, needs ${rc_needed} RC. Please wait to transact, or power up CREA.",
                ("account", account_name)
                ("rc_needed", rc)
-               ("rc_current", rca.rc_manabar.current_mana)
+               ("rc_current", rca.rc_flowbar.current_flow)
                );
          }
          else
          {
-            if( !has_mana )
+            if( !has_flow )
             {
                const dynamic_global_property_object& gpo = db.get_dynamic_global_properties();
                ilog( "Accepting transaction by ${account}, has ${rc_current} RC, needs ${rc_needed} RC, block ${b}, witness ${w}.",
                   ("account", account_name)
                   ("rc_needed", rc)
-                  ("rc_current", rca.rc_manabar.current_mana)
+                  ("rc_current", rca.rc_flowbar.current_flow)
                   ("b", gpo.head_block_number)
                   ("w", gpo.current_witness)
                   );
@@ -269,12 +269,12 @@ void use_account_rcs(
          }
       }
 
-      if( (!has_mana) && ( skip.skip_negative_rc_balance || (gpo.time.sec_since_epoch() <= 1538211600) ) )
+      if( (!has_flow) && ( skip.skip_negative_rc_balance || (gpo.time.sec_since_epoch() <= 1538211600) ) )
          return;
 
       if( skip.skip_deduct_rc )
          return;
-      rca.rc_manabar.use_mana( rc );
+      rca.rc_flowbar.use_flow( rc );
    } );
 }
 
@@ -542,32 +542,32 @@ struct pre_apply_operation_visitor
       //
       // TODO:  Issue number
       //
-      static_assert( CREA_RC_REGEN_TIME <= CREA_VOTING_MANA_REGENERATION_SECONDS, "RC regen time must be smaller than vote regen time" );
+      static_assert( CREA_RC_REGEN_TIME <= CREA_VOTING_FLOW_REGENERATION_SECONDS, "RC regen time must be smaller than vote regen time" );
 
       // ilog( "regenerate(${a})", ("a", account.name) );
 
-      manabar_params mbparams;
-      mbparams.max_mana = get_maximum_rc( account, rc_account );
+      flowbar_params mbparams;
+      mbparams.max_flow = get_maximum_rc( account, rc_account );
       mbparams.regen_time = CREA_RC_REGEN_TIME;
 
-      if( mbparams.max_mana != rc_account.last_max_rc )
+      if( mbparams.max_flow != rc_account.last_max_rc )
       {
          if( !_skip.skip_reject_unknown_delta_vests )
          {
             CREA_ASSERT( false, plugin_exception,
                "Account ${a} max RC changed from ${old} to ${new} without triggering an op, noticed on block ${b}",
-               ("a", account.name)("old", rc_account.last_max_rc)("new", mbparams.max_mana)("b", _db.head_block_num()) );
+               ("a", account.name)("old", rc_account.last_max_rc)("new", mbparams.max_flow)("b", _db.head_block_num()) );
          }
          else
          {
             wlog( "NOTIFYALERT! Account ${a} max RC changed from ${old} to ${new} without triggering an op, noticed on block ${b}",
-               ("a", account.name)("old", rc_account.last_max_rc)("new", mbparams.max_mana)("b", _db.head_block_num()) );
+               ("a", account.name)("old", rc_account.last_max_rc)("new", mbparams.max_flow)("b", _db.head_block_num()) );
          }
       }
 
       _db.modify( rc_account, [&]( rc_account_object& rca )
       {
-         rca.rc_manabar.regenerate_mana< true >( mbparams, _current_time );
+         rca.rc_flowbar.regenerate_flow< true >( mbparams, _current_time );
       } );
    }
 
@@ -902,7 +902,7 @@ void update_modified_accounts( database& db, const std::vector< account_name_typ
       db.modify( rc_account, [&]( rc_account_object& rca )
       {
          rca.last_max_rc = new_last_max_rc;
-         rca.rc_manabar.current_mana += std::max( drc, int64_t( 0 ) );
+         rca.rc_flowbar.current_flow += std::max( drc, int64_t( 0 ) );
       } );
    }
 }

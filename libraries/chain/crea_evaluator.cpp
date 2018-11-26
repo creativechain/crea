@@ -6,7 +6,7 @@
 #include <crea/chain/block_summary_object.hpp>
 
 #include <crea/chain/util/reward.hpp>
-#include <crea/chain/util/manabar.hpp>
+#include <crea/chain/util/flowbar.hpp>
 
 #include <fc/macros.hpp>
 
@@ -289,12 +289,12 @@ void initialize_account_object( account_object& acc, const account_name_type& na
    acc.name = name;
    acc.memo_key = key;
    acc.created = props.time;
-   acc.voting_manabar.last_update_time = props.time.sec_since_epoch();
+   acc.voting_flowbar.last_update_time = props.time.sec_since_epoch();
    acc.mined = mined;
 
    if( hardfork < CREA_HARDFORK_0_20__2539 )
    {
-      acc.voting_manabar.current_mana = CREA_100_PERCENT;
+      acc.voting_flowbar.current_flow = CREA_100_PERCENT;
    }
 
    if( hardfork >= CREA_HARDFORK_0_11 )
@@ -1381,13 +1381,13 @@ void pre_hf20_vote_evaluator( const vote_operation& o, database& _db )
    const auto& comment_vote_idx = _db.get_index< comment_vote_index >().indices().get< by_comment_voter >();
    auto itr = comment_vote_idx.find( std::make_tuple( comment.id, voter.id ) );
 
-   int64_t elapsed_seconds = _db.head_block_time().sec_since_epoch() - voter.voting_manabar.last_update_time;
+   int64_t elapsed_seconds = _db.head_block_time().sec_since_epoch() - voter.voting_flowbar.last_update_time;
 
    if( _db.has_hardfork( CREA_HARDFORK_0_11 ) )
       FC_ASSERT( elapsed_seconds >= CREA_MIN_VOTE_INTERVAL_SEC, "Can only vote once every 3 seconds." );
 
-   int64_t regenerated_power = (CREA_100_PERCENT * elapsed_seconds) / CREA_VOTING_MANA_REGENERATION_SECONDS;
-   int64_t current_power     = std::min( int64_t(voter.voting_manabar.current_mana) + regenerated_power, int64_t(CREA_100_PERCENT) );
+   int64_t regenerated_power = (CREA_100_PERCENT * elapsed_seconds) / CREA_VOTING_FLOW_REGENERATION_SECONDS;
+   int64_t current_power     = std::min( int64_t(voter.voting_flowbar.current_flow) + regenerated_power, int64_t(CREA_100_PERCENT) );
    FC_ASSERT( current_power > 0, "Account currently does not have voting power." );
 
    int64_t  abs_weight    = abs(o.weight);
@@ -1398,7 +1398,7 @@ void pre_hf20_vote_evaluator( const vote_operation& o, database& _db )
    const dynamic_global_property_object& dgpo = _db.get_dynamic_global_properties();
 
    // The second multiplication is rounded up as of HF 259
-   int64_t max_vote_denom = dgpo.vote_power_reserve_rate * CREA_VOTING_MANA_REGENERATION_SECONDS;
+   int64_t max_vote_denom = dgpo.vote_power_reserve_rate * CREA_VOTING_FLOW_REGENERATION_SECONDS;
    FC_ASSERT( max_vote_denom > 0 );
 
    if( !_db.has_hardfork( CREA_HARDFORK_0_14__259 ) )
@@ -1458,9 +1458,9 @@ void pre_hf20_vote_evaluator( const vote_operation& o, database& _db )
       //if( used_power == 0 ) used_power = 1;
 
       _db.modify( voter, [&]( account_object& a ){
-         a.voting_manabar.current_mana = current_power - used_power;
+         a.voting_flowbar.current_flow = current_power - used_power;
          a.last_vote_time = _db.head_block_time();
-         a.voting_manabar.last_update_time = a.last_vote_time.sec_since_epoch();
+         a.voting_flowbar.last_update_time = a.last_vote_time.sec_since_epoch();
       });
 
       /// if the current net_rshares is less than 0, the post is getting 0 rewards so it is not factored into total rshares^2
@@ -1642,9 +1642,9 @@ void pre_hf20_vote_evaluator( const vote_operation& o, database& _db )
       }
 
       _db.modify( voter, [&]( account_object& a ){
-         a.voting_manabar.current_mana = current_power - used_power;
+         a.voting_flowbar.current_flow = current_power - used_power;
          a.last_vote_time = _db.head_block_time();
-         a.voting_manabar.last_update_time = a.last_vote_time.sec_since_epoch();
+         a.voting_flowbar.last_update_time = a.last_vote_time.sec_since_epoch();
       });
 
       /// if the current net_rshares is less than 0, the post is getting 0 rewards so it is not factored into total rshares^2
@@ -1788,23 +1788,23 @@ void hf20_vote_evaluator( const vote_operation& o, database& _db )
 
    _db.modify( voter, [&]( account_object& a )
    {
-      util::manabar_params params( util::get_effective_vesting_shares( a ), CREA_VOTING_MANA_REGENERATION_SECONDS );
-      a.voting_manabar.regenerate_mana( params, now );
+      util::flowbar_params params( util::get_effective_vesting_shares( a ), CREA_VOTING_FLOW_REGENERATION_SECONDS );
+      a.voting_flowbar.regenerate_flow( params, now );
    });
-   FC_ASSERT( voter.voting_manabar.current_mana > 0, "Account does not have enough mana to vote." );
+   FC_ASSERT( voter.voting_flowbar.current_flow > 0, "Account does not have enough mana to vote." );
 
    int16_t abs_weight = abs( o.weight );
-   uint128_t used_mana = ( uint128_t( voter.voting_manabar.current_mana ) * abs_weight * 60 * 60 * 24 ) / CREA_100_PERCENT;
+   uint128_t used_flow = ( uint128_t( voter.voting_flowbar.current_flow ) * abs_weight * 60 * 60 * 24 ) / CREA_100_PERCENT;
 
    const dynamic_global_property_object& dgpo = _db.get_dynamic_global_properties();
 
-   int64_t max_vote_denom = dgpo.vote_power_reserve_rate * CREA_VOTING_MANA_REGENERATION_SECONDS;
+   int64_t max_vote_denom = dgpo.vote_power_reserve_rate * CREA_VOTING_FLOW_REGENERATION_SECONDS;
    FC_ASSERT( max_vote_denom > 0 );
 
-   used_mana = ( used_mana + max_vote_denom - 1 ) / max_vote_denom;
-   FC_ASSERT( voter.voting_manabar.has_mana( used_mana.to_uint64() ), "Account does not have enough mana to vote." );
+   used_flow = ( used_flow + max_vote_denom - 1 ) / max_vote_denom;
+   FC_ASSERT( voter.voting_flowbar.has_flow( used_flow.to_uint64() ), "Account does not have enough mana to vote." );
 
-   int64_t abs_rshares = used_mana.to_uint64();
+   int64_t abs_rshares = used_flow.to_uint64();
 
    abs_rshares -= CREA_VOTE_DUST_THRESHOLD;
    abs_rshares = std::max( int64_t(0), abs_rshares );
@@ -1825,7 +1825,7 @@ void hf20_vote_evaluator( const vote_operation& o, database& _db )
 
       _db.modify( voter, [&]( account_object& a )
       {
-         a.voting_manabar.use_mana( used_mana.to_uint64() );
+         a.voting_flowbar.use_flow( used_flow.to_uint64() );
          a.last_vote_time = _db.head_block_time();
       });
 
@@ -1935,7 +1935,7 @@ void hf20_vote_evaluator( const vote_operation& o, database& _db )
 
       _db.modify( voter, [&]( account_object& a )
       {
-         a.voting_manabar.use_mana( used_mana.to_uint64() );
+         a.voting_flowbar.use_flow( used_flow.to_uint64() );
          a.last_vote_time = _db.head_block_time();
       });
 
@@ -2747,9 +2747,9 @@ void claim_reward_balance_evaluator::do_apply( const claim_reward_balance_operat
    {
       if( _db.has_hardfork( CREA_HARDFORK_0_20__2539 ) )
       {
-         util::manabar_params params( util::get_effective_vesting_shares( a ), CREA_VOTING_MANA_REGENERATION_SECONDS );
-         a.voting_manabar.regenerate_mana( params, _db.head_block_time() );
-         a.voting_manabar.use_mana( -op.reward_vests.amount.value );
+         util::flowbar_params params( util::get_effective_vesting_shares( a ), CREA_VOTING_FLOW_REGENERATION_SECONDS );
+         a.voting_flowbar.regenerate_flow( params, _db.head_block_time() );
+         a.voting_flowbar.use_flow( -op.reward_vests.amount.value );
       }
 
       a.vesting_shares += op.reward_vests;
@@ -2851,18 +2851,18 @@ void delegate_vesting_shares_evaluator::do_apply( const delegate_vesting_shares_
 
    if( _db.has_hardfork( CREA_HARDFORK_0_20__2539 ) )
    {
-      auto max_mana = util::get_effective_vesting_shares( delegator );
+      auto max_flow = util::get_effective_vesting_shares( delegator );
 
       _db.modify( delegator, [&]( account_object& a )
       {
-         util::manabar_params params( max_mana, CREA_VOTING_MANA_REGENERATION_SECONDS );
-         a.voting_manabar.regenerate_mana( params, _db.head_block_time() );
+         util::flowbar_params params( max_flow, CREA_VOTING_FLOW_REGENERATION_SECONDS );
+         a.voting_flowbar.regenerate_flow( params, _db.head_block_time() );
       });
 
-      available_shares = asset( delegator.voting_manabar.current_mana, VESTS_SYMBOL );
+      available_shares = asset( delegator.voting_flowbar.current_flow, VESTS_SYMBOL );
 
       // Assume delegated VESTS are used first when consuming mana. You cannot delegate received vesting shares
-      available_shares.amount = std::min( available_shares.amount, max_mana - delegator.received_vesting_shares.amount );
+      available_shares.amount = std::min( available_shares.amount, max_flow - delegator.received_vesting_shares.amount );
 
       if( delegator.next_vesting_withdrawal < fc::time_point_sec::maximum()
          && delegator.to_withdraw - delegator.withdrawn > delegator.vesting_withdraw_rate.amount )
@@ -2924,7 +2924,7 @@ void delegate_vesting_shares_evaluator::do_apply( const delegate_vesting_shares_
 
          if( _db.has_hardfork( CREA_HARDFORK_0_20__2539 ) )
          {
-            a.voting_manabar.use_mana( op.vesting_shares.amount.value );
+            a.voting_flowbar.use_flow( op.vesting_shares.amount.value );
          }
       });
 
@@ -2932,9 +2932,9 @@ void delegate_vesting_shares_evaluator::do_apply( const delegate_vesting_shares_
       {
          if( _db.has_hardfork( CREA_HARDFORK_0_20__2539 ) )
          {
-            util::manabar_params params( util::get_effective_vesting_shares( a ), CREA_VOTING_MANA_REGENERATION_SECONDS );
-            a.voting_manabar.regenerate_mana( params, _db.head_block_time() );
-            a.voting_manabar.use_mana( -op.vesting_shares.amount.value );
+            util::flowbar_params params( util::get_effective_vesting_shares( a ), CREA_VOTING_FLOW_REGENERATION_SECONDS );
+            a.voting_flowbar.regenerate_flow( params, _db.head_block_time() );
+            a.voting_flowbar.use_flow( -op.vesting_shares.amount.value );
          }
 
          a.received_vesting_shares += op.vesting_shares;
@@ -2955,7 +2955,7 @@ void delegate_vesting_shares_evaluator::do_apply( const delegate_vesting_shares_
 
          if( _db.has_hardfork( CREA_HARDFORK_0_20__2539 ) )
          {
-            a.voting_manabar.use_mana( delta.amount.value );
+            a.voting_flowbar.use_flow( delta.amount.value );
          }
       });
 
@@ -2963,9 +2963,9 @@ void delegate_vesting_shares_evaluator::do_apply( const delegate_vesting_shares_
       {
          if( _db.has_hardfork( CREA_HARDFORK_0_20__2539 ) )
          {
-            util::manabar_params params( util::get_effective_vesting_shares( a ), CREA_VOTING_MANA_REGENERATION_SECONDS );
-            a.voting_manabar.regenerate_mana( params, _db.head_block_time() );
-            a.voting_manabar.use_mana( -delta.amount.value );
+            util::flowbar_params params( util::get_effective_vesting_shares( a ), CREA_VOTING_FLOW_REGENERATION_SECONDS );
+            a.voting_flowbar.regenerate_flow( params, _db.head_block_time() );
+            a.voting_flowbar.use_flow( -delta.amount.value );
          }
 
          a.received_vesting_shares += delta;
@@ -3004,11 +3004,11 @@ void delegate_vesting_shares_evaluator::do_apply( const delegate_vesting_shares_
 
          if( _db.has_hardfork( CREA_HARDFORK_0_20__2539 ) )
          {
-            a.voting_manabar.use_mana( delta.amount.value );
+            a.voting_flowbar.use_flow( delta.amount.value );
 
-            if( a.voting_manabar.current_mana < 0 )
+            if( a.voting_flowbar.current_flow < 0 )
             {
-               a.voting_manabar.current_mana = 0;
+               a.voting_flowbar.current_flow = 0;
             }
          }
       });

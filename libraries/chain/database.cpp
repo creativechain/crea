@@ -23,7 +23,7 @@
 #include <crea/chain/util/reward.hpp>
 #include <crea/chain/util/uint256.hpp>
 #include <crea/chain/util/reward.hpp>
-#include <crea/chain/util/manabar.hpp>
+#include <crea/chain/util/flowbar.hpp>
 #include <crea/chain/util/rd_setup.hpp>
 
 #include <fc/smart_ref_impl.hpp>
@@ -1303,10 +1303,10 @@ asset create_vesting2( database& db, const account_object& to_account, asset liq
          {
             db.modify( to_account, [&]( account_object& a )
             {
-               util::manabar_params params( util::get_effective_vesting_shares( a ), CREA_VOTING_MANA_REGENERATION_SECONDS );
+               util::flowbar_params params( util::get_effective_vesting_shares( a ), CREA_VOTING_FLOW_REGENERATION_SECONDS );
 FC_TODO( "Set skip_cap_regen=true without breaking consensus" );
-               a.voting_manabar.regenerate_mana( params, db.head_block_time() );
-               a.voting_manabar.use_mana( -new_vesting.amount.value );
+               a.voting_flowbar.regenerate_flow( params, db.head_block_time() );
+               a.voting_flowbar.use_flow( -new_vesting.amount.value );
             });
          }
 
@@ -4160,10 +4160,10 @@ void database::clear_expired_delegations()
       {
          if( has_hardfork( CREA_HARDFORK_0_20__2539 ) )
          {
-            util::manabar_params params( util::get_effective_vesting_shares( a ), CREA_VOTING_MANA_REGENERATION_SECONDS );
+            util::flowbar_params params( util::get_effective_vesting_shares( a ), CREA_VOTING_FLOW_REGENERATION_SECONDS );
 FC_TODO( "Set skip_cap_regen=true without breaking consensus" );
-            a.voting_manabar.regenerate_mana( params, head_block_time() );
-            a.voting_manabar.use_mana( -itr->vesting_shares.amount.value );
+            a.voting_flowbar.regenerate_flow( params, head_block_time() );
+            a.voting_flowbar.use_flow( -itr->vesting_shares.amount.value );
          }
 
          a.delegated_vesting_shares -= itr->vesting_shares;

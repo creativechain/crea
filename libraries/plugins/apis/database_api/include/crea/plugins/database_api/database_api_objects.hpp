@@ -178,7 +178,7 @@ struct api_account_object
       lifetime_vote_count( a.lifetime_vote_count ),
       post_count( a.post_count ),
       can_vote( a.can_vote ),
-      voting_manabar( a.voting_manabar ),
+      voting_flowbar( a.voting_flowbar ),
       balance( a.balance ),
       savings_balance( a.savings_balance ),
       cbd_balance( a.cbd_balance ),
@@ -263,7 +263,7 @@ struct api_account_object
    uint32_t          post_count = 0;
 
    bool              can_vote = false;
-   util::manabar     voting_manabar;
+   util::flowbar     voting_flowbar;
 
    asset             balance;
    asset             savings_balance;
@@ -578,7 +578,7 @@ FC_REFLECT( crea::plugins::database_api::api_account_object,
              (id)(name)(owner)(active)(posting)(memo_key)(json_metadata)(proxy)(last_owner_update)(last_account_update)
              (created)(mined)
              (recovery_account)(last_account_recovery)(reset_account)
-             (comment_count)(lifetime_vote_count)(post_count)(can_vote)(voting_manabar)
+             (comment_count)(lifetime_vote_count)(post_count)(can_vote)(voting_flowbar)
              (balance)
              (savings_balance)
              (cbd_balance)(cbd_seconds)(cbd_seconds_last_update)(cbd_last_interest_payment)

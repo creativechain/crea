@@ -95,7 +95,7 @@ DEFINE_API_IMPL( rc_api_impl, find_rc_accounts )
 
       rc_account_api_object api_rc_account;
       api_rc_account.account = rc_account->account;
-      api_rc_account.rc_manabar = rc_account->rc_manabar;
+      api_rc_account.rc_flowbar = rc_account->rc_flowbar;
       api_rc_account.max_rc_creation_adjustment = rc_account->max_rc_creation_adjustment;
       api_rc_account.max_rc = get_maximum_rc( account, *rc_account );
 

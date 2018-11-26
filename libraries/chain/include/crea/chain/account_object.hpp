@@ -7,7 +7,7 @@
 #include <crea/chain/crea_object_types.hpp>
 #include <crea/chain/witness_objects.hpp>
 #include <crea/chain/shared_authority.hpp>
-#include <crea/chain/util/manabar.hpp>
+#include <crea/chain/util/flowbar.hpp>
 
 #include <boost/multi_index/composite_key.hpp>
 
@@ -48,7 +48,7 @@ namespace crea { namespace chain {
          uint32_t          post_count = 0;
 
          bool              can_vote = true;
-         util::manabar     voting_manabar;
+         util::flowbar     voting_flowbar;
 
          asset             balance = asset( 0, CREA_SYMBOL );  ///< total liquid shares held by this account
          asset             savings_balance = asset( 0, CREA_SYMBOL );  ///< total liquid shares held by this account
@@ -406,7 +406,7 @@ FC_REFLECT( crea::chain::account_object,
              (id)(name)(memo_key)(json_metadata)(proxy)(last_account_update)
              (created)(mined)
              (recovery_account)(last_account_recovery)(reset_account)
-             (comment_count)(lifetime_vote_count)(post_count)(can_vote)(voting_manabar)
+             (comment_count)(lifetime_vote_count)(post_count)(can_vote)(voting_flowbar)
              (balance)
              (savings_balance)
              (cbd_balance)(cbd_seconds)(cbd_seconds_last_update)(cbd_last_interest_payment)
