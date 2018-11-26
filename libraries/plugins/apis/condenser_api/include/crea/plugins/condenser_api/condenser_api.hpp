@@ -147,6 +147,8 @@ struct api_account_object
       last_root_post( a.last_root_post ),
       last_vote_time( a.last_vote_time ),
       post_bandwidth( a.post_bandwidth ),
+      follower_count(a.follower_count),
+      following_count(a.following_count),
       pending_claimed_accounts( a.pending_claimed_accounts )
    {
       voting_power = _compute_voting_power(a);
@@ -223,6 +225,8 @@ struct api_account_object
    time_point_sec    last_root_post;
    time_point_sec    last_vote_time;
    uint32_t          post_bandwidth = 0;
+   uint32_t          follower_count = 0;
+   uint32_t          following_count = 0;
 
    share_type        pending_claimed_accounts = 0;
 };
@@ -1163,7 +1167,7 @@ FC_REFLECT( crea::plugins::condenser_api::api_account_object,
              (posting_rewards)
              (proxied_vsf_votes)(witnesses_voted_for)
              (last_post)(last_root_post)(last_vote_time)
-             (post_bandwidth)(pending_claimed_accounts)
+             (post_bandwidth)(follower_count)(following_count)(pending_claimed_accounts)
           )
 
 FC_REFLECT_DERIVED( crea::plugins::condenser_api::extended_account, (crea::plugins::condenser_api::api_account_object),

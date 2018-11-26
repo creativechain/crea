@@ -9,6 +9,8 @@
 #include <crea/chain/transaction_object.hpp>
 #include <crea/chain/witness_objects.hpp>
 #include <crea/chain/database.hpp>
+#include <crea/plugins/follow/follow_objects.hpp>
+#include <fc/log/logger.hpp>
 
 namespace crea { namespace plugins { namespace database_api {
 
@@ -207,6 +209,8 @@ struct api_account_object
       last_root_post( a.last_root_post ),
       last_vote_time( a.last_vote_time ),
       post_bandwidth( a.post_bandwidth ),
+      follower_count(0),
+      following_count(0),
       pending_claimed_accounts( a.pending_claimed_accounts )
    {
       size_t n = a.proxied_vsf_votes.size();
@@ -224,6 +228,13 @@ struct api_account_object
       auto smt_obj_itr = by_control_account_index.find( name );
       is_smt = smt_obj_itr != by_control_account_index.end();
 #endif
+       auto itr = db.find< crea::plugins::follow::follow_count_object, crea::plugins::follow::by_account >(name);
+
+       if ( itr != nullptr) {
+           wlog("followers: ${followers}, following: ${following}", ("followers", itr->follower_count)("following", itr->following_count));
+           follower_count = itr->follower_count;
+           following_count = itr->following_count;
+       }
    }
 
 
@@ -294,7 +305,8 @@ struct api_account_object
    time_point_sec    last_root_post;
    time_point_sec    last_vote_time;
    uint32_t          post_bandwidth = 0;
-
+   uint32_t          follower_count = 0;
+   uint32_t          following_count = 0;
    share_type        pending_claimed_accounts = 0;
 
    bool              is_smt = false;
@@ -577,7 +589,7 @@ FC_REFLECT( crea::plugins::database_api::api_account_object,
              (posting_rewards)
              (proxied_vsf_votes)(witnesses_voted_for)
              (last_post)(last_root_post)(last_vote_time)
-             (post_bandwidth)(pending_claimed_accounts)
+             (post_bandwidth)(follower_count)(following_count)(pending_claimed_accounts)
              (is_smt)
           )
 
