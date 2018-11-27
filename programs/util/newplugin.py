@@ -4,7 +4,8 @@ templates = {
 "plugin.json" :
 """{{
    "plugin_name": "{plugin_name}",
-   "plugin_project": "{plugin_provider}_{plugin_name}"
+   "plugin_namespace": "{plugin_name}",
+   "plugin_project": "{plugin_name}_plugin"
 }}
 """,
 
