@@ -194,6 +194,11 @@ vector< condenser_api::api_limit_order_object > remote_node_api::get_open_orders
    FC_ASSERT( false );
 }
 
+condenser_api::api_download_granted_object remote_node_api::get_download( account_name_type, account_name_type, string, string )
+{
+   FC_ASSERT( false );
+}
+
 string remote_node_api::get_transaction_hex( condenser_api::legacy_signed_transaction )
 {
    FC_ASSERT( false );

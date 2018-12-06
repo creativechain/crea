@@ -15,6 +15,7 @@ namespace crea { namespace protocol {
    typedef fc::static_variant<
             vote_operation,
             comment_operation,
+            comment_download_operation,
 
             transfer_operation,
             transfer_to_vesting_operation,

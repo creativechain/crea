@@ -44,6 +44,12 @@ struct get_impacted_account_visitor
          _impacted.insert( op.parent_author );
    }
 
+   void operator()( const comment_download_operation& op )
+   {
+      _impacted.insert( op.downloader );
+      _impacted.insert( op.comment_author );
+   }
+
    void operator()( const vote_operation& op )
    {
       _impacted.insert( op.voter );

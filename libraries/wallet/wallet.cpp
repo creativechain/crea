@@ -2317,6 +2317,7 @@ condenser_api::legacy_signed_transaction wallet_api::post_comment(
    string parent_permlink,
    string title,
    string body,
+   string download,
    string json,
    bool broadcast )
 {
@@ -2328,6 +2329,7 @@ condenser_api::legacy_signed_transaction wallet_api::post_comment(
    op.permlink = permlink;
    op.title = title;
    op.body = body;
+   op.download = download;
    op.json_metadata = json;
 
    signed_transaction tx;
@@ -2335,6 +2337,47 @@ condenser_api::legacy_signed_transaction wallet_api::post_comment(
    tx.validate();
 
    return my->sign_transaction( tx, broadcast );
+}
+
+condenser_api::legacy_signed_transaction wallet_api::content_download(
+   string downloader,
+   string comment_author,
+   string comment_permlink,
+   bool broadcast )
+{
+   FC_ASSERT( !is_locked() );
+   comment_download_operation op;
+   op.downloader = downloader;
+   op.comment_author = comment_author;
+   op.comment_permlink = comment_permlink;
+
+   signed_transaction tx;
+   tx.operations.push_back( op );
+   tx.validate();
+
+   return my->sign_transaction( tx, broadcast );
+}
+
+condenser_api::api_download_granted_object wallet_api::get_download(
+                string downloader,
+                string comment_author,
+                string comment_permlink )
+{
+    FC_ASSERT( !is_locked() );
+
+    condenser_api::api_account_object downloader_accnt = get_account( downloader );
+
+    digest_type::encoder enc;
+    fc::raw::pack(enc, comment_author);
+    fc::raw::pack(enc, comment_permlink);
+    digest_type digest = enc.result();
+
+    fc::ecc::private_key privkey = my->get_private_key(downloader_accnt.posting.get_keys()[0]);
+
+    fc::array<unsigned char, 65> signature = privkey.sign_compact(digest);
+    string sig64 = fc::base64_encode(signature.begin(), (unsigned int) signature.size());
+
+    return my->_remote_api->get_download( downloader, comment_author, comment_permlink, sig64 );
 }
 
 condenser_api::legacy_signed_transaction wallet_api::vote(

@@ -85,6 +85,17 @@ namespace crea { namespace protocol {
       {
          FC_ASSERT( fc::json::is_valid(json_metadata), "JSON Metadata not valid JSON" );
       }
+
+      if (download.size() > 0) {
+         FC_ASSERT(fc::json::is_valid(download), "Download data must be a valid JSON" );
+      }
+   }
+
+   void comment_download_operation::validate() const
+   {
+      validate_account_name( downloader );
+      validate_account_name( comment_author );
+      validate_permlink( comment_permlink );
    }
 
    struct comment_options_extension_validate_visitor

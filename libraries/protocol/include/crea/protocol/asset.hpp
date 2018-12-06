@@ -20,6 +20,7 @@ namespace crea { namespace protocol {
       asset_symbol_type symbol;
 
       void validate()const;
+      bool isZero()const;
 
       asset& operator += ( const asset& o )
       {

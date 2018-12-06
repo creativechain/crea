@@ -68,6 +68,11 @@ struct count_operation_visitor
       execution_time_count += _e.comment_operation_exec_time;
    }
 
+   void operator()( const comment_download_operation& op)const
+   {
+
+   }
+
    void operator()( const comment_payout_beneficiaries& bens )const
    {
       state_bytes_count += _w.comment_object_beneficiaries_member_size * bens.beneficiaries.size();

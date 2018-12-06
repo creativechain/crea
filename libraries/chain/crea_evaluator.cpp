@@ -5,9 +5,11 @@
 #include <crea/chain/witness_objects.hpp>
 #include <crea/chain/block_summary_object.hpp>
 
+#include <crea/chain/util/asset.hpp>
 #include <crea/chain/util/reward.hpp>
 #include <crea/chain/util/flowbar.hpp>
 
+#include <fc/crypto/aes.hpp>
 #include <fc/macros.hpp>
 
 #ifndef IS_LOW_MEM
@@ -704,6 +706,7 @@ void comment_evaluator::do_apply( const comment_operation& o )
    }
 
    FC_ASSERT( fc::is_utf8( o.json_metadata ), "JSON Metadata must be UTF-8" );
+   FC_ASSERT( fc::is_utf8( o.download ), "Download data must be UTF-8" );
 
    auto now = _db.head_block_time();
 
@@ -821,6 +824,60 @@ void comment_evaluator::do_apply( const comment_operation& o )
          }
          from_string( con.json_metadata, o.json_metadata );
       });
+
+       const comment_download_object& cdo = _db.create< comment_download_object >( [&]( comment_download_object& d)
+       {
+          try
+          {
+             d.comment = id;
+             if (o.download.empty()) {
+                 d.size = 0;
+                 from_string(d.type, "");
+                 from_string(d.name, "");
+                 from_string(d.password, "");
+                 from_string(d.resource, "");
+                 d.price = crea::chain::util::asset_from_string("0.000 CREA");
+             } else {
+                 comment_download_data download_data;
+
+                 download_data = fc::json::from_string( o.download ).as< comment_download_data >();
+
+                 FC_ASSERT(download_data.resource.size(), "Invalid download resource");
+
+                 d.size = download_data.size;
+                 from_string(d.type, download_data.type);
+                 from_string(d.name, download_data.name);
+                 d.price = crea::chain::util::asset_from_string(download_data.price);
+
+                 FC_ASSERT(download_data.password.size(), "Must be provide a password");
+
+                 //Encrypt the content
+                 fc::sha512::encoder enc;
+                 fc::raw::pack(enc, download_data.password);
+                 fc::sha512 pwd = enc.result();
+                 wlog( "Password: ${p}", ("p", pwd.str().c_str()) );
+
+                 std::vector<char> encrypted = fc::aes_encrypt(pwd, fc::raw::pack_to_vector(download_data.resource));
+
+                 from_string(d.password, download_data.password);
+
+                 string enconded = fc::base64_encode(encrypted.data(), (unsigned int) encrypted.size());
+                 from_string(d.resource, enconded);
+             }
+          }
+          FC_CAPTURE_AND_RETHROW( (o) )
+       });
+
+       //Free download for author
+       _db.create< download_granted_object >( [&] (download_granted_object& dgo){
+          dgo.download = cdo.id;
+          dgo.price = cdo.price;
+          dgo.comment_author = o.author;
+          dgo.downloader = o.author;
+          from_string(dgo.comment_permlink, o.permlink);
+          dgo.payment_date = _db.head_block_time();
+       });
+
    #endif
 
 
@@ -895,13 +952,98 @@ void comment_evaluator::do_apply( const comment_operation& o )
             }
          }
       });
+
+       if (!o.download.empty()) {
+           _db.modify( _db.get< comment_download_object, by_comment >( comment.id ), [&]( comment_download_object& d)
+           {
+               try
+               {
+                   comment_download_data download_data;
+                   download_data = fc::json::from_string( o.download ).as< comment_download_data >();
+
+                   //Disable download
+                   if (download_data.resource.empty()) {
+                       d.size = 0;
+                       from_string(d.type, "");
+                       from_string(d.name, "");
+                       d.price = crea::chain::util::asset_from_string("0.000 CREA");
+                       from_string(d.password, "");
+                       from_string(d.resource, "");
+                   } else {
+                       d.size = download_data.size;
+                       from_string(d.type, download_data.type);
+                       from_string(d.name, download_data.name);
+                       d.price = crea::chain::util::asset_from_string(download_data.price);
+
+                       FC_ASSERT(download_data.password.size(), "Must be provide a password");
+
+                       //Encrypt the content
+                       fc::sha512::encoder enc;
+                       fc::raw::pack(enc, download_data.password);
+                       fc::sha512 pwd = enc.result();
+
+                       std::vector<char> encrypted = fc::aes_encrypt(pwd, fc::raw::pack_to_vector(download_data.resource));
+
+                       from_string(d.password, download_data.password);
+
+                       string enconded = fc::base64_encode(encrypted.data(), (unsigned int) encrypted.size());
+                       from_string(d.resource, enconded);
+                   }
+               }
+               FC_CAPTURE_AND_RETHROW( (o) )
+           });
+       }
+
+
    #endif
-
-
 
    } // end EDIT case
 
 } FC_CAPTURE_AND_RETHROW( (o) ) }
+
+void comment_download_evaluator::do_apply(const comment_download_operation& o)
+{
+   try {
+
+      //Checking comment exists
+      const auto& by_permlink_idx = _db.get_index< comment_index >().indices().get< by_permlink >();
+      auto itr = by_permlink_idx.find( boost::make_tuple( o.comment_author, o.comment_permlink ) );
+
+
+      FC_ASSERT(itr != by_permlink_idx.end(), "Comment not exists.");
+
+      //Checking if this user already paid the download
+      const auto& comment = *itr;
+      const comment_download_object& cdo = _db.get< comment_download_object, by_comment >( comment.id );
+
+      //const auto& granted_download_idx = _db.get_index< download_granted_index >().indices().get< by_downloader >();
+      //const download_granted_object& ditr = _db.get< download_granted_object, by_downloader >( boost::make_tuple(o.downloader, o.comment_author, o.comment_permlink ) );
+
+      //FC_ASSERT(ditr == granted_download_idx.end(), "This account already paid the download");
+      FC_ASSERT( _db.get_balance( o.downloader, cdo.price.symbol ) >= cdo.price, "Account does not have sufficient funds for download." );
+
+      //Store download payment for this user
+      _db.create< download_granted_object > ( [&]( download_granted_object& dgo )
+      {
+         dgo.downloader = o.downloader;
+         dgo.comment_author = o.comment_author;
+         from_string(dgo.comment_permlink, o.comment_permlink);
+         dgo.price = cdo.price;
+         dgo.payment_date = _db.head_block_time();
+         dgo.download = cdo.id;
+
+      });
+
+      _db.modify( _db.get< comment_download_object, by_id >( cdo.id ), [&]( comment_download_object& d) {
+          d.times_downloaded += 1;
+      });
+
+      _db.adjust_balance( o.downloader, -cdo.price );
+      _db.adjust_balance( o.comment_author, cdo.price );
+
+   } FC_CAPTURE_AND_RETHROW( (o) )
+
+}
 
 void escrow_transfer_evaluator::do_apply( const escrow_transfer_operation& o )
 {
@@ -1377,6 +1519,7 @@ void pre_hf20_vote_evaluator( const vote_operation& o, database& _db )
 #endif
       return;
    }
+
 
    const auto& comment_vote_idx = _db.get_index< comment_vote_index >().indices().get< by_comment_voter >();
    auto itr = comment_vote_idx.find( std::make_tuple( comment.id, voter.id ) );

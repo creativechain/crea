@@ -41,6 +41,7 @@ namespace crea { namespace plugins { namespace condenser_api {
 
    typedef account_update_operation               legacy_account_update_operation;
    typedef comment_operation                      legacy_comment_operation;
+   typedef comment_download_operation             legacy_comment_download_operation;
    typedef create_claimed_account_operation       legacy_create_claimed_account_operation;
    typedef delete_comment_operation               legacy_delete_comment_operation;
    typedef vote_operation                         legacy_vote_operation;
@@ -992,6 +993,7 @@ namespace crea { namespace plugins { namespace condenser_api {
    typedef fc::static_variant<
             legacy_vote_operation,
             legacy_comment_operation,
+            legacy_comment_download_operation,
             legacy_transfer_operation,
             legacy_transfer_to_vesting_operation,
             legacy_withdraw_vesting_operation,
@@ -1060,6 +1062,7 @@ namespace crea { namespace plugins { namespace condenser_api {
 
       bool operator()( const account_update_operation& op )const                 { l_op = op; return true; }
       bool operator()( const comment_operation& op )const                        { l_op = op; return true; }
+      bool operator()( const comment_download_operation& op )const               { l_op = op; return true; }
       bool operator()( const create_claimed_account_operation& op )const         { l_op = op; return true; }
       bool operator()( const delete_comment_operation& op )const                 { l_op = op; return true; }
       bool operator()( const vote_operation& op )const                           { l_op = op; return true; }

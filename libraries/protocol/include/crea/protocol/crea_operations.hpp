@@ -75,10 +75,21 @@ namespace crea { namespace protocol {
 
       string            title;
       string            body;
+      string            download;
       string            json_metadata;
 
       void validate()const;
       void get_required_posting_authorities( flat_set<account_name_type>& a )const{ a.insert(author); }
+   };
+
+   struct comment_download_operation : public base_operation
+   {
+       account_name_type downloader;
+       account_name_type comment_author;
+       string            comment_permlink;
+
+       void validate()const;
+       void get_required_posting_authorities( flat_set<account_name_type>& a)const{ a.insert(downloader); }
    };
 
    struct beneficiary_route_type
@@ -1118,7 +1129,8 @@ FC_REFLECT( crea::protocol::witness_update_operation, (owner)(url)(block_signing
 FC_REFLECT( crea::protocol::witness_set_properties_operation, (owner)(props)(extensions) )
 FC_REFLECT( crea::protocol::account_witness_vote_operation, (account)(witness)(approve) )
 FC_REFLECT( crea::protocol::account_witness_proxy_operation, (account)(proxy) )
-FC_REFLECT( crea::protocol::comment_operation, (parent_author)(parent_permlink)(author)(permlink)(title)(body)(json_metadata) )
+FC_REFLECT( crea::protocol::comment_operation, (parent_author)(parent_permlink)(author)(permlink)(title)(body)(download)(json_metadata) )
+FC_REFLECT( crea::protocol::comment_download_operation, (downloader)(comment_author)(comment_permlink) )
 FC_REFLECT( crea::protocol::vote_operation, (voter)(author)(permlink)(weight) )
 FC_REFLECT( crea::protocol::custom_operation, (required_auths)(id)(data) )
 FC_REFLECT( crea::protocol::custom_json_operation, (required_auths)(required_posting_auths)(id)(json) )

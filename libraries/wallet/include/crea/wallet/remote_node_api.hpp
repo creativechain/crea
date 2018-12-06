@@ -59,6 +59,7 @@ struct remote_node_api
    vector< account_name_type > lookup_witness_accounts( string, uint32_t );
    uint64_t get_witness_count();
    vector< condenser_api::api_limit_order_object > get_open_orders( account_name_type );
+   condenser_api::api_download_granted_object get_download( account_name_type, account_name_type, string, string );
    string get_transaction_hex( condenser_api::legacy_signed_transaction );
    condenser_api::legacy_signed_transaction get_transaction( transaction_id_type );
    set< public_key_type > get_required_signatures( condenser_api::legacy_signed_transaction, flat_set< public_key_type > );
@@ -150,6 +151,7 @@ FC_API( crea::wallet::remote_node_api,
         (lookup_witness_accounts)
         (get_witness_count)
         (get_open_orders)
+        (get_download)
         (get_transaction_hex)
         (get_transaction)
         (get_required_signatures)

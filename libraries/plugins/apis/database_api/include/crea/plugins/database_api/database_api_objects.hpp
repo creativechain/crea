@@ -30,6 +30,56 @@ typedef vesting_delegation_object              api_vesting_delegation_object;
 typedef vesting_delegation_expiration_object   api_vesting_delegation_expiration_object;
 typedef reward_fund_object                     api_reward_fund_object;
 
+struct api_comment_download_object
+{
+    api_comment_download_object(const comment_download_object& o, const database& db):
+       id( o.id ), comment( o.comment ), resource( to_string(o.resource) ), name( to_string(o.name) ),
+       type( to_string(o.type) ), size( o.size ), times_downloaded( o.times_downloaded), password( to_string(o.password) ),
+       price( o.price )
+    {
+       auto comment = db.get< chain::comment_object, chain::by_id>( o.comment );
+       author = comment.author;
+       permlink = to_string( comment.permlink );
+    };
+
+    api_comment_download_object(){}
+
+    comment_download_id_type  id;
+    comment_id_type           comment;
+
+    account_name_type         author;
+    string                    permlink;
+    string                    resource;
+    string                    name;
+    string                    type;
+    uint32_t                  size = 0;
+    uint32_t                  times_downloaded = 0;
+    string                    password;
+    asset                     price;
+};
+
+struct api_download_granted_object
+{
+    api_download_granted_object(const download_granted_object& o, const database& db):
+       id( o.id ), download( o.download )
+    {
+       payment_date = o.payment_date;
+       comment_author = o.comment_author;
+       comment_permlink = to_string( o.comment_permlink );
+       price = o.price;
+    }
+
+    api_download_granted_object(){}
+
+    download_granted_id_type  id;
+    comment_download_id_type  download;
+
+    time_point_sec            payment_date;
+    account_name_type         comment_author;
+    string                    comment_permlink;
+    asset                     price;
+};
+
 struct api_comment_object
 {
    api_comment_object( const comment_object& o, const database& db ):
@@ -80,6 +130,12 @@ struct api_comment_object
       title = to_string( con.title );
       body = to_string( con.body );
       json_metadata = to_string( con.json_metadata );
+
+      auto cdo = db.find< chain::comment_download_object, chain::by_comment >( o.id );
+      if (cdo != nullptr) {
+         api_comment_download_object acdo(*cdo, db);
+         download = acdo;
+      }
 #endif
    }
 
@@ -94,6 +150,7 @@ struct api_comment_object
 
    string            title;
    string            body;
+   api_comment_download_object download;
    string            json_metadata;
    time_point_sec    last_update;
    time_point_sec    created;
@@ -557,10 +614,19 @@ struct order_book
 
 } } } // crea::plugins::database_api
 
+FC_REFLECT( crea::plugins::database_api::api_comment_download_object,
+            (id)(author)(permlink)
+            (resource)(name)(type)(size)(times_downloaded)(price)
+)
+
+FC_REFLECT( crea::plugins::database_api::api_download_granted_object,
+            (id)(payment_date)(comment_author)(comment_permlink)(price)
+)
+
 FC_REFLECT( crea::plugins::database_api::api_comment_object,
              (id)(author)(permlink)
              (category)(parent_author)(parent_permlink)
-             (title)(body)(json_metadata)(last_update)(created)(active)(last_payout)
+             (title)(body)(download)(json_metadata)(last_update)(created)(active)(last_payout)
              (depth)(children)
              (net_rshares)(abs_rshares)(vote_rshares)
              (children_abs_rshares)(cashout_time)(max_cashout_time)

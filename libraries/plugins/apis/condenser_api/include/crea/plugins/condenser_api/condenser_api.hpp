@@ -263,6 +263,53 @@ struct extended_account : public api_account_object
    optional< vector< string > >                             recommended;      /// posts recommened for this user
 };
 
+struct api_download_granted_object
+{
+   api_download_granted_object( const database_api::api_download_granted_object& o ):
+       id( o.id ), payment_date( o.payment_date ), comment_author( o.comment_author ),
+       comment_permlink( o.comment_permlink ), price( legacy_asset::from_asset( o.price ) )
+   {
+
+   }
+   api_download_granted_object(){}
+
+   download_granted_id_type  id;
+
+   time_point_sec            payment_date;
+   account_name_type         comment_author;
+   string                    comment_permlink;
+   string                    resource = "";
+   legacy_asset              price;
+
+};
+
+struct api_comment_download_object
+{
+   api_comment_download_object( const database_api::api_comment_download_object& o ):
+       id( o.id ), resource( o.resource ), name( o.name ),
+       type( o.type ), size( o.size ), times_downloaded( o.times_downloaded), password( o.password ),
+       price( o.price )
+   {
+      author = o.author;
+      permlink = o.permlink;
+   }
+   api_comment_download_object(){}
+
+   comment_download_id_type  id;
+
+   account_name_type         author;
+   string                    permlink;
+   string                    resource;
+   string                    name;
+   string                    type;
+   uint32_t                  size = 0;
+   uint32_t                  times_downloaded = 0;
+   string                    password;
+   asset                     price;
+
+
+};
+
 struct api_comment_object
 {
    api_comment_object( const database_api::api_comment_object& c ):
@@ -299,7 +346,8 @@ struct api_comment_object
       percent_crea_dollars( c.percent_crea_dollars ),
       allow_replies( c.allow_replies ),
       allow_votes( c.allow_votes ),
-      allow_curation_rewards( c.allow_curation_rewards )
+      allow_curation_rewards( c.allow_curation_rewards ),
+      download( c.download )
    {
       for( auto& route : c.beneficiaries )
       {
@@ -318,6 +366,7 @@ struct api_comment_object
 
    string            title;
    string            body;
+   api_comment_download_object download;
    string            json_metadata;
    time_point_sec    last_update;
    time_point_sec    created;
@@ -993,6 +1042,7 @@ DEFINE_API_ARGS( verify_authority,                       vector< variant >,   bo
 DEFINE_API_ARGS( verify_account_authority,               vector< variant >,   bool )
 DEFINE_API_ARGS( get_active_votes,                       vector< variant >,   vector< tags::vote_state > )
 DEFINE_API_ARGS( get_account_votes,                      vector< variant >,   vector< account_vote > )
+DEFINE_API_ARGS( get_download,                           vector< variant >,   api_download_granted_object )
 DEFINE_API_ARGS( get_content,                            vector< variant >,   discussion )
 DEFINE_API_ARGS( get_content_replies,                    vector< variant >,   vector< discussion > )
 DEFINE_API_ARGS( get_tags_used_by_author,                vector< variant >,   vector< tags::tag_count_object > )
@@ -1087,6 +1137,7 @@ public:
       (verify_account_authority)
       (get_active_votes)
       (get_account_votes)
+      (get_download)
       (get_content)
       (get_content_replies)
       (get_tags_used_by_author)
@@ -1174,10 +1225,19 @@ FC_REFLECT_DERIVED( crea::plugins::condenser_api::extended_account, (crea::plugi
             (average_bandwidth)(lifetime_bandwidth)(last_bandwidth_update)(average_market_bandwidth)(lifetime_market_bandwidth)(last_market_bandwidth_update)
             (vesting_balance)(reputation)(transfer_history)(market_history)(post_history)(vote_history)(other_history)(witness_votes)(tags_usage)(guest_bloggers)(open_orders)(comments)(feed)(blog)(recent_replies)(recommended) )
 
+FC_REFLECT( crea::plugins::condenser_api::api_comment_download_object,
+            (id)(author)(permlink)
+            (resource)(name)(type)(size)(times_downloaded)(price)
+)
+
+FC_REFLECT( crea::plugins::condenser_api::api_download_granted_object,
+            (id)(payment_date)(comment_author)(comment_permlink)(resource)(price)
+)
+
 FC_REFLECT( crea::plugins::condenser_api::api_comment_object,
              (id)(author)(permlink)
              (category)(parent_author)(parent_permlink)
-             (title)(body)(json_metadata)(last_update)(created)(active)(last_payout)
+             (title)(body)(download)(json_metadata)(last_update)(created)(active)(last_payout)
              (depth)(children)
              (net_rshares)(abs_rshares)(vote_rshares)
              (children_abs_rshares)(cashout_time)(max_cashout_time)

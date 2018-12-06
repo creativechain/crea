@@ -17,6 +17,7 @@
 #include <crea/chain/util/reward.hpp>
 #include <crea/chain/util/uint256.hpp>
 
+#include <fc/crypto/aes.hpp>
 #include <fc/git_revision.hpp>
 
 #include <boost/range/iterator_range.hpp>
@@ -95,6 +96,7 @@ namespace detail
             (get_active_votes)
             (get_account_votes)
             (get_content)
+            (get_download)
             (get_content_replies)
             (get_tags_used_by_author)
             (get_post_discussions_by_payout)
@@ -232,6 +234,7 @@ namespace detail
             auto acnt = part[0].substr(1);
             _state.accounts[acnt] = extended_account( database_api::api_account_object( _db.get_account( acnt ), _db ) );
 
+
             if( _tags_api )
                _state.accounts[acnt].tags_usage = _tags_api->get_tags_used_by_author( { acnt } ).tags;
 
@@ -274,6 +277,7 @@ namespace detail
                         case operation::tag<fill_convert_request_operation>::value:
                         case operation::tag<fill_order_operation>::value:
                         case operation::tag<claim_reward_balance_operation>::value:
+                        case operation::tag<comment_download_operation>::value:
                            if( item.second.op.visit( visitor ) )
                            {
                               eacnt.transfer_history.emplace( item.first, api_operation_object( item.second, visitor.l_op ) );
@@ -1363,6 +1367,65 @@ namespace detail
       return result;
    }
 
+   DEFINE_API_IMPL( condenser_api_impl, get_download )
+   {
+      CHECK_ARG_SIZE( 4 )
+
+      account_name_type downloader = args[0].as< account_name_type >();
+      account_name_type comment_author = args[1].as< account_name_type >();
+      string comment_permlink = args[2].as< string >();
+      string signature = args[3].as< string >();
+
+      database_api::api_comment_object comment( _db.get_comment(comment_author, comment_permlink), _db);
+      database_api::api_comment_download_object download = comment.download;
+
+      FC_ASSERT(!download.resource.empty(), "This comment not has a download");
+
+      api_download_granted_object granted_download( database_api::api_download_granted_object(_db.get< download_granted_object, by_downloader>( boost::make_tuple(downloader, comment_author, comment_permlink)), _db));
+
+      crea::plugins::database_api::verify_signatures_args verify_args;
+
+      //Check signature
+      digest_type::encoder enc;
+      fc::raw::pack(enc, comment_author);
+      fc::raw::pack(enc, comment_permlink);
+      digest_type digest = enc.result();
+
+      string raw_signature = fc::base64_decode(signature);
+
+      FC_ASSERT(raw_signature.size() == 65, "Invalid signature size: " + std::to_string(raw_signature.size()));
+
+      signature_type sig;
+      for (int x = 0; x < 65; x++) {
+         sig.data[x] = (unsigned char) raw_signature[x];
+      }
+
+      verify_args.hash = digest;
+      verify_args.signatures.push_back(sig);
+      verify_args.required_posting.insert(verify_args.required_posting.end(), downloader);
+
+      crea::plugins::database_api::verify_signatures_return result = _database_api->verify_signatures(verify_args);
+
+      FC_ASSERT( result.valid, "Invalid signature");
+
+      //Signature is valid, decrypt resource
+
+      fc::sha512::encoder pass_enc;
+      fc::raw::pack(pass_enc, download.password);
+      fc::sha512 pwd = pass_enc.result();
+
+      const string resource_data = fc::base64_decode(download.resource);
+      const std::vector<char> encrypted_data(resource_data.begin(), resource_data.end());
+
+      wlog("Encrypted data: ${e}", ("e", resource_data.c_str()));
+      std::vector<char> decrypted_data = fc::aes_decrypt(pwd, encrypted_data);
+
+      granted_download.resource = std::string(decrypted_data.begin(), decrypted_data.end()).erase(0, 1);
+
+      return granted_download;
+
+   }
+
    DEFINE_API_IMPL( condenser_api_impl, get_content )
    {
       CHECK_ARG_SIZE( 2 )
@@ -2265,6 +2328,7 @@ DEFINE_READ_APIS( condenser_api,
    (get_active_votes)
    (get_account_votes)
    (get_content)
+   (get_download)
    (get_content_replies)
    (get_tags_used_by_author)
    (get_post_discussions_by_payout)

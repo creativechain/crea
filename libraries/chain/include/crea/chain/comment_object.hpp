@@ -5,6 +5,7 @@
 
 #include <crea/chain/crea_object_types.hpp>
 #include <crea/chain/witness_objects.hpp>
+#include <fc/string.hpp>
 
 #include <boost/multi_index/composite_key.hpp>
 
@@ -134,6 +135,66 @@ namespace crea { namespace chain {
          shared_string     json_metadata;
    };
 
+   class comment_download_object : public object< comment_download_object_type, comment_download_object >
+   {
+       comment_download_object() = delete;
+
+       public:
+          template< typename Constructor, typename Allocator >
+          comment_download_object (Constructor&& c, allocator< Allocator > a ) :
+             resource( a ), name( a ), type( a ), password( a )
+          {
+              c( *this );
+          }
+
+          id_type           id;
+          comment_id_type   comment;
+
+          shared_string     resource;
+          shared_string     name;
+          shared_string     type;
+          uint32_t          size = 0;
+          uint32_t          times_downloaded = 0;
+          shared_string     password;
+          asset             price;
+
+   };
+
+   class download_granted_object : public object< download_granted_object_type, download_granted_object >
+   {
+       download_granted_object() = delete;
+
+       public:
+          template< typename Constructor, typename Allocator >
+          download_granted_object (Constructor&& c, allocator< Allocator > a) :
+             comment_permlink( a )
+          {
+              c ( *this );
+          }
+
+          id_type                   id;
+          comment_download_id_type  download;
+
+          time_point_sec            payment_date;
+          account_name_type         downloader;
+          account_name_type         comment_author;
+          shared_string             comment_permlink;
+          asset                     price;
+   };
+
+   /**
+    * Used to parse download data
+    */
+   struct comment_download_data {
+
+       string resource;
+       string name;
+       string type;
+       uint32_t size;
+       string password;
+       string price;
+   };
+
    /**
     * This index maintains the set of voter/comment pairs that have been used, voters cannot
     * vote on the same comment more than once per payout period.
@@ -248,6 +309,8 @@ namespace crea { namespace chain {
    > comment_index;
 
    struct by_comment;
+   struct by_download;
+   struct by_downloader;
 
    typedef multi_index_container<
       comment_content_object,
@@ -257,6 +320,31 @@ namespace crea { namespace chain {
       >,
       allocator< comment_content_object >
    > comment_content_index;
+
+   typedef multi_index_container<
+      comment_download_object,
+      indexed_by<
+         ordered_unique< tag< by_id >, member< comment_download_object, comment_download_id_type, &comment_download_object::id > >,
+         ordered_unique< tag< by_comment >, member< comment_download_object, comment_id_type, &comment_download_object::comment > >
+      >,
+      allocator< comment_download_object >
+   > comment_download_index;
+
+   typedef multi_index_container<
+      download_granted_object,
+        indexed_by<
+           ordered_unique< tag< by_id >, member< download_granted_object, download_granted_id_type, &download_granted_object::id > >,
+           ordered_unique< tag< by_downloader >,
+              composite_key< download_granted_object,
+                 member< download_granted_object, account_name_type, &download_granted_object::downloader >,
+                 member< download_granted_object, account_name_type, &download_granted_object::comment_author >,
+                 member< download_granted_object, shared_string, &download_granted_object::comment_permlink >
+              >,
+              composite_key_compare< std::less< account_name_type >, std::less< account_name_type >, strcmp_less>
+           >
+        >,
+      allocator< download_granted_object >
+   > download_granted_index;
 
 } } // crea::chain
 
@@ -290,6 +378,19 @@ CHAINBASE_SET_INDEX_TYPE( crea::chain::comment_object, crea::chain::comment_inde
 FC_REFLECT( crea::chain::comment_content_object,
             (id)(comment)(title)(body)(json_metadata) )
 CHAINBASE_SET_INDEX_TYPE( crea::chain::comment_content_object, crea::chain::comment_content_index )
+
+FC_REFLECT( crea::chain::download_granted_object,
+            (id)(payment_date)(downloader)(comment_author)(comment_permlink)(price) )
+
+CHAINBASE_SET_INDEX_TYPE( crea::chain::download_granted_object, crea::chain::download_granted_index )
+
+FC_REFLECT( crea::chain::comment_download_data,
+            (resource)(name)(type)(size)(password)(price) )
+
+FC_REFLECT( crea::chain::comment_download_object,
+            (id)(comment)(resource)(name)(type)(size)(times_downloaded)(password)(price) )
+
+CHAINBASE_SET_INDEX_TYPE( crea::chain::comment_download_object, crea::chain::comment_download_index )
 
 FC_REFLECT( crea::chain::comment_vote_object,
              (id)(voter)(comment)(weight)(rshares)(vote_percent)(last_update)(num_changes)
@@ -356,5 +457,56 @@ namespace helpers
          return info;
       }
    };
+
+    template <>
+    class index_statistic_provider<crea::chain::comment_download_index>
+    {
+    public:
+        typedef crea::chain::comment_download_index IndexType;
+
+        index_statistic_info gather_statistics(const IndexType& index, bool onlyStaticInfo) const
+        {
+            index_statistic_info info;
+            gather_index_static_data(index, &info);
+
+            if(onlyStaticInfo == false)
+            {
+                for(const auto& o : index)
+                {
+                    info._item_additional_allocation += o.resource.capacity()*sizeof(shared_string::value_type);
+                    info._item_additional_allocation += o.type.capacity()*sizeof(shared_string::value_type);
+                    info._item_additional_allocation += o.name.capacity()*sizeof(shared_string::value_type);
+                    info._item_additional_allocation += o.password.capacity()*sizeof(shared_string::value_type);
+                    info._item_additional_allocation += sizeof(o.size);
+                    info._item_additional_allocation += sizeof(o.times_downloaded);
+                }
+            }
+
+            return info;
+        }
+    };
+
+    template <>
+    class index_statistic_provider<crea::chain::download_granted_index>
+    {
+    public:
+        typedef crea::chain::download_granted_index IndexType;
+
+        index_statistic_info gather_statistics(const IndexType& index, bool onlyStaticInfo) const
+        {
+            index_statistic_info info;
+            gather_index_static_data(index, &info);
+
+            if(onlyStaticInfo == false)
+            {
+                for(const auto& o : index)
+                {
+                    info._item_additional_allocation += o.comment_permlink.capacity()*sizeof(shared_string::value_type);
+                }
+            }
+
+            return info;
+        }
+    };
 
 } /// namespace helpers

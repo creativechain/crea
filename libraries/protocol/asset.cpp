@@ -320,6 +320,11 @@ void asset::validate()const
    FC_ASSERT( amount.value <= CREA_MAX_SATOSHIS );
 }
 
+bool asset::isZero()const
+{
+   return amount.value == 0;
+}
+
 #define BQ(a) \
    std::tie( a.base.symbol, a.quote.symbol )
 
