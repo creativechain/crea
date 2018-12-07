@@ -285,13 +285,27 @@ struct api_account_object
       auto smt_obj_itr = by_control_account_index.find( name );
       is_smt = smt_obj_itr != by_control_account_index.end();
 #endif
-       auto itr = db.find< crea::plugins::follow::follow_count_object, crea::plugins::follow::by_account >(name);
+       auto follow_itr = db.find< crea::plugins::follow::follow_count_object, crea::plugins::follow::by_account >(name);
 
-       if ( itr != nullptr) {
-           wlog("followers: ${followers}, following: ${following}", ("followers", itr->follower_count)("following", itr->following_count));
-           follower_count = itr->follower_count;
-           following_count = itr->following_count;
+       if ( follow_itr != nullptr) {
+           follower_count = follow_itr->follower_count;
+           following_count = follow_itr->following_count;
        }
+
+       const auto& by_downloader_idx = db.get_index< chain::download_granted_index, chain::by_downloader >();
+       auto itr = by_downloader_idx.lower_bound( name );
+
+       while (itr != by_downloader_idx.end()) {
+           string post_route = itr->comment_author;
+           post_route += "/" + to_string(itr->comment_permlink);
+           if (std::find(downloads.begin(), downloads.end(), post_route) == downloads.end()) {
+               downloads.push_back(post_route);
+           }
+
+           ++itr;
+       }
+
+
    }
 
 
@@ -355,6 +369,7 @@ struct api_account_object
    uint16_t          withdraw_routes = 0;
 
    vector< share_type > proxied_vsf_votes;
+   vector< string >  downloads;
 
    uint16_t          witnesses_voted_for = 0;
 
@@ -653,7 +668,7 @@ FC_REFLECT( crea::plugins::database_api::api_account_object,
              (vesting_shares)(delegated_vesting_shares)(received_vesting_shares)(vesting_withdraw_rate)(next_vesting_withdrawal)(withdrawn)(to_withdraw)(withdraw_routes)
              (curation_rewards)
              (posting_rewards)
-             (proxied_vsf_votes)(witnesses_voted_for)
+             (proxied_vsf_votes)(downloads)(witnesses_voted_for)
              (last_post)(last_root_post)(last_vote_time)
              (post_bandwidth)(follower_count)(following_count)(pending_claimed_accounts)
              (is_smt)
