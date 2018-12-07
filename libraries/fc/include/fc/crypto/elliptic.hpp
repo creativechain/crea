@@ -301,6 +301,7 @@ namespace fc {
 } // namespace fc
 #include <fc/reflect/reflect.hpp>
 
+FC_REFLECT_ENUM( fc::ecc::canonical_signature_type, (non_canonical)(bip_0062)(fc_canonical) )
 FC_REFLECT_TYPENAME( fc::ecc::private_key )
 FC_REFLECT_TYPENAME( fc::ecc::public_key )
 FC_REFLECT( fc::ecc::range_proof_info, (exp)(mantissa)(min_value)(max_value) )

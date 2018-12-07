@@ -84,8 +84,9 @@ void transaction::get_required_authorities( flat_set< account_name_type >& activ
 
 flat_set<public_key_type> signed_transaction::get_signature_keys( const chain_id_type& chain_id, canonical_signature_type canon_type )const
 { try {
-   auto d = sig_digest( chain_id );
+   digest_type d = sig_digest( chain_id );
    flat_set<public_key_type> result;
+   wlog("digest: ${d}, tx: ${c}",  ("d", d)("c", *this));
    for( const auto&  sig : signatures )
    {
       CREA_ASSERT(

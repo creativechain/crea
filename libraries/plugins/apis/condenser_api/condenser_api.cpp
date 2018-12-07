@@ -1387,14 +1387,16 @@ namespace detail
 
       //Check signature
       digest_type::encoder enc;
-      fc::raw::pack(enc, comment_author);
-      fc::raw::pack(enc, comment_permlink);
+      string author = comment_author;
+      enc.write(author.data(), (uint32_t ) author.size());
+      enc.write(comment_permlink.data(), (uint32_t) comment_permlink.size());
       digest_type digest = enc.result();
 
       string raw_signature = fc::base64_decode(signature);
 
       FC_ASSERT(raw_signature.size() == 65, "Invalid signature size: " + std::to_string(raw_signature.size()));
 
+      wlog("hash: ${h}", ("h", digest));
       signature_type sig;
       for (int x = 0; x < 65; x++) {
          sig.data[x] = (unsigned char) raw_signature[x];
