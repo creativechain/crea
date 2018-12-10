@@ -37,6 +37,19 @@ std::string wstring_to_utf8(const std::wstring& str)
     return utf_to_utf<char>(str.c_str(), str.c_str() + str.size());
 }
 
+std::string generate_password(const int min, const int max) {
+    int pwd_len = min + (rand() % static_cast<int>(max - min + 1));
+
+    std::string password;
+    password.reserve((unsigned long) pwd_len);
+    for (int x = 0; x < pwd_len; x++) {
+        char c = static_cast<char>( SCHAR_MIN + (rand() % (SCHAR_MAX - SCHAR_MIN + 1) ) );
+        password.push_back(c);
+    }
+
+    return password;
+}
+
 #endif
 
 #include <fc/uint128.hpp>
@@ -849,17 +862,21 @@ void comment_evaluator::do_apply( const comment_operation& o )
                  from_string(d.name, download_data.name);
                  d.price = crea::chain::util::asset_from_string(download_data.price);
 
-                 FC_ASSERT(download_data.password.size(), "Must be provide a password");
+                 //Create a password for encrypt this download
+                 //Determine password length
+                 const int min = 6;
+                 const int max = 12;
+
+                 string password = generate_password(min, max);
 
                  //Encrypt the content
                  fc::sha512::encoder enc;
-                 fc::raw::pack(enc, download_data.password);
+                 fc::raw::pack(enc, password);
                  fc::sha512 pwd = enc.result();
-                 wlog( "Password: ${p}", ("p", pwd.str().c_str()) );
 
                  std::vector<char> encrypted = fc::aes_encrypt(pwd, fc::raw::pack_to_vector(download_data.resource));
 
-                 from_string(d.password, download_data.password);
+                 from_string(d.password, password);
 
                  string enconded = fc::base64_encode(encrypted.data(), (unsigned int) encrypted.size());
                  from_string(d.resource, enconded);
@@ -975,16 +992,21 @@ void comment_evaluator::do_apply( const comment_operation& o )
                        from_string(d.name, download_data.name);
                        d.price = crea::chain::util::asset_from_string(download_data.price);
 
-                       FC_ASSERT(download_data.password.size(), "Must be provide a password");
+                       //Create a password for encrypt this download
+                       //Determine password length
+                       const int min = 6;
+                       const int max = 12;
+
+                       string password = generate_password(min, max);
 
                        //Encrypt the content
                        fc::sha512::encoder enc;
-                       fc::raw::pack(enc, download_data.password);
+                       fc::raw::pack(enc, password);
                        fc::sha512 pwd = enc.result();
 
                        std::vector<char> encrypted = fc::aes_encrypt(pwd, fc::raw::pack_to_vector(download_data.resource));
 
-                       from_string(d.password, download_data.password);
+                       from_string(d.password, password);
 
                        string enconded = fc::base64_encode(encrypted.data(), (unsigned int) encrypted.size());
                        from_string(d.resource, enconded);

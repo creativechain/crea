@@ -86,7 +86,7 @@ flat_set<public_key_type> signed_transaction::get_signature_keys( const chain_id
 { try {
    digest_type d = sig_digest( chain_id );
    flat_set<public_key_type> result;
-   wlog("digest: ${d}, tx: ${c}",  ("d", d)("c", *this));
+
    for( const auto&  sig : signatures )
    {
       CREA_ASSERT(

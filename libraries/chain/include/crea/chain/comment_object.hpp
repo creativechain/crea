@@ -191,7 +191,6 @@ namespace crea { namespace chain {
        string name;
        string type;
        uint32_t size;
-       string password;
        string price;
    };
 
@@ -385,7 +384,7 @@ FC_REFLECT( crea::chain::download_granted_object,
 CHAINBASE_SET_INDEX_TYPE( crea::chain::download_granted_object, crea::chain::download_granted_index )
 
 FC_REFLECT( crea::chain::comment_download_data,
-            (resource)(name)(type)(size)(password)(price) )
+            (resource)(name)(type)(size)(price) )
 
 FC_REFLECT( crea::chain::comment_download_object,
             (id)(comment)(resource)(name)(type)(size)(times_downloaded)(password)(price) )
