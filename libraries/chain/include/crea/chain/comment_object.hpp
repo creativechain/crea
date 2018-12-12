@@ -157,6 +157,7 @@ namespace crea { namespace chain {
           uint32_t          times_downloaded = 0;
           shared_string     password;
           asset             price;
+          vector< account_name_type >  downloaders;
 
    };
 
@@ -333,6 +334,12 @@ namespace crea { namespace chain {
       download_granted_object,
         indexed_by<
            ordered_unique< tag< by_id >, member< download_granted_object, download_granted_id_type, &download_granted_object::id > >,
+           ordered_unique< tag< by_download >,
+              composite_key< download_granted_object,
+                 member< download_granted_object, download_granted_id_type, &download_granted_object::id >,
+                 member< download_granted_object, comment_download_id_type, &download_granted_object::download >
+              >
+           >,
            ordered_unique< tag< by_downloader >,
               composite_key< download_granted_object,
                  member< download_granted_object, account_name_type, &download_granted_object::downloader >,
@@ -387,7 +394,7 @@ FC_REFLECT( crea::chain::comment_download_data,
             (resource)(name)(type)(size)(price) )
 
 FC_REFLECT( crea::chain::comment_download_object,
-            (id)(comment)(resource)(name)(type)(size)(times_downloaded)(password)(price) )
+            (id)(comment)(resource)(name)(type)(size)(times_downloaded)(password)(price)(downloaders) )
 
 CHAINBASE_SET_INDEX_TYPE( crea::chain::comment_download_object, crea::chain::comment_download_index )
 

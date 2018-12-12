@@ -40,6 +40,8 @@ struct api_comment_download_object
        auto comment = db.get< chain::comment_object, chain::by_id>( o.comment );
        author = comment.author;
        permlink = to_string( comment.permlink );
+
+       downloaders.insert(downloaders.begin(), o.downloaders.begin(), o.downloaders.end());
     };
 
     api_comment_download_object(){}
@@ -55,6 +57,7 @@ struct api_comment_download_object
     uint32_t                  size = 0;
     uint32_t                  times_downloaded = 0;
     string                    password;
+    vector< account_name_type > downloaders;
     asset                     price;
 };
 
@@ -291,21 +294,6 @@ struct api_account_object
            follower_count = follow_itr->follower_count;
            following_count = follow_itr->following_count;
        }
-
-       const auto& by_downloader_idx = db.get_index< chain::download_granted_index, chain::by_downloader >();
-       auto itr = by_downloader_idx.lower_bound( name );
-
-       while (itr != by_downloader_idx.end()) {
-           string post_route = itr->comment_author;
-           post_route += "/" + to_string(itr->comment_permlink);
-           if (std::find(downloads.begin(), downloads.end(), post_route) == downloads.end()) {
-               downloads.push_back(post_route);
-           }
-
-           ++itr;
-       }
-
-
    }
 
 
@@ -369,7 +357,6 @@ struct api_account_object
    uint16_t          withdraw_routes = 0;
 
    vector< share_type > proxied_vsf_votes;
-   vector< string >  downloads;
 
    uint16_t          witnesses_voted_for = 0;
 
@@ -631,7 +618,7 @@ struct order_book
 
 FC_REFLECT( crea::plugins::database_api::api_comment_download_object,
             (id)(author)(permlink)
-            (resource)(name)(type)(size)(times_downloaded)(price)
+            (resource)(name)(type)(size)(times_downloaded)(price)(downloaders)
 )
 
 FC_REFLECT( crea::plugins::database_api::api_download_granted_object,
@@ -668,7 +655,7 @@ FC_REFLECT( crea::plugins::database_api::api_account_object,
              (vesting_shares)(delegated_vesting_shares)(received_vesting_shares)(vesting_withdraw_rate)(next_vesting_withdrawal)(withdrawn)(to_withdraw)(withdraw_routes)
              (curation_rewards)
              (posting_rewards)
-             (proxied_vsf_votes)(downloads)(witnesses_voted_for)
+             (proxied_vsf_votes)(witnesses_voted_for)
              (last_post)(last_root_post)(last_vote_time)
              (post_bandwidth)(follower_count)(following_count)(pending_claimed_accounts)
              (is_smt)
