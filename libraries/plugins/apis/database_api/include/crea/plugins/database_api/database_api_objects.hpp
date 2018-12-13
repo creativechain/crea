@@ -49,6 +49,7 @@ struct api_comment_download_object
           wlog("downloader ${i} -> ${d}", ("i", x)("d", d));
           downloaders.push_back(d);
        }
+        wlog("downloaders final ${d}", ("d", downloaders));
 
     };
 
