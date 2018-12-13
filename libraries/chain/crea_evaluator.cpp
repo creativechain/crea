@@ -881,8 +881,6 @@ void comment_evaluator::do_apply( const comment_operation& o )
                  string enconded = fc::base64_encode(encrypted.data(), (unsigned int) encrypted.size());
                  from_string(d.resource, enconded);
 
-                 d.downloaders.reserve(1);
-                 d.downloaders.push_back( o.author );
              }
           }
           FC_CAPTURE_AND_RETHROW( (o) )
