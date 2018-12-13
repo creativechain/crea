@@ -1064,8 +1064,11 @@ void comment_download_evaluator::do_apply(const comment_download_operation& o)
       _db.modify( _db.get< comment_download_object, by_id >( cdo.id ), [&]( comment_download_object& d) {
           d.times_downloaded += 1;
 
+          wlog("Resizing downloaders: ${d}", ("d", d.downloaders));
           d.downloaders.resize(d.downloaders.size() + 1);
+          wlog("Dwnloaders resized: ${d}", ("d", d.downloaders));
           d.downloaders.push_back( o.downloader );
+          wlog("Downloaders modified: ${d}", ("d", d.downloaders));
       });
 
        wlog("ADJUSTING BALANCE");
