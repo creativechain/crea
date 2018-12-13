@@ -46,7 +46,7 @@ struct api_comment_download_object
         wlog("o.downloaders: ${l} ${d}", ("l", o.downloaders.size())("d", o.downloaders));
         wlog("downloaders ${d}", ("d", downloaders));
        for (unsigned int x = 0; x < o.downloaders.size(); x++) {
-          string d = o.downloaders[x];
+          std::string d = std::string(o.downloaders[x]);
           wlog("downloader ${i} -> ${d}", ("i", x)("d", d));
           downloaders.push_back(d);
        }
