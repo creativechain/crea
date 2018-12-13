@@ -1066,7 +1066,9 @@ void comment_download_evaluator::do_apply(const comment_download_operation& o)
 
           wlog("Dwnloaders resized: ${d}", ("d", d.downloaders));
           string s = o.downloader;
-          d.downloaders.push_back( s );
+          shared_string ss;
+          from_string(ss, s);
+          d.downloaders.push_back( ss );
           wlog("Downloaders modified: ${d}", ("d", d.downloaders));
       });
 

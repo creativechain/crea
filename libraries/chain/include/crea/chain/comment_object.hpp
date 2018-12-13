@@ -157,7 +157,7 @@ namespace crea { namespace chain {
           uint32_t          times_downloaded = 0;
           shared_string     password;
           asset             price;
-          vector< string >  downloaders;
+          vector< shared_string >  downloaders;
 
    };
 
