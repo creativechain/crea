@@ -289,10 +289,12 @@ struct api_comment_download_object
    api_comment_download_object( const database_api::api_comment_download_object& o ):
        id( o.id ), resource( o.resource ), name( o.name ),
        type( o.type ), size( o.size ), times_downloaded( o.times_downloaded), password( o.password ),
-       price( o.price ), downloaders( o.downloaders )
+       price( o.price )
    {
       author = o.author;
       permlink = o.permlink;
+
+      downloaders = o.downloaders;
    }
    api_comment_download_object(){}
 

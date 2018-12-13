@@ -35,11 +35,13 @@ struct api_comment_download_object
     api_comment_download_object(const comment_download_object& o, const database& db):
        id( o.id ), comment( o.comment ), resource( to_string(o.resource) ), name( to_string(o.name) ),
        type( to_string(o.type) ), size( o.size ), times_downloaded( o.times_downloaded), password( to_string(o.password) ),
-       price( o.price ), downloaders( o.downloaders )
+       price( o.price )
     {
        auto comment = db.get< chain::comment_object, chain::by_id>( o.comment );
        author = comment.author;
        permlink = to_string( comment.permlink );
+
+       downloaders = o.downloaders;
     };
 
     api_comment_download_object(){}
