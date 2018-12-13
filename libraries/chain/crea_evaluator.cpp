@@ -1048,7 +1048,7 @@ void comment_download_evaluator::do_apply(const comment_download_operation& o)
       FC_ASSERT( _db.get_balance( o.downloader, cdo.price.symbol ) >= cdo.price, "Account does not have sufficient funds for download." );
 
       //Store download payment for this user
-      wlog("Creating DGO");
+
       _db.create< download_granted_object > ( [&]( download_granted_object& dgo )
       {
          dgo.downloader = o.downloader;
@@ -1060,19 +1060,17 @@ void comment_download_evaluator::do_apply(const comment_download_operation& o)
 
       });
 
-       wlog("MODIFYING CDO");
+
       _db.modify( _db.get< comment_download_object, by_id >( cdo.id ), [&]( comment_download_object& d) {
           d.times_downloaded += 1;
 
           wlog("Dwnloaders resized: ${d}", ("d", d.downloaders));
-          string s = o.downloader;
-          shared_string ss;
-          from_string(ss, s);
-          d.downloaders.push_back( ss );
+          //string s = o.downloader;
+          d.downloaders.push_back( o.downloader );
           wlog("Downloaders modified: ${d}", ("d", d.downloaders));
       });
 
-       wlog("ADJUSTING BALANCE");
+
       _db.adjust_balance( o.downloader, -cdo.price );
       _db.adjust_balance( o.comment_author, cdo.price );
 
