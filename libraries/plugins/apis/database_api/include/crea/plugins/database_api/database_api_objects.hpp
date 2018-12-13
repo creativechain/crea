@@ -41,7 +41,12 @@ struct api_comment_download_object
        author = comment.author;
        permlink = to_string( comment.permlink );
 
-       downloaders = o.downloaders;
+
+       for (int x = 0; x < o.downloaders.size(); x++) {
+          account_name_type d = o.downloaders[x];
+          downloaders.push_back(d);
+       }
+
     };
 
     api_comment_download_object(){}
