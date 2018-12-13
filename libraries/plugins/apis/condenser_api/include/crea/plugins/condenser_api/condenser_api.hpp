@@ -307,7 +307,7 @@ struct api_comment_download_object
    uint32_t                  times_downloaded = 0;
    string                    password;
    asset                     price;
-   vector< account_name_type > downloaders;
+   vector< string >          downloaders;
 
 
 };

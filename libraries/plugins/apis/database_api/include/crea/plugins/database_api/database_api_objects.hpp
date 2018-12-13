@@ -42,8 +42,8 @@ struct api_comment_download_object
        permlink = to_string( comment.permlink );
 
 
-       for (int x = 0; x < o.downloaders.size(); x++) {
-          account_name_type d = o.downloaders[x];
+       for (unsigned int x = 0; x < o.downloaders.size(); x++) {
+          string d = o.downloaders[x];
           downloaders.push_back(d);
        }
 
@@ -62,7 +62,7 @@ struct api_comment_download_object
     uint32_t                  size = 0;
     uint32_t                  times_downloaded = 0;
     string                    password;
-    vector< account_name_type > downloaders;
+    vector< string >          downloaders;
     asset                     price;
 };
 
