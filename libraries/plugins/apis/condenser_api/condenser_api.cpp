@@ -1381,7 +1381,7 @@ namespace detail
 
       FC_ASSERT(!download.resource.empty(), "This comment not has a download");
 
-      api_download_granted_object granted_download( database_api::api_download_granted_object(_db.get< download_granted_object, by_downloader>( boost::make_tuple(downloader, comment_author, comment_permlink)), _db));
+      api_download_granted_object granted_download( database_api::api_download_granted_object(_db.get< download_granted_object, by_downloader>( boost::make_tuple(comment_author, comment_permlink, downloader)), _db));
 
       crea::plugins::database_api::verify_signatures_args verify_args;
 
