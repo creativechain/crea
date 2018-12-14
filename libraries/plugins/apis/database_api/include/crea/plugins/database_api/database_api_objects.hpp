@@ -43,11 +43,13 @@ struct api_comment_download_object
 
 
         wlog("Parsing downloaders");
-        const auto& dgi = db.get_index< download_granted_index >().indices().get< by_download >();
-        auto itr = dgi.lower_bound( o.id );
+        const auto& dgi = db.get_index< download_granted_index >().indices().get< by_downloader >();
+        auto itr = dgi.find( boost::make_tuple( comment.author, comment.permlink ) );
 
-        while (itr != dgi.end()) {
-            downloaders.push_back( std::string( itr->downloader ) );
+        while (itr != dgi.end() && itr->comment_author == comment.author && to_string( itr->comment_permlink ) == to_string( comment.permlink )) {
+            if (std::find(downloaders.begin(), downloaders.end(), std::string( itr->downloader )) == downloaders.end())  {
+                downloaders.push_back( std::string( itr->downloader ) );
+            }
             ++itr;
         }
 

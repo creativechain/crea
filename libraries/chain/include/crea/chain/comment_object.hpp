@@ -341,11 +341,11 @@ namespace crea { namespace chain {
            >,
            ordered_unique< tag< by_downloader >,
               composite_key< download_granted_object,
-                 member< download_granted_object, account_name_type, &download_granted_object::downloader >,
                  member< download_granted_object, account_name_type, &download_granted_object::comment_author >,
-                 member< download_granted_object, shared_string, &download_granted_object::comment_permlink >
+                 member< download_granted_object, shared_string, &download_granted_object::comment_permlink >,
+                 member< download_granted_object, account_name_type, &download_granted_object::downloader >
               >,
-              composite_key_compare< std::less< account_name_type >, std::less< account_name_type >, strcmp_less>
+              composite_key_compare< std::less< account_name_type >, strcmp_less, std::less< account_name_type > >
            >
         >,
       allocator< download_granted_object >
