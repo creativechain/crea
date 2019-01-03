@@ -1578,9 +1578,13 @@ void pre_hf20_vote_evaluator( const vote_operation& o, database& _db )
    {
       used_power = (used_power + max_vote_denom - 1) / max_vote_denom;
    }
+
+    wlog("used_power: ${up}", ("up", used_power));
    FC_ASSERT( used_power <= current_power, "Account does not have enough power to vote." );
 
    int64_t abs_rshares    = ((uint128_t( _db.get_effective_vesting_shares( voter, VESTS_SYMBOL ).amount.value ) * used_power) / (CREA_100_PERCENT)).to_uint64();
+
+    wlog("abs_shares: ${as}", ("as", abs_rshares));
    if( !_db.has_hardfork( CREA_HARDFORK_0_14__259 ) && abs_rshares == 0 ) abs_rshares = 1;
 
    if( _db.has_hardfork( CREA_HARDFORK_0_20__1764 ) )
@@ -1965,19 +1969,27 @@ void hf20_vote_evaluator( const vote_operation& o, database& _db )
    int16_t abs_weight = abs( o.weight );
    uint128_t used_flow = ( uint128_t( voter.voting_flowbar.current_flow ) * abs_weight * 60 * 60 * 24 ) / CREA_100_PERCENT;
 
+   wlog("abs_weight: ${mvd}", ("mvd", abs_weight));
+   wlog("used_flow: ${mvd}", ("mvd", used_flow.to_uint64()));
    const dynamic_global_property_object& dgpo = _db.get_dynamic_global_properties();
 
    int64_t max_vote_denom = dgpo.vote_power_reserve_rate * CREA_VOTING_FLOW_REGENERATION_SECONDS;
    FC_ASSERT( max_vote_denom > 0 );
 
+   wlog("max_vote_denom: ${mvd}", ("mvd", max_vote_denom));
+
+
    used_flow = ( used_flow + max_vote_denom - 1 ) / max_vote_denom;
+   wlog("used_flow: ${mvd}", ("mvd", used_flow.to_uint64()));
    FC_ASSERT( voter.voting_flowbar.has_flow( used_flow.to_uint64() ), "Account does not have enough mana to vote." );
 
    int64_t abs_rshares = used_flow.to_uint64();
 
+   wlog("abs_rshares: ${mvd}", ("mvd", abs_rshares));
    abs_rshares -= CREA_VOTE_DUST_THRESHOLD;
    abs_rshares = std::max( int64_t(0), abs_rshares );
 
+   wlog("abs_rshares: ${mvd}", ("mvd", abs_rshares));
    uint32_t cashout_delta = ( comment.cashout_time - _db.head_block_time() ).to_seconds();
 
    if( cashout_delta < CREA_UPVOTE_LOCKOUT_SECONDS )

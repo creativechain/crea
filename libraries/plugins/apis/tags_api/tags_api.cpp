@@ -551,7 +551,7 @@ void tags_api_impl::set_pending_payout( discussion& d )
    else
       pot = props.total_reward_fund_crea;
 
-
+    wlog("pot=${v} ${s}", ("v",pot.amount.value)("s",pot.symbol.to_string()));
    if( !hist.current_median_history.is_null() ) pot = pot * hist.current_median_history;
 
    u256 total_r2 = 0;
@@ -560,14 +560,14 @@ void tags_api_impl::set_pending_payout( discussion& d )
    else
       total_r2 = chain::util::to256( props.total_reward_shares2 );
 
-
+    wlog("total_r2=${v}", ("v",static_cast<uint64_t>(total_r2)));
    if( total_r2 > 0 )
    {
       uint128_t vshares;
       if( _db.has_hardfork( CREA_HARDFORK_0_17__774 ) )
       {
          const auto& rf = _db.get_reward_fund( _db.get_comment( d.author, d.permlink ) );
-
+          wlog("net_rshares=${v}", ("v",d.net_rshares.value));
          vshares = d.net_rshares.value > 0 ? chain::util::evaluate_reward_curve( d.net_rshares.value, rf.author_reward_curve, rf.content_constant ) : 0;
       }
       else
@@ -575,11 +575,11 @@ void tags_api_impl::set_pending_payout( discussion& d )
 
 
       u256 r2 = chain::util::to256( vshares ); //to256(abs_net_rshares);
-
+       wlog("r2_vshares=${v}", ("v",static_cast<uint64_t>(r2)));
       r2 *= pot.amount.value;
       r2 /= total_r2;
 
-
+       wlog("r2=${v}", ("v",static_cast<uint64_t>(r2)));
       d.pending_payout_value = asset( static_cast<uint64_t>(r2), pot.symbol );
 
       if( _follow_api )
