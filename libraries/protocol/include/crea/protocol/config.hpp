@@ -60,7 +60,7 @@
 #define CREA_MINING_TIME                     (fc::time_point_sec(1546463767))
 #define CREA_CASHOUT_WINDOW_SECONDS_PRE_HF12 (60*60*24)    /// 1 day
 #define CREA_CASHOUT_WINDOW_SECONDS_PRE_HF17 (60*60*12)    /// 12 hours
-#define CREA_CASHOUT_WINDOW_SECONDS          (60*60*24*7)  /// 7 days -> Rewards
+#define CREA_CASHOUT_WINDOW_SECONDS          (60*60)  /// 7 days -> Rewards
 #define CREA_SECOND_CASHOUT_WINDOW           (60*60*24*30) /// 30 days
 #define CREA_MAX_CASHOUT_WINDOW_SECONDS      (60*60*24*14) /// 2 weeks
 #define CREA_UPVOTE_LOCKOUT_HF7              (fc::minutes(1))
@@ -76,10 +76,10 @@
 #define CREA_OWNER_AUTH_HISTORY_TRACKING_START_BLOCK_NUM 3186477
 
 //Supply for CREA and CBD
-#define CREA_TOTAL_INIT_SUPPLY               (int64_t( 17 ) * int64_t( 1000000 ) * int64_t( 1000 ))
+#define CREA_TOTAL_INIT_SUPPLY               (int64_t( 18304444 ) * int64_t( 1000 ))
 #define CREA_CBD_PERCENT_SUPPLY              (int64_t(5)) //5% of total supply is CBD
 #define CREA_TO_CBD_SUPPLY                   (int64_t(CREA_TOTAL_INIT_SUPPLY * CREA_CBD_PERCENT_SUPPLY / 100)) //Total CREA to convert as CBD
-#define CREA_INIT_PRICE                      (int64_t(23)) //CBD per 1 CREA at start
+#define CREA_INIT_PRICE                      (int64_t(8)) //CBD per 1 CREA at start
 #define CREA_INIT_SUPPLY                     (int64_t(CREA_TOTAL_INIT_SUPPLY - CREA_TO_CBD_SUPPLY))
 #define CREA_CBD_INIT_SUPPLY                 (CREA_TO_CBD_SUPPLY / CREA_INIT_PRICE)
 
