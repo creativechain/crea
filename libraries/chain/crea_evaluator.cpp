@@ -775,9 +775,10 @@ void comment_evaluator::do_apply( const comment_operation& o )
          {
             a.last_root_post = now;
             a.post_bandwidth = uint32_t( post_bandwidth );
+            a.post_count++;
          }
          a.last_post = now;
-         a.post_count++;
+
       });
 
       const auto& new_comment = _db.create< comment_object >( [&]( comment_object& com )

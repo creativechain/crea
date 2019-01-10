@@ -452,7 +452,7 @@ namespace detail {
          if( ( !_db.has_hardfork( CREA_HARDFORK_0_20 ) ||  !_skip_enforce_bandwidth ) && _db.is_producing() )
          {
             CREA_ASSERT( has_bandwidth,  plugin_exception,
-               "Account: ${account} bandwidth limit exceeded. Please wait to transact or power up CREA.",
+               "Account: ${account} bandwidth limit exceeded. Please wait to transact or energize CREA.",
                ("account", a.name)
                ("account_vshares", account_vshares)
                ("account_average_bandwidth", account_average_bandwidth)

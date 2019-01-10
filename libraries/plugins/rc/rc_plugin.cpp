@@ -247,7 +247,7 @@ void use_account_rcs(
          if( db.is_producing() )
          {
             CREA_ASSERT( has_flow, plugin_exception,
-               "Account: ${account} has ${rc_current} RC, needs ${rc_needed} RC. Please wait to transact, or power up CREA.",
+               "Account: ${account} has ${rc_current} RC, needs ${rc_needed} RC. Please wait to transact, or energize CREA.",
                ("account", account_name)
                ("rc_needed", rc)
                ("rc_current", rca.rc_flowbar.current_flow)
