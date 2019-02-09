@@ -56,15 +56,15 @@
 #define CREA_CHAIN_ID fc::sha256()
 #define CREA_ADDRESS_PREFIX                  "CREA"
 
-#define CREA_GENESIS_TIME                    (fc::time_point_sec(1546463767))
-#define CREA_MINING_TIME                     (fc::time_point_sec(1546463767))
+#define CREA_GENESIS_TIME                    (fc::time_point_sec(1549631708))
+#define CREA_MINING_TIME                     (fc::time_point_sec(1549631708))
 #define CREA_CASHOUT_WINDOW_SECONDS_PRE_HF12 (60*60*24)    /// 1 day
 #define CREA_CASHOUT_WINDOW_SECONDS_PRE_HF17 (60*60*12)    /// 12 hours
-#define CREA_CASHOUT_WINDOW_SECONDS          (60*60*24*7)  /// 7 days -> Rewards
+#define CREA_CASHOUT_WINDOW_SECONDS          (60*60*24*10) /// 10 days -> Rewards
 #define CREA_SECOND_CASHOUT_WINDOW           (60*60*24*30) /// 30 days
 #define CREA_MAX_CASHOUT_WINDOW_SECONDS      (60*60*24*14) /// 2 weeks
 #define CREA_UPVOTE_LOCKOUT_HF7              (fc::minutes(1))
-#define CREA_UPVOTE_LOCKOUT_SECONDS          (1)    /// 12 hours
+#define CREA_UPVOTE_LOCKOUT_SECONDS          (60*60*12)    /// 12 hours
 #define CREA_UPVOTE_LOCKOUT_HF17             (60)
 
 #define CREA_MIN_ACCOUNT_CREATION_FEE           1
@@ -76,10 +76,10 @@
 #define CREA_OWNER_AUTH_HISTORY_TRACKING_START_BLOCK_NUM 3186477
 
 //Supply for CREA and CBD
-#define CREA_TOTAL_INIT_SUPPLY               (int64_t( 18304444 ) * int64_t( 1000 ))
-#define CREA_CBD_PERCENT_SUPPLY              (int64_t(5)) //5% of total supply is CBD
+#define CREA_TOTAL_INIT_SUPPLY               (int64_t( 18808120 ) * int64_t( 1000 ))
+#define CREA_CBD_PERCENT_SUPPLY              (int64_t(0)) //1% of total supply is CBD
 #define CREA_TO_CBD_SUPPLY                   (int64_t(CREA_TOTAL_INIT_SUPPLY * CREA_CBD_PERCENT_SUPPLY / 100)) //Total CREA to convert as CBD
-#define CREA_INIT_PRICE                      (int64_t(8)) //CBD per 1 CREA at start
+#define CREA_INIT_PRICE                      (int64_t(7)) //CBD per 1 CREA at start
 #define CREA_INIT_SUPPLY                     (int64_t(CREA_TOTAL_INIT_SUPPLY - CREA_TO_CBD_SUPPLY))
 #define CREA_CBD_INIT_SUPPLY                 (CREA_TO_CBD_SUPPLY / CREA_INIT_PRICE)
 
@@ -103,20 +103,20 @@
 
 #define CREA_MAX_WITNESSES                   25
 
-#define CREA_MAX_VOTED_WITNESSES_HF0         23
+#define CREA_MAX_VOTED_WITNESSES_HF0         24
 #define CREA_MAX_MINER_WITNESSES_HF0         1
-#define CREA_MAX_RUNNER_WITNESSES_HF0        1
+#define CREA_MAX_RUNNER_WITNESSES_HF0        0
 
-#define CREA_MAX_VOTED_WITNESSES_HF17        23
+#define CREA_MAX_VOTED_WITNESSES_HF17        24
 #define CREA_MAX_MINER_WITNESSES_HF17        1
-#define CREA_MAX_RUNNER_WITNESSES_HF17       1
+#define CREA_MAX_RUNNER_WITNESSES_HF17       0
 
 #define CREA_HARDFORK_REQUIRED_WITNESSES     1 // 17 of the 21 dpos witnesses (20 elected and 1 virtual time) required for hardfork. This guarantees 75% participation on all subsequent rounds.
 #define CREA_MAX_TIME_UNTIL_EXPIRATION       (60*60) // seconds,  aka: 1 hour
 #define CREA_MAX_MEMO_SIZE                   2048
 #define CREA_MAX_PROXY_RECURSION_DEPTH       4
 #define CREA_VESTING_WITHDRAW_INTERVALS_PRE_HF_16 104
-#define CREA_VESTING_WITHDRAW_INTERVALS      13
+#define CREA_VESTING_WITHDRAW_INTERVALS      8
 #define CREA_VESTING_WITHDRAW_INTERVAL_SECONDS (60*60*24*7) /// 1 week interval
 #define CREA_MAX_WITHDRAW_ROUTES             10
 #define CREA_SAVINGS_WITHDRAW_TIME        	(fc::days(3))
@@ -140,7 +140,7 @@
 #define CREA_1_PERCENT                       (CREA_100_PERCENT/100)
 #define CREA_DEFAULT_CBD_INTEREST_RATE       (10*CREA_1_PERCENT) ///< 10% APR
 
-#define CREA_INFLATION_RATE_START_PERCENT    (978) // Fixes block 7,000,000 to 9.5%
+#define CREA_INFLATION_RATE_START_PERCENT    (700) // Fixes block 7,000,000 to 7.00%
 #define CREA_INFLATION_RATE_STOP_PERCENT     (95) // 0.95%
 #define CREA_INFLATION_NARROWING_PERIOD      (300000) // Narrow 0.01% every 300k blocks
 #define CREA_CONTENT_REWARD_PERCENT          (70*CREA_1_PERCENT) //75% of inflation, 7.125% inflation

@@ -178,7 +178,7 @@ function buildSource {
     printMsg "Building source"
     cd $BUILD_DIR
 
-    #rm -rf libraries/protocol/include/crea/protocol/hardfork.hpp
+    rm -rf libraries/protocol/include/crea/protocol/hardfork.hpp
 
     export BOOST_ROOT=$LIBRARIES_DIR
     export OPENSSL_ROOT_DIR=$LIBRARIES_DIR

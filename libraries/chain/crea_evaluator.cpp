@@ -1998,6 +1998,7 @@ void hf20_vote_evaluator( const vote_operation& o, database& _db )
       abs_rshares = (int64_t) ( ( uint128_t( abs_rshares ) * cashout_delta ) / CREA_UPVOTE_LOCKOUT_SECONDS ).to_uint64();
    }
 
+    wlog("abs_rshares: ${mvd}", ("mvd", abs_rshares));
    if( itr == comment_vote_idx.end() )
    {
       FC_ASSERT( o.weight != 0, "Vote weight cannot be 0." );
