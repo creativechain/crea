@@ -34,7 +34,7 @@ We ship a Dockerfile.  This builds both common node type binaries.
 
     git clone https://github.com/creativechain/crea
     cd crea
-    docker build -t creativechain/crea .
+    docker build -t creary/crea .
 
 ## Building on Ubuntu 16.04
 

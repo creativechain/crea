@@ -44,13 +44,13 @@ Getting started with Crea is fairly simple. You can either choose to use docker-
 
 ## Quickstart
 
-Just want to get up and running quickly? We have pre-built Docker images for your convenience. More details are in our [Quickstart Guide](https://github.com/creativechain/crea/blob/master/doc/exchangequickstart.md).
+Just want to get up and running quickly? We have pre-built Docker images for your convenience. More details are in our [Quickstart Guide](https://github.com/creary/crea/blob/master/doc/exchangequickstart.md).
 
 ## Building
 
-We **strongly** recommend using one of our pre-built Docker images or using Docker to build Crea. Both of these processes are described in the [Quickstart Guide](https://github.com/creativechain/crea/blob/master/doc/exchangequickstart.md).
+We **strongly** recommend using one of our pre-built Docker images or using Docker to build Crea. Both of these processes are described in the [Quickstart Guide](https://github.com/creary/crea/blob/master/doc/exchangequickstart.md).
 
-But if you would still like to build from source, we also have [build instructions](https://github.com/creativechain/crea/blob/master/doc/building.md) for Linux (Ubuntu LTS) and macOS.
+But if you would still like to build from source, we also have [build instructions](https://github.com/creary/crea/blob/master/doc/building.md) for Linux (Ubuntu LTS) and macOS.
 
 ## Dockerized P2P Node
 
@@ -58,7 +58,7 @@ To run a p2p node (ca. 2GB of memory is required at the moment):
 
     docker run \
         -d -p 1776:1776 -p 1886:1886 --name cread-default \
-        creativechain/crea
+        creary/crea
 
     docker logs -f cread-default  # follow along
 
@@ -70,7 +70,7 @@ ca. 14GB of memory, and growing, is required:
     docker run \
         --env USE_WAY_TOO_MUCH_RAM=1 --env USE_FULL_WEB_NODE=1 \
         -d -p 1776:1776 -p 1886:1886 --name cread-full \
-        creativechain/crea
+        creary/crea
 
     docker logs -f cread-full
 

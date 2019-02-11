@@ -1,1 +1,4 @@
-
+node1.creary.net:1776           # creary
+node2.creary.net:1776           # creary
+node3.creary.net:1776           # creary
+creary.owldevelopers.site:1776  # ander7agar
