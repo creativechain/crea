@@ -124,7 +124,7 @@ BOOST_AUTO_TEST_CASE( legacy_asset_test )
 
       BOOST_TEST_MESSAGE( "Asset Test" );
       legacy_asset crea = legacy_asset::from_string( "123.456 TESTS" );
-      legacy_asset sbd = legacy_asset::from_string( "654.321 TBD" );
+      legacy_asset cbd = legacy_asset::from_string( "654.321 TBD" );
       legacy_asset tmp = legacy_asset::from_string( "0.456 TESTS" );
       BOOST_CHECK_EQUAL( tmp.amount.value, 456 );
       tmp = legacy_asset::from_string( "0.056 TESTS" );
@@ -137,10 +137,10 @@ BOOST_AUTO_TEST_CASE( legacy_asset_test )
       BOOST_CHECK_EQUAL( legacy_asset::from_asset( asset( 50, CREA_SYMBOL ) ).to_string(), "0.050 TESTS" );
       BOOST_CHECK_EQUAL( legacy_asset::from_asset( asset(50000, CREA_SYMBOL ) ) .to_string(), "50.000 TESTS" );
 
-      BOOST_CHECK_EQUAL( sbd.amount.value, 654321 );
-      BOOST_CHECK_EQUAL( sbd.symbol.decimals(), 3 );
-      BOOST_CHECK_EQUAL( sbd.to_string(), "654.321 TBD" );
-      BOOST_CHECK( sbd.symbol == CBD_SYMBOL );
+      BOOST_CHECK_EQUAL( cbd.amount.value, 654321 );
+      BOOST_CHECK_EQUAL( cbd.symbol.decimals(), 3 );
+      BOOST_CHECK_EQUAL( cbd.to_string(), "654.321 TBD" );
+      BOOST_CHECK( cbd.symbol == CBD_SYMBOL );
       BOOST_CHECK_EQUAL( legacy_asset::from_asset( asset(50, CBD_SYMBOL ) ).to_string(), "0.050 TBD" );
       BOOST_CHECK_EQUAL( legacy_asset::from_asset( asset(50000, CBD_SYMBOL ) ).to_string(), "50.000 TBD" );
 
@@ -177,7 +177,7 @@ BOOST_AUTO_TEST_CASE( asset_test )
       BOOST_CHECK_EQUAL( fc::json::to_string( asset() ), "{\"amount\":\"0\",\"precision\":3,\"nai\":\"@@000000021\"}" );
 
       asset crea = fc::json::from_string( "{\"amount\":\"123456\",    \"precision\":3, \"nai\":\"@@000000021\"}" ).as< asset >();
-      asset sbd =   fc::json::from_string( "{\"amount\":\"654321\",    \"precision\":3, \"nai\":\"@@000000013\"}" ).as< asset >();
+      asset cbd =   fc::json::from_string( "{\"amount\":\"654321\",    \"precision\":3, \"nai\":\"@@000000013\"}" ).as< asset >();
       asset vests = fc::json::from_string( "{\"amount\":\"123456789\", \"precision\":6, \"nai\":\"@@000000037\"}" ).as< asset >();
       asset tmp =   fc::json::from_string( "{\"amount\":\"456\",       \"precision\":3, \"nai\":\"@@000000021\"}" ).as< asset >();
       BOOST_CHECK_EQUAL( tmp.amount.value, 456 );
@@ -191,10 +191,10 @@ BOOST_AUTO_TEST_CASE( asset_test )
       BOOST_CHECK_EQUAL( fc::json::to_string( asset( 50, CREA_SYMBOL ) ), "{\"amount\":\"50\",\"precision\":3,\"nai\":\"@@000000021\"}" );
       BOOST_CHECK_EQUAL( fc::json::to_string( asset( 50000, CREA_SYMBOL ) ), "{\"amount\":\"50000\",\"precision\":3,\"nai\":\"@@000000021\"}" );
 
-      BOOST_CHECK_EQUAL( sbd.amount.value, 654321 );
-      BOOST_CHECK_EQUAL( sbd.symbol.decimals(), 3 );
-      BOOST_CHECK_EQUAL( fc::json::to_string( sbd ), "{\"amount\":\"654321\",\"precision\":3,\"nai\":\"@@000000013\"}" );
-      BOOST_CHECK( sbd.symbol.asset_num == CREA_ASSET_NUM_CBD );
+      BOOST_CHECK_EQUAL( cbd.amount.value, 654321 );
+      BOOST_CHECK_EQUAL( cbd.symbol.decimals(), 3 );
+      BOOST_CHECK_EQUAL( fc::json::to_string( cbd ), "{\"amount\":\"654321\",\"precision\":3,\"nai\":\"@@000000013\"}" );
+      BOOST_CHECK( cbd.symbol.asset_num == CREA_ASSET_NUM_CBD );
       BOOST_CHECK_EQUAL( fc::json::to_string( asset( 50, CBD_SYMBOL ) ), "{\"amount\":\"50\",\"precision\":3,\"nai\":\"@@000000013\"}" );
       BOOST_CHECK_EQUAL( fc::json::to_string( asset( 50000, CBD_SYMBOL ) ), "{\"amount\":\"50000\",\"precision\":3,\"nai\":\"@@000000013\"}" );
 
@@ -602,6 +602,155 @@ BOOST_AUTO_TEST_CASE( legacy_operation_test )
       // not throwing an error here is success
    }
    FC_LOG_AND_RETHROW()
+}
+
+BOOST_AUTO_TEST_CASE( asset_symbol_type_test )
+{
+   try
+   {
+      uint32_t asset_num = 10000000 << CREA_NAI_SHIFT; // Shift NAI value in to position
+      asset_num |= SMT_ASSET_NUM_CONTROL_MASK;          // Flip the control bit
+      asset_num |= 3;                                   // Add the precision
+
+      auto symbol = asset_symbol_type::from_asset_num( asset_num );
+
+      BOOST_REQUIRE( symbol == asset_symbol_type::from_nai( 100000006, 3 ) );
+      BOOST_REQUIRE( symbol == asset_symbol_type::from_nai_string( "@@100000006", 3 ) );
+      BOOST_REQUIRE( asset_num == asset_symbol_type::asset_num_from_nai( 100000006, 3 ) );
+      BOOST_REQUIRE( symbol.to_nai_string() == "@@100000006" );
+      BOOST_REQUIRE( symbol.to_nai() == 100000006 );
+      BOOST_REQUIRE( symbol.asset_num == asset_num );
+      BOOST_REQUIRE( symbol.space() == asset_symbol_type::asset_symbol_space::smt_nai_space );
+      BOOST_REQUIRE( symbol.get_paired_symbol() == asset_symbol_type::from_asset_num( asset_num ^ SMT_ASSET_NUM_VESTING_MASK ) );
+      BOOST_REQUIRE( asset_symbol_type::from_nai( symbol.to_nai(), 3 ) == symbol );
+
+      asset_symbol_type crea = asset_symbol_type::from_asset_num( CREA_ASSET_NUM_CREA );
+      asset_symbol_type cbd = asset_symbol_type::from_asset_num( CREA_ASSET_NUM_CBD );
+      asset_symbol_type vests = asset_symbol_type::from_asset_num( CREA_ASSET_NUM_VESTS );
+
+      BOOST_REQUIRE( crea.space() == asset_symbol_type::asset_symbol_space::legacy_space );
+      BOOST_REQUIRE( cbd.space() == asset_symbol_type::asset_symbol_space::legacy_space );
+      BOOST_REQUIRE( vests.space() == asset_symbol_type::asset_symbol_space::legacy_space );
+
+      BOOST_REQUIRE( asset_symbol_type::from_nai( crea.to_nai(), CREA_PRECISION_CREA ) == crea );
+      BOOST_REQUIRE( asset_symbol_type::from_nai( cbd.to_nai(), CREA_PRECISION_CBD ) == cbd );
+      BOOST_REQUIRE( asset_symbol_type::from_nai( vests.to_nai(), CREA_PRECISION_VESTS ) == vests );
+
+      CREA_REQUIRE_THROW( asset_symbol_type::from_nai_string( "@@100000006", CREA_ASSET_MAX_DECIMALS + 1 ), fc::assert_exception ); // More than max decimals
+      CREA_REQUIRE_THROW( asset_symbol_type::from_nai_string( "@0100000006", 3 ), fc::assert_exception );                            // Invalid NAI prefix
+      CREA_REQUIRE_THROW( asset_symbol_type::from_nai_string( "@@00000006", 3 ), fc::assert_exception );                             // Length too short
+      CREA_REQUIRE_THROW( asset_symbol_type::from_nai_string( "@@0100000006", 3 ), fc::assert_exception );                           // Length too long
+      CREA_REQUIRE_THROW( asset_symbol_type::from_nai_string( "@@invalid00", 3 ), fc::exception );                                   // Boost lexical bad cast
+      CREA_REQUIRE_THROW( asset_symbol_type::from_nai_string( nullptr, 3 ), fc::exception );                                         // Null pointer
+   }
+   FC_LOG_AND_RETHROW();
+}
+
+BOOST_AUTO_TEST_CASE( unpack_clear_test )
+{
+   try
+   {
+      std::stringstream ss1;
+      std::stringstream ss2;
+
+      signed_block b1;
+
+      for ( int i = 0; i < 10; i++ )
+      {
+         signed_transaction tx;
+
+         vote_operation op;
+         op.voter = "alice";
+         op.author = "bob";
+         op.permlink = "permlink1";
+         op.weight = CREA_100_PERCENT;
+         tx.operations.push_back( op );
+
+         vote_operation op2;
+         op2.voter = "charlie";
+         op2.author = "sam";
+         op2.permlink = "permlink2";
+         op2.weight = CREA_100_PERCENT;
+         tx.operations.push_back( op2 );
+
+         tx.ref_block_num = 1000;
+         tx.ref_block_prefix = 1000000000;
+         tx.expiration = fc::time_point_sec( 1514764800 + i );
+
+         b1.transactions.push_back( tx );
+      }
+
+      signed_block b2;
+
+      for ( int i = 0; i < 20; i++ )
+      {
+         signed_transaction tx;
+         vote_operation op;
+         op.voter = "dave";
+         op.author = "greg";
+         op.permlink = "foobar";
+         op.weight = CREA_100_PERCENT/2;
+         tx.ref_block_num = 4000;
+         tx.ref_block_prefix = 4000000000;
+         tx.expiration = fc::time_point_sec( 1714764800 + i );
+         tx.operations.push_back( op );
+
+         b2.transactions.push_back( tx );
+      }
+
+      fc::raw::pack( ss2, b2 );
+      fc::raw::pack( ss1, b1 );
+
+      signed_block unpacked_block;
+      fc::raw::unpack( ss2, unpacked_block );
+
+      // This operation should completely overwrite signed block 'b2'
+      fc::raw::unpack( ss1, unpacked_block );
+
+      BOOST_REQUIRE( b1.transactions.size() == unpacked_block.transactions.size() );
+      for ( size_t i = 0; i < unpacked_block.transactions.size(); i++ )
+      {
+         signed_transaction tx = unpacked_block.transactions[ i ];
+         BOOST_REQUIRE( unpacked_block.transactions[ i ].operations.size() == b1.transactions[ i ].operations.size() );
+
+         vote_operation op = tx.operations[ 0 ].get< vote_operation >();
+         BOOST_REQUIRE( op.voter == "alice" );
+         BOOST_REQUIRE( op.author == "bob" );
+         BOOST_REQUIRE( op.permlink == "permlink1" );
+         BOOST_REQUIRE( op.weight == CREA_100_PERCENT );
+
+         vote_operation op2 = tx.operations[ 1 ].get< vote_operation >();
+         BOOST_REQUIRE( op2.voter == "charlie" );
+         BOOST_REQUIRE( op2.author == "sam" );
+         BOOST_REQUIRE( op2.permlink == "permlink2" );
+         BOOST_REQUIRE( op2.weight == CREA_100_PERCENT );
+
+         BOOST_REQUIRE( tx.ref_block_num == 1000 );
+         BOOST_REQUIRE( tx.ref_block_prefix == 1000000000 );
+         BOOST_REQUIRE( tx.expiration == fc::time_point_sec( 1514764800 + i ) );
+      }
+   }
+   FC_LOG_AND_RETHROW();
+}
+
+BOOST_AUTO_TEST_CASE( unpack_recursion_test )
+{
+   try
+   {
+      std::stringstream ss;
+      int recursion_level = 100000;
+      uint64_t allocation_per_level = 500000;
+
+      for ( int i = 0; i < recursion_level; i++ )
+      {
+         fc::raw::pack( ss, unsigned_int( allocation_per_level ) );
+         fc::raw::pack( ss, static_cast< uint8_t >( variant::array_type ) );
+      }
+
+      std::vector< fc::variant > v;
+      CREA_REQUIRE_THROW( fc::raw::unpack( ss, v ), fc::assert_exception );
+   }
+   FC_LOG_AND_RETHROW();
 }
 
 BOOST_AUTO_TEST_SUITE_END()

@@ -10,7 +10,7 @@ from time import sleep
 
 # local imports
 from creadebugnode import DebugNode
-from creativecoinapi.creativecoinnoderpc import CreativecoinNodeRPC
+from creaapi.creanoderpc import CreaNodeRPC
 
 WAITING = True
 
@@ -67,7 +67,7 @@ def main( ):
 
 
 def run_cread_tests( debug_node ):
-   from creativecoinapi.creativecoinnoderpc import CreativecoinNodeRPC
+   from creaapi.creanoderpc import CreaNodeRPC
 
    try:
       print( 'Replaying blocks...', )

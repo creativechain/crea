@@ -49,7 +49,7 @@
 
 #else // IS LIVE CREA NETWORK
 
-#define CREA_BLOCKCHAIN_VERSION              ( version(0, 20, 5) )
+#define CREA_BLOCKCHAIN_VERSION              ( version(0, 20, 6) )
 
 #define CREA_INIT_PRIVATE_KEY                (fc::ecc::private_key::regenerate(fc::sha256::hash(std::string("init_key"))))
 #define CREA_INIT_PUBLIC_KEY_STR             (std::string( crea::protocol::public_key_type(CREA_INIT_PRIVATE_KEY.get_public_key()) ))
@@ -65,7 +65,7 @@
 #define CREA_MAX_CASHOUT_WINDOW_SECONDS      (60*60*24*14) /// 2 weeks
 #define CREA_UPVOTE_LOCKOUT_HF7              (fc::minutes(1))
 #define CREA_UPVOTE_LOCKOUT_SECONDS          (60*60*12)    /// 12 hours
-#define CREA_UPVOTE_LOCKOUT_HF17             (60)
+#define CREA_UPVOTE_LOCKOUT_HF17             (fc::hours(12))
 
 #define CREA_MIN_ACCOUNT_CREATION_FEE           1
 #define CREA_MAX_ACCOUNT_CREATION_FEE           int64_t(1000000000)
@@ -73,7 +73,7 @@
 #define CREA_OWNER_AUTH_RECOVERY_PERIOD                  fc::days(30)
 #define CREA_ACCOUNT_RECOVERY_REQUEST_EXPIRATION_PERIOD  fc::days(1)
 #define CREA_OWNER_UPDATE_LIMIT                          fc::minutes(60)
-#define CREA_OWNER_AUTH_HISTORY_TRACKING_START_BLOCK_NUM 3186477
+#define CREA_OWNER_AUTH_HISTORY_TRACKING_START_BLOCK_NUM 1
 
 //Supply for CREA and CBD
 #define CREA_TOTAL_INIT_SUPPLY               (int64_t( 18808120 ) * int64_t( 1000 ))
@@ -111,7 +111,7 @@
 #define CREA_MAX_MINER_WITNESSES_HF17        1
 #define CREA_MAX_RUNNER_WITNESSES_HF17       0
 
-#define CREA_HARDFORK_REQUIRED_WITNESSES     1 // 17 of the 21 dpos witnesses (20 elected and 1 virtual time) required for hardfork. This guarantees 75% participation on all subsequent rounds.
+#define CREA_HARDFORK_REQUIRED_WITNESSES     1 // 19 of the 25 dpos witnesses (24 elected and 1 virtual time) required for hardfork. This guarantees 75% participation on all subsequent rounds.
 #define CREA_MAX_TIME_UNTIL_EXPIRATION       (60*60) // seconds,  aka: 1 hour
 #define CREA_MAX_MEMO_SIZE                   2048
 #define CREA_MAX_PROXY_RECURSION_DEPTH       4
@@ -332,8 +332,14 @@
 #ifdef CREA_ENABLE_SMT
 
 #define SMT_MAX_VOTABLE_ASSETS 2
-#define SMT_VESTING_WITHDRAW_INTERVAL_SECONDS   (60*5) /// 1 week per interval
-#define SMT_UPVOTE_LOCKOUT                      (60*60*12)  /// 12 hours
+#define SMT_VESTING_WITHDRAW_INTERVAL_SECONDS   (60*60*24*7) /// 1 week per interval
+#define SMT_UPVOTE_LOCKOUT                      (60*60*12)   /// 12 hours
+#define SMT_EMISSION_MIN_INTERVAL_SECONDS       (60*60*6)    /// 6 hours
+#define SMT_EMIT_INDEFINITELY                   (std::numeric_limits<uint32_t>::max())
+#define SMT_MAX_NOMINAL_VOTES_PER_DAY           (1000)
+#define SMT_MAX_VOTES_PER_REGENERATION          ((SMT_MAX_NOMINAL_VOTES_PER_DAY * SMT_VESTING_WITHDRAW_INTERVAL_SECONDS) / 86400)
+#define SMT_DEFAULT_VOTES_PER_REGEN_PERIOD      (50)
+#define SMT_DEFAULT_PERCENT_CURATION_REWARDS    (25 * CREA_1_PERCENT)
 
 #endif /// CREA_ENABLE_SMT
 

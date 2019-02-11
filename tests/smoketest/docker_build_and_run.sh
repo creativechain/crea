@@ -11,14 +11,14 @@
 #
 # WARNING: use absolute paths instead of relative!
 #
-# sudo ./docker_build_and_run.sh ~/creativecoin/creativecoin/build/Release/programs/cread ~/creativecoin/creativecoin/build/Release/programs/cread ~/creativecoin/cread_data/creativecoinnet ~/creativecoin/cread_data/creativecoinnet ~/creativecoin/logs 5000000 12
+# sudo ./docker_build_and_run.sh ~/creativechain/crea/build/Release/programs/cread ~/creativechain/crea/build/Release/programs/cread ~/crea/cread_data/creanet ~/crea/cread_data/creanet ~/crea/logs 5000000 12
 
 if [ $# -lt 6 -o $# -gt 8 ]
 then
    echo "Usage: reference_cread_location tested_cread_location ref_blockchain_folder_location tested_blockchain_folder_location"
    echo "       logs_dir stop_replay_at_block [jobs [--dont-copy-config]"
-   echo "Example: ~/creativecoin/ref_cread ~/creativecoin/creativecoin/build/Release/programs/cread ~/creativecoin/creativecoinnet ~/creativecoin/testnet"
-   echo "         ~/creativecoin/logs 5000000 12"
+   echo "Example: ~/crea/ref_cread ~/creativechain/crea/build/Release/programs/cread ~/creativechain/creanet ~/crea/testnet"
+   echo "         ~/crea/logs 5000000 12"
    echo "         if <jobs> not passed, <nproc> will be used."
    exit -1
 fi
@@ -44,4 +44,4 @@ else
 fi
 
 docker run -v $1:/reference -v $2:/tested -v $3:/ref_blockchain -v $4:/tested_blockchain -v $5:/logs_dir -v /run:/run \
-   -e STOP_REPLAY_AT_BLOCK=$6 -e JOBS=$JOBS -e COPY_CONFIG=$8 -p 8090:8090 -p 8091:8091 smoketest:latest
+   -e STOP_REPLAY_AT_BLOCK=$6 -e JOBS=$JOBS -e COPY_CONFIG=$8 -p 1886:1886 -p 1996:1996 smoketest:latest

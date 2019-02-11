@@ -101,7 +101,7 @@ namespace crea { namespace chain {
          id_type           root_comment;
 
          asset             max_accepted_payout = asset( 1000000000, CBD_SYMBOL );       /// CBD value of the maximum payout this post will receive
-         uint16_t          percent_crea_dollars = CREA_100_PERCENT; /// the percent of Creativecoin Dollars to key, unkept amounts will be received as Creativecoin Power
+         uint16_t          percent_crea_dollars = CREA_100_PERCENT; /// the percent of Crea Dollars to key, unkept amounts will be received as Crea Power
          bool              allow_replies = true;      /// allows a post to disable replies.
          bool              allow_votes   = true;      /// allows a post to receive votes;
          bool              allow_curation_rewards = true;
@@ -353,19 +353,6 @@ namespace crea { namespace chain {
 
 } } // crea::chain
 
-#ifdef CREA_ENABLE_SMT
-FC_REFLECT( crea::chain::comment_object,
-             (id)(author)(permlink)
-             (category)(parent_author)(parent_permlink)
-             (last_update)(created)(active)(last_payout)
-             (depth)(children)
-             (net_rshares)(abs_rshares)(vote_rshares)
-             (children_abs_rshares)(cashout_time)(max_cashout_time)
-             (total_vote_weight)(reward_weight)(total_payout_value)(curator_payout_value)(beneficiary_payout_value)(author_rewards)(net_votes)(root_comment)
-             (max_accepted_payout)(percent_crea_dollars)(allow_replies)(allow_votes)(allow_curation_rewards)
-             (beneficiaries)(allowed_vote_assets)
-          )
-#else
 FC_REFLECT( crea::chain::comment_object,
              (id)(author)(permlink)
              (category)(parent_author)(parent_permlink)
@@ -376,8 +363,11 @@ FC_REFLECT( crea::chain::comment_object,
              (total_vote_weight)(reward_weight)(total_payout_value)(curator_payout_value)(beneficiary_payout_value)(author_rewards)(net_votes)(root_comment)
              (max_accepted_payout)(percent_crea_dollars)(allow_replies)(allow_votes)(allow_curation_rewards)
              (beneficiaries)
-          )
+#ifdef CREA_ENABLE_SMT
+             (allowed_vote_assets)
 #endif
+          )
+
 CHAINBASE_SET_INDEX_TYPE( crea::chain::comment_object, crea::chain::comment_index )
 
 FC_REFLECT( crea::chain::comment_content_object,
@@ -405,7 +395,6 @@ CHAINBASE_SET_INDEX_TYPE( crea::chain::comment_vote_object, crea::chain::comment
 namespace helpers
 {
    using crea::chain::shared_string;
-   
    template <>
    class index_statistic_provider<crea::chain::comment_index>
    {

@@ -7,7 +7,7 @@ popd () { command popd "$@" > /dev/null; }
 if [ $# -ne 5 ]
 then
    echo Usage: node_kind cread_path node_options work_path port
-   echo Example: reference ~/creativecoin/creativecoin/build/programs/cread/cread --webserver-http-endpoint=127.0.0.1:8090 ~/working 8090
+   echo Example: reference ~/creativechain/crea/build/programs/cread/cread --webserver-http-endpoint=127.0.0.1:1886 ~/working 1886
    exit -1
 fi
 

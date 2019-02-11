@@ -11,10 +11,10 @@ from tempfile import TemporaryDirectory
 from threading import Lock
 from time import sleep
 
-from creativecoinapi.creativecoinnoderpc import CreativecoinNodeRPC
+from creaapi.creanoderpc import CreaNodeRPC
 
 class DebugNode( object ):
-   """ Wraps the cread debug node plugin for easier automated testing of the Creativecoin Network"""
+   """ Wraps the cread debug node plugin for easier automated testing of the Crea Network"""
 
    def __init__( self, cread, data_dir, args='', plugins=[], apis=[], cread_out=None, cread_err=None ):
       """ Creates a cread debug node.
@@ -23,7 +23,7 @@ class DebugNode( object ):
       While in the context of 'with' the debug node will continue to run.
       Upon exit of 'with' the debug will exit and clean up temporary files.
       This class also contains methods to allow basic manipulation of the blockchain.
-      For all other requests, the python-creativecoin library should be used.
+      For all other requests, the python-crea library should be used.
 
       args:
          cread -- The string path to the location of the cread binary
@@ -52,7 +52,7 @@ class DebugNode( object ):
 
       self._data_dir = Path( data_dir )
       if( not self._data_dir.exists() ):
-         raise ValueError( 'data_dir either does not exist or is not a properly constructed creativecoin data directory' )
+         raise ValueError( 'data_dir either does not exist or is not a properly constructed crea data directory' )
       if( not self._data_dir.is_dir() ):
          raise ValueError( 'data_dir is not a directory' )
 
@@ -104,7 +104,7 @@ class DebugNode( object ):
       self._cread_process.poll()
       sleep( 5 )
       if( not self._cread_process.returncode ):
-         self._rpc = CreativecoinNodeRPC( 'ws://127.0.0.1:8095', '', '' )
+         self._rpc = CreaNodeRPC( 'ws://127.0.0.1:8095', '', '' )
       else:
          raise Exception( "cread did not start properly..." )
 
@@ -137,7 +137,7 @@ class DebugNode( object ):
 
    def _get_config( self ):
       return "# no seed-node in config file or command line\n" \
-          + "p2p-endpoint = 127.0.0.1:2001       # bind to localhost to prevent remote p2p nodes from connecting to us\n" \
+          + "p2p-endpoint = 127.0.0.1:1776       # bind to localhost to prevent remote p2p nodes from connecting to us\n" \
           + "rpc-endpoint = 127.0.0.1:8095       # bind to localhost to secure RPC API access\n" \
           + "enable-plugin = witness debug_node " + " ".join( self.plugins ) + "\n" \
           + "public-api = database_api login_api debug_node_api " + " ".join( self.apis ) + "\n"
@@ -150,7 +150,7 @@ class DebugNode( object ):
 
       The debug node plugin requires a WIF key to sign blocks with. This class uses the key
       5JHNbFNDg834SFj8CMArV6YW7td4zrPzXveqTfaShmYVuYNeK69 which was generated from
-      `get_dev_key creativecoin debug`. Do not use this key on the live chain for any reason.
+      `get_dev_key crea debug`. Do not use this key on the live chain for any reason.
 
       args:
          count -- The number of new blocks to generate.
@@ -170,7 +170,7 @@ class DebugNode( object ):
 
       The debug node plugin requires a WIF key to sign blocks with. This class uses the key
       5JHNbFNDg834SFj8CMArV6YW7td4zrPzXveqTfaShmYVuYNeK69 which was generated from
-      `get_dev_key creativecoin debug`. Do not use this key on the live chain for any reason.
+      `get_dev_key crea debug`. Do not use this key on the live chain for any reason.
 
       args:
          time -- The desired new head block time. This is a POSIX Timestmap.

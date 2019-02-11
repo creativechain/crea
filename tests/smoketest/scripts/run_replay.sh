@@ -9,7 +9,7 @@ then
    echo "Usage: path_to_tested_cread path_to_reference_cread"
    echo "       path_to_test_blockchain_directory path_to_reference_blockchain_directory"
    echo "       number_of_blocks_to_replay [--dont-copy-config]"
-   echo "Example: ~/work/creativecoin/creativecoin/build/programs/cread/cread ~/master/creativecoin/creativecoin/build/programs/cread/cread ~/creativecoin/creativecoin/work1 ~/creativecoin/creativecoin/work2 2000000"
+   echo "Example: ~/work/creativechain/crea/build/programs/cread/cread ~/master/creativechain/crea/build/programs/cread/cread ~/creativechain/crea/work1 ~/creativechain/crea/work2 2000000"
    echo "Note: Run this script from test group directory."
    exit -1
 fi

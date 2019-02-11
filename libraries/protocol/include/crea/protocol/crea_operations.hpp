@@ -205,7 +205,7 @@ namespace crea { namespace protocol {
       string            permlink;
 
       asset             max_accepted_payout    = asset( 1000000000, CBD_SYMBOL );       /// CBD value of the maximum payout this post will receive
-      uint16_t          percent_crea_dollars  = CREA_100_PERCENT; /// the percent of Creativecoin Dollars to key, unkept amounts will be received as Creativecoin Power
+      uint16_t          percent_crea_dollars  = CREA_100_PERCENT; /// the percent of Crea Dollars to key, unkept amounts will be received as Crea Power
       bool              allow_votes            = true;      /// allows a post to receive votes;
       bool              allow_curation_rewards = true; /// allows voters to recieve curation rewards. Rewards return to reward fund.
       comment_options_extensions_type extensions;
@@ -282,8 +282,7 @@ namespace crea { namespace protocol {
       string            memo;
 
       void              validate()const;
-      void get_required_active_authorities( flat_set<account_name_type>& a )const{ if(amount.symbol != VESTS_SYMBOL) a.insert(from); }
-      void get_required_owner_authorities( flat_set<account_name_type>& a )const { if(amount.symbol == VESTS_SYMBOL) a.insert(from); }
+      void get_required_active_authorities( flat_set<account_name_type>& a )const{ a.insert(from); }
    };
 
 
@@ -583,7 +582,7 @@ namespace crea { namespace protocol {
    {
       flat_set< account_name_type > required_auths;
       flat_set< account_name_type > required_posting_auths;
-      string                        id; ///< must be less than 32 characters long
+      custom_id_type                id; ///< must be less than 32 characters long
       string                        json; ///< must be proper utf8 / JSON string.
 
       void validate()const;
@@ -599,7 +598,7 @@ namespace crea { namespace protocol {
       flat_set< account_name_type > required_posting_auths;
       vector< authority >           required_auths;
 
-      string                        id; ///< must be less than 32 characters long
+      custom_id_type                id; ///< must be less than 32 characters long
       vector< char >                data;
 
       void validate()const;

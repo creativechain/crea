@@ -1,7 +1,7 @@
 #!/bin/bash
 
 NODE='http://127.0.0.1'
-RPC_PORT=8090
+RPC_PORT=1886
 EXIT_CODE=0
 COMPARATOR=''
 

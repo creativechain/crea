@@ -133,7 +133,7 @@ class database_api
 
          /*
           * This is a general purpose API that checks signatures against accounts for an arbitrary sha256 hash
-          * using the existing authority structures in Creativecoin
+          * using the existing authority structures in Crea
           */
          (verify_signatures)
 
@@ -141,7 +141,13 @@ class database_api
          /**
          * @return array of Numeric Asset Identifier (NAI) available to be used for new SMT to be created.
          */
-         (get_smt_next_identifier)
+         (get_nai_pool)
+
+         (list_smt_tokens)
+         (find_smt_tokens)
+
+         (list_smt_token_emissions)
+         (find_smt_token_emissions)
 #endif
       )
 

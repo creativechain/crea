@@ -10,7 +10,6 @@
 #include <crea/plugins/follow_api/follow_api_plugin.hpp>
 #include <crea/plugins/reputation_api/reputation_api_plugin.hpp>
 #include <crea/plugins/market_history_api/market_history_api_plugin.hpp>
-#include <crea/plugins/witness_api/witness_api_plugin.hpp>
 
 #include <crea/utilities/git_revision.hpp>
 
@@ -75,7 +74,6 @@ namespace detail
             (get_recovery_request)
             (get_escrow)
             (get_withdraw_routes)
-            (get_account_bandwidth)
             (get_savings_withdraw_from)
             (get_savings_withdraw_to)
             (get_vesting_delegations)
@@ -157,7 +155,6 @@ namespace detail
          std::shared_ptr< follow::follow_api >                             _follow_api;
          std::shared_ptr< reputation::reputation_api >                     _reputation_api;
          std::shared_ptr< market_history::market_history_api >             _market_history_api;
-         std::shared_ptr< witness::witness_api >                           _witness_api;
 
          map< transaction_id_type, confirmation_callback >                 _callbacks;
          map< time_point_sec, vector< transaction_id_type > >              _callback_expirations;
@@ -789,13 +786,6 @@ namespace detail
    {
       CHECK_ARG_SIZE( 0 )
       get_dynamic_global_properties_return gpo = _database_api->get_dynamic_global_properties( {} );
-      if( _witness_api )
-      {
-         auto reserve_ratio = _witness_api->get_reserve_ratio( {} );
-         gpo.average_block_size = reserve_ratio.average_block_size;
-         gpo.current_reserve_ratio = reserve_ratio.current_reserve_ratio;
-         gpo.max_virtual_bandwidth = reserve_ratio.max_virtual_bandwidth;
-      }
 
       return gpo;
    }
@@ -885,26 +875,6 @@ namespace detail
                results.back().reputation = _reputation_api->get_account_reputations( { itr->name, 1 } ).reputations[0].reputation;
             }
 
-            if( _witness_api )
-            {
-               auto& e_acct = results.back();
-               auto forum_bandwidth = _witness_api->get_account_bandwidth( { itr->name, witness::bandwidth_type::forum } );
-               if( forum_bandwidth.bandwidth.valid() )
-               {
-                  e_acct.average_bandwidth = forum_bandwidth.bandwidth->average_bandwidth;
-                  e_acct.lifetime_bandwidth = forum_bandwidth.bandwidth->lifetime_bandwidth;
-                  e_acct.last_bandwidth_update = forum_bandwidth.bandwidth->last_bandwidth_update;
-               }
-
-               auto market_bandwidth = _witness_api->get_account_bandwidth( { itr->name, witness::bandwidth_type::market } );
-               if( market_bandwidth.bandwidth.valid() )
-               {
-                  e_acct.average_market_bandwidth = market_bandwidth.bandwidth->average_bandwidth;
-                  e_acct.lifetime_market_bandwidth = market_bandwidth.bandwidth->lifetime_bandwidth;
-                  e_acct.last_market_bandwidth_update = market_bandwidth.bandwidth->last_bandwidth_update;
-               }
-            }
-
             auto vitr = vidx.lower_bound( boost::make_tuple( itr->name, account_name_type() ) );
             while( vitr != vidx.end() && vitr->account == itr->name ) {
                results.back().witness_votes.insert( _db.get< witness_object, by_name >( vitr->witness ).owner );
@@ -918,7 +888,7 @@ namespace detail
 
    DEFINE_API_IMPL( condenser_api_impl, get_account_references )
    {
-      FC_ASSERT( false, "condenser_api::get_account_references --- Needs to be refactored for Creativecoin." );
+      FC_ASSERT( false, "condenser_api::get_account_references --- Needs to be refactored for Crea." );
    }
 
    DEFINE_API_IMPL( condenser_api_impl, lookup_account_names )
@@ -1030,17 +1000,6 @@ namespace detail
       }
 
       return result;
-   }
-
-   DEFINE_API_IMPL( condenser_api_impl, get_account_bandwidth )
-   {
-      CHECK_ARG_SIZE( 2 )
-      FC_ASSERT( _witness_api, "witness_api_plugin not enabled." );
-      return _witness_api->get_account_bandwidth(
-         {
-            args[0].as< string >(),
-            args[1].as< witness::bandwidth_type >()
-         }).bandwidth;
    }
 
    DEFINE_API_IMPL( condenser_api_impl, get_savings_withdraw_from )
@@ -2267,12 +2226,6 @@ void condenser_api::api_startup()
    {
       my->_market_history_api = market_history->api;
    }
-
-   auto witness = appbase::app().find_plugin< witness::witness_api_plugin >();
-   if( witness != nullptr )
-   {
-      my->_witness_api = witness->api;
-   }
 }
 
 DEFINE_LOCKLESS_APIS( condenser_api,
@@ -2309,7 +2262,6 @@ DEFINE_READ_APIS( condenser_api,
    (get_recovery_request)
    (get_escrow)
    (get_withdraw_routes)
-   (get_account_bandwidth)
    (get_savings_withdraw_from)
    (get_savings_withdraw_to)
    (get_vesting_delegations)

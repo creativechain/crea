@@ -77,7 +77,7 @@ inline void pack( Stream& s, const crea::protocol::legacy_crea_asset_symbol_type
 }
 
 template< typename Stream >
-inline void unpack( Stream& s, crea::protocol::legacy_crea_asset_symbol_type& sym )
+inline void unpack( Stream& s, crea::protocol::legacy_crea_asset_symbol_type& sym, uint32_t depth )
 {
    //  994240:        "account_creation_fee": "0.1 CREA"
    // 1021529:        "account_creation_fee": "10.0 CREA"
@@ -87,10 +87,10 @@ inline void unpack( Stream& s, crea::protocol::legacy_crea_asset_symbol_type& sy
    // 4338089:        "account_creation_fee": "0.001 0.001"
    // 4626205:        "account_creation_fee": "6.000 6.000"
    // 4632595:        "account_creation_fee": "6.000 6.000"
-
+   depth++;
    uint64_t ser = 0;
 
-   fc::raw::unpack( s, ser );
+   fc::raw::unpack( s, ser, depth );
    switch( ser )
    {
       case CREA_SYMBOL_LEGACY_SER_1:

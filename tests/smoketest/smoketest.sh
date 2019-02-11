@@ -17,7 +17,7 @@ popd () { command popd "$@" > /dev/null; }
 function print_help_and_quit {
    echo "Usage: path_to_tested_cread path_to_reference_cread path_to_test_blockchain_directory"
    echo "       path_to_reference_blockchain_directory number_of_blocks_to_replay [number_of_jobs [--dont-copy-config]]"
-   echo "Example: ~/work/creativecoin/creativecoin/build/Release/programs/cread/cread ~/master/creativecoin/creativecoin/build/Release/programs/cread/cread ~/creativecoin/creativecoin/work1 ~/creativecoin/creativecoin/work2 5000000"
+   echo "Example: ~/work/creativechain/crea/build/Release/programs/cread/cread ~/master/creativechain/crea/build/Release/programs/cread/cread ~/creativechain/crea/work1 ~/creativechain/crea/work2 5000000"
    echo "         Pass absolute, not relative paths;"
    echo "         if <number_of_jobs> not passed or if is less or zero equal <nproc> will be used;"
    echo "         if --dont-copy-config is passed config.init files are not copied from test directories."

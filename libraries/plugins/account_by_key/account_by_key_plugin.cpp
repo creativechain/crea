@@ -1,3 +1,5 @@
+#include <crea/chain/crea_fwd.hpp>
+
 #include <crea/plugins/account_by_key/account_by_key_plugin.hpp>
 #include <crea/plugins/account_by_key/account_by_key_objects.hpp>
 
@@ -252,6 +254,8 @@ void account_by_key_plugin::plugin_initialize( const boost::program_options::var
       my->_post_apply_operation_conn = db.add_post_apply_operation_handler( [&]( const operation_notification& note ){ my->on_post_apply_operation( note ); }, *this, 0 );
 
       add_plugin_index< key_lookup_index >(db);
+
+      appbase::app().get_plugin< chain::chain_plugin >().report_state_options( name(), fc::variant_object() );
    }
    FC_CAPTURE_AND_RETHROW()
 }

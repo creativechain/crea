@@ -3,7 +3,7 @@
 if [ $# -ne 6 ]
 then
    echo Usage: jobs 1st_address 1st_port 2nd_address 2nd_port working_dir
-   echo Example: 100 127.0.0.1 8090 ec2-34-235-166-184.compute-1.amazonaws.com 8090 logs
+   echo Example: 100 127.0.0.1 1886 ec2-34-235-166-184.compute-1.amazonaws.com 1886 logs
    exit -1
 fi
 

@@ -2,6 +2,7 @@ file(GLOB HEADERS "include/crea/plugins/block_data_export/*.hpp")
 
 add_library( block_data_export_plugin
              block_data_export_plugin.cpp
+             ${HEADERS}
            )
 
 target_link_libraries( block_data_export_plugin chain_plugin crea_chain crea_protocol )

@@ -3,7 +3,7 @@ Python Debug Node Readme
 ------------------------
 
 The Python Debug Node is a wrapper class that automates the creation and maintenance
-of a running Creativecoin Debug Node. The Debug Node is a plugin for Creativecoin that allows realtime
+of a running Crea Debug Node. The Debug Node is a plugin for Crea that allows realtime
 local modification of the chain state in a way that mimicks real world behaviors
 without corrupting a localally saved blockchain or propogating changes to the live chain.
 
@@ -19,7 +19,7 @@ is a higher level language that many amateur and skilled programmers use. There 
 been community development of Python libraries to make interfacing with a live node easier.
 This plugin closes the gap by allowing a node to be launched programmatically in Python
 in addition to interfacing with the node. This module utilizes community member Xeroc's
-[Python Creativecoin library](https://github.com/xeroc/python-creativecoinlib).
+[Python Crea library](https://github.com/xeroc/python-crealib).
 
 How Do I Use This?
 ------------------
@@ -30,7 +30,7 @@ To use the script include `from creadebugnode import DebugNode`
 
 There are a couple of examples already made that you can try modifying yourself.
 
-[debug_hardforks.py](https://github.com/creativecoin/creativecoin/python_scripts/tests/debug_hardforks.py)
+[debug_hardforks.py](https://github.com/creativechain/crea/python_scripts/tests/debug_hardforks.py)
 This script starts a debug node, replays blocks, schedules a hardfork, and finally generates
 new blocks after the hardfork. The script also communicates via the general purpose rpc
 interface in Xeroc's Library to do a simple analysis of the results. In this case it
@@ -38,7 +38,7 @@ generates a historgram of block producers to verify the witness scheduling algor
 properly. The purpose of the script is it verify any given hardfork does not have a bug that
 could crash the chain entirely.
 
-[debugnode.py](https://github.com/creativecoin/creativecoin/python_scripts/creadebugnode/debugnode.py#L212)
+[debugnode.py](https://github.com/creativechain/crea/python_scripts/creadebugnode/debugnode.py#L212)
 This script is much simpler. It has the same parsing logic, but has much less test logic.
 All it does is replay the blockchain, periodically printing a status update so the user
 knows it is still working. The script then hangs so the user can interact with the chain
@@ -60,7 +60,7 @@ a system standard temp directory through the standard Python TemporaryDirectory 
 working data directory for the running node. The only work your script needs to do is
 specify the cread binary location and a populated data directory. For most configurations
 this will be `programs/cread/cread` and `witness_node_data_dir` respectively, from the
-git root directory for Creativecoin.
+git root directory for Crea.
 
 TODO/ Long Term Goals
 ---------------------
@@ -75,4 +75,4 @@ the RPC call. Most, if not all, RPC API calls could be programatically generated
 the C++ source. It would also be a good step forward to introduce a simple testing framework
 that could be used to start a debug node and then run a series of test cases on a common
 starting chain state. This would address much of the integration testing that is sorely
-needed for Creativecoin.
+needed for Crea.

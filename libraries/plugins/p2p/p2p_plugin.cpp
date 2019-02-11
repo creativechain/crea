@@ -227,7 +227,12 @@ bool p2p_plugin_impl::handle_block( const graphene::net::block_message& blk_msg,
                ("e", e.to_detail_string())
                ("head", head_block_num));
          elog("Error when pushing block:\n${e}", ("e", e.to_detail_string()));
-         throw;
+         if (e.code() == 4080000) {
+           elog("Rethrowing as graphene::net exception");
+           FC_THROW_EXCEPTION(graphene::net::unlinkable_block_exception, "Error when pushing block:\n${e}", ("e", e.to_detail_string()));
+         } else {
+           throw;
+         }
       }
    }
    else
@@ -572,7 +577,7 @@ void p2p_plugin::plugin_initialize(const boost::program_options::variables_map& 
    if( options.count( "p2p-endpoint" ) )
       my->endpoint = fc::ip::endpoint::from_string( options.at( "p2p-endpoint" ).as< string >() );
 
-   my->user_agent = "Creativecoin Reference Implementation";
+   my->user_agent = "Crea Reference Implementation";
 
    if( options.count( "p2p-max-connections" ) )
       my->max_connections = options.at( "p2p-max-connections" ).as< uint32_t >();

@@ -1,8 +1,8 @@
 
 # Introduction
 
-In this document we derive the approximate integer square root function used by Creativecoin for the curation curve
-[here](https://github.com/creativecoin/creativecoin/issues/1052).
+In this document we derive the approximate integer square root function used by Crea for the curation curve
+[here](https://github.com/creativechain/crea/issues/1052).
 
 # MSB function
 

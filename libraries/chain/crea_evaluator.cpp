@@ -1965,7 +1965,7 @@ void hf20_vote_evaluator( const vote_operation& o, database& _db )
       util::flowbar_params params( util::get_effective_vesting_shares( a ), CREA_VOTING_FLOW_REGENERATION_SECONDS );
       a.voting_flowbar.regenerate_flow( params, now );
    });
-   FC_ASSERT( voter.voting_flowbar.current_flow > 0, "Account does not have enough mana to vote." );
+   FC_ASSERT( voter.voting_flowbar.current_flow > 0, "Account does not have enough flow to vote." );
 
    int16_t abs_weight = abs( o.weight );
    uint128_t used_flow = ( uint128_t( voter.voting_flowbar.current_flow ) * abs_weight * 60 * 60 * 24 ) / CREA_100_PERCENT;
@@ -1982,7 +1982,7 @@ void hf20_vote_evaluator( const vote_operation& o, database& _db )
 
    used_flow = ( used_flow + max_vote_denom - 1 ) / max_vote_denom;
    wlog("used_flow: ${mvd}", ("mvd", used_flow.to_uint64()));
-   FC_ASSERT( voter.voting_flowbar.has_flow( used_flow.to_uint64() ), "Account does not have enough mana to vote." );
+   FC_ASSERT( voter.voting_flowbar.has_flow( used_flow.to_uint64() ), "Account does not have enough flow to vote." );
 
    int64_t abs_rshares = used_flow.to_uint64();
 
@@ -3044,14 +3044,14 @@ void delegate_vesting_shares_evaluator::do_apply( const delegate_vesting_shares_
 
       available_shares = asset( delegator.voting_flowbar.current_flow, VESTS_SYMBOL );
 
-      // Assume delegated VESTS are used first when consuming mana. You cannot delegate received vesting shares
+      // Assume delegated VESTS are used first when consuming flow. You cannot delegate received vesting shares
       available_shares.amount = std::min( available_shares.amount, max_flow - delegator.received_vesting_shares.amount );
 
       if( delegator.next_vesting_withdrawal < fc::time_point_sec::maximum()
          && delegator.to_withdraw - delegator.withdrawn > delegator.vesting_withdraw_rate.amount )
       {
          /*
-         current voting mana does not include the current week's power down:
+         current voting flow does not include the current week's power down:
 
          std::min(
             account.vesting_withdraw_rate.amount.value,           // Weekly amount
@@ -3089,7 +3089,7 @@ void delegate_vesting_shares_evaluator::do_apply( const delegate_vesting_shares_
    // If delegation doesn't exist, create it
    if( delegation == nullptr )
    {
-      FC_ASSERT( available_shares >= op.vesting_shares, "Account ${acc} does not have enough mana to delegate. required: ${r} available: ${a}",
+      FC_ASSERT( available_shares >= op.vesting_shares, "Account ${acc} does not have enough flow to delegate. required: ${r} available: ${a}",
          ("acc", op.delegator)("r", op.vesting_shares)("a", available_shares) );
       FC_ASSERT( op.vesting_shares >= min_delegation, "Account must delegate a minimum of ${v}", ("v", min_delegation) );
 
@@ -3129,7 +3129,7 @@ void delegate_vesting_shares_evaluator::do_apply( const delegate_vesting_shares_
       auto delta = op.vesting_shares - delegation->vesting_shares;
 
       FC_ASSERT( delta >= min_update, "Crea Energy increase is not enough of a difference. min_update: ${min}", ("min", min_update) );
-      FC_ASSERT( available_shares >= delta, "Account ${acc} does not have enough mana to delegate. required: ${r} available: ${a}",
+      FC_ASSERT( available_shares >= delta, "Account ${acc} does not have enough flow to delegate. required: ${r} available: ${a}",
          ("acc", op.delegator)("r", delta)("a", available_shares) );
 
       _db.modify( delegator, [&]( account_object& a )

@@ -12,6 +12,7 @@ namespace crea { namespace protocol {
 template< uint16_t percent, uint64_t multiply_constant, uint64_t shift_constant >
 share_type calc_percent_reward( share_type current_supply )
 {
+   wlog("shift_constant=${s}, multiply_constant=${m}, percent=${p}", ("s", shift_constant)("m", multiply_constant)("p", percent));
    static_assert( shift_constant > 0, "shift constant cannot be zero" );
    static_assert( shift_constant < 128, "shift constant is implausibly large, re-check your arguments" );
    static_assert( multiply_constant > 256, "multiply constant is implausibly small, re-check your arguments" );
@@ -25,6 +26,8 @@ share_type calc_percent_reward( share_type current_supply )
    reward *= (percent * multiply_constant);      // compile-time constant, fits in 64 bits
    reward += half;                               // round to nearest whole integer instead of truncating
    reward >>= shift_constant;
+   wlog("reward=${r}", ("r", reward));
+
    return reward.to_uint64();
 }
 

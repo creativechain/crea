@@ -9,7 +9,6 @@
 #include <crea/plugins/follow_api/follow_api.hpp>
 #include <crea/plugins/reputation_api/reputation_api.hpp>
 #include <crea/plugins/market_history_api/market_history_api.hpp>
-#include <crea/plugins/witness_api/witness_api.hpp>
 
 #include <crea/plugins/condenser_api/condenser_api_legacy_objects.hpp>
 
@@ -237,13 +236,6 @@ struct extended_account : public api_account_object
    extended_account(){}
    extended_account( const database_api::api_account_object& a ) :
       api_account_object( a ) {}
-
-   share_type                                               average_bandwidth;
-   share_type                                               lifetime_bandwidth;
-   time_point_sec                                           last_bandwidth_update;
-   share_type                                               average_market_bandwidth;
-   share_type                                               lifetime_market_bandwidth;
-   time_point_sec                                           last_market_bandwidth_update;
 
    legacy_asset                                             vesting_balance;  /// convert vesting_shares to vesting crea
    share_type                                               reputation = 0;
@@ -480,10 +472,6 @@ struct extended_dynamic_global_properties
 
    uint16_t          cbd_stop_percent = 0;
    uint16_t          cbd_start_percent = 0;
-
-   int32_t           average_block_size = 0;
-   int64_t           current_reserve_ratio = 1;
-   uint128_t         max_virtual_bandwidth = 0;
 };
 
 struct api_witness_object
@@ -1024,7 +1012,6 @@ DEFINE_API_ARGS( get_owner_history,                      vector< variant >,   ve
 DEFINE_API_ARGS( get_recovery_request,                   vector< variant >,   optional< database_api::api_account_recovery_request_object > )
 DEFINE_API_ARGS( get_escrow,                             vector< variant >,   optional< api_escrow_object > )
 DEFINE_API_ARGS( get_withdraw_routes,                    vector< variant >,   vector< database_api::api_withdraw_vesting_route_object > )
-DEFINE_API_ARGS( get_account_bandwidth,                  vector< variant >,   optional< witness::api_account_bandwidth_object > )
 DEFINE_API_ARGS( get_savings_withdraw_from,              vector< variant >,   vector< api_savings_withdraw_object > )
 DEFINE_API_ARGS( get_savings_withdraw_to,                vector< variant >,   vector< api_savings_withdraw_object > )
 DEFINE_API_ARGS( get_vesting_delegations,                vector< variant >,   vector< api_vesting_delegation_object > )
@@ -1119,7 +1106,6 @@ public:
       (get_recovery_request)
       (get_escrow)
       (get_withdraw_routes)
-      (get_account_bandwidth)
       (get_savings_withdraw_from)
       (get_savings_withdraw_to)
       (get_vesting_delegations)
@@ -1224,7 +1210,6 @@ FC_REFLECT( crea::plugins::condenser_api::api_account_object,
           )
 
 FC_REFLECT_DERIVED( crea::plugins::condenser_api::extended_account, (crea::plugins::condenser_api::api_account_object),
-            (average_bandwidth)(lifetime_bandwidth)(last_bandwidth_update)(average_market_bandwidth)(lifetime_market_bandwidth)(last_market_bandwidth_update)
             (vesting_balance)(reputation)(transfer_history)(market_history)(post_history)(vote_history)(other_history)(witness_votes)(tags_usage)(guest_bloggers)(open_orders)(comments)(feed)(blog)(recent_replies)(recommended) )
 
 FC_REFLECT( crea::plugins::condenser_api::api_comment_download_object,
@@ -1257,8 +1242,7 @@ FC_REFLECT( crea::plugins::condenser_api::extended_dynamic_global_properties,
             (total_reward_fund_crea)(total_reward_shares2)(pending_rewarded_vesting_shares)(pending_rewarded_vesting_crea)
             (cbd_interest_rate)(cbd_print_rate)
             (maximum_block_size)(current_aslot)(recent_slots_filled)(participation_count)(last_irreversible_block_num)(vote_power_reserve_rate)
-            (delegation_return_period)(reverse_auction_seconds)(cbd_stop_percent)(cbd_start_percent)
-            (average_block_size)(current_reserve_ratio)(max_virtual_bandwidth) )
+            (delegation_return_period)(reverse_auction_seconds)(cbd_stop_percent)(cbd_start_percent) )
 
 FC_REFLECT( crea::plugins::condenser_api::api_witness_object,
              (id)

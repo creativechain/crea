@@ -1,4 +1,5 @@
-file(GLOB HEADERS "include/crea/chain_plugin/*.hpp")
+
+file(GLOB HEADERS "include/crea/plugins/chain/*.hpp")
 add_library( chain_plugin
              chain_plugin.cpp
              ${HEADERS} )
@@ -20,4 +21,5 @@ install( TARGETS
    LIBRARY DESTINATION lib
    ARCHIVE DESTINATION lib
 )
-install( FILES ${HEADERS} DESTINATION "include/crea/chain_plugin" )
+
+install( FILES ${HEADERS} DESTINATION "include/crea/plugins/chain" )

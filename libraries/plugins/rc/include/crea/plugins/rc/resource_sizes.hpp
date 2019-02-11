@@ -16,10 +16,15 @@
 // 229
 // {"days":28}
 // 1940
+// {"days":7}
+// 525
 
 #define STATE_TRANSACTION_BYTE_SIZE               174
 #define STATE_TRANSFER_FROM_SAVINGS_BYTE_SIZE     229
 #define STATE_LIMIT_ORDER_BYTE_SIZE              1940
+#define STATE_COMMENT_VOTE_BYTE_SIZE              525
+
+#define EXEC_FOLLOW_CUSTOM_OP_SCALE                20
 
 namespace crea { namespace plugins { namespace rc {
 
@@ -46,7 +51,7 @@ struct state_object_size_info
    int64_t comment_object_beneficiaries_member_size = 18*STATE_BYTES_SCALE;
 
    // comment_vote_object
-   int64_t comment_vote_object_base_size      = 47     *STATE_BYTES_SCALE;
+   int64_t comment_vote_object_base_size      = 47     *STATE_COMMENT_VOTE_BYTE_SIZE;
 
    // convert_request_object
    int64_t convert_request_object_base_size   = 48     *STATE_BYTES_SCALE;
@@ -99,9 +104,9 @@ struct operation_exec_info
    int64_t comment_options_operation_exec_time                 =  13200;
    int64_t convert_operation_exec_time                         =  15700;
    int64_t create_claimed_account_operation_exec_time          =  57700;
-   int64_t custom_operation_exec_time                          = 228000;
-   int64_t custom_json_operation_exec_time                     = 228000;
-   int64_t custom_binary_operation_exec_time                   = 228000;
+   int64_t custom_operation_exec_time                          =  11400;
+   int64_t custom_json_operation_exec_time                     =  11400;
+   int64_t custom_binary_operation_exec_time                   =  11400;
    int64_t decline_voting_rights_operation_exec_time           =   5300;
    int64_t delegate_vesting_shares_operation_exec_time         =  19900;
    int64_t delete_comment_operation_exec_time                  =  51100;

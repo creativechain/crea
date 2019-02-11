@@ -6,7 +6,7 @@
 namespace crea { namespace protocol {
 
 /*
- * This class represents the basic versioning scheme of the Creativecoin blockchain.
+ * This class represents the basic versioning scheme of the Crea blockchain.
  * All versions are a triple consisting of a major version, hardfork version, and release version.
  * It allows easy comparison between versions. A version is a read only object.
  */
@@ -25,9 +25,9 @@ struct version
 
    operator fc::string()const;
 
-   uint32_t major() { return ( v_num & 0XFF000000 ) >> 24; }
-   uint32_t minor() { return ( v_num & 0x00FF0000 ) >> 16; }
-   uint32_t rev()   { return   v_num & 0x0000FFFF; }
+   uint32_t major_v() { return ( v_num & 0XFF000000 ) >> 24; }
+   uint32_t minor_v() { return ( v_num & 0x00FF0000 ) >> 16; }
+   uint32_t rev_v()   { return   v_num & 0x0000FFFF; }
 
    uint32_t v_num = 0;
 };

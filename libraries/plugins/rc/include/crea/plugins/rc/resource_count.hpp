@@ -1,16 +1,13 @@
 #pragma once
 
-#include <crea/protocol/types.hpp>
+#include <crea/protocol/transaction.hpp>
+#include <crea/protocol/optional_automated_actions.hpp>
 
 #include <fc/int_array.hpp>
 #include <fc/reflect/reflect.hpp>
 #include <vector>
 
 #define CREA_NUM_RESOURCE_TYPES     5
-
-namespace crea { namespace protocol {
-struct signed_transaction;
-} } // crea::protocol
 
 namespace crea { namespace plugins { namespace rc {
 
@@ -32,6 +29,10 @@ struct count_resources_result
 
 void count_resources(
    const crea::protocol::signed_transaction& tx,
+   count_resources_result& result );
+
+void count_resources(
+   const crea::protocol::optional_automated_action&,
    count_resources_result& result );
 
 } } } // crea::plugins::rc

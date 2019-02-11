@@ -31,7 +31,7 @@ static const fc::string TEST3_256 = "773ea91e36800e46854db8ebd09181a72959098b3ef
 static const fc::string TEST3_512 = "fa73b0089d56a284efb0f0756c890be9b1b5dbdd8ee81a3655f83e33b2279d39"
                                     "bf3e848279a722c806b485a47e67c807b946a337bee8942674278859e13292fb";
 
-static const fc::string TEST4_KEY  = "0102030405060708090a0b0c0d0e0f10111213141516171819";
+static const fc::string TEST4_KEY  = "0102030405060701886a0b0c0d0e0f10111213141516171819";
 static const fc::string TEST4_DATA = "cdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcd"
                                      "cdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcd";
 static const fc::string TEST4_224 = "6c11506874013cac6a2abc1bb382627cec6a90d86efc012de7afec5a";

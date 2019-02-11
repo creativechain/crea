@@ -6,6 +6,7 @@ add_library( rc_plugin
              resource_count.cpp
              resource_user.cpp
              rc_curve.cpp
+             ${HEADERS}
            )
 
 target_link_libraries( rc_plugin chain_plugin block_data_export_plugin crea_chain crea_jsonball crea_protocol )

@@ -1,3 +1,5 @@
+#include <crea/chain/crea_fwd.hpp>
+
 #include <crea/plugins/block_log_info/block_log_info_plugin.hpp>
 #include <crea/plugins/block_log_info/block_log_info_objects.hpp>
 
@@ -163,6 +165,8 @@ void block_log_info_plugin::plugin_initialize( const boost::program_options::var
       {
          wlog( "print_interval_seconds set to value <= 0, if you don't need printing, consider disabling block_log_info_plugin entirely to improve performance" );
       }
+
+      appbase::app().get_plugin< chain::chain_plugin >().report_state_options( name(), fc::variant_object() );
    }
    FC_CAPTURE_AND_RETHROW()
 }

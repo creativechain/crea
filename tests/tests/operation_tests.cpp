@@ -10,7 +10,8 @@
 
 #include <crea/chain/util/reward.hpp>
 
-#include <crea/plugins/witness/witness_objects.hpp>
+#include <crea/plugins/rc/rc_objects.hpp>
+#include <crea/plugins/rc/resource_count.hpp>
 
 #include <fc/macros.hpp>
 #include <fc/crypto/digest.hpp>
@@ -3838,7 +3839,7 @@ BOOST_AUTO_TEST_CASE( escrow_transfer_validate )
       op.ratification_deadline = db->head_block_time() + 100;
       op.escrow_expiration = db->head_block_time() + 200;
 
-      BOOST_TEST_MESSAGE( "--- failure when sbd symbol != CBD" );
+      BOOST_TEST_MESSAGE( "--- failure when cbd symbol != CBD" );
       op.cbd_amount.symbol = CREA_SYMBOL;
       CREA_REQUIRE_THROW( op.validate(), fc::exception );
 
@@ -3852,13 +3853,13 @@ BOOST_AUTO_TEST_CASE( escrow_transfer_validate )
       op.fee.symbol = VESTS_SYMBOL;
       CREA_REQUIRE_THROW( op.validate(), fc::exception );
 
-      BOOST_TEST_MESSAGE( "--- failure when sbd == 0 and crea == 0" );
+      BOOST_TEST_MESSAGE( "--- failure when cbd == 0 and crea == 0" );
       op.fee.symbol = CREA_SYMBOL;
       op.cbd_amount.amount = 0;
       op.crea_amount.amount = 0;
       CREA_REQUIRE_THROW( op.validate(), fc::exception );
 
-      BOOST_TEST_MESSAGE( "--- failure when sbd < 0" );
+      BOOST_TEST_MESSAGE( "--- failure when cbd < 0" );
       op.cbd_amount.amount = -100;
       op.crea_amount.amount = 1000;
       CREA_REQUIRE_THROW( op.validate(), fc::exception );
@@ -3945,7 +3946,7 @@ BOOST_AUTO_TEST_CASE( escrow_transfer_apply )
       op.ratification_deadline = db->head_block_time() + 100;
       op.escrow_expiration = db->head_block_time() + 200;
 
-      BOOST_TEST_MESSAGE( "--- failure when from cannot cover sbd amount" );
+      BOOST_TEST_MESSAGE( "--- failure when from cannot cover cbd amount" );
       signed_transaction tx;
       tx.operations.push_back( op );
       tx.set_expiration( db->head_block_time() + CREA_MAX_TIME_UNTIL_EXPIRATION );
@@ -4632,18 +4633,18 @@ BOOST_AUTO_TEST_CASE( escrow_release_validate )
       CREA_REQUIRE_THROW( op.validate(), fc::exception );
 
 
-      BOOST_TEST_MESSAGE( "--- failure when sbd < 0" );
+      BOOST_TEST_MESSAGE( "--- failure when cbd < 0" );
       op.crea_amount.amount = 0;
       op.cbd_amount.amount = -1;
       CREA_REQUIRE_THROW( op.validate(), fc::exception );
 
 
-      BOOST_TEST_MESSAGE( "--- failure when crea == 0 and sbd == 0" );
+      BOOST_TEST_MESSAGE( "--- failure when crea == 0 and cbd == 0" );
       op.cbd_amount.amount = 0;
       CREA_REQUIRE_THROW( op.validate(), fc::exception );
 
 
-      BOOST_TEST_MESSAGE( "--- failure when sbd is not sbd symbol" );
+      BOOST_TEST_MESSAGE( "--- failure when cbd is not cbd symbol" );
       op.cbd_amount = ASSET( "1.000 TESTS" );
       CREA_REQUIRE_THROW( op.validate(), fc::exception );
 
@@ -4894,7 +4895,7 @@ BOOST_AUTO_TEST_CASE( escrow_release_apply )
       BOOST_REQUIRE( db->get_account( "bob" ).balance == ASSET( "0.100 TESTS" ) );
 
 
-      BOOST_TEST_MESSAGE( "--- failure when releasing more sbd than available" );
+      BOOST_TEST_MESSAGE( "--- failure when releasing more cbd than available" );
       op.crea_amount = ASSET( "1.000 TESTS" );
 
       tx.clear();
@@ -5908,59 +5909,6 @@ BOOST_AUTO_TEST_CASE( decline_voting_rights_apply )
    FC_LOG_AND_RETHROW()
 }
 
-BOOST_AUTO_TEST_CASE( account_bandwidth )
-{
-   try
-   {
-      BOOST_TEST_MESSAGE( "Testing: account_bandwidth" );
-      ACTORS( (alice)(bob) )
-      generate_block();
-      vest( "alice", ASSET( "10.000 TESTS" ) );
-      fund( "alice", ASSET( "10.000 TESTS" ) );
-      vest( "bob", ASSET( "10.000 TESTS" ) );
-
-      generate_block();
-      db->skip_transaction_delta_check = false;
-
-      BOOST_TEST_MESSAGE( "--- Test first tx in block" );
-
-      signed_transaction tx;
-      transfer_operation op;
-
-      op.from = "alice";
-      op.to = "bob";
-      op.amount = ASSET( "1.000 TESTS" );
-
-      tx.operations.push_back( op );
-      tx.set_expiration( db->head_block_time() + CREA_MAX_TIME_UNTIL_EXPIRATION );
-      tx.sign( alice_private_key, db->get_chain_id() );
-
-      db->push_transaction( tx, 0 );
-
-      auto last_bandwidth_update = db->get< plugins::witness::account_bandwidth_object, plugins::witness::by_account_bandwidth_type >( boost::make_tuple( "alice", plugins::witness::bandwidth_type::market ) ).last_bandwidth_update;
-      auto average_bandwidth = db->get< plugins::witness::account_bandwidth_object, plugins::witness::by_account_bandwidth_type >( boost::make_tuple( "alice", plugins::witness::bandwidth_type::market ) ).average_bandwidth;
-      BOOST_REQUIRE( last_bandwidth_update == db->head_block_time() );
-      BOOST_REQUIRE( average_bandwidth == fc::raw::pack_size( tx ) * 10 * CREA_BANDWIDTH_PRECISION );
-      auto total_bandwidth = average_bandwidth;
-
-      BOOST_TEST_MESSAGE( "--- Test second tx in block" );
-
-      op.amount = ASSET( "0.100 TESTS" );
-      tx.clear();
-      tx.operations.push_back( op );
-      tx.set_expiration( db->head_block_time() + CREA_MAX_TIME_UNTIL_EXPIRATION );
-      tx.sign( alice_private_key, db->get_chain_id() );
-
-      db->push_transaction( tx, 0 );
-
-      last_bandwidth_update = db->get< plugins::witness::account_bandwidth_object, plugins::witness::by_account_bandwidth_type >( boost::make_tuple( "alice", plugins::witness::bandwidth_type::market ) ).last_bandwidth_update;
-      average_bandwidth = db->get< plugins::witness::account_bandwidth_object, plugins::witness::by_account_bandwidth_type >( boost::make_tuple( "alice", plugins::witness::bandwidth_type::market ) ).average_bandwidth;
-      BOOST_REQUIRE( last_bandwidth_update == db->head_block_time() );
-      BOOST_REQUIRE( average_bandwidth == total_bandwidth + fc::raw::pack_size( tx ) * 10 * CREA_BANDWIDTH_PRECISION );
-   }
-   FC_LOG_AND_RETHROW()
-}
-
 BOOST_AUTO_TEST_CASE( claim_reward_balance_validate )
 {
    try
@@ -6897,6 +6845,7 @@ BOOST_AUTO_TEST_CASE( witness_set_properties_apply )
       // Setting cbd_interest_rate
       prop_op.props.erase( "maximim_block_size" );
       prop_op.props[ "cbd_interest_rate" ] = fc::raw::pack_to_vector( 700 );
+
       tx.clear();
       tx.operations.push_back( prop_op );
       tx.sign( signing_key, db->get_chain_id() );
@@ -7328,6 +7277,107 @@ BOOST_AUTO_TEST_CASE( create_claimed_account_apply )
 
       BOOST_REQUIRE( db->get_account( "charlie" ).recovery_account == account_name_type() );
       validate_database();
+   }
+   FC_LOG_AND_RETHROW()
+}
+
+BOOST_AUTO_TEST_CASE( account_auth_tests )
+{
+   try
+   {
+      ACTORS( (alice)(bob)(charlie) )
+      generate_block();
+
+      fund( "alice", ASSET( "20.000 TESTS" ) );
+      fund( "bob", ASSET( "20.000 TESTS" ) );
+      fund( "charlie", ASSET( "20.000 TESTS" ) );
+      vest( CREA_INIT_MINER_NAME, "alice" , ASSET( "10.000 TESTS" ) );
+      vest( CREA_INIT_MINER_NAME, "bob" , ASSET( "10.000 TESTS" ) );
+      vest( CREA_INIT_MINER_NAME, "charlie" , ASSET( "10.000 TESTS" ) );
+      generate_block();
+
+      private_key_type bob_active_private_key = bob_private_key;
+      private_key_type bob_posting_private_key = generate_private_key( "bob_posting" );
+      private_key_type charlie_active_private_key = charlie_private_key;
+      private_key_type charlie_posting_private_key = generate_private_key( "charlie_posting" );
+
+      db_plugin->debug_update( [=]( database& db )
+      {
+         db.modify( db.get< account_authority_object, by_account >( "alice"), [&]( account_authority_object& auth )
+         {
+            auth.active.add_authority( "bob", 1 );
+            auth.posting.add_authority( "charlie", 1 );
+         });
+
+         db.modify( db.get< account_authority_object, by_account >( "bob" ), [&]( account_authority_object& auth )
+         {
+            auth.posting = authority( 1, bob_posting_private_key.get_public_key(), 1 );
+         });
+
+         db.modify( db.get< account_authority_object, by_account >( "charlie" ), [&]( account_authority_object& auth )
+         {
+            auth.posting = authority( 1, charlie_posting_private_key.get_public_key(), 1 );
+         });
+      });
+
+      generate_block();
+
+      signed_transaction tx;
+      transfer_operation transfer;
+
+      transfer.from = "alice";
+      transfer.to = "bob";
+      transfer.amount = ASSET( "1.000 TESTS" );
+      tx.operations.push_back( transfer );
+      tx.set_expiration( db->head_block_time() + CREA_MAX_TIME_UNTIL_EXPIRATION );
+      tx.signatures.clear();
+      sign( tx, bob_active_private_key );
+      db->push_transaction( tx, 0 );
+
+      generate_block();
+      tx.set_expiration( db->head_block_time() + CREA_MAX_TIME_UNTIL_EXPIRATION );
+      tx.signatures.clear();
+      sign( tx, bob_posting_private_key );
+      CREA_REQUIRE_THROW( db->push_transaction( tx, 0 ), tx_missing_active_auth );
+
+      generate_block();
+      tx.set_expiration( db->head_block_time() + CREA_MAX_TIME_UNTIL_EXPIRATION );
+      tx.signatures.clear();
+      sign( tx, charlie_active_private_key );
+      CREA_REQUIRE_THROW( db->push_transaction( tx, 0 ), tx_missing_active_auth );
+
+      generate_block();
+      tx.set_expiration( db->head_block_time() + CREA_MAX_TIME_UNTIL_EXPIRATION );
+      tx.signatures.clear();
+      sign( tx, charlie_posting_private_key );
+      CREA_REQUIRE_THROW( db->push_transaction( tx, 0 ), tx_missing_active_auth );
+
+      custom_json_operation json;
+      json.required_posting_auths.insert( "alice" );
+      json.json = "{\"foo\":\"bar\"}";
+      tx.operations.clear();
+      tx.signatures.clear();
+      tx.operations.push_back( json );
+      sign( tx, bob_active_private_key );
+      CREA_REQUIRE_THROW( db->push_transaction( tx, 0 ), tx_missing_posting_auth );
+
+      generate_block();
+      tx.set_expiration( db->head_block_time() + CREA_MAX_TIME_UNTIL_EXPIRATION );
+      tx.signatures.clear();
+      sign( tx, bob_posting_private_key );
+      db->push_transaction( tx, 0 );
+
+      generate_block();
+      tx.set_expiration( db->head_block_time() + CREA_MAX_TIME_UNTIL_EXPIRATION );
+      tx.signatures.clear();
+      sign( tx, charlie_active_private_key );
+      CREA_REQUIRE_THROW( db->push_transaction( tx, 0 ), tx_missing_posting_auth );
+
+      generate_block();
+      tx.set_expiration( db->head_block_time() + CREA_MAX_TIME_UNTIL_EXPIRATION );
+      tx.signatures.clear();
+      sign( tx, charlie_posting_private_key );
+      db->push_transaction( tx, 0 );
    }
    FC_LOG_AND_RETHROW()
 }

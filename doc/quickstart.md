@@ -5,8 +5,8 @@ Quickstart
 Use docker:
 ```
 docker run \
-    -d -p 2001:2001 -p 8090:8090 --name cread-default \
-    --restart unless-stopped creativecoin/creativecoin
+    -d -p 1776:1776 -p 1886:1886 --name cread-default \
+    --restart unless-stopped creativechain/crea
 ```
 #### Low memory node?
 Above runs low memory node, which is suitable for:
@@ -18,9 +18,9 @@ For full api node use:
 ```
 docker run \
     --env USE_WAY_TOO_MUCH_RAM=1 --env USE_FULL_WEB_NODE=1 \
-    -d -p 2001:2001 -p 8090:8090 --name cread-full \
+    -d -p 1776:1776 -p 1886:1886 --name cread-full \
     --restart unless-stopped \
-    creativecoin/creativecoin
+    creativechain/crea
 ```
 ### Configure for your use case
 #### Full API node
@@ -44,7 +44,7 @@ This configuration exists in Docker with the following command
 docker run -d --env TRACK_ACCOUNT="yourexchangeid" \
     --name cread \
     --restart unless-stopped \
-    creativecoin/creativecoin
+    creativechain/crea
 ```
 
 ### Resources usage

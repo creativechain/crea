@@ -1,6 +1,6 @@
 # Please Read
 
-Please read these instructions before submitting issues to the Creativecoin GitHub repository. The issue tracker is for bugs and specific implementation discussion **only**. It should not be used for other purposes, as described below.
+Please read these instructions before submitting issues to the Crea GitHub repository. The issue tracker is for bugs and specific implementation discussion **only**. It should not be used for other purposes, as described below.
 
 ## Bug Reports
 
@@ -8,7 +8,7 @@ If there is an existing feature that is not working correctly, or a glitch in th
 
 ## Enhancement Suggestions
 
-Do **not** use the issue tracker to suggest enhancements or improvements to the platform. The best place for these discussions is on Creativechain.com. If there is a well vetted idea that has the support of the community that you feel should be considered by the development team, please email it to [sneak@creativecoin.com](mailto:sneak@creativecoin.com) for review.
+Do **not** use the issue tracker to suggest enhancements or improvements to the platform. The best place for these discussions is on Creativechain.com. If there is a well vetted idea that has the support of the community that you feel should be considered by the development team, please email it to [sneak@crea.com](mailto:sneak@creary.net) for review.
 
 ## Implementation Discussion
 
@@ -22,9 +22,9 @@ This is not the place to make suggestions for product improvement (please see th
 
 Please do a keyword search to see if there is already an existing issue before opening a new one.
 
-## Creativechain.com vs. Creativecoin Blockchain
+## Creativechain.com vs. Crea Blockchain
 
-This issue tracker is only intended to track issues for the Creativecoin blockchain. If the issue is with the Creativechain.com website, please open an issue in the [Creativechain.com Repository](https://github.com/creativecoin/creativecoin.com/).
+This issue tracker is only intended to track issues for the Crea blockchain. If the issue is with the Creativechain.com website, please open an issue in the [Creativechain.com Repository](https://github.com/creativechain/crea.com/).
 
 ## Pull Requests
 

@@ -47,11 +47,11 @@ A more detailed explanation of resource dynamics can be found [here](./devs/2018
 
 The maximum size of a single block in bytes. The value must be not less than `65536`.
 
-### sbd_interest_rate
+### cbd_interest_rate
 
 The annual interest rate paid to CBD holders. CBD interest is compounded on balance changes, no more than once every 30 days.
 
-### sbd_exchange_rate
+### cbd_exchange_rate
 
 The exchange rate for CREA/SDB to be used for printing CBD as rewards as well as CBD->CREA conversions.
 The actual price feed is the median of medians. Every round (21 blocks) the median exchange rate is pushed to a queue and the oldest is removed. The median value of the queue is used for any calculations.

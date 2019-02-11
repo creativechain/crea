@@ -60,7 +60,7 @@ struct wallet_data
 {
    vector<char>              cipher_keys; /** encrypted keys */
 
-   string                    ws_server = "ws://localhost:8090";
+   string                    ws_server = "ws://localhost:1886";
    string                    ws_user;
    string                    ws_password;
 };

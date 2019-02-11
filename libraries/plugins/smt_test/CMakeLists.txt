@@ -2,6 +2,7 @@ file(GLOB HEADERS "include/crea/plugins/smt_test/*.hpp")
 
 add_library( smt_test_plugin
              smt_test_plugin.cpp
+             ${HEADERS}
            )
 
 target_link_libraries( smt_test_plugin chain_plugin crea_chain crea_protocol )

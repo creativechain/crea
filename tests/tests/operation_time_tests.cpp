@@ -135,12 +135,12 @@ BOOST_AUTO_TEST_CASE( comment_payout_equalize )
       for( const auto& author : authors )
       {
          const account_object& a = db->get_account(author.name);
-         ilog( "${n} : ${crea} ${sbd}", ("n", author.name)("crea", a.reward_crea_balance)("sbd", a.reward_cbd_balance) );
+         ilog( "${n} : ${crea} ${cbd}", ("n", author.name)("crea", a.reward_crea_balance)("cbd", a.reward_cbd_balance) );
       }
       for( const auto& voter : voters )
       {
          const account_object& a = db->get_account(voter.name);
-         ilog( "${n} : ${crea} ${sbd}", ("n", voter.name)("crea", a.reward_crea_balance)("sbd", a.reward_cbd_balance) );
+         ilog( "${n} : ${crea} ${cbd}", ("n", voter.name)("crea", a.reward_crea_balance)("cbd", a.reward_cbd_balance) );
       }
       */
 

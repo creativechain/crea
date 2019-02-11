@@ -1,3 +1,6 @@
+
+#include <crea/chain/crea_fwd.hpp>
+
 #include <crea/plugins/tags/tags_plugin.hpp>
 
 #include <crea/protocol/config.hpp>
@@ -496,7 +499,10 @@ void tags_plugin::set_program_options(
 {
    cfg.add_options()
       ("tags-start-promoted", boost::program_options::value< uint32_t >()->default_value( 0 ), "Block time (in epoch seconds) when to start calculating promoted content. Should be 1 week prior to current time." )
-      ("tags-skip-startup-update", bpo::bool_switch()->default_value(false), "Skip updating tags on startup. Can safely be skipped when starting a previously running node. Should not be skipped when reindexing.")
+      ("tags-skip-startup-update", bpo::value<bool>()->default_value(false), "Skip updating tags on startup. Can safely be skipped when starting a previously running node. Should not be skipped when reindexing.")
+      ;
+   cli.add_options()
+      ("tags-skip-startup-update", bpo::bool_switch()->default_value(false), "Skip updating tags on startup. Can safely be skipped when starting a previously running node. Should not be skipped when reindexing." )
       ;
 }
 
@@ -529,11 +535,16 @@ void tags_plugin::plugin_initialize(const boost::program_options::variables_map&
    add_plugin_index< tag_stats_index         >( my->_db );
    add_plugin_index< author_tag_stats_index  >( my->_db );
 
+   fc::mutable_variant_object state_opts;
+
    if( options.count( "tags-start-promoted" ) )
    {
       my->_promoted_start_time = fc::time_point_sec( options[ "tags-start-promoted" ].as< uint32_t >() );
+      state_opts["tags-start-promoted"] = my->_promoted_start_time;
       idump( (my->_promoted_start_time) );
    }
+
+   appbase::app().get_plugin< chain::chain_plugin >().report_state_options( name(), state_opts );
 }
 
 

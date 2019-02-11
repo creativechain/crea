@@ -1,15 +1,19 @@
-file(GLOB HEADERS "include/crea/chain/*.hpp" "include/crea/chain/util/*.hpp")
+file(GLOB HEADERS "include/crea/chain/*.hpp" "include/crea/chain/util/*.hpp" "include/crea/chain/smt_objects/*.hpp")
 
 ## SORT .cpp by most likely to change / break compile
 add_library( crea_chain
 
              # As database takes the longest to compile, start it first
              database.cpp
+             index.cpp
 
              smt_evaluator.cpp
              smt_objects/smt_market_maker.cpp
+             smt_objects/nai_pool.cpp
              crea_evaluator.cpp
              crea_objects.cpp
+             required_action_evaluator.cpp
+             optional_action_evaluator.cpp
 
              witness_schedule.cpp
              fork_database.cpp
@@ -23,6 +27,7 @@ add_library( crea_chain
              util/reward.cpp
              util/impacted.cpp
              util/advanced_benchmark_dumper.cpp
+             util/smt_token.cpp
 
              ${HEADERS}
            )

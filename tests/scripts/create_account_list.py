@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Create list of all creativecoin accounts in file.
+Create list of all crea accounts in file.
 Usage: create_account_list.py <server_address> <output_filename>
 """
 import sys

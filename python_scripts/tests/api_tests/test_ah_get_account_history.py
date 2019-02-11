@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
   Usage: __name__ jobs url1 url2 [working_dir [accounts_file]]
-    Example: script_name 4 http://127.0.0.1:8090 http://127.0.0.1:8091 [get_account_history [accounts]]
+    Example: script_name 4 http://127.0.0.1:1886 http://127.0.0.1:1996 [get_account_history [accounts]]
     set jobs to 0 if you want use all processors
     url1 is reference url for list_accounts
 """
@@ -28,7 +28,7 @@ errors = 0
 def main():
   if len( sys.argv ) < 4 or len( sys.argv ) > 6:
     print( "Usage: __name__ jobs url1 url2 [working_dir [accounts_file]]" )
-    print( "  Example: __name__ 4 http://127.0.0.1:8090 http://127.0.0.1:8091 [get_account_history [accounts]]" )
+    print( "  Example: __name__ 4 http://127.0.0.1:1886 http://127.0.0.1:1996 [get_account_history [accounts]]" )
     print( "  set jobs to 0 if you want use all processors" )
     print( "  url1 is reference url for list_accounts" )
     exit ()

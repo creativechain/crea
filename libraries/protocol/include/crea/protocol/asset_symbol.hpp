@@ -4,11 +4,15 @@
 #include <crea/protocol/types_fwd.hpp>
 
 #define CREA_ASSET_SYMBOL_PRECISION_BITS    4
+#define CREA_ASSET_CONTROL_BITS             1
+#define CREA_NAI_SHIFT                      ( CREA_ASSET_SYMBOL_PRECISION_BITS + CREA_ASSET_CONTROL_BITS )
 #define SMT_MAX_NAI                          99999999
 #define SMT_MIN_NAI                          1
 #define SMT_MIN_NON_RESERVED_NAI             10000000
 #define CREA_ASSET_SYMBOL_NAI_LENGTH        10
 #define CREA_ASSET_SYMBOL_NAI_STRING_LENGTH ( CREA_ASSET_SYMBOL_NAI_LENGTH + 2 )
+#define SMT_MAX_NAI_POOL_COUNT               10
+#define SMT_MAX_NAI_GENERATION_TRIES         100
 
 #define CREA_PRECISION_CBD   (3)
 #define CREA_PRECISION_CREA (3)
@@ -21,11 +25,11 @@
 #define CREA_NAI_VESTS (3)
 
 #define CREA_ASSET_NUM_CBD \
-  (((SMT_MAX_NAI + CREA_NAI_CBD)   << CREA_ASSET_SYMBOL_PRECISION_BITS) | CREA_PRECISION_CBD)
+  (uint32_t(((SMT_MAX_NAI + CREA_NAI_CBD)   << CREA_NAI_SHIFT) | CREA_PRECISION_CBD))
 #define CREA_ASSET_NUM_CREA \
-  (((SMT_MAX_NAI + CREA_NAI_CREA) << CREA_ASSET_SYMBOL_PRECISION_BITS) | CREA_PRECISION_CREA)
+  (uint32_t(((SMT_MAX_NAI + CREA_NAI_CREA) << CREA_NAI_SHIFT) | CREA_PRECISION_CREA))
 #define CREA_ASSET_NUM_VESTS \
-  (((SMT_MAX_NAI + CREA_NAI_VESTS) << CREA_ASSET_SYMBOL_PRECISION_BITS) | CREA_PRECISION_VESTS)
+  (uint32_t(((SMT_MAX_NAI + CREA_NAI_VESTS) << CREA_NAI_SHIFT) | CREA_PRECISION_VESTS))
 
 #ifdef IS_TEST_NET
 
@@ -51,6 +55,9 @@
 #define SMT_ASSET_NUM_CONTROL_MASK     0x10
 #define SMT_ASSET_NUM_VESTING_MASK     0x20
 
+#define ASSET_SYMBOL_NAI_KEY      "nai"
+#define ASSET_SYMBOL_DECIMALS_KEY "decimals"
+
 namespace crea { namespace protocol {
 
 class asset_symbol_type
@@ -62,7 +69,7 @@ class asset_symbol_type
          smt_nai_space = 2
       };
 
-      asset_symbol_type() {}
+      explicit operator uint32_t() { return to_nai(); }
 
       // buf must have space for CREA_ASSET_SYMBOL_MAX_LENGTH+1
       static asset_symbol_type from_string( const std::string& str );
@@ -72,6 +79,7 @@ class asset_symbol_type
       static uint32_t asset_num_from_nai( uint32_t nai, uint8_t decimal_places );
       static asset_symbol_type from_nai( uint32_t nai, uint8_t decimal_places )
       {   return from_asset_num( asset_num_from_nai( nai, decimal_places ) );          }
+      static uint8_t damm_checksum_8digit(uint32_t value);
 
       std::string to_string()const;
 
@@ -104,7 +112,7 @@ class asset_symbol_type
 
       asset_symbol_space space()const;
       uint8_t decimals()const
-      {  return uint8_t( asset_num & 0x0F );    }
+      {  return uint8_t( asset_num & SMT_ASSET_NUM_PRECISION_MASK );    }
       void validate()const;
 
       friend bool operator == ( const asset_symbol_type& a, const asset_symbol_type& b )
@@ -173,7 +181,7 @@ inline void pack( Stream& s, const crea::protocol::asset_symbol_type& sym )
 }
 
 template< typename Stream >
-inline void unpack( Stream& s, crea::protocol::asset_symbol_type& sym )
+inline void unpack( Stream& s, crea::protocol::asset_symbol_type& sym, uint32_t )
 {
    uint64_t ser = 0;
    s.read( (char*) &ser, 4 );
@@ -207,20 +215,34 @@ inline void to_variant( const crea::protocol::asset_symbol_type& sym, fc::varian
 {
    try
    {
-      std::vector< variant > v( 2 );
-      v[0] = sym.decimals();
-      v[1] = sym.to_nai_string();
+      mutable_variant_object o;
+         o( ASSET_SYMBOL_NAI_KEY, sym.to_nai_string() )
+          ( ASSET_SYMBOL_DECIMALS_KEY, sym.decimals() );
+      var = std::move( o );
    } FC_CAPTURE_AND_RETHROW()
 }
 
 inline void from_variant( const fc::variant& var, crea::protocol::asset_symbol_type& sym )
 {
+   using crea::protocol::asset_symbol_type;
+
    try
    {
-      auto v = var.as< std::vector< variant > >();
-      FC_ASSERT( v.size() == 2, "Expected tuple of length 2." );
+      FC_ASSERT( var.is_object(), "Asset symbol is expected to be an object." );
 
-      sym = crea::protocol::asset_symbol_type::from_nai_string( v[1].as< std::string >().c_str(), v[0].as< uint8_t >() );
+      auto& o = var.get_object();
+
+      auto nai = o.find( ASSET_SYMBOL_NAI_KEY );
+      FC_ASSERT( nai != o.end(), "Expected key '${key}'.", ("key", ASSET_SYMBOL_NAI_KEY) );
+      FC_ASSERT( nai->value().is_string(), "Expected a string type for value '${key}'.", ("key", ASSET_SYMBOL_NAI_KEY) );
+
+      auto decimals = o.find( ASSET_SYMBOL_DECIMALS_KEY );
+      FC_ASSERT( decimals != o.end(), "Expected key '${key}'.", ("key", ASSET_SYMBOL_DECIMALS_KEY) );
+      FC_ASSERT( decimals->value().is_uint64(), "Expected an unsigned integer type for value '${key}'.", ("key", ASSET_SYMBOL_DECIMALS_KEY) );
+      FC_ASSERT( decimals->value().as_uint64() <= CREA_ASSET_MAX_DECIMALS,
+         "Expected decimals to be less than or equal to ${num}", ("num", CREA_ASSET_MAX_DECIMALS) );
+
+      sym = asset_symbol_type::from_nai_string( nai->value().as_string().c_str(), decimals->value().as< uint8_t >() );
    } FC_CAPTURE_AND_RETHROW()
 }
 

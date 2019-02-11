@@ -6,7 +6,7 @@ popd () { command popd "$@" > /dev/null; }
 
 function print_help_and_quit {
    echo Usage: jobs test_cread_path ref_cread_path test_work_path ref_work_path block_limit [--dont-copy-config]
-   echo Example: 16 ~/creativecoin/1/cread ~/creativecoin/2/cread ~/creativecoin/1/wdir ~/creativecoin/2/wdir 5000000
+   echo Example: 16 ~/crea/1/cread ~/crea/2/cread ~/crea/1/wdir ~/crea/2/wdir 5000000
    exit -1
 }
 
@@ -28,8 +28,8 @@ PY_SCRIPT_DIR=../../api_tests
 REPLAY_SCRIPT=run_replay.sh
 NODE_SCRIPT=open_node.sh
 NODE_ADDRESS=0.0.0.0
-TEST_PORT=8090
-REF_PORT=8091
+TEST_PORT=1886
+REF_PORT=1996
 TEST_NODE=$NODE_ADDRESS:$TEST_PORT
 REF_NODE=$NODE_ADDRESS:$REF_PORT
 TEST_NODE_OPT=--webserver-http-endpoint=$TEST_NODE

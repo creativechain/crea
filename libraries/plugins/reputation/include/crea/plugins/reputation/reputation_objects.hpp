@@ -3,6 +3,10 @@
 
 #include <boost/multi_index/composite_key.hpp>
 
+namespace crea { namespace chain {
+struct by_account;
+} }
+
 namespace crea { namespace plugins { namespace reputation {
 
 using namespace std;
@@ -39,10 +43,6 @@ class reputation_object : public object< reputation_object_type, reputation_obje
 
 typedef oid< reputation_object > reputation_id_type;
 
-
-struct by_id;
-struct by_account;
-
 typedef multi_index_container<
    reputation_object,
    indexed_by<
@@ -54,7 +54,6 @@ typedef multi_index_container<
 
 
 } } } // crea::plugins::reputation
-
 
 FC_REFLECT( crea::plugins::reputation::reputation_object, (id)(account)(reputation) )
 CHAINBASE_SET_INDEX_TYPE( crea::plugins::reputation::reputation_object, crea::plugins::reputation::reputation_index )

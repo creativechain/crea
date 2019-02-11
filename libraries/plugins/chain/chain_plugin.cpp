@@ -1,5 +1,6 @@
 #include <crea/chain/database_exceptions.hpp>
 
+#include <crea/plugins/chain/abstract_block_producer.hpp>
 #include <crea/plugins/chain/chain_plugin.hpp>
 #include <crea/plugins/statsd/utility.hpp>
 
@@ -89,7 +90,12 @@ class chain_plugin_impl
       boost::lockfree::queue< write_context* > write_queue;
       int16_t                          write_lock_hold_time = 500;
 
+      vector< string >                 loaded_plugins;
+      fc::mutable_variant_object       plugin_state_opts;
+
       database  db;
+      std::string block_generator_registrant;
+      std::shared_ptr< abstract_block_producer > block_generator;
 };
 
 struct write_request_visitor
@@ -99,6 +105,7 @@ struct write_request_visitor
    database* db;
    uint32_t  skip = 0;
    fc::optional< fc::exception >* except;
+   std::shared_ptr< abstract_block_producer > block_generator;
 
    typedef bool result_type;
 
@@ -156,8 +163,11 @@ struct write_request_visitor
 
       try
       {
+         if( !block_generator )
+            FC_THROW_EXCEPTION( chain_exception, "Received a generate block request, but no block generator has been registered." );
+
          STATSD_START_TIMER( "chain", "write_time", "generate_block", 1.0f )
-         req->block = db->generate_block(
+         req->block = block_generator->generate_block(
             req->when,
             req->witness_owner,
             req->block_signing_private_key,
@@ -203,6 +213,7 @@ void chain_plugin_impl::start_write_processing()
       fc::time_point_sec start = fc::time_point::now();
       write_request_visitor req_visitor;
       req_visitor.db = &db;
+      req_visitor.block_generator = block_generator;
 
       request_promise_visitor prom_visitor;
 
@@ -536,6 +547,12 @@ void chain_plugin::plugin_shutdown()
    ilog("database closed successfully");
 }
 
+void chain_plugin::report_state_options( const string& plugin_name, const fc::variant_object& opts )
+{
+   my->loaded_plugins.push_back( plugin_name );
+   my->plugin_state_opts( opts );
+}
+
 bool chain_plugin::accept_block( const crea::chain::signed_block& block, bool currently_syncing, uint32_t skip )
 {
    if (currently_syncing && block.block_num() % 10000 == 0) {
@@ -628,6 +645,17 @@ void chain_plugin::check_time_in_block( const crea::chain::signed_block& block )
    uint64_t max_accept_time = now.sec_since_epoch();
    max_accept_time += my->allow_future_time;
    FC_ASSERT( block.timestamp.sec_since_epoch() <= max_accept_time );
+}
+
+void chain_plugin::register_block_generator( const std::string& plugin_name, std::shared_ptr< abstract_block_producer > block_producer )
+{
+   FC_ASSERT( get_state() == appbase::abstract_plugin::state::initialized, "Can only register a block generator when the chain_plugin is initialized." );
+
+   if ( my->block_generator )
+      wlog( "Overriding a previously registered block generator by: ${registrant}", ("registrant", my->block_generator_registrant) );
+
+   my->block_generator_registrant = plugin_name;
+   my->block_generator = block_producer;
 }
 
 } } } // namespace crea::plugis::chain::chain_apis

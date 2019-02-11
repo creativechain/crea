@@ -140,7 +140,7 @@ chown -R cread:cread $HOME/*
 
 # let's get going
 cp /etc/nginx/healthcheck.conf.template /etc/nginx/healthcheck.conf
-echo server 127.0.0.1:8091\; >> /etc/nginx/healthcheck.conf
+echo server 127.0.0.1:1996\; >> /etc/nginx/healthcheck.conf
 echo } >> /etc/nginx/healthcheck.conf
 rm /etc/nginx/sites-enabled/default
 cp /etc/nginx/healthcheck.conf /etc/nginx/sites-enabled/default
@@ -148,9 +148,9 @@ cp /etc/nginx/healthcheck.conf /etc/nginx/sites-enabled/default
 service nginx restart
 exec chpst -ucread \
     $CREAD \
-        --webserver-ws-endpoint=127.0.0.1:8091 \
-        --webserver-http-endpoint=127.0.0.1:8091 \
-        --p2p-endpoint=0.0.0.0:2001 \
+        --webserver-ws-endpoint=127.0.0.1:1996 \
+        --webserver-http-endpoint=127.0.0.1:1996 \
+        --p2p-endpoint=0.0.0.0:1776 \
         --data-dir=$HOME \
         $ARGS \
         $CREAD_EXTRA_OPTS \

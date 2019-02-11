@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
   Usage: __name__ jobs url1 url2 [nr_cycles [working_dir [comments_file]]]
-    Example: script_name 4 http://127.0.0.1:8090 http://127.0.0.1:8091 [20 my_comments_data_dir [comments]]
+    Example: script_name 4 http://127.0.0.1:1886 http://127.0.0.1:1996 [20 my_comments_data_dir [comments]]
     by default: nr_cycles = 3; set nr_cycles to 0 if you want to use all comments
     set jobs to 0 if you want use all processors
     url1 is reference url for list_comments
@@ -35,7 +35,7 @@ def future_end_cb(future):
 def main():
   if len( sys.argv ) < 4 or len( sys.argv ) > 7:
     print( "Usage: __name__ jobs url1 url2 [nr_cycles [working_dir [comments_file]]]" )
-    print( "  Example: __name__ 4 http://127.0.0.1:8090 http://127.0.0.1:8091 [ 20 my_comments_data_dir [comments]]" )
+    print( "  Example: __name__ 4 http://127.0.0.1:1886 http://127.0.0.1:1996 [ 20 my_comments_data_dir [comments]]" )
     print( "  by default: nr_cycles = 3; set nr_cycles to 0 if you want to use all comments )" )
     print( "  set jobs to 0 if you want use all processors" )
     print( "  url1 is reference url for list_comments" )

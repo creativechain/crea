@@ -165,20 +165,16 @@ FC_REFLECT( crea::plugins::market_history::bucket_object_details,
             (open)
             (close)
             (volume) )
-
-#if defined CREA_ENABLE_SMT
+            
 FC_REFLECT( crea::plugins::market_history::bucket_object,
                      (id)
                      (open)(seconds)
-                     (crea)(symbol)(non_crea)
-         )
-#else
-FC_REFLECT( crea::plugins::market_history::bucket_object,
-                     (id)
-                     (open)(seconds)
-                     (crea)(non_crea)
-         )
+                     (crea)
+#ifdef CREA_ENABLE_SMT
+                     (symbol)
 #endif
+                     (non_crea)
+         )
 
 CHAINBASE_SET_INDEX_TYPE( crea::plugins::market_history::bucket_object, crea::plugins::market_history::bucket_index )
 

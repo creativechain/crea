@@ -1,7 +1,7 @@
 #pragma once
 #include <appbase/application.hpp>
 
-#include <creativecoin/plugins/json_rpc/json_rpc_plugin.hpp>
+#include <crea/plugins/json_rpc/json_rpc_plugin.hpp>
 
 #define CREA_EXAMPLE_API_PLUGIN_NAME "example_api"
 

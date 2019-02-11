@@ -51,7 +51,7 @@ RUN \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* && \
     pip3 install gcovr
 
-ADD . /usr/local/src/creativecoin
+ADD . /usr/local/src/crea
 
 RUN \
     if [ "$BUILD_STEP" = "1" ] || [ ! "$BUILD_STEP" ] ; then \
@@ -70,10 +70,10 @@ RUN \
     ./tests/chain_test && \
     ./tests/plugin_test && \
     ./programs/util/test_fixed_string && \
-    cd /usr/local/src/creativecoin && \
+    cd /usr/local/src/crea && \
     doxygen && \
     PYTHONPATH=programs/build_helpers \
-    python3 -m creativecoin_build_helpers.check_reflect && \
+    python3 -m crea_build_helpers.check_reflect && \
     programs/build_helpers/get_config_check.sh && \
     rm -rf /usr/local/src/crea/build ; \
     fi
@@ -99,10 +99,10 @@ RUN \
     ./tests/chain_test && \
     ./tests/plugin_test && \
     ./programs/util/test_fixed_string && \
-    cd /usr/local/src/creativecoin && \
+    cd /usr/local/src/crea && \
     doxygen && \
     PYTHONPATH=programs/build_helpers \
-    python3 -m creativecoin_build_helpers.check_reflect && \
+    python3 -m crea_build_helpers.check_reflect && \
     programs/build_helpers/get_config_check.sh && \
     rm -rf /usr/local/src/crea/build ; \
     fi
@@ -236,9 +236,9 @@ RUN chown cread:cread -R /var/lib/cread
 VOLUME ["/var/lib/cread"]
 
 # rpc service:
-EXPOSE 8090
+EXPOSE 1886
 # p2p service:
-EXPOSE 2001
+EXPOSE 1776
 
 # add seednodes from documentation to image
 ADD doc/seednodes.txt /etc/cread/seednodes.txt
@@ -251,8 +251,8 @@ ADD contrib/config-for-broadcaster.ini /etc/cread/config-for-broadcaster.ini
 ADD contrib/config-for-ahnode.ini /etc/cread/config-for-ahnode.ini
 
 # add normal startup script that starts via sv
-ADD contrib/cread.run /usr/local/bin/creativecoin-sv-run.sh
-RUN chmod +x /usr/local/bin/creativecoin-sv-run.sh
+ADD contrib/cread.run /usr/local/bin/crea-sv-run.sh
+RUN chmod +x /usr/local/bin/crea-sv-run.sh
 
 # add nginx templates
 ADD contrib/cread.nginx.conf /etc/nginx/cread.nginx.conf

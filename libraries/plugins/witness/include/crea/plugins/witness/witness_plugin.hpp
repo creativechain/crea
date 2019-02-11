@@ -3,6 +3,7 @@
 #include <crea/plugins/chain/chain_plugin.hpp>
 #include <crea/plugins/p2p/p2p_plugin.hpp>
 #include <crea/plugins/rc/rc_plugin.hpp>
+#include <crea/plugins/witness/block_producer.hpp>
 
 #include <appbase/application.hpp>
 

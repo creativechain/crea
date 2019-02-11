@@ -78,15 +78,20 @@ struct flowbar
       return has_flow( (int64_t) flow_needed );
    }
 
-   void use_flow( int64_t flow_used )
+   void use_flow( int64_t flow_used, int64_t min_flow = std::numeric_limits< uint64_t >::min() )
    {
       current_flow = fc::signed_sat_sub( current_flow, flow_used );
+
+      if( current_flow < min_flow )
+      {
+         current_flow = min_flow;
+      }
    }
 
-   void use_flow( uint64_t flow_used )
+   void use_flow( uint64_t flow_used, int64_t min_flow = std::numeric_limits< uint64_t >::min() )
    {
       FC_ASSERT( flow_used <= std::numeric_limits< int64_t >::max() );
-      use_flow( (int64_t) flow_used );
+      use_flow( (int64_t) flow_used, min_flow );
    }
 };
 

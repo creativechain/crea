@@ -11,4 +11,4 @@ dependencies:
 
 test:
     override:
-        - time docker build --rm=false -t creativecoininc/creativecoin-test -f Dockerfile.test .
+        - time docker build --rm=false -t creainc/crea-test -f Dockerfile.test .

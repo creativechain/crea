@@ -1,7 +1,7 @@
 FROM phusion/baseimage:0.9.19
 
 ENV LANG=en_US.UTF-8
-ENV WDIR=/usr/local/creativecoin
+ENV WDIR=/usr/local/crea
 ENV SMOKETEST=$WDIR/smoketest
 
 RUN apt-get update
@@ -26,8 +26,8 @@ RUN rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 #logs_dir: location where non-empty logs will be copied
 VOLUME ["reference", "tested", "ref_blockchain", "tested_blockchain", "logs_dir", "run"]
 
-EXPOSE 8090
-EXPOSE 8091
+EXPOSE 1886
+EXPOSE 1996
 
 #CMD pyresttest
 CMD cd $SMOKETEST && \

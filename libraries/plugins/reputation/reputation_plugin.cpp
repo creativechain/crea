@@ -1,3 +1,6 @@
+
+#include <crea/chain/crea_fwd.hpp>
+
 #include <crea/plugins/reputation/reputation_plugin.hpp>
 #include <crea/plugins/reputation/reputation_objects.hpp>
 
@@ -203,6 +206,8 @@ void reputation_plugin::plugin_initialize( const boost::program_options::variabl
       my->_pre_apply_operation_conn = my->_db.add_pre_apply_operation_handler( [&]( const operation_notification& note ){ my->pre_operation( note ); }, *this, 0 );
       my->_post_apply_operation_conn = my->_db.add_post_apply_operation_handler( [&]( const operation_notification& note ){ my->post_operation( note ); }, *this, 0 );
       add_plugin_index< reputation_index        >( my->_db );
+
+      appbase::app().get_plugin< chain::chain_plugin >().report_state_options( name(), fc::variant_object() );
    }
    FC_CAPTURE_AND_RETHROW()
 }

@@ -671,9 +671,9 @@ namespace crea { namespace protocol {
    void claim_reward_balance_operation::validate()const
    {
       validate_account_name( account );
-      FC_ASSERT( is_asset_type( reward_crea, CREA_SYMBOL ), "Reward Creativecoin must be CREA" );
-      FC_ASSERT( is_asset_type( reward_cbd, CBD_SYMBOL ), "Reward Creativecoin must be CBD" );
-      FC_ASSERT( is_asset_type( reward_vests, VESTS_SYMBOL ), "Reward Creativecoin must be VESTS" );
+      FC_ASSERT( is_asset_type( reward_crea, CREA_SYMBOL ), "Reward Crea must be CREA" );
+      FC_ASSERT( is_asset_type( reward_cbd, CBD_SYMBOL ), "Reward Crea must be CBD" );
+      FC_ASSERT( is_asset_type( reward_vests, VESTS_SYMBOL ), "Reward Crea must be VESTS" );
       FC_ASSERT( reward_crea.amount >= 0, "Cannot claim a negative amount" );
       FC_ASSERT( reward_cbd.amount >= 0, "Cannot claim a negative amount" );
       FC_ASSERT( reward_vests.amount >= 0, "Cannot claim a negative amount" );

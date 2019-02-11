@@ -5,7 +5,7 @@
 From the root of the repository:
 
     docker build --rm=false \
-        -t creativecoininc/ci-test-environment:latest \
+        -t creainc/ci-test-environment:latest \
         -f tests/scripts/Dockerfile.testenv .
 
 ## To Run The Tests
@@ -13,13 +13,13 @@ From the root of the repository:
 (Also in the root of the repository.)
 
     docker build --rm=false \
-        -t creativecoininc/creativecoin-test \
+        -t creainc/crea-test \
         -f Dockerfile.test .
 
 ## To Troubleshoot Failing Tests
 
     docker run -ti \
-        creativecoininc/ci-test-environment:latest \
+        creainc/ci-test-environment:latest \
         /bin/bash
 
 Then, inside the container:
@@ -27,9 +27,9 @@ Then, inside the container:
 (These steps are taken from `/Dockerfile.test` in the
 repository root.)
 
-    git clone https://github.com/creativecoin/creativecoin.git \
-        /usr/local/src/creativecoin
-    cd /usr/local/src/creativecoin
+    git clone https://github.com/creativechain/crea.git \
+        /usr/local/src/crea
+    cd /usr/local/src/crea
     git checkout <branch> # e.g. 123-feature
     git submodule update --init --recursive
     mkdir build
@@ -42,6 +42,6 @@ repository root.)
         ..
     make -j$(nproc) chain_test
     ./tests/chain_test
-    cd /usr/local/src/creativecoin
+    cd /usr/local/src/crea
     doxygen
     programs/build_helpers/check_reflect.py

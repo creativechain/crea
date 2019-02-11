@@ -2,6 +2,7 @@ file(GLOB HEADERS "include/crea/plugins/account_history/*.hpp")
 
 add_library( account_history_plugin
              account_history_plugin.cpp
+             ${HEADERS}
            )
 
 target_link_libraries( account_history_plugin chain_plugin crea_chain crea_protocol crea_utilities )

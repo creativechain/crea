@@ -128,10 +128,8 @@ import math
 
 CREA_BLOCKS_PER_DAY = 20*60*24
 CREA_RD_DECAY_DENOM_SHIFT = 36
-CREA_BLOCKS_PER_DAY = 20*60*24
 CREA_MAX_WITNESSES = 21
 CREA_MAX_VOTED_WITNESSES_HF17 = 20
-
 f = lambda d : int(0.5 + (1 << CREA_RD_DECAY_DENOM_SHIFT) * (-math.expm1(-math.log(2.0) / (CREA_BLOCKS_PER_DAY * d * CREA_MAX_VOTED_WITNESSES_HF17 / CREA_MAX_WITNESSES))))
 print("A 5-day half-life corresponds to a decay constant of", f(5))
 ```
@@ -177,13 +175,13 @@ divided that way?  It has to do with the consequences of violating the limits:
 - If a witness ignores the subsidized account limit, people will get new accounts for free, that normally cost CREA to create.  This is a medium-sized economic problem.
 - If a witness ignores the other resource limits, their blocks might take a little longer [1] to process or use more memory.  This is a tiny IT problem.
 
-For resource limits, having witness-only upgrades outweighs the problem.  Witnesses who have been around a long time know that, in the ancient past, Steem's bandwidth
+For resource limits, having witness-only upgrades outweighs the problem.  Witnesses who have been around a long time know that, in the ancient past, Crea's bandwidth
 algorithm was consensus.  It was then changed to non-consensus when the current bandwidth algorithm was implemented.  The new resource-based limits are non-consensus
 for the most part, just like the current bandwidth algorithm.
 
 [1] Could they take a lot longer?  No, the rogue witness would be limited by block size.  Transactions have some variation in how much CPU / memory they use relative
 to their size.  But operations that allow users to take a huge amount of CPU / memory for a tiny number of bytes are attack vectors.  As good blockchain architects,
-we should never implement such operations in the Steem source code!  Even the worst-case CPU cycles / memory bytes consumed by an attacker spamming the most
+we should never implement such operations in the Crea source code!  Even the worst-case CPU cycles / memory bytes consumed by an attacker spamming the most
 "efficient" attack (in terms of CPU cycles / memory bytes consumed per byte of transaction size) should still be limited by the max block size.
 
 # Setting consensus parameters

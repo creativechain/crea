@@ -12,7 +12,7 @@ from time import time
 
 # local imports
 from creadebugnode import DebugNode
-from creativecoinapi.creativecoinnoderpc import CreativecoinNodeRPC
+from creaapi.creanoderpc import CreaNodeRPC
 
 WAITING = True
 

@@ -1,4 +1,4 @@
-# Building Creativecoin
+# Building Crea
 
 ## Compile-Time Options (cmake)
 
@@ -20,7 +20,7 @@ Clears old votes from memory that are no longer required for consensus.
 
 ### BUILD_CREA_TESTNET=[OFF/ON]
 
-Builds creativecoin for use in a private testnet. Also required for building unit tests.
+Builds crea for use in a private testnet. Also required for building unit tests.
 
 ### SKIP_BY_TX_ID=[OFF/ON]
 
@@ -32,13 +32,13 @@ huge gain if you do not need this functionality.
 
 We ship a Dockerfile.  This builds both common node type binaries.
 
-    git clone https://github.com/creativecoin/creativecoin
-    cd creativecoin
-    docker build -t creativecoin/creativecoin .
+    git clone https://github.com/creativechain/crea
+    cd crea
+    docker build -t creativechain/crea .
 
 ## Building on Ubuntu 16.04
 
-For Ubuntu 16.04 users, after installing the right packages with `apt` Creativecoin
+For Ubuntu 16.04 users, after installing the right packages with `apt` Crea
 will build out of the box without further effort:
 
     # Required packages
@@ -80,8 +80,8 @@ will build out of the box without further effort:
         libreadline-dev \
         perl
 
-    git clone https://github.com/creativecoin/creativecoin
-    cd creativecoin
+    git clone https://github.com/creativechain/crea
+    cd crea
     git checkout stable
     git submodule update --init --recursive
     mkdir build
@@ -120,14 +120,14 @@ Here are the required packages:
         python3-jinja2
 
 The Boost provided in the Ubuntu 14.04 package manager (Boost 1.55) is too old.
-Creativecoin requires Boost 1.58 (as in Ubuntu 16.04) and works with versions up to 1.60 (including).
-So building Creativecoin on Ubuntu 14.04 requires downloading and installing a more recent
+Crea requires Boost 1.58 (as in Ubuntu 16.04) and works with versions up to 1.60 (including).
+So building Crea on Ubuntu 14.04 requires downloading and installing a more recent
 version of Boost.
 
 According to [this mailing list
 post](http://boost.2283326.n4.nabble.com/1-58-1-bugfix-release-necessary-td4674686.html),
 Boost 1.58 is not compatible with gcc 4.8 (the default C++ compiler for
-Ubuntu 14.04) when compiling in C++11 mode (which Creativecoin does).
+Ubuntu 14.04) when compiling in C++11 mode (which Crea does).
 So we will use Boost 1.60.
 
 Here is how to build and install Boost 1.60 into your user's home directory
@@ -144,10 +144,10 @@ Here is how to build and install Boost 1.60 into your user's home directory
     ./bootstrap.sh "--prefix=$BOOST_ROOT"
     ./b2 install
 
-Then the instructions are the same as for creativecoin:
+Then the instructions are the same as for crea:
 
-    git clone https://github.com/creativecoin/creativecoin
-    cd creativecoin
+    git clone https://github.com/creativechain/crea
+    cd crea
     git checkout stable
     git submodule update --init --recursive
     mkdir build && cd build
@@ -173,7 +173,7 @@ Install Homebrew by following the instructions here: http://brew.sh/
     brew doctor
     brew update
 
-### Install creativecoin dependencies:
+### Install crea dependencies:
 
     brew install \
         autoconf \
@@ -185,12 +185,15 @@ Install Homebrew by following the instructions here: http://brew.sh/
         openssl \
         snappy \
         zlib \
+        bzip2 \
         python3
         
     pip3 install --user jinja2
     
 Note: brew recently updated to boost 1.61.0, which is not yet supported by
-creativecoin. Until then, this will allow you to install boost 1.60.0.
+crea. Until then, this will allow you to install boost 1.60.0.
+You may also need to install zlib and bzip2 libraries manually.
+In that case, change the directories for `export` accordingly.
 
 *Optional.* To use TCMalloc in LevelDB:
 
@@ -203,16 +206,16 @@ creativecoin. Until then, this will allow you to install boost 1.60.0.
 
 ### Clone the Repository
 
-    git clone https://github.com/creativecoin/creativecoin.git
-    cd creativecoin
+    git clone https://github.com/creativechain/crea.git
+    cd crea
 
 ### Compile
 
-    export OPENSSL_ROOT_DIR=$(brew --prefix)/Cellar/openssl/1.0.2h_1/
     export BOOST_ROOT=$(brew --prefix)/Cellar/boost@1.60/1.60.0/
-    export SNAPPY_LIBRARIES=$(brew --prefix)/Cellar/snappy/1.1.7_1/lib/
-    export SNAPPY_INCLUDE_DIR=$(brew --prefix)/Cellar/snappy/1.1.7_1/include/
-    export ZLIB_LIBRARIES=$(brew --prefix)/Cellar/zlib/1.2.11/lib/
+    export OPENSSL_ROOT_DIR=$(brew --prefix)/Cellar/openssl/1.0.2q/
+    export SNAPPY_ROOT_DIR=$(brew --prefix)/Cellar/snappy/1.1.7_1
+    export ZLIB_ROOT_DIR=$(brew --prefix)/Cellar/zlib/1.2.11
+    export BZIP2_ROOT_DIR=$(brew --prefix)/Cellar/bzip2/1.0.6_1
     git checkout stable
     git submodule update --init --recursive
     mkdir build && cd build

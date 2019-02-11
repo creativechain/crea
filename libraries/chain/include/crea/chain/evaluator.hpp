@@ -66,6 +66,19 @@ class X ## _evaluator : public crea::chain::evaluator_impl< X ## _evaluator > \
       void do_apply( const X ## _operation& o );                            \
 };
 
+#define CREA_DEFINE_ACTION_EVALUATOR( X, ACTION )                               \
+class X ## _evaluator : public crea::chain::evaluator_impl< X ## _evaluator, ACTION > \
+{                                                                                \
+   public:                                                                       \
+      typedef X ## _action operation_type;                                       \
+                                                                                 \
+      X ## _evaluator( database& db )                                            \
+         : crea::chain::evaluator_impl< X ## _evaluator, ACTION >( db )        \
+      {}                                                                         \
+                                                                                 \
+      void do_apply( const X ## _action& o );                                    \
+};
+
 #define CREA_DEFINE_PLUGIN_EVALUATOR( PLUGIN, OPERATION, X )               \
 class X ## _evaluator : public crea::chain::evaluator_impl< X ## _evaluator, OPERATION > \
 {                                                                           \

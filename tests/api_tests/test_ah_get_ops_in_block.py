@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
   Usage: script_name jobs url1 url2 [wdir [last_block [first_block]]]
-    Example: script_name 4 http://127.0.0.1:8090 http://127.0.0.1:8091 ./ 5000000 0
+    Example: script_name 4 http://127.0.0.1:1886 http://127.0.0.1:1996 ./ 5000000 0
     set jobs to 0 if you want use all processors
     if last_block == 0, it is read from url1 (as reference)
 """
@@ -32,7 +32,7 @@ def future_end_cb(future):
 def main():
   if len(sys.argv) < 4 or len(sys.argv) > 7:
     print("Usage: script_name jobs url1 url2 [wdir [last_block [first_block]]]")
-    print("  Example: script_name 4 http://127.0.0.1:8090 http://127.0.0.1:8091 ./ 5000000 0")
+    print("  Example: script_name 4 http://127.0.0.1:1886 http://127.0.0.1:1996 ./ 5000000 0")
     print( "  set jobs to 0 if you want use all processors" )
     print("  if last_block == 0, it is read from url1 (as reference)")
     exit()

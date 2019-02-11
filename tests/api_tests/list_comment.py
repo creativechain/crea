@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Create list of all creativecoin comments in file.
+Create list of all crea comments in file.
 Usage: list_comment.py <server_address> [<output_filename>]
 """
 import sys

@@ -1,8 +1,8 @@
 #!/bin/bash
 set -e
-export IMAGE_NAME="creativecoin/creativecoin:$BRANCH_NAME"
-if [[ $IMAGE_NAME == "creativecoin/creativecoin:stable" ]] ; then
-  IMAGE_NAME="creativecoin/creativecoin:latest"
+export IMAGE_NAME="creativechain/crea:$BRANCH_NAME"
+if [[ $IMAGE_NAME == "creativechain/crea:stable" ]] ; then
+  IMAGE_NAME="creativechain/crea:latest"
 fi
 sudo docker build --build-arg BUILD_STEP=2 -t=$IMAGE_NAME .
 sudo docker login --username=$DOCKER_USER --password=$DOCKER_PASS

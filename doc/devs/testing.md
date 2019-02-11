@@ -8,8 +8,8 @@ Tests are broken in several categories:
 basic_tests          // Tests of "basic" functionality
 block_tests          // Tests of the block chain
 live_tests           // Tests on live chain data (currently only past hardfork testing)
-operation_tests      // Unit Tests of Creativecoin operations
-operation_time_tests // Tests of Creativecoin operations that include a time based component (ex. vesting withdrawals)
+operation_tests      // Unit Tests of Crea operations
+operation_time_tests // Tests of Crea operations that include a time based component (ex. vesting withdrawals)
 serialization_tests  // Tests related of serialization
 ```
 
