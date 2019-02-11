@@ -52,3 +52,4 @@ witness_node_data_dir
 cmake-build-debug
 .idea
 nbproject
+error.log
