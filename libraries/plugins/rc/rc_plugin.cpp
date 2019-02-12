@@ -16,12 +16,12 @@
 #include <crea/jsonball/jsonball.hpp>
 
 #define CREA_RC_REGEN_TIME   (60*60*24*5)
-// 2020.748973 VESTS == 1.000 CREA when HF20 occurred on mainnet
+// 0.108568 VESTS == 1.000 CREA when HF20 occurred on mainnet
 // TODO: What should this value be for testnet?
-#define CREA_HISTORICAL_ACCOUNT_CREATION_ADJUSTMENT      2020748973
+#define CREA_HISTORICAL_ACCOUNT_CREATION_ADJUSTMENT      108568
 
 #ifndef IS_TEST_NET
-#define CREA_HF20_BLOCK_NUM                              26256743
+#define CREA_HF20_BLOCK_NUM                              1
 #endif
 
 // 1.66% is ~2 hours of regen.
