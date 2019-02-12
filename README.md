@@ -35,7 +35,7 @@ Electronic money between equals promotes the economic empowerment of creative pe
 ## Quickstart
 
 Just want to get up and running quickly? We have pre-built docker images for your convenience. More details are in our 
-[quickstart guide mainnet] (https://github.com/creativechain/crea/blob/master/doc/exchangequickstart.md). 
+[quickstart guide mainnet](https://github.com/creativechain/crea/blob/master/doc/exchangequickstart.md). 
 [quickstart guide test](https://github.com/creativechain/crea/blob/test/doc/exchangequickstart.md).
 
 ## Building
