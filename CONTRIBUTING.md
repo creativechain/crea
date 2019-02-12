@@ -24,7 +24,7 @@ Please do a keyword search to see if there is already an existing issue before o
 
 ## Creativechain.com vs. Crea Blockchain
 
-This issue tracker is only intended to track issues for the Crea blockchain. If the issue is with the Creativechain.com website, please open an issue in the [Creativechain.com Repository](https://github.com/creary/crea.com/).
+This issue tracker is only intended to track issues for the Crea blockchain. If the issue is with the Creativechain.com website, please open an issue in the [Creativechain.com Repository](https://github.com/creativechain/crea.com/).
 
 ## Pull Requests
 
