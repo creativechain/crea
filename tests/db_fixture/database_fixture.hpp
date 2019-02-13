@@ -180,116 +180,116 @@ TX.sign( KEY, db->get_chain_id(), fc::ecc::bip_0062 );
 
 namespace crea { namespace chain {
 
-using namespace crea::protocol;
+        using namespace crea::protocol;
 
-struct database_fixture {
-   // the reason we use an app is to exercise the indexes of built-in
-   //   plugins
-   chain::database* db = nullptr;
-   signed_transaction trx;
-   public_key_type committee_key;
-   account_id_type committee_account;
-   fc::ecc::private_key private_key = fc::ecc::private_key::generate();
-   fc::ecc::private_key init_account_priv_key = fc::ecc::private_key::regenerate( fc::sha256::hash( string( "init_key" ) ) );
-   string debug_key = crea::utilities::key_to_wif( init_account_priv_key );
-   public_key_type init_account_pub_key = init_account_priv_key.get_public_key();
-   uint32_t default_skip = 0 | database::skip_undo_history_check | database::skip_authority_check;
-   fc::ecc::canonical_signature_type default_sig_canon = fc::ecc::fc_canonical;
+        struct database_fixture {
+            // the reason we use an app is to exercise the indexes of built-in
+            //   plugins
+            chain::database* db = nullptr;
+            signed_transaction trx;
+            public_key_type committee_key;
+            account_id_type committee_account;
+            fc::ecc::private_key private_key = fc::ecc::private_key::generate();
+            fc::ecc::private_key init_account_priv_key = fc::ecc::private_key::regenerate( fc::sha256::hash( string( "init_key" ) ) );
+            string debug_key = crea::utilities::key_to_wif( init_account_priv_key );
+            public_key_type init_account_pub_key = init_account_priv_key.get_public_key();
+            uint32_t default_skip = 0 | database::skip_undo_history_check | database::skip_authority_check;
+            fc::ecc::canonical_signature_type default_sig_canon = fc::ecc::fc_canonical;
 
-   plugins::debug_node::debug_node_plugin* db_plugin;
+            plugins::debug_node::debug_node_plugin* db_plugin;
 
-   optional<fc::temp_directory> data_dir;
-   bool skip_key_index_test = false;
+            optional<fc::temp_directory> data_dir;
+            bool skip_key_index_test = false;
 
-   database_fixture() {}
-   virtual ~database_fixture() { appbase::reset(); }
+            database_fixture() {}
+            virtual ~database_fixture() { appbase::reset(); }
 
-   static fc::ecc::private_key generate_private_key( string seed = "init_key" );
+            static fc::ecc::private_key generate_private_key( string seed = "init_key" );
 #ifdef CREA_ENABLE_SMT
-   static asset_symbol_type get_new_smt_symbol( uint8_t token_decimal_places, chain::database* db );
+            static asset_symbol_type get_new_smt_symbol( uint8_t token_decimal_places, chain::database* db );
 #endif
-   void open_database();
-   void generate_block(uint32_t skip = 0,
-                               const fc::ecc::private_key& key = generate_private_key("init_key"),
-                               int miss_blocks = 0);
+            void open_database();
+            void generate_block(uint32_t skip = 0,
+                                const fc::ecc::private_key& key = generate_private_key("init_key"),
+                                int miss_blocks = 0);
 
-   /**
-    * @brief Generates block_count blocks
-    * @param block_count number of blocks to generate
-    */
-   void generate_blocks(uint32_t block_count);
+            /**
+             * @brief Generates block_count blocks
+             * @param block_count number of blocks to generate
+             */
+            void generate_blocks(uint32_t block_count);
 
-   /**
-    * @brief Generates blocks until the head block time matches or exceeds timestamp
-    * @param timestamp target time to generate blocks until
-    */
-   void generate_blocks(fc::time_point_sec timestamp, bool miss_intermediate_blocks = true);
+            /**
+             * @brief Generates blocks until the head block time matches or exceeds timestamp
+             * @param timestamp target time to generate blocks until
+             */
+            void generate_blocks(fc::time_point_sec timestamp, bool miss_intermediate_blocks = true);
 
-   const account_object& account_create(
-      const string& name,
-      const string& creator,
-      const private_key_type& creator_key,
-      const share_type& fee,
-      const public_key_type& key,
-      const public_key_type& post_key,
-      const string& json_metadata
-   );
+            const account_object& account_create(
+                    const string& name,
+                    const string& creator,
+                    const private_key_type& creator_key,
+                    const share_type& fee,
+                    const public_key_type& key,
+                    const public_key_type& post_key,
+                    const string& json_metadata
+            );
 
-   const account_object& account_create(
-      const string& name,
-      const public_key_type& key,
-      const public_key_type& post_key
-   );
+            const account_object& account_create(
+                    const string& name,
+                    const public_key_type& key,
+                    const public_key_type& post_key
+            );
 
-   const account_object& account_create(
-      const string& name,
-      const public_key_type& key
-   );
+            const account_object& account_create(
+                    const string& name,
+                    const public_key_type& key
+            );
 
-   const witness_object& witness_create(
-      const string& owner,
-      const private_key_type& owner_key,
-      const string& url,
-      const public_key_type& signing_key,
-      const share_type& fee
-   );
+            const witness_object& witness_create(
+                    const string& owner,
+                    const private_key_type& owner_key,
+                    const string& url,
+                    const public_key_type& signing_key,
+                    const share_type& fee
+            );
 
-   void fund( const string& account_name, const share_type& amount = 500000 );
-   void fund( const string& account_name, const asset& amount );
-   void transfer( const string& from, const string& to, const asset& amount );
-   void convert( const string& account_name, const asset& amount );
-   void vest( const string& from, const string& to, const asset& amount );
-   void vest( const string& from, const share_type& amount );
-   void proxy( const string& account, const string& proxy );
-   void set_price_feed( const price& new_price );
-   void set_witness_props( const flat_map< string, vector< char > >& new_props );
-   const asset& get_balance( const string& account_name )const;
-   void sign( signed_transaction& trx, const fc::ecc::private_key& key );
+            void fund( const string& account_name, const share_type& amount = 500000 );
+            void fund( const string& account_name, const asset& amount );
+            void transfer( const string& from, const string& to, const asset& amount );
+            void convert( const string& account_name, const asset& amount );
+            void vest( const string& from, const string& to, const asset& amount );
+            void vest( const string& from, const share_type& amount );
+            void proxy( const string& account, const string& proxy );
+            void set_price_feed( const price& new_price );
+            void set_witness_props( const flat_map< string, vector< char > >& new_props );
+            const asset& get_balance( const string& account_name )const;
+            void sign( signed_transaction& trx, const fc::ecc::private_key& key );
 
-   vector< operation > get_last_operations( uint32_t ops );
+            vector< operation > get_last_operations( uint32_t ops );
 
-   void validate_database();
-};
+            void validate_database();
+        };
 
-struct clean_database_fixture : public database_fixture
-{
-   clean_database_fixture();
-   virtual ~clean_database_fixture();
+        struct clean_database_fixture : public database_fixture
+        {
+            clean_database_fixture();
+            virtual ~clean_database_fixture();
 
-   void resize_shared_mem( uint64_t size );
-   void validate_database();
-};
+            void resize_shared_mem( uint64_t size );
+            void validate_database();
+        };
 
-struct live_database_fixture : public database_fixture
-{
-   live_database_fixture();
-   virtual ~live_database_fixture();
+        struct live_database_fixture : public database_fixture
+        {
+            live_database_fixture();
+            virtual ~live_database_fixture();
 
-   fc::path _chain_dir;
-};
+            fc::path _chain_dir;
+        };
 
 #ifdef CREA_ENABLE_SMT
-template< typename T >
+        template< typename T >
 struct t_smt_database_fixture : public T
 {
    using units = flat_map< account_name_type, uint16_t >;
@@ -333,28 +333,28 @@ using smt_database_fixture_for_plugin = t_smt_database_fixture< database_fixture
 
 #endif
 
-struct json_rpc_database_fixture : public database_fixture
-{
-   private:
-      crea::plugins::json_rpc::json_rpc_plugin* rpc_plugin;
+        struct json_rpc_database_fixture : public database_fixture
+        {
+        private:
+            crea::plugins::json_rpc::json_rpc_plugin* rpc_plugin;
 
-      fc::variant get_answer( std::string& request );
-      void review_answer( fc::variant& answer, int64_t code, bool is_warning, bool is_fail, fc::optional< fc::variant > id );
+            fc::variant get_answer( std::string& request );
+            void review_answer( fc::variant& answer, int64_t code, bool is_warning, bool is_fail, fc::optional< fc::variant > id );
 
-   public:
+        public:
 
-      json_rpc_database_fixture();
-      virtual ~json_rpc_database_fixture();
+            json_rpc_database_fixture();
+            virtual ~json_rpc_database_fixture();
 
-      void make_array_request( std::string& request, int64_t code = 0, bool is_warning = false, bool is_fail = true );
-      fc::variant make_request( std::string& request, int64_t code = 0, bool is_warning = false, bool is_fail = true );
-      void make_positive_request( std::string& request );
-};
+            void make_array_request( std::string& request, int64_t code = 0, bool is_warning = false, bool is_fail = true );
+            fc::variant make_request( std::string& request, int64_t code = 0, bool is_warning = false, bool is_fail = true );
+            void make_positive_request( std::string& request );
+        };
 
-namespace test
-{
-   bool _push_block( database& db, const signed_block& b, uint32_t skip_flags = 0 );
-   void _push_transaction( database& db, const signed_transaction& tx, uint32_t skip_flags = 0 );
-}
+        namespace test
+        {
+            bool _push_block( database& db, const signed_block& b, uint32_t skip_flags = 0 );
+            void _push_transaction( database& db, const signed_transaction& tx, uint32_t skip_flags = 0 );
+        }
 
-} }
+    } }

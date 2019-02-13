@@ -275,7 +275,7 @@ BOOST_AUTO_TEST_CASE( switch_forks_undo_create )
       cop.active = cop.owner;
       trx.operations.push_back(cop);
       trx.set_expiration( db1.head_block_time() + CREA_MAX_TIME_UNTIL_EXPIRATION );
-      trx.sign( init_account_priv_key, db1.get_chain_id() );
+      trx.sign( init_account_priv_key, db1.get_chain_id(), fc::ecc::fc_canonical );
       PUSH_TX( db1, trx );
       //*/
       // generate blocks
@@ -336,7 +336,7 @@ BOOST_AUTO_TEST_CASE( duplicate_transactions )
       cop.active = cop.owner;
       trx.operations.push_back(cop);
       trx.set_expiration( db1.head_block_time() + CREA_MAX_TIME_UNTIL_EXPIRATION );
-      trx.sign( init_account_priv_key, db1.get_chain_id() );
+      trx.sign( init_account_priv_key, db1.get_chain_id(), fc::ecc::fc_canonical );
       PUSH_TX( db1, trx, skip_sigs );
 
       trx = decltype(trx)();
@@ -346,7 +346,7 @@ BOOST_AUTO_TEST_CASE( duplicate_transactions )
       t.amount = asset(500,CREA_SYMBOL);
       trx.operations.push_back(t);
       trx.set_expiration( db1.head_block_time() + CREA_MAX_TIME_UNTIL_EXPIRATION );
-      trx.sign( init_account_priv_key, db1.get_chain_id() );
+      trx.sign( init_account_priv_key, db1.get_chain_id(), fc::ecc::fc_canonical );
       PUSH_TX( db1, trx, skip_sigs );
 
       CREA_CHECK_THROW(PUSH_TX( db1, trx, skip_sigs ), fc::exception);
@@ -391,7 +391,7 @@ BOOST_AUTO_TEST_CASE( tapos )
       cop.active = cop.owner;
       trx.operations.push_back(cop);
       trx.set_expiration( db1.head_block_time() + CREA_MAX_TIME_UNTIL_EXPIRATION );
-      trx.sign( init_account_priv_key, db1.get_chain_id() );
+      trx.sign( init_account_priv_key, db1.get_chain_id(), fc::ecc::fc_canonical );
 
       BOOST_TEST_MESSAGE( "Pushing Pending Transaction" );
       idump((trx));
@@ -406,13 +406,13 @@ BOOST_AUTO_TEST_CASE( tapos )
       t.amount = asset(50,CREA_SYMBOL);
       trx.operations.push_back(t);
       trx.set_expiration( db1.head_block_time() + fc::seconds(2) );
-      trx.sign( init_account_priv_key, db1.get_chain_id() );
+      trx.sign( init_account_priv_key, db1.get_chain_id(), fc::ecc::fc_canonical );
       idump((trx)(db1.head_block_time()));
       b = bp1.generate_block(db1.get_slot_time(1), db1.get_scheduled_witness(1), init_account_priv_key, database::skip_nothing);
       idump((b));
       b = bp1.generate_block(db1.get_slot_time(1), db1.get_scheduled_witness(1), init_account_priv_key, database::skip_nothing);
       trx.signatures.clear();
-      trx.sign( init_account_priv_key, db1.get_chain_id() );
+      trx.sign( init_account_priv_key, db1.get_chain_id(), fc::ecc::fc_canonical );
       BOOST_REQUIRE_THROW( db1.push_transaction(trx, 0/*database::skip_transaction_signatures | database::skip_authority_check*/), fc::exception );
    } catch (fc::exception& e) {
       edump((e.to_detail_string()));
@@ -445,14 +445,14 @@ BOOST_FIXTURE_TEST_CASE( optional_tapos, clean_database_fixture )
       tx.ref_block_prefix = 0;
       tx.signatures.clear();
       tx.set_expiration( db->head_block_time() + CREA_MAX_TIME_UNTIL_EXPIRATION );
-      tx.sign( alice_private_key, db->get_chain_id() );
+      sign( tx, alice_private_key );
       PUSH_TX( *db, tx );
 
       BOOST_TEST_MESSAGE( "proper ref_block_num, ref_block_prefix" );
 
       tx.signatures.clear();
       tx.set_expiration( db->head_block_time() + CREA_MAX_TIME_UNTIL_EXPIRATION );
-      tx.sign( alice_private_key, db->get_chain_id() );
+      sign( tx, alice_private_key );
       PUSH_TX( *db, tx, database::skip_transaction_dupe_check );
 
       BOOST_TEST_MESSAGE( "ref_block_num=0, ref_block_prefix=12345678" );
@@ -461,7 +461,7 @@ BOOST_FIXTURE_TEST_CASE( optional_tapos, clean_database_fixture )
       tx.ref_block_prefix = 0x12345678;
       tx.signatures.clear();
       tx.set_expiration( db->head_block_time() + CREA_MAX_TIME_UNTIL_EXPIRATION );
-      tx.sign( alice_private_key, db->get_chain_id() );
+      sign( tx, alice_private_key );
       CREA_REQUIRE_THROW( PUSH_TX( *db, tx, database::skip_transaction_dupe_check ), fc::exception );
 
       BOOST_TEST_MESSAGE( "ref_block_num=1, ref_block_prefix=12345678" );
@@ -470,7 +470,7 @@ BOOST_FIXTURE_TEST_CASE( optional_tapos, clean_database_fixture )
       tx.ref_block_prefix = 0x12345678;
       tx.signatures.clear();
       tx.set_expiration( db->head_block_time() + CREA_MAX_TIME_UNTIL_EXPIRATION );
-      tx.sign( alice_private_key, db->get_chain_id() );
+      sign( tx, alice_private_key );
       CREA_REQUIRE_THROW( PUSH_TX( *db, tx, database::skip_transaction_dupe_check ), fc::exception );
 
       BOOST_TEST_MESSAGE( "ref_block_num=9999, ref_block_prefix=12345678" );
@@ -479,7 +479,7 @@ BOOST_FIXTURE_TEST_CASE( optional_tapos, clean_database_fixture )
       tx.ref_block_prefix = 0x12345678;
       tx.signatures.clear();
       tx.set_expiration( db->head_block_time() + CREA_MAX_TIME_UNTIL_EXPIRATION );
-      tx.sign( alice_private_key, db->get_chain_id() );
+      sign( tx, alice_private_key );
       CREA_REQUIRE_THROW( PUSH_TX( *db, tx, database::skip_transaction_dupe_check ), fc::exception );
    }
    catch (fc::exception& e)
@@ -516,19 +516,19 @@ BOOST_FIXTURE_TEST_CASE( double_sign_check, clean_database_fixture )
    CREA_REQUIRE_THROW( db->push_transaction(trx, 0), fc::exception );
 
    BOOST_TEST_MESSAGE( "Verify that double-signing causes an exception" );
-   trx.sign( bob_private_key, db->get_chain_id() );
-   trx.sign( bob_private_key, db->get_chain_id() );
+   sign( trx, bob_private_key );
+   sign( trx, bob_private_key );
    CREA_REQUIRE_THROW( db->push_transaction(trx, 0), tx_duplicate_sig );
 
    BOOST_TEST_MESSAGE( "Verify that signing with an extra, unused key fails" );
    trx.signatures.pop_back();
-   trx.sign( generate_private_key("bogus" ), db->get_chain_id() );
+   sign( trx, generate_private_key( "bogus" ) );
    CREA_REQUIRE_THROW( db->push_transaction(trx, 0), tx_irrelevant_sig );
 
    BOOST_TEST_MESSAGE( "Verify that signing once with the proper key passes" );
    trx.signatures.pop_back();
    db->push_transaction(trx, 0);
-   trx.sign( bob_private_key, db->get_chain_id() );
+   sign( trx, bob_private_key );
 
 } FC_LOG_AND_RETHROW() }
 
@@ -800,7 +800,9 @@ BOOST_FIXTURE_TEST_CASE( hardfork_test, database_fixture )
 
       BOOST_REQUIRE( db->has_hardfork( 0 ) );
       BOOST_REQUIRE( db->has_hardfork( CREA_HARDFORK_0_1 ) );
-      BOOST_REQUIRE( get_last_operations( 1 )[0].get< custom_operation >().data == vector< char >( op_msg.begin(), op_msg.end() ) );
+      operation hardfork_vop = hardfork_operation( CREA_HARDFORK_0_1 );
+
+      BOOST_REQUIRE( get_last_operations( 1 )[0] == hardfork_vop );
       BOOST_REQUIRE( db->get(itr->op).timestamp == db->head_block_time() );
 
       BOOST_TEST_MESSAGE( "Testing hardfork is only applied once" );
@@ -811,10 +813,63 @@ BOOST_FIXTURE_TEST_CASE( hardfork_test, database_fixture )
 
       BOOST_REQUIRE( db->has_hardfork( 0 ) );
       BOOST_REQUIRE( db->has_hardfork( CREA_HARDFORK_0_1 ) );
-      BOOST_REQUIRE( get_last_operations( 1 )[0].get< custom_operation >().data == vector< char >( op_msg.begin(), op_msg.end() ) );
+      BOOST_REQUIRE( get_last_operations( 1 )[0] == hardfork_vop );
       BOOST_REQUIRE( db->get(itr->op).timestamp == db->head_block_time() - CREA_BLOCK_INTERVAL );
 
       db->wipe( data_dir->path(), data_dir->path(), true );
+   }
+   FC_LOG_AND_RETHROW()
+}
+
+BOOST_FIXTURE_TEST_CASE( generate_block_size, clean_database_fixture )
+{
+   try
+   {
+      db_plugin->debug_update( [=]( database& db )
+      {
+         db.modify( db.get_dynamic_global_properties(), [&]( dynamic_global_property_object& gpo )
+         {
+            gpo.maximum_block_size = CREA_MIN_BLOCK_SIZE_LIMIT;
+         });
+      });
+      generate_block();
+
+      signed_transaction tx;
+      tx.set_expiration( db->head_block_time() + CREA_MAX_TIME_UNTIL_EXPIRATION );
+
+      transfer_operation op;
+      op.from = CREA_INIT_MINER_NAME;
+      op.to = CREA_TEMP_ACCOUNT;
+      op.amount = asset( 1000, CREA_SYMBOL );
+
+      // tx minus op is 79 bytes
+      // op is 33 bytes (32 for op + 1 byte static variant tag)
+      // total is 65254
+      // Original generation logic only allowed 115 bytes for the header
+      // We are targetting a size (minus header) of 65421 which creates a block of "size" 65535
+      // This block will actually be larger because the header estimates is too small
+
+      for( size_t i = 0; i < 1975; i++ )
+      {
+         tx.operations.push_back( op );
+      }
+
+      sign( tx, init_account_priv_key );
+      db->push_transaction( tx, 0 );
+
+      // Second transaction, tx minus op is 78 (one less byte for operation vector size)
+      // We need a 88 byte op. We need a 22 character memo (1 byte for length) 55 = 32 (old op) + 55 + 1
+      op.memo = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ123";
+      tx.clear();
+      tx.operations.push_back( op );
+      sign( tx, init_account_priv_key );
+      db->push_transaction( tx, 0 );
+
+      generate_block();
+
+      // The last transfer should have been delayed due to size
+      auto head_block = db->fetch_block_by_number( db->head_block_num() );
+      BOOST_REQUIRE( head_block->transactions.size() == 1 );
    }
    FC_LOG_AND_RETHROW()
 }
