@@ -75,7 +75,7 @@ RUN \
 #    PYTHONPATH=programs/build_helpers \
 #    python3 -m crea_build_helpers.check_reflect && \
 #    programs/build_helpers/get_config_check.sh && \
-#    rm -rf /usr/local/src/crea/build ; \
+    rm -rf /usr/local/src/crea/build ; \
     fi
 
 RUN \
