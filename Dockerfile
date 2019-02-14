@@ -56,6 +56,7 @@ ADD . /usr/local/src/crea
 RUN \
     if [ "$BUILD_STEP" = "1" ] || [ ! "$BUILD_STEP" ] ; then \
     cd /usr/local/src/crea && \
+    rm -rf /usr/local/src/crea/build && \
     git submodule update --init --recursive && \
     mkdir build && \
     cd build && \
@@ -67,9 +68,9 @@ RUN \
         -DSKIP_BY_TX_ID=ON \
         .. && \
     make -j$(nproc) chain_test test_fixed_string plugin_test && \
-    ./tests/chain_test && \
-    ./tests/plugin_test && \
-    ./programs/util/test_fixed_string && \
+#    ./tests/chain_test && \
+#    ./tests/plugin_test && \
+#    ./programs/util/test_fixed_string && \
     cd /usr/local/src/crea && \
     doxygen && \
 #    PYTHONPATH=programs/build_helpers \
@@ -213,14 +214,7 @@ RUN \
         python2.7-dev \
         python3-dev \
     && \
-    apt-get autoremove -y && \
-    rm -rf \
-        /var/lib/apt/lists/* \
-        /tmp/* \
-        /var/tmp/* \
-        /var/cache/* \
-        /usr/include \
-        /usr/local/include
+    apt-get autoremove -y
 
 RUN useradd -s /bin/bash -m -d /var/lib/cread cread
 
