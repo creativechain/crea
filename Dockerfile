@@ -180,7 +180,6 @@ RUN \
     apt-get remove -y \
         automake \
         autotools-dev \
-        bsdmainutils \
         build-essential \
         cmake \
         doxygen \
@@ -207,9 +206,6 @@ RUN \
         linux-libc-dev \
         m4 \
         make \
-        manpages \
-        manpages-dev \
-        mpi-default-dev \
         python-dev \
         python2.7-dev \
         python3-dev \
