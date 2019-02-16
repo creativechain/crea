@@ -18,19 +18,34 @@ Any online platform can easily integrate this token distribution system and crea
 
 ## FAST-Speed and scalability
 Thanks to Graphene technology, the Crea network can support the issuance of more than 1000 Transactions Per Second (TPS) and without network fees. This amount of TPS is necessary to sustain the massive volume of interactions in the new generation social networks.
-Crea is a Delegated Proof of Stake blockchain that uses a "Proof of Brain" social consensus algorithm for token allocation.
 
 
 ## BENEFITS IN THE FIELD OF DIGITAL CREATION
 
-### PROOF OF EXISTENCE
-Thanks to the immutability of blockchain technology and its power of attorney, any content is indelibly certified along with its copyright license. 
+### Proof of Existence
+Certificate of creation registration based on the blockchain.
 
-### WITHOUT INTERMEDIARIES
-P2P content distribution eliminates intermediaries who censor ideas and digital content.
+### Proof of Creation (POC)
+An algorithm rewards authors and curators for their work.
 
-### ECONOMIC EMPOWERMENT
-Electronic money between equals promotes the economic empowerment of creative people against the traditional banking system.
+### Reputation & Voting power
+Those who get more tokens will have more influence in the community.
+
+### Decentralized Exchange (DEX)
+Crea tokens exchange markets without fees.
+
+### Open Source
+Our ecosystem is completely open source to help you meet your needs when launching your application projects.
+
+### Control of inflation
+Issuance of new tokens using a formula that controls the annual inflation rate.
+
+### Eliminating Transaction Fees
+An advantage of the CREA blockchain over centralized applications competitors.
+
+### Censorship resistance
+The distributed consensus protocol of Crea prevents the centralization and the censorship of content.
+
 
 ## Quickstart
 
@@ -137,5 +152,8 @@ IN THE SOFTWARE.
  ## Public Announcement & Discussion
 
 Crea was announced on the
-[Bitcointalk forum](https://bitcointalk.org/index.php?topic=1809920.0) prior to
-the start of any mining.
+[Bitcointalk forum](https://bitcointalk.org/index.php?topic=1809920.0)
+
+The members of the Creativechain foundation & creaproject.io. development team are currently the main contributors to the Crea Network software. They oversee the open source Create GitHub repository, and maintain many of the open source libraries that developers use.
+To get any help regarding the development of CREA Network you can access Crea Devs Chat in Discord https://discord.gg/XZKGbZb .
+Create Devs Channel is a public Discord chat community where members of the Create development community go to discuss Create development, and other related topics.
