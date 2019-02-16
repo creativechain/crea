@@ -2122,7 +2122,7 @@ namespace detail
 
 } // detail
 
-uint16_t api_account_object::_compute_voting_power( const database_api::api_account_object& a )
+uint16_t api_account_object::_compute_voting_energy( const database_api::api_account_object& a )
 {
    if( a.voting_flowbar.last_update_time < CREA_HARDFORK_0_20_TIME )
       return (uint16_t) a.voting_flowbar.current_flow;

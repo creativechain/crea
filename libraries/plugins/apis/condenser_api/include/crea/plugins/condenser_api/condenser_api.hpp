@@ -150,13 +150,13 @@ struct api_account_object
       following_count(a.following_count),
       pending_claimed_accounts( a.pending_claimed_accounts )
    {
-      voting_power = _compute_voting_power(a);
+      voting_energy = _compute_voting_energy(a);
       proxied_vsf_votes.insert( proxied_vsf_votes.end(), a.proxied_vsf_votes.begin(), a.proxied_vsf_votes.end() );
    }
 
    api_account_object(){}
 
-   uint16_t _compute_voting_power( const database_api::api_account_object& a );
+   uint16_t _compute_voting_energy( const database_api::api_account_object& a );
 
    account_id_type   id;
 
@@ -182,7 +182,7 @@ struct api_account_object
 
    bool              can_vote = false;
    util::flowbar     voting_flowbar;
-   uint16_t          voting_power = 0;
+   uint16_t          voting_energy = 0;
 
    legacy_asset      balance;
    legacy_asset      savings_balance;
@@ -1195,7 +1195,7 @@ FC_REFLECT( crea::plugins::condenser_api::api_account_object,
              (id)(name)(owner)(active)(posting)(memo_key)(json_metadata)(proxy)(last_owner_update)(last_account_update)
              (created)(mined)
              (recovery_account)(last_account_recovery)(reset_account)
-             (comment_count)(lifetime_vote_count)(post_count)(can_vote)(voting_flowbar)(voting_power)
+             (comment_count)(lifetime_vote_count)(post_count)(can_vote)(voting_flowbar)(voting_energy)
              (balance)
              (savings_balance)
              (cbd_balance)(cbd_seconds)(cbd_seconds_last_update)(cbd_last_interest_payment)

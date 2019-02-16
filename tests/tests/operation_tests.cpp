@@ -27,7 +27,7 @@ using namespace crea::chain;
 using namespace crea::protocol;
 using fc::string;
 
-inline uint16_t get_voting_power( const account_object& a )
+inline uint16_t get_voting_energy( const account_object& a )
 {
    return (uint16_t)( a.voting_flowbar.current_flow / chain::util::get_effective_vesting_shares( a ) );
 }
@@ -944,7 +944,7 @@ BOOST_AUTO_TEST_CASE( vote_apply )
 
          old_abs_rshares = new_alice_comment.children_abs_rshares.value;
          int64_t regenerated_power = (CREA_100_PERCENT * ( db->head_block_time() - db->get_account( "alice").last_vote_time ).to_seconds() ) / CREA_VOTING_FLOW_REGENERATION_SECONDS;
-         int64_t used_power = ( get_voting_power( db->get_account( "alice" ) ) + regenerated_power + max_vote_denom - 1 ) / max_vote_denom;
+         int64_t used_power = ( get_voting_energy( db->get_account( "alice" ) ) + regenerated_power + max_vote_denom - 1 ) / max_vote_denom;
 
          comment_op.author = "sam";
          comment_op.permlink = "foo";
@@ -983,8 +983,8 @@ BOOST_AUTO_TEST_CASE( vote_apply )
          auto old_vote_rshares = alice_bob_vote->rshares;
          auto old_net_rshares = new_bob_comment.net_rshares.value;
          old_abs_rshares = new_bob_comment.abs_rshares.value;
-         used_power = ( ( CREA_1_PERCENT * 25 * ( get_voting_power( new_alice ) ) / CREA_100_PERCENT ) + max_vote_denom - 1 ) / max_vote_denom;
-         auto alice_voting_power = get_voting_power( new_alice ) - used_power;
+         used_power = ( ( CREA_1_PERCENT * 25 * ( get_voting_energy( new_alice ) ) / CREA_100_PERCENT ) + max_vote_denom - 1 ) / max_vote_denom;
+         auto alice_voting_energy = get_voting_energy( new_alice ) - used_power;
 
          old_flowbar = db->get_account( "alice" ).voting_flowbar;
          params.max_flow = util::get_effective_vesting_shares( db->get_account( "alice" ) );
@@ -1018,9 +1018,9 @@ BOOST_AUTO_TEST_CASE( vote_apply )
          old_vote_rshares = new_rshares;
          old_net_rshares = new_bob_comment.net_rshares.value;
          old_abs_rshares = new_bob_comment.abs_rshares.value;
-         used_power = ( uint64_t( CREA_1_PERCENT ) * 75 * uint64_t( alice_voting_power ) ) / CREA_100_PERCENT;
+         used_power = ( uint64_t( CREA_1_PERCENT ) * 75 * uint64_t( alice_voting_energy ) ) / CREA_100_PERCENT;
          used_power = ( used_power + max_vote_denom - 1 ) / max_vote_denom;
-         alice_voting_power -= used_power;
+         alice_voting_energy -= used_power;
 
          old_flowbar = db->get_account( "alice" ).voting_flowbar;
          params.max_flow = util::get_effective_vesting_shares( db->get_account( "alice" ) );
