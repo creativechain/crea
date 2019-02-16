@@ -83,7 +83,7 @@ class tag_object : public object< tag_object_type, tag_object >
       int32_t           net_votes   = 0;
       int32_t           children    = 0;
       double            hot         = 0;
-      double            trending    = 0;
+      double            popular    = 0;
       share_type        promoted_balance = 0;
 
       account_id_type   author;
@@ -101,9 +101,9 @@ struct by_parent_created;
 struct by_parent_active;
 struct by_parent_promoted;
 struct by_parent_net_votes; /// all top level posts by direct votes
-struct by_parent_trending;
+struct by_parent_popular;
 struct by_parent_children; /// all top level posts with the most discussion (replies at all levels)
-struct by_parent_hot;
+struct by_parent_skyrockets;
 struct by_author_comment;
 struct by_reward_fund_net_rshares;
 struct by_comment;
@@ -174,7 +174,7 @@ typedef multi_index_container<
             >,
             composite_key_compare< std::less<tag_name_type>, std::less<comment_id_type>, std::greater< int32_t >, std::less< tag_id_type > >
       >,
-      ordered_unique< tag< by_parent_hot >,
+      ordered_unique< tag< by_parent_skyrockets >,
             composite_key< tag_object,
                member< tag_object, tag_name_type, &tag_object::tag >,
                member< tag_object, comment_id_type, &tag_object::parent >,
@@ -183,11 +183,11 @@ typedef multi_index_container<
             >,
             composite_key_compare< std::less<tag_name_type>, std::less<comment_id_type>, std::greater< double >, std::less< tag_id_type > >
       >,
-      ordered_unique< tag< by_parent_trending >,
+      ordered_unique< tag< by_parent_popular >,
             composite_key< tag_object,
                member< tag_object, tag_name_type, &tag_object::tag >,
                member< tag_object, comment_id_type, &tag_object::parent >,
-               member< tag_object, double, &tag_object::trending >,
+               member< tag_object, double, &tag_object::popular >,
                member< tag_object, tag_id_type, &tag_object::id >
             >,
             composite_key_compare< std::less<tag_name_type>, std::less<comment_id_type>, std::greater< double >, std::less< tag_id_type > >
@@ -235,14 +235,14 @@ class tag_stats_object : public object< tag_stats_object_type, tag_stats_object 
       int32_t           net_votes = 0;
       uint32_t          top_posts = 0;
       uint32_t          comments  = 0;
-      fc::uint128       total_trending = 0;
+      fc::uint128       total_popular = 0;
 };
 
 typedef oid< tag_stats_object > tag_stats_id_type;
 
 struct by_comments;
 struct by_top_posts;
-struct by_trending;
+struct by_popular;
 
 typedef multi_index_container<
    tag_stats_object,
@@ -265,9 +265,9 @@ typedef multi_index_container<
          composite_key_compare< std::less< tag_name_type >, std::greater< uint32_t > >
       >,
       */
-      ordered_non_unique< tag< by_trending >,
+      ordered_non_unique< tag< by_popular >,
          composite_key< tag_stats_object,
-            member< tag_stats_object, fc::uint128 , &tag_stats_object::total_trending >,
+            member< tag_stats_object, fc::uint128 , &tag_stats_object::total_popular >,
             member< tag_stats_object, tag_name_type, &tag_stats_object::tag >
          >,
          composite_key_compare<  std::greater< fc::uint128  >, std::less< tag_name_type > >
@@ -385,11 +385,11 @@ class tag_api : public std::enable_shared_from_this<tag_api> {
 } } } //crea::plugins::tags
 
 FC_REFLECT( crea::plugins::tags::tag_object,
-   (id)(tag)(created)(active)(cashout)(net_rshares)(net_votes)(hot)(trending)(promoted_balance)(children)(author)(parent)(comment) )
+   (id)(tag)(created)(active)(cashout)(net_rshares)(net_votes)(hot)(popular)(promoted_balance)(children)(author)(parent)(comment) )
 CHAINBASE_SET_INDEX_TYPE( crea::plugins::tags::tag_object, crea::plugins::tags::tag_index )
 
 FC_REFLECT( crea::plugins::tags::tag_stats_object,
-   (id)(tag)(total_payout)(net_votes)(top_posts)(comments)(total_trending) );
+   (id)(tag)(total_payout)(net_votes)(top_posts)(comments)(total_popular) );
 CHAINBASE_SET_INDEX_TYPE( crea::plugins::tags::tag_stats_object, crea::plugins::tags::tag_stats_index )
 
 FC_REFLECT( crea::plugins::tags::comment_metadata, (tags) );

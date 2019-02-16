@@ -7,18 +7,18 @@ import json
 tests = [
    {
       "method": "condenser_api.get_state",
-      "params": ["trending"]
+      "params": ["popular"]
    },
    {
       "method": "condenser_api.get_state",
-      "params": ["hot"]
+      "params": ["skyrockets"]
    },
    {
       "method": "condenser_api.get_state",
       "params": ["/@temp"]
    },
    {
-      "method": "condenser_api.get_trending_tags",
+      "method": "condenser_api.get_popular_tags",
       "params": ["", 20]
    },
    {
@@ -203,11 +203,11 @@ tests = [
       "params": [{"tag":"test"}]
    },
    {
-      "method": "condenser_api.get_discussions_by_trending",
+      "method": "condenser_api.get_discussions_by_popular",
       "params": [{"tag":"test"}]
    },
    {
-      "method": "condenser_api.get_discussions_by_created",
+      "method": "condenser_api.get_discussions_by_now",
       "params": [{"tag":"test"}]
    },
    {
@@ -227,7 +227,7 @@ tests = [
       "params": [{"tag":"test"}]
    },
    {
-      "method": "condenser_api.get_discussions_by_hot",
+      "method": "condenser_api.get_discussions_by_skyrockets",
       "params": [{"tag":"test"}]
    },
    {
@@ -443,7 +443,7 @@ tests = [
 #      "params": {"lower_bound":"", "limit":10}
 #   },
    {
-      "method": "tags_api.get_trending_tags",
+      "method": "tags_api.get_popular_tags",
       "params": {"start_tag":"", "limit":20}
    },
    {
@@ -467,11 +467,11 @@ tests = [
       "params": {"tag":"test"}
    },
    {
-      "method": "tags_api.get_discussions_by_trending",
+      "method": "tags_api.get_discussions_by_popular",
       "params": {"tag":"test"}
    },
    {
-      "method": "tags_api.get_discussions_by_created",
+      "method": "tags_api.get_discussions_by_now",
       "params": {"tag":"test"}
    },
    {
@@ -491,7 +491,7 @@ tests = [
       "params": {"tag":"test"}
    },
    {
-      "method": "tags_api.get_discussions_by_hot",
+      "method": "tags_api.get_discussions_by_skyrockets",
       "params": {"tag":"test"}
    },
    {

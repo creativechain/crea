@@ -22,7 +22,7 @@ using namespace plugins::witness;*/
 struct remote_node_api
 {
    condenser_api::get_version_return get_version();
-   vector< condenser_api::api_tag_object > get_trending_tags( string, uint32_t );
+   vector< condenser_api::api_tag_object > get_popular_tags( string, uint32_t );
    condenser_api::state get_state( string );
    vector< account_name_type > get_active_witnesses();
    optional< block_header > get_block_header( uint32_t );
@@ -73,13 +73,13 @@ struct remote_node_api
    vector< condenser_api::discussion > get_discussions_by_payout( tags::discussion_query );
    vector< condenser_api::discussion > get_post_discussions_by_payout( tags::discussion_query );
    vector< condenser_api::discussion > get_comment_discussions_by_payout( tags::discussion_query );
-   vector< condenser_api::discussion > get_discussions_by_trending( tags::discussion_query );
-   vector< condenser_api::discussion > get_discussions_by_created( tags::discussion_query );
+   vector< condenser_api::discussion > get_discussions_by_popular( tags::discussion_query );
+   vector< condenser_api::discussion > get_discussions_by_now( tags::discussion_query );
    vector< condenser_api::discussion > get_discussions_by_active( tags::discussion_query );
    vector< condenser_api::discussion > get_discussions_by_cashout( tags::discussion_query );
    vector< condenser_api::discussion > get_discussions_by_votes( tags::discussion_query );
    vector< condenser_api::discussion > get_discussions_by_children( tags::discussion_query );
-   vector< condenser_api::discussion > get_discussions_by_hot( tags::discussion_query );
+   vector< condenser_api::discussion > get_discussions_by_skyrockets( tags::discussion_query );
    vector< condenser_api::discussion > get_discussions_by_feed( tags::discussion_query );
    vector< condenser_api::discussion > get_discussions_by_blog( tags::discussion_query );
    vector< condenser_api::discussion > get_discussions_by_comments( tags::discussion_query );
@@ -113,7 +113,7 @@ struct remote_node_api
 
 FC_API( crea::wallet::remote_node_api,
         (get_version)
-        (get_trending_tags)
+        (get_popular_tags)
         (get_state)
         (get_active_witnesses)
         (get_block_header)
@@ -164,13 +164,13 @@ FC_API( crea::wallet::remote_node_api,
         (get_discussions_by_payout)
         (get_post_discussions_by_payout)
         (get_comment_discussions_by_payout)
-        (get_discussions_by_trending)
-        (get_discussions_by_created)
+        (get_discussions_by_popular)
+        (get_discussions_by_now)
         (get_discussions_by_active)
         (get_discussions_by_cashout)
         (get_discussions_by_votes)
         (get_discussions_by_children)
-        (get_discussions_by_hot)
+        (get_discussions_by_skyrockets)
         (get_discussions_by_feed)
         (get_discussions_by_blog)
         (get_discussions_by_comments)

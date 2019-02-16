@@ -200,7 +200,7 @@ DEFINE_int64(merge_keys, -1,
 DEFINE_int32(num_column_families, 1, "Number of Column Families to use.");
 
 DEFINE_int32(
-    num_hot_column_families, 0,
+    num_skyrockets_column_families, 0,
     "Number of Hot Column Families. If more than 0, only write to this "
     "number of column families. After finishing all the writes to them, "
     "create new set of column families and insert to them. Only used "
@@ -209,10 +209,10 @@ DEFINE_int32(
 DEFINE_string(column_family_distribution, "",
               "Comma-separated list of percentages, where the ith element "
               "indicates the probability of an op using the ith column family. "
-              "The number of elements must be `num_hot_column_families` if "
+              "The number of elements must be `num_skyrockets_column_families` if "
               "specified; otherwise, it must be `num_column_families`. The "
               "sum of elements must be 100. E.g., if `num_column_families=4`, "
-              "and `num_hot_column_families=0`, a valid list could be "
+              "and `num_skyrockets_column_families=0`, a valid list could be "
               "\"10,20,30,40\".");
 
 DEFINE_int64(reads, -1, "Number of read operations to do.  "
@@ -1207,8 +1207,8 @@ struct DBWithColumnFamilies {
 #endif  // ROCKSDB_LITE
   std::atomic<size_t> num_created;  // Need to be updated after all the
                                     // new entries in cfh are set.
-  size_t num_hot;  // Number of column families to be queried at each moment.
-                   // After each CreateNewCf(), another num_hot number of new
+  size_t num_skyrockets;  // Number of column families to be queried at each moment.
+                   // After each CreateNewCf(), another num_skyrockets number of new
                    // Column families will be created and used to be queried.
   port::Mutex create_cf_mutex;  // Only one thread can execute CreateNewCf()
   std::vector<int> cfh_idx_to_prob;  // ith index holds probability of operating
@@ -1222,7 +1222,7 @@ struct DBWithColumnFamilies {
   {
     cfh.clear();
     num_created = 0;
-    num_hot = 0;
+    num_skyrockets = 0;
   }
 
   DBWithColumnFamilies(const DBWithColumnFamilies& other)
@@ -1232,7 +1232,7 @@ struct DBWithColumnFamilies {
         opt_txn_db(other.opt_txn_db),
 #endif  // ROCKSDB_LITE
         num_created(other.num_created.load()),
-        num_hot(other.num_hot),
+        num_skyrockets(other.num_skyrockets),
         cfh_idx_to_prob(other.cfh_idx_to_prob) {
   }
 
@@ -1255,10 +1255,10 @@ struct DBWithColumnFamilies {
   }
 
   ColumnFamilyHandle* GetCfh(int64_t rand_num) {
-    assert(num_hot > 0);
+    assert(num_skyrockets > 0);
     size_t rand_offset = 0;
     if (!cfh_idx_to_prob.empty()) {
-      assert(cfh_idx_to_prob.size() == num_hot);
+      assert(cfh_idx_to_prob.size() == num_skyrockets);
       int sum = 0;
       while (sum + cfh_idx_to_prob[rand_offset] < rand_num % 100) {
         sum += cfh_idx_to_prob[rand_offset];
@@ -1266,21 +1266,21 @@ struct DBWithColumnFamilies {
       }
       assert(rand_offset < cfh_idx_to_prob.size());
     } else {
-      rand_offset = rand_num % num_hot;
+      rand_offset = rand_num % num_skyrockets;
     }
-    return cfh[num_created.load(std::memory_order_acquire) - num_hot +
+    return cfh[num_created.load(std::memory_order_acquire) - num_skyrockets +
                rand_offset];
   }
 
-  // stage: assume CF from 0 to stage * num_hot has be created. Need to create
-  //        stage * num_hot + 1 to stage * (num_hot + 1).
+  // stage: assume CF from 0 to stage * num_skyrockets has be created. Need to create
+  //        stage * num_skyrockets + 1 to stage * (num_skyrockets + 1).
   void CreateNewCf(ColumnFamilyOptions options, int64_t stage) {
     MutexLock l(&create_cf_mutex);
-    if ((stage + 1) * num_hot <= num_created) {
+    if ((stage + 1) * num_skyrockets <= num_created) {
       // Already created.
       return;
     }
-    auto new_num_created = num_created + num_hot;
+    auto new_num_created = num_created + num_skyrockets;
     assert(new_num_created <= cfh.size());
     for (size_t i = num_created; i < new_num_created; i++) {
       Status s =
@@ -3294,15 +3294,15 @@ void VerifyDBFromDB(std::string& truth_db_name) {
     Status s;
     // Open with column families if necessary.
     if (FLAGS_num_column_families > 1) {
-      size_t num_hot = FLAGS_num_column_families;
-      if (FLAGS_num_hot_column_families > 0 &&
-          FLAGS_num_hot_column_families < FLAGS_num_column_families) {
-        num_hot = FLAGS_num_hot_column_families;
+      size_t num_skyrockets = FLAGS_num_column_families;
+      if (FLAGS_num_skyrockets_column_families > 0 &&
+          FLAGS_num_skyrockets_column_families < FLAGS_num_column_families) {
+        num_skyrockets = FLAGS_num_skyrockets_column_families;
       } else {
-        FLAGS_num_hot_column_families = FLAGS_num_column_families;
+        FLAGS_num_skyrockets_column_families = FLAGS_num_column_families;
       }
       std::vector<ColumnFamilyDescriptor> column_families;
-      for (size_t i = 0; i < num_hot; i++) {
+      for (size_t i = 0; i < num_skyrockets; i++) {
         column_families.push_back(ColumnFamilyDescriptor(
               ColumnFamilyName(i), ColumnFamilyOptions(options)));
       }
@@ -3319,12 +3319,12 @@ void VerifyDBFromDB(std::string& truth_db_name) {
           fprintf(stderr, "column_family_distribution items must sum to 100\n");
           exit(1);
         }
-        if (cfh_idx_to_prob.size() != num_hot) {
+        if (cfh_idx_to_prob.size() != num_skyrockets) {
           fprintf(stderr,
                   "got %" ROCKSDB_PRIszt
                   " column_family_distribution items; expected "
                   "%" ROCKSDB_PRIszt "\n",
-                  cfh_idx_to_prob.size(), num_hot);
+                  cfh_idx_to_prob.size(), num_skyrockets);
           exit(1);
         }
       }
@@ -3353,8 +3353,8 @@ void VerifyDBFromDB(std::string& truth_db_name) {
       s = DB::Open(options, db_name, column_families, &db->cfh, &db->db);
 #endif  // ROCKSDB_LITE
       db->cfh.resize(FLAGS_num_column_families);
-      db->num_created = num_hot;
-      db->num_hot = num_hot;
+      db->num_created = num_skyrockets;
+      db->num_skyrockets = num_skyrockets;
       db->cfh_idx_to_prob = std::move(cfh_idx_to_prob);
 #ifndef ROCKSDB_LITE
     } else if (FLAGS_readonly) {
@@ -3488,9 +3488,9 @@ void VerifyDBFromDB(std::string& truth_db_name) {
     std::vector<std::unique_ptr<KeyGenerator>> key_gens(num_key_gens);
     int64_t max_ops = num_ops * num_key_gens;
     int64_t ops_per_stage = max_ops;
-    if (FLAGS_num_column_families > 1 && FLAGS_num_hot_column_families > 0) {
+    if (FLAGS_num_column_families > 1 && FLAGS_num_skyrockets_column_families > 0) {
       ops_per_stage = (max_ops - 1) / (FLAGS_num_column_families /
-                                       FLAGS_num_hot_column_families) +
+                                       FLAGS_num_skyrockets_column_families) +
                       1;
     }
 

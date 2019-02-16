@@ -27,7 +27,7 @@ struct api_tag_object
       net_votes( o.net_votes ),
       top_posts( o.top_posts ),
       comments( o.comments ),
-      trending( o.total_trending ) {}
+      popular( o.total_popular ) {}
 
    api_tag_object() {}
 
@@ -36,7 +36,7 @@ struct api_tag_object
    int32_t              net_votes = 0;
    uint32_t             top_posts = 0;
    uint32_t             comments = 0;
-   fc::uint128          trending = 0;
+   fc::uint128          popular = 0;
 };
 
 struct vote_state
@@ -70,13 +70,13 @@ struct discussion : public database_api::api_comment_object
    optional< time_point_sec >    first_reblogged_on;
 };
 
-struct get_trending_tags_args
+struct get_popular_tags_args
 {
    string   start_tag;
    uint32_t limit = 100;
 };
 
-struct get_trending_tags_return
+struct get_popular_tags_return
 {
    vector< api_tag_object > tags;
 };
@@ -139,11 +139,11 @@ typedef discussion_query_result  get_post_discussions_by_payout_return;
 typedef discussion_query         get_comment_discussions_by_payout_args;
 typedef discussion_query_result  get_comment_discussions_by_payout_return;
 
-typedef discussion_query         get_discussions_by_trending_args;
-typedef discussion_query_result  get_discussions_by_trending_return;
+typedef discussion_query         get_discussions_by_popular_args;
+typedef discussion_query_result  get_discussions_by_popular_return;
 
-typedef discussion_query         get_discussions_by_created_args;
-typedef discussion_query_result  get_discussions_by_created_return;
+typedef discussion_query         get_discussions_by_now_args;
+typedef discussion_query_result  get_discussions_by_now_return;
 
 typedef discussion_query         get_discussions_by_active_args;
 typedef discussion_query_result  get_discussions_by_active_return;
@@ -157,8 +157,8 @@ typedef discussion_query_result  get_discussions_by_votes_return;
 typedef discussion_query         get_discussions_by_children_args;
 typedef discussion_query_result  get_discussions_by_children_return;
 
-typedef discussion_query         get_discussions_by_hot_args;
-typedef discussion_query_result  get_discussions_by_hot_return;
+typedef discussion_query         get_discussions_by_skyrockets_args;
+typedef discussion_query_result  get_discussions_by_skyrockets_return;
 
 typedef discussion_query         get_discussions_by_feed_args;
 typedef discussion_query_result  get_discussions_by_feed_return;
@@ -205,19 +205,19 @@ class tags_api
       ~tags_api();
 
    DECLARE_API(
-      (get_trending_tags)
+      (get_popular_tags)
       (get_tags_used_by_author)
       (get_discussion)
       (get_content_replies)
       (get_post_discussions_by_payout)
       (get_comment_discussions_by_payout)
-      (get_discussions_by_trending)
-      (get_discussions_by_created)
+      (get_discussions_by_popular)
+      (get_discussions_by_now)
       (get_discussions_by_active)
       (get_discussions_by_cashout)
       (get_discussions_by_votes)
       (get_discussions_by_children)
-      (get_discussions_by_hot)
+      (get_discussions_by_skyrockets)
       (get_discussions_by_feed)
       (get_discussions_by_blog)
       (get_discussions_by_comments)
@@ -239,7 +239,7 @@ class tags_api
 } } } // crea::plugins::tags
 
 FC_REFLECT( crea::plugins::tags::api_tag_object,
-            (name)(total_payouts)(net_votes)(top_posts)(comments)(trending) )
+            (name)(total_payouts)(net_votes)(top_posts)(comments)(popular) )
 
 FC_REFLECT( crea::plugins::tags::vote_state,
             (voter)(weight)(rshares)(percent)(reputation)(time) )
@@ -247,10 +247,10 @@ FC_REFLECT( crea::plugins::tags::vote_state,
 FC_REFLECT_DERIVED( crea::plugins::tags::discussion, (crea::plugins::database_api::api_comment_object),
             (url)(root_title)(pending_payout_value)(total_pending_payout_value)(active_votes)(replies)(author_reputation)(promoted)(body_length)(reblogged_by)(first_reblogged_by)(first_reblogged_on) )
 
-FC_REFLECT( crea::plugins::tags::get_trending_tags_args,
+FC_REFLECT( crea::plugins::tags::get_popular_tags_args,
             (start_tag)(limit) )
 
-FC_REFLECT( crea::plugins::tags::get_trending_tags_return,
+FC_REFLECT( crea::plugins::tags::get_popular_tags_return,
             (tags) )
 
 FC_REFLECT( crea::plugins::tags::get_tags_used_by_author_args,

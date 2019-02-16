@@ -30,10 +30,10 @@ namespace detail{ class condenser_api_impl; }
 struct discussion_index
 {
    string           category;         /// category by which everything is filtered
-   vector< string > trending;         /// trending posts over the last 24 hours
+   vector< string > popular;         /// popular posts over the last 24 hours
    vector< string > payout;           /// pending posts by payout
    vector< string > payout_comments;  /// pending comments by payout
-   vector< string > trending30;       /// pending lifetime payout
+   vector< string > popular30;       /// pending lifetime payout
    vector< string > created;          /// creation date
    vector< string > responses;        /// creation date
    vector< string > updated;          /// creation date
@@ -764,7 +764,7 @@ struct discussion : public api_comment_object
 
 struct tag_index
 {
-   vector< tags::tag_name_type > trending; /// pending payouts
+   vector< tags::tag_name_type > popular; /// pending payouts
 };
 
 struct api_tag_object
@@ -775,7 +775,7 @@ struct api_tag_object
       net_votes( o.net_votes ),
       top_posts( o.top_posts ),
       comments( o.comments ),
-      trending( o.trending ) {}
+      popular( o.popular ) {}
 
    api_tag_object() {}
 
@@ -784,7 +784,7 @@ struct api_tag_object
    int32_t              net_votes = 0;
    uint32_t             top_posts = 0;
    uint32_t             comments = 0;
-   fc::uint128          trending = 0;
+   fc::uint128          popular = 0;
 };
 
 struct state
@@ -987,7 +987,7 @@ typedef arg_type api_name ## _args;                         \
 typedef return_type api_name ## _return;
 
 /*               API,                                    args,                return */
-DEFINE_API_ARGS( get_trending_tags,                      vector< variant >,   vector< api_tag_object > )
+DEFINE_API_ARGS( get_popular_tags,                      vector< variant >,   vector< api_tag_object > )
 DEFINE_API_ARGS( get_state,                              vector< variant >,   state )
 DEFINE_API_ARGS( get_active_witnesses,                   vector< variant >,   vector< account_name_type > )
 DEFINE_API_ARGS( get_block_header,                       vector< variant >,   optional< block_header > )
@@ -1037,13 +1037,13 @@ DEFINE_API_ARGS( get_content_replies,                    vector< variant >,   ve
 DEFINE_API_ARGS( get_tags_used_by_author,                vector< variant >,   vector< tags::tag_count_object > )
 DEFINE_API_ARGS( get_post_discussions_by_payout,         vector< variant >,   vector< discussion > )
 DEFINE_API_ARGS( get_comment_discussions_by_payout,      vector< variant >,   vector< discussion > )
-DEFINE_API_ARGS( get_discussions_by_trending,            vector< variant >,   vector< discussion > )
-DEFINE_API_ARGS( get_discussions_by_created,             vector< variant >,   vector< discussion > )
+DEFINE_API_ARGS( get_discussions_by_popular,            vector< variant >,   vector< discussion > )
+DEFINE_API_ARGS( get_discussions_by_now,             vector< variant >,   vector< discussion > )
 DEFINE_API_ARGS( get_discussions_by_active,              vector< variant >,   vector< discussion > )
 DEFINE_API_ARGS( get_discussions_by_cashout,             vector< variant >,   vector< discussion > )
 DEFINE_API_ARGS( get_discussions_by_votes,               vector< variant >,   vector< discussion > )
 DEFINE_API_ARGS( get_discussions_by_children,            vector< variant >,   vector< discussion > )
-DEFINE_API_ARGS( get_discussions_by_hot,                 vector< variant >,   vector< discussion > )
+DEFINE_API_ARGS( get_discussions_by_skyrockets,                 vector< variant >,   vector< discussion > )
 DEFINE_API_ARGS( get_discussions_by_feed,                vector< variant >,   vector< discussion > )
 DEFINE_API_ARGS( get_discussions_by_blog,                vector< variant >,   vector< discussion > )
 DEFINE_API_ARGS( get_discussions_by_comments,            vector< variant >,   vector< discussion > )
@@ -1081,7 +1081,7 @@ public:
 
    DECLARE_API(
       (get_version)
-      (get_trending_tags)
+      (get_popular_tags)
       (get_state)
       (get_active_witnesses)
       (get_block_header)
@@ -1131,13 +1131,13 @@ public:
       (get_tags_used_by_author)
       (get_post_discussions_by_payout)
       (get_comment_discussions_by_payout)
-      (get_discussions_by_trending)
-      (get_discussions_by_created)
+      (get_discussions_by_popular)
+      (get_discussions_by_now)
       (get_discussions_by_active)
       (get_discussions_by_cashout)
       (get_discussions_by_votes)
       (get_discussions_by_children)
-      (get_discussions_by_hot)
+      (get_discussions_by_skyrockets)
       (get_discussions_by_feed)
       (get_discussions_by_blog)
       (get_discussions_by_comments)
@@ -1177,10 +1177,10 @@ public:
 } } } // crea::plugins::condenser_api
 
 FC_REFLECT( crea::plugins::condenser_api::discussion_index,
-            (category)(trending)(payout)(payout_comments)(trending30)(updated)(created)(responses)(active)(votes)(maturing)(best)(hot)(promoted)(cashout) )
+            (category)(popular)(payout)(payout_comments)(popular30)(updated)(created)(responses)(active)(votes)(maturing)(best)(hot)(promoted)(cashout) )
 
 FC_REFLECT( crea::plugins::condenser_api::api_tag_object,
-            (name)(total_payouts)(net_votes)(top_posts)(comments)(trending) )
+            (name)(total_payouts)(net_votes)(top_posts)(comments)(popular) )
 
 FC_REFLECT( crea::plugins::condenser_api::state,
             (current_route)(props)(tag_idx)(tags)(content)(accounts)(witnesses)(discussion_idx)(witness_schedule)(feed_price)(error) )
@@ -1335,7 +1335,7 @@ FC_REFLECT( crea::plugins::condenser_api::scheduled_hardfork,
 FC_REFLECT( crea::plugins::condenser_api::account_vote,
             (authorperm)(weight)(rshares)(percent)(time) )
 
-FC_REFLECT( crea::plugins::condenser_api::tag_index, (trending) )
+FC_REFLECT( crea::plugins::condenser_api::tag_index, (popular) )
 
 FC_REFLECT_ENUM( crea::plugins::condenser_api::withdraw_route_type, (incoming)(outgoing)(all) )
 

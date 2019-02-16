@@ -9,7 +9,7 @@ condenser_api::get_version_return remote_node_api::get_version()
    FC_ASSERT( false );
 }
 
-vector< condenser_api::api_tag_object > remote_node_api::get_trending_tags( string, uint32_t )
+vector< condenser_api::api_tag_object > remote_node_api::get_popular_tags( string, uint32_t )
 {
    FC_ASSERT( false );
 }
@@ -264,12 +264,12 @@ vector< condenser_api::discussion > remote_node_api::get_comment_discussions_by_
    FC_ASSERT( false );
 }
 
-vector< condenser_api::discussion > remote_node_api::get_discussions_by_trending( tags::discussion_query )
+vector< condenser_api::discussion > remote_node_api::get_discussions_by_popular( tags::discussion_query )
 {
    FC_ASSERT( false );
 }
 
-vector< condenser_api::discussion > remote_node_api::get_discussions_by_created( tags::discussion_query )
+vector< condenser_api::discussion > remote_node_api::get_discussions_by_now( tags::discussion_query )
 {
    FC_ASSERT( false );
 }
@@ -294,7 +294,7 @@ vector< condenser_api::discussion > remote_node_api::get_discussions_by_children
    FC_ASSERT( false );
 }
 
-vector< condenser_api::discussion > remote_node_api::get_discussions_by_hot( tags::discussion_query )
+vector< condenser_api::discussion > remote_node_api::get_discussions_by_skyrockets( tags::discussion_query )
 {
    FC_ASSERT( false );
 }

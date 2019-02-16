@@ -49,7 +49,7 @@ namespace detail
 
          DECLARE_API_IMPL(
             (get_version)
-            (get_trending_tags)
+            (get_popular_tags)
             (get_state)
             (get_active_witnesses)
             (get_block_header)
@@ -99,13 +99,13 @@ namespace detail
             (get_tags_used_by_author)
             (get_post_discussions_by_payout)
             (get_comment_discussions_by_payout)
-            (get_discussions_by_trending)
-            (get_discussions_by_created)
+            (get_discussions_by_popular)
+            (get_discussions_by_now)
             (get_discussions_by_active)
             (get_discussions_by_cashout)
             (get_discussions_by_votes)
             (get_discussions_by_children)
-            (get_discussions_by_hot)
+            (get_discussions_by_skyrockets)
             (get_discussions_by_feed)
             (get_discussions_by_blog)
             (get_discussions_by_comments)
@@ -174,12 +174,12 @@ namespace detail
       );
    }
 
-   DEFINE_API_IMPL( condenser_api_impl, get_trending_tags )
+   DEFINE_API_IMPL( condenser_api_impl, get_popular_tags )
    {
       CHECK_ARG_SIZE( 2 )
       FC_ASSERT( _tags_api, "tags_api_plugin not enabled." );
 
-      auto tags = _tags_api->get_trending_tags( { args[0].as< string >(), args[1].as< uint32_t >() } ).tags;
+      auto tags = _tags_api->get_popular_tags( { args[0].as< string >(), args[1].as< uint32_t >() } ).tags;
       vector< api_tag_object > result;
 
       for( const auto& t : tags )
@@ -206,15 +206,15 @@ namespace detail
             path = path.substr(1); /// remove '/' from front
 
          if( !path.size() )
-            path = "trending";
+            path = "popular";
 
          /// FETCH CATEGORY STATE
          if( _tags_api )
          {
-            auto trending_tags = _tags_api->get_trending_tags( { std::string(), 50 } ).tags;
-            for( const auto& t : trending_tags )
+            auto popular_tags = _tags_api->get_popular_tags( { std::string(), 50 } ).tags;
+            for( const auto& t : popular_tags )
             {
-               _state.tag_idx.trending.push_back( t.name );
+               _state.tag_idx.popular.push_back( t.name );
             }
          }
          /// END FETCH CATEGORY STATE
@@ -429,7 +429,7 @@ namespace detail
                _state.witnesses[w.owner] = w;
             }
          }
-         else if( part[0] == "trending"  )
+         else if( part[0] == "popular"  )
          {
             if( _tags_api )
             {
@@ -437,13 +437,13 @@ namespace detail
                q.tag = tag;
                q.limit = 20;
                q.truncate_body = 1024;
-               auto trending_disc = _tags_api->get_discussions_by_trending( q ).discussions;
+               auto popular_disc = _tags_api->get_discussions_by_popular( q ).discussions;
 
                auto& didx = _state.discussion_idx[tag];
-               for( const auto& d : trending_disc )
+               for( const auto& d : popular_disc )
                {
                   string key = d.author + "/" + d.permlink;
-                  didx.trending.push_back( key );
+                  didx.popular.push_back( key );
                   if( d.author.size() ) accounts.insert(d.author);
                   _state.content[key] = std::move(d);
                }
@@ -457,10 +457,10 @@ namespace detail
                q.tag = tag;
                q.limit = 20;
                q.truncate_body = 1024;
-               auto trending_disc = _tags_api->get_post_discussions_by_payout( q ).discussions;
+               auto popular_disc = _tags_api->get_post_discussions_by_payout( q ).discussions;
 
                auto& didx = _state.discussion_idx[tag];
-               for( const auto& d : trending_disc )
+               for( const auto& d : popular_disc )
                {
                   string key = d.author + "/" + d.permlink;
                   didx.payout.push_back( key );
@@ -477,10 +477,10 @@ namespace detail
                q.tag = tag;
                q.limit = 20;
                q.truncate_body = 1024;
-               auto trending_disc = _tags_api->get_comment_discussions_by_payout( q ).discussions;
+               auto popular_disc = _tags_api->get_comment_discussions_by_payout( q ).discussions;
 
                auto& didx = _state.discussion_idx[tag];
-               for( const auto& d : trending_disc )
+               for( const auto& d : popular_disc )
                {
                   string key = d.author + "/" + d.permlink;
                   didx.payout_comments.push_back( key );
@@ -497,10 +497,10 @@ namespace detail
                q.tag = tag;
                q.limit = 20;
                q.truncate_body = 1024;
-               auto trending_disc = _tags_api->get_discussions_by_promoted( q ).discussions;
+               auto popular_disc = _tags_api->get_discussions_by_promoted( q ).discussions;
 
                auto& didx = _state.discussion_idx[tag];
-               for( const auto& d : trending_disc )
+               for( const auto& d : popular_disc )
                {
                   string key = d.author + "/" + d.permlink;
                   didx.promoted.push_back( key );
@@ -517,10 +517,10 @@ namespace detail
                q.tag = tag;
                q.limit = 20;
                q.truncate_body = 1024;
-               auto trending_disc = _tags_api->get_discussions_by_children( q ).discussions;
+               auto popular_disc = _tags_api->get_discussions_by_children( q ).discussions;
 
                auto& didx = _state.discussion_idx[tag];
-               for( const auto& d : trending_disc )
+               for( const auto& d : popular_disc )
                {
                   string key = d.author + "/" + d.permlink;
                   didx.responses.push_back( key );
@@ -537,10 +537,10 @@ namespace detail
                q.tag = tag;
                q.limit = 20;
                q.truncate_body = 1024;
-               auto trending_disc = _tags_api->get_discussions_by_hot( q ).discussions;
+               auto popular_disc = _tags_api->get_discussions_by_skyrockets( q ).discussions;
 
                auto& didx = _state.discussion_idx[tag];
-               for( const auto& d : trending_disc )
+               for( const auto& d : popular_disc )
                {
                   string key = d.author + "/" + d.permlink;
                   didx.hot.push_back( key );
@@ -557,10 +557,10 @@ namespace detail
                q.tag = tag;
                q.limit = 20;
                q.truncate_body = 1024;
-               auto trending_disc = _tags_api->get_discussions_by_promoted( q ).discussions;
+               auto popular_disc = _tags_api->get_discussions_by_promoted( q ).discussions;
 
                auto& didx = _state.discussion_idx[tag];
-               for( const auto& d : trending_disc )
+               for( const auto& d : popular_disc )
                {
                   string key = d.author + "/" + d.permlink;
                   didx.promoted.push_back( key );
@@ -577,10 +577,10 @@ namespace detail
                q.tag = tag;
                q.limit = 20;
                q.truncate_body = 1024;
-               auto trending_disc = _tags_api->get_discussions_by_votes( q ).discussions;
+               auto popular_disc = _tags_api->get_discussions_by_votes( q ).discussions;
 
                auto& didx = _state.discussion_idx[tag];
-               for( const auto& d : trending_disc )
+               for( const auto& d : popular_disc )
                {
                   string key = d.author + "/" + d.permlink;
                   didx.votes.push_back( key );
@@ -597,10 +597,10 @@ namespace detail
                q.tag = tag;
                q.limit = 20;
                q.truncate_body = 1024;
-               auto trending_disc = _tags_api->get_discussions_by_cashout( q ).discussions;
+               auto popular_disc = _tags_api->get_discussions_by_cashout( q ).discussions;
 
                auto& didx = _state.discussion_idx[tag];
-               for( const auto& d : trending_disc )
+               for( const auto& d : popular_disc )
                {
                   string key = d.author + "/" + d.permlink;
                   didx.cashout.push_back( key );
@@ -617,10 +617,10 @@ namespace detail
                q.tag = tag;
                q.limit = 20;
                q.truncate_body = 1024;
-               auto trending_disc = _tags_api->get_discussions_by_active( q ).discussions;
+               auto popular_disc = _tags_api->get_discussions_by_active( q ).discussions;
 
                auto& didx = _state.discussion_idx[tag];
-               for( const auto& d : trending_disc )
+               for( const auto& d : popular_disc )
                {
                   string key = d.author + "/" + d.permlink;
                   didx.active.push_back( key );
@@ -637,10 +637,10 @@ namespace detail
                q.tag = tag;
                q.limit = 20;
                q.truncate_body = 1024;
-               auto trending_disc = _tags_api->get_discussions_by_created( q ).discussions;
+               auto popular_disc = _tags_api->get_discussions_by_now( q ).discussions;
 
                auto& didx = _state.discussion_idx[tag];
-               for( const auto& d : trending_disc )
+               for( const auto& d : popular_disc )
                {
                   string key = d.author + "/" + d.permlink;
                   didx.created.push_back( key );
@@ -657,10 +657,10 @@ namespace detail
                q.tag = tag;
                q.limit = 20;
                q.truncate_body = 1024;
-               auto trending_disc = _tags_api->get_discussions_by_created( q ).discussions;
+               auto popular_disc = _tags_api->get_discussions_by_now( q ).discussions;
 
                auto& didx = _state.discussion_idx[tag];
-               for( const auto& d : trending_disc )
+               for( const auto& d : popular_disc )
                {
                   string key = d.author + "/" + d.permlink;
                   didx.created.push_back( key );
@@ -673,12 +673,12 @@ namespace detail
          {
             if( _tags_api )
             {
-               _state.tag_idx.trending.clear();
-               auto trending_tags = _tags_api->get_trending_tags( { std::string(), 250 } ).tags;
-               for( const auto& t : trending_tags )
+               _state.tag_idx.popular.clear();
+               auto popular_tags = _tags_api->get_popular_tags( { std::string(), 250 } ).tags;
+               for( const auto& t : popular_tags )
                {
                   string name = t.name;
-                  _state.tag_idx.trending.push_back( name );
+                  _state.tag_idx.popular.push_back( name );
                   _state.tags[ name ] = api_tag_object( t );
                }
             }
@@ -1467,13 +1467,13 @@ namespace detail
       return result;
    }
 
-   DEFINE_API_IMPL( condenser_api_impl, get_discussions_by_trending )
+   DEFINE_API_IMPL( condenser_api_impl, get_discussions_by_popular )
    {
       CHECK_ARG_SIZE( 1 )
       FC_ASSERT( _tags_api, "tags_api_plugin not enabled." );
 
-      auto discussions = _tags_api->get_discussions_by_trending(
-         args[0].as< tags::get_discussions_by_trending_args >() ).discussions;
+      auto discussions = _tags_api->get_discussions_by_popular(
+         args[0].as< tags::get_discussions_by_popular_args >() ).discussions;
       vector< discussion > result;
 
       for( auto& d : discussions )
@@ -1484,13 +1484,13 @@ namespace detail
       return result;
    }
 
-   DEFINE_API_IMPL( condenser_api_impl, get_discussions_by_created )
+   DEFINE_API_IMPL( condenser_api_impl, get_discussions_by_now )
    {
       CHECK_ARG_SIZE( 1 )
       FC_ASSERT( _tags_api, "tags_api_plugin not enabled." );
 
-      auto discussions = _tags_api->get_discussions_by_created(
-         args[0].as< tags::get_discussions_by_created_args >() ).discussions;
+      auto discussions = _tags_api->get_discussions_by_now(
+         args[0].as< tags::get_discussions_by_now_args >() ).discussions;
       vector< discussion > result;
 
       for( auto& d : discussions )
@@ -1569,13 +1569,13 @@ namespace detail
       return result;
    }
 
-   DEFINE_API_IMPL( condenser_api_impl, get_discussions_by_hot )
+   DEFINE_API_IMPL( condenser_api_impl, get_discussions_by_skyrockets )
    {
       CHECK_ARG_SIZE( 1 )
       FC_ASSERT( _tags_api, "tags_api_plugin not enabled." );
 
-      auto discussions = _tags_api->get_discussions_by_hot(
-         args[0].as< tags::get_discussions_by_hot_args >() ).discussions;
+      auto discussions = _tags_api->get_discussions_by_skyrockets(
+         args[0].as< tags::get_discussions_by_skyrockets_args >() ).discussions;
       vector< discussion > result;
 
       for( auto& d : discussions )
@@ -2239,7 +2239,7 @@ DEFINE_LOCKLESS_APIS( condenser_api,
 )
 
 DEFINE_READ_APIS( condenser_api,
-   (get_trending_tags)
+   (get_popular_tags)
    (get_state)
    (get_active_witnesses)
    (get_block_header)
@@ -2287,13 +2287,13 @@ DEFINE_READ_APIS( condenser_api,
    (get_tags_used_by_author)
    (get_post_discussions_by_payout)
    (get_comment_discussions_by_payout)
-   (get_discussions_by_trending)
-   (get_discussions_by_created)
+   (get_discussions_by_popular)
+   (get_discussions_by_now)
    (get_discussions_by_active)
    (get_discussions_by_cashout)
    (get_discussions_by_votes)
    (get_discussions_by_children)
-   (get_discussions_by_hot)
+   (get_discussions_by_skyrockets)
    (get_discussions_by_feed)
    (get_discussions_by_blog)
    (get_discussions_by_comments)

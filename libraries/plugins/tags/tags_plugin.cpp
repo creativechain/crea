@@ -38,12 +38,12 @@ double calculate_score( const share_type& score, const time_point_sec& created )
    return sign * order + double( created.sec_since_epoch() ) / double( T );
 }
 
-inline double calculate_hot( const share_type& score, const time_point_sec& created )
+inline double calculate_skyrockets( const share_type& score, const time_point_sec& created )
 {
    return calculate_score< 10000000, 10000 >( score, created );
 }
 
-inline double calculate_trending( const share_type& score, const time_point_sec& created )
+inline double calculate_popular( const share_type& score, const time_point_sec& created )
 {
    return calculate_score< 10000000, 480000 >( score, created );
 }
@@ -73,8 +73,8 @@ class tags_plugin_impl
       void remove_tag( const tag_object& tag )const;
       const tag_stats_object& get_stats( const string& tag )const;
       comment_metadata filter_tags( const comment_object& c, const comment_content_object& con )const;
-      void update_tag( const tag_object& current, const comment_object& comment, double hot, double trending )const;
-      void create_tag( const string& tag, const comment_object& comment, double hot, double trending )const;
+      void update_tag( const tag_object& current, const comment_object& comment, double hot, double popular )const;
+      void create_tag( const string& tag, const comment_object& comment, double hot, double popular )const;
       void update_tags( const comment_object& c, bool parse_tags = false )const;
 };
 
@@ -95,7 +95,7 @@ void tags_plugin_impl::remove_stats( const tag_object& tag, const tag_stats_obje
         {
            s.comments--;
         }
-        s.total_trending -= static_cast<uint32_t>(tag.trending);
+        s.total_popular -= static_cast<uint32_t>(tag.popular);
         s.net_votes   -= tag.net_votes;
    });
 }
@@ -112,7 +112,7 @@ void tags_plugin_impl::add_stats( const tag_object& tag, const tag_stats_object&
         {
            s.comments++;
         }
-        s.total_trending += static_cast<uint32_t>(tag.trending);
+        s.total_popular += static_cast<uint32_t>(tag.popular);
         s.net_votes   += tag.net_votes;
    });
 }
@@ -190,7 +190,7 @@ comment_metadata tags_plugin_impl::filter_tags( const comment_object& c, const c
    return meta;
 }
 
-void tags_plugin_impl::update_tag( const tag_object& current, const comment_object& comment, double hot, double trending )const
+void tags_plugin_impl::update_tag( const tag_object& current, const comment_object& comment, double hot, double popular )const
 {
     const auto& stats = get_stats( current.tag );
     remove_stats( current, stats );
@@ -203,7 +203,7 @@ void tags_plugin_impl::update_tag( const tag_object& current, const comment_obje
           obj.net_rshares       = comment.net_rshares.value;
           obj.net_votes         = comment.net_votes;
           obj.hot               = hot;
-          obj.trending          = trending;
+          obj.popular          = popular;
           if( obj.cashout == fc::time_point_sec() )
             obj.promoted_balance = 0;
       });
@@ -213,7 +213,7 @@ void tags_plugin_impl::update_tag( const tag_object& current, const comment_obje
     }
 }
 
-void tags_plugin_impl::create_tag( const string& tag, const comment_object& comment, double hot, double trending )const
+void tags_plugin_impl::create_tag( const string& tag, const comment_object& comment, double hot, double popular )const
 {
    comment_id_type parent;
    account_id_type author = _db.get_account( comment.author ).id;
@@ -234,7 +234,7 @@ void tags_plugin_impl::create_tag( const string& tag, const comment_object& comm
        obj.net_rshares       = comment.net_rshares.value;
        obj.author            = author;
        obj.hot               = hot;
-       obj.trending          = trending;
+       obj.popular          = popular;
    });
    add_stats( tag_obj, get_stats( tag ) );
 
@@ -264,8 +264,8 @@ void tags_plugin_impl::update_tags( const comment_object& c, bool parse_tags )co
 {
    try {
 
-   auto hot = calculate_hot( c.net_rshares, c.created );
-   auto trending = calculate_trending( c.net_rshares, c.created );
+   auto hot = calculate_skyrockets( c.net_rshares, c.created );
+   auto popular = calculate_popular( c.net_rshares, c.created );
 
    const auto& comment_idx = _db.get_index< tag_index >().indices().get< by_comment >();
 
@@ -299,11 +299,11 @@ void tags_plugin_impl::update_tags( const comment_object& c, bool parse_tags )co
 
          if( existing == existing_tags.end() )
          {
-            create_tag( tag, c, hot, trending );
+            create_tag( tag, c, hot, popular );
          }
          else
          {
-            update_tag( *existing->second, c, hot, trending );
+            update_tag( *existing->second, c, hot, popular );
          }
       }
 
@@ -317,7 +317,7 @@ void tags_plugin_impl::update_tags( const comment_object& c, bool parse_tags )co
 
       while( citr != comment_idx.end() && citr->comment == c.id )
       {
-         update_tag( *citr, c, hot, trending );
+         update_tag( *citr, c, hot, popular );
          ++citr;
       }
    }
