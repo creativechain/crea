@@ -89,7 +89,7 @@ namespace crea { namespace protocol {
        string            comment_permlink;
 
        void validate()const;
-       void get_required_posting_authorities( flat_set<account_name_type>& a)const{ a.insert(downloader); }
+       void get_required_active_authorities( flat_set<account_name_type>& a)const{ a.insert(downloader); }
    };
 
    struct beneficiary_route_type

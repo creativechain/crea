@@ -40,6 +40,24 @@ if [[ ! "$DISABLE_SCALE_MEM" ]]; then
    ARGS+=" --shared-file-full-threshold=9500 --shared-file-scale-rate=1000"
 fi
 
+if [[ ! -z "$P2P_PORT" ]]; then
+    P2P_PORT=$P2P_PORT
+else
+    P2P_PORT=1776
+fi
+
+if [[ ! -z "$HTTP_PORT" ]]; then
+    HTTP_PORT=$HTTP_PORT
+else
+    HTTP_PORT=1996
+fi
+
+if [[ ! -z "$WS_PORT" ]]; then
+    WS_PORT=$WS_PORT
+else
+    WS_PORT=1886
+fi
+
 NOW=`date +%s`
 CREAD_FEED_START_TIME=`expr $NOW - 1209600`
 
@@ -110,8 +128,8 @@ if [[ "$USE_NGINX_FRONTEND" ]]; then
     service nginx restart
     exec chpst -ucread \
         $CREAD \
-            --webserver-ws-endpoint=0.0.0.0:1996 \
-            --webserver-http-endpoint=0.0.0.0:1996 \
+            --webserver-ws-endpoint=0.0.0.0:$WS_PORT \
+            --webserver-http-endpoint=0.0.0.0:$HTTP_PORT \
             --p2p-endpoint=0.0.0.0:1776 \
             --data-dir=$HOME \
             $ARGS \
@@ -120,8 +138,8 @@ if [[ "$USE_NGINX_FRONTEND" ]]; then
 else
     exec chpst -ucread \
         $CREAD \
-            --webserver-ws-endpoint=0.0.0.0:1886 \
-            --webserver-http-endpoint=0.0.0.0:1886 \
+            --webserver-ws-endpoint=0.0.0.0:$WS_PORT \
+            --webserver-http-endpoint=0.0.0.0:$HTTP_PORT \
             --p2p-endpoint=0.0.0.0:1776 \
             --data-dir=$HOME \
             $ARGS \

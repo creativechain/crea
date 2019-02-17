@@ -16,8 +16,8 @@
 #define CREA_CHAIN_ID (fc::sha256::hash("testnet"))
 #define CREA_ADDRESS_PREFIX                  "crea"
 
-#define CREA_GENESIS_TIME                    (fc::time_point_sec(1451606400))
-#define CREA_MINING_TIME                     (fc::time_point_sec(1451606400))
+#define CREA_GENESIS_TIME                    (fc::time_point_sec(1550431200))
+#define CREA_MINING_TIME                     (fc::time_point_sec(1550431200))
 #define CREA_CASHOUT_WINDOW_SECONDS          (60*60) /// 1 hr
 #define CREA_CASHOUT_WINDOW_SECONDS_PRE_HF12 (CREA_CASHOUT_WINDOW_SECONDS)
 #define CREA_CASHOUT_WINDOW_SECONDS_PRE_HF17 (CREA_CASHOUT_WINDOW_SECONDS)
@@ -56,8 +56,8 @@
 #define CREA_CHAIN_ID fc::sha256()
 #define CREA_ADDRESS_PREFIX                  "CREA"
 
-#define CREA_GENESIS_TIME                    (fc::time_point_sec(1549631708))
-#define CREA_MINING_TIME                     (fc::time_point_sec(1549631708))
+#define CREA_GENESIS_TIME                    (fc::time_point_sec(1550431200))
+#define CREA_MINING_TIME                     (fc::time_point_sec(1550431200))
 #define CREA_CASHOUT_WINDOW_SECONDS_PRE_HF12 (60*60*24)    /// 1 day
 #define CREA_CASHOUT_WINDOW_SECONDS_PRE_HF17 (60*60*12)    /// 12 hours
 #define CREA_CASHOUT_WINDOW_SECONDS          (60*60*24*10) /// 10 days -> Rewards
