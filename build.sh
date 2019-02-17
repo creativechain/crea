@@ -54,6 +54,12 @@ function buildSource {
 
 while test $# -gt 0; do
 	case "$1" in
+	    --clean)
+	        printMsg "Cleaning..."
+	        rm -rf $BUILD_DIR
+	        mkdir $BUILD_DIR
+	        shift
+	        ;;
 		--test)
 		    printMsg "Building Testnet"
 			FLAGS="$FLAGS -DBUILD_CREA_TESTNET=ON"
@@ -75,9 +81,6 @@ while test $# -gt 0; do
 	esac
 	shift
 done
-
-#rm -rf $BUILD_DIR
-#makeDir $BUILD_DIR
 
 git submodule update --init --recursive
 
