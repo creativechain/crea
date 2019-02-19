@@ -529,7 +529,7 @@ namespace detail
                }
             }
          }
-         else if( !part[0].size() || part[0] == "hot" )
+         else if( !part[0].size() || part[0] == "skyrockets" )
          {
             if( _tags_api )
             {
@@ -543,7 +543,7 @@ namespace detail
                for( const auto& d : popular_disc )
                {
                   string key = d.author + "/" + d.permlink;
-                  didx.hot.push_back( key );
+                  didx.skyrockets.push_back( key );
                   if( d.author.size() ) accounts.insert(d.author);
                   _state.content[key] = std::move(d);
                }
@@ -629,7 +629,7 @@ namespace detail
                }
             }
          }
-         else if( part[0] == "created"  )
+         else if( part[0] == "now"  )
          {
             if( _tags_api )
             {
@@ -643,7 +643,7 @@ namespace detail
                for( const auto& d : popular_disc )
                {
                   string key = d.author + "/" + d.permlink;
-                  didx.created.push_back( key );
+                  didx.now.push_back( key );
                   if( d.author.size() ) accounts.insert(d.author);
                   _state.content[key] = std::move(d);
                }
@@ -663,7 +663,7 @@ namespace detail
                for( const auto& d : popular_disc )
                {
                   string key = d.author + "/" + d.permlink;
-                  didx.created.push_back( key );
+                  didx.now.push_back( key );
                   if( d.author.size() ) accounts.insert(d.author);
                   _state.content[key] = std::move(d);
                }

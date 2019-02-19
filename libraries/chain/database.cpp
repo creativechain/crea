@@ -4900,7 +4900,7 @@ struct smt_reward_balance_operator
                                                                   rfo.name = CREA_POST_REWARD_FUND_NAME;
                                                                   rfo.last_update = head_block_time();
                                                                   rfo.content_constant = CREA_CONTENT_CONSTANT_HF0;
-                                                                  rfo.percent_curation_rewards = CREA_1_PERCENT * 25;
+                                                                  rfo.percent_curation_rewards = CREA_1_PERCENT * 30;
                                                                   rfo.percent_content_rewards = CREA_100_PERCENT;
                                                                   rfo.reward_balance = gpo.total_reward_fund_crea;
 #ifndef IS_TEST_NET

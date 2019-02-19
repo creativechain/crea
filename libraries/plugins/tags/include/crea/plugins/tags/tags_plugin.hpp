@@ -82,7 +82,7 @@ class tag_object : public object< tag_object_type, tag_object >
       int64_t           net_rshares = 0;
       int32_t           net_votes   = 0;
       int32_t           children    = 0;
-      double            hot         = 0;
+      double            skyrockets         = 0;
       double            popular    = 0;
       share_type        promoted_balance = 0;
 
@@ -178,7 +178,7 @@ typedef multi_index_container<
             composite_key< tag_object,
                member< tag_object, tag_name_type, &tag_object::tag >,
                member< tag_object, comment_id_type, &tag_object::parent >,
-               member< tag_object, double, &tag_object::hot >,
+               member< tag_object, double, &tag_object::skyrockets >,
                member< tag_object, tag_id_type, &tag_object::id >
             >,
             composite_key_compare< std::less<tag_name_type>, std::less<comment_id_type>, std::greater< double >, std::less< tag_id_type > >
@@ -385,7 +385,7 @@ class tag_api : public std::enable_shared_from_this<tag_api> {
 } } } //crea::plugins::tags
 
 FC_REFLECT( crea::plugins::tags::tag_object,
-   (id)(tag)(created)(active)(cashout)(net_rshares)(net_votes)(hot)(popular)(promoted_balance)(children)(author)(parent)(comment) )
+   (id)(tag)(created)(active)(cashout)(net_rshares)(net_votes)(skyrockets)(popular)(promoted_balance)(children)(author)(parent)(comment) )
 CHAINBASE_SET_INDEX_TYPE( crea::plugins::tags::tag_object, crea::plugins::tags::tag_index )
 
 FC_REFLECT( crea::plugins::tags::tag_stats_object,

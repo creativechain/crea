@@ -34,7 +34,7 @@ struct discussion_index
    vector< string > payout;           /// pending posts by payout
    vector< string > payout_comments;  /// pending comments by payout
    vector< string > popular30;       /// pending lifetime payout
-   vector< string > created;          /// creation date
+   vector< string > now;          /// creation date
    vector< string > responses;        /// creation date
    vector< string > updated;          /// creation date
    vector< string > active;           /// last update or reply
@@ -42,7 +42,7 @@ struct discussion_index
    vector< string > cashout;          /// last update or reply
    vector< string > maturing;         /// about to be paid out
    vector< string > best;             /// total lifetime payout
-   vector< string > hot;              /// total lifetime payout
+   vector< string > skyrockets;       /// total lifetime payout
    vector< string > promoted;         /// pending lifetime payout
 };
 
@@ -1177,7 +1177,7 @@ public:
 } } } // crea::plugins::condenser_api
 
 FC_REFLECT( crea::plugins::condenser_api::discussion_index,
-            (category)(popular)(payout)(payout_comments)(popular30)(updated)(created)(responses)(active)(votes)(maturing)(best)(hot)(promoted)(cashout) )
+            (category)(popular)(payout)(payout_comments)(popular30)(updated)(now)(responses)(active)(votes)(maturing)(best)(skyrockets)(promoted)(cashout) )
 
 FC_REFLECT( crea::plugins::condenser_api::api_tag_object,
             (name)(total_payouts)(net_votes)(top_posts)(comments)(popular) )

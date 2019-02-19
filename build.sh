@@ -12,7 +12,6 @@ GCC_VERSION="5.4.0"
 FLAGS="-DCREA_STATIC_BUILD=ON -DCLEAR_VOTES=OFF -DENABLE_SMT_SUPPORT=FALSE -DENABLE_CONTENT_PATCHING=OFF -DCMAKE_BUILD_TYPE=Release"
 PROCS=$(nproc)
 MAKE_FLAGS=""
-HF_COMPILATION=false
 
 function printMsg {
     echo ""
@@ -39,11 +38,6 @@ function checkGccVersion {
 function buildSource {
 
     cd $BUILD_DIR
-
-    if [ "$HF_COMPILATION" = true ] ; then
-        rm -rf libraries/protocol/include/crea/protocol/hardfork.hpp
-    fi
-
 
     cmake $FLAGS ..;
 
@@ -72,7 +66,7 @@ while test $# -gt 0; do
 			shift
 			;;
 		--hf)
-			HF_COMPILATION=true
+			rm -rf $BUILD_DIR/libraries/protocol/include/crea/protocol/hardfork.hpp
 			shift
 			;;
 		*)

@@ -126,7 +126,7 @@
 #define CREA_REVERSE_AUCTION_WINDOW_SECONDS_HF6 (60*30) /// 30 minutes
 #define CREA_REVERSE_AUCTION_WINDOW_SECONDS_HF20 (60*15) /// 15 minutes
 #define CREA_MIN_VOTE_INTERVAL_SEC           3
-#define CREA_VOTE_DUST_THRESHOLD             (50000000)
+#define CREA_VOTE_DUST_THRESHOLD             (3800000)
 
 #define CREA_MIN_ROOT_COMMENT_INTERVAL       (fc::seconds(60*5)) // 5 minutes
 #define CREA_MIN_REPLY_INTERVAL              (fc::seconds(20)) // 20 seconds
@@ -222,7 +222,7 @@
 #define CREA_PRODUCER_APR_PERCENT             750
 #define CREA_POW_APR_PERCENT                  750
 
-#define CREA_MIN_PAYOUT_CBD                  (asset(20,CBD_SYMBOL))
+#define CREA_MIN_PAYOUT_CBD                  (asset(10,CBD_SYMBOL))
 
 #define CREA_CBD_STOP_PERCENT_HF14           (5*CREA_1_PERCENT ) // Stop printing CBD at 5% Market Cap
 #define CREA_CBD_STOP_PERCENT_HF20           (10*CREA_1_PERCENT ) // Stop printing CBD at 10% Market Cap

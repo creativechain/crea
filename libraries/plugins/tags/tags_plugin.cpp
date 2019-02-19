@@ -73,8 +73,8 @@ class tags_plugin_impl
       void remove_tag( const tag_object& tag )const;
       const tag_stats_object& get_stats( const string& tag )const;
       comment_metadata filter_tags( const comment_object& c, const comment_content_object& con )const;
-      void update_tag( const tag_object& current, const comment_object& comment, double hot, double popular )const;
-      void create_tag( const string& tag, const comment_object& comment, double hot, double popular )const;
+      void update_tag( const tag_object& current, const comment_object& comment, double skyrockets, double popular )const;
+      void create_tag( const string& tag, const comment_object& comment, double skyrockets, double popular )const;
       void update_tags( const comment_object& c, bool parse_tags = false )const;
 };
 
@@ -190,7 +190,7 @@ comment_metadata tags_plugin_impl::filter_tags( const comment_object& c, const c
    return meta;
 }
 
-void tags_plugin_impl::update_tag( const tag_object& current, const comment_object& comment, double hot, double popular )const
+void tags_plugin_impl::update_tag( const tag_object& current, const comment_object& comment, double skyrockets, double popular )const
 {
     const auto& stats = get_stats( current.tag );
     remove_stats( current, stats );
@@ -202,7 +202,7 @@ void tags_plugin_impl::update_tag( const tag_object& current, const comment_obje
           obj.children          = comment.children;
           obj.net_rshares       = comment.net_rshares.value;
           obj.net_votes         = comment.net_votes;
-          obj.hot               = hot;
+          obj.skyrockets               = skyrockets;
           obj.popular          = popular;
           if( obj.cashout == fc::time_point_sec() )
             obj.promoted_balance = 0;
@@ -213,7 +213,7 @@ void tags_plugin_impl::update_tag( const tag_object& current, const comment_obje
     }
 }
 
-void tags_plugin_impl::create_tag( const string& tag, const comment_object& comment, double hot, double popular )const
+void tags_plugin_impl::create_tag( const string& tag, const comment_object& comment, double skyrockets, double popular )const
 {
    comment_id_type parent;
    account_id_type author = _db.get_account( comment.author ).id;
@@ -233,7 +233,7 @@ void tags_plugin_impl::create_tag( const string& tag, const comment_object& comm
        obj.children          = comment.children;
        obj.net_rshares       = comment.net_rshares.value;
        obj.author            = author;
-       obj.hot               = hot;
+       obj.skyrockets               = skyrockets;
        obj.popular          = popular;
    });
    add_stats( tag_obj, get_stats( tag ) );
