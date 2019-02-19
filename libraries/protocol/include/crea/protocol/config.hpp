@@ -19,6 +19,7 @@
 #define CREA_GENESIS_TIME                    (fc::time_point_sec(1550592000))
 #define CREA_MINING_TIME                     (fc::time_point_sec(1550592000))
 #define CREA_CASHOUT_WINDOW_SECONDS          (60*60) /// 1 hr
+#define CREA_FIRST_WINDOW_SECONDS            (60*60)       /// 1 hour -> Reward regulation
 #define CREA_CASHOUT_WINDOW_SECONDS_PRE_HF12 (CREA_CASHOUT_WINDOW_SECONDS)
 #define CREA_CASHOUT_WINDOW_SECONDS_PRE_HF17 (CREA_CASHOUT_WINDOW_SECONDS)
 #define CREA_SECOND_CASHOUT_WINDOW           (60*60*24*3) /// 3 days
