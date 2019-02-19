@@ -48,6 +48,7 @@ will build out of the box without further effort:
         cmake \
         g++ \
         git \
+        zlib1g-dev \
         libbz2-dev \
         libsnappy-dev \
         libssl-dev \
