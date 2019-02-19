@@ -1051,6 +1051,7 @@ class wallet_api
       map< uint32_t, condenser_api::api_operation_object > get_account_history( string account, uint32_t from, uint32_t limit );
 
 
+
       FC_TODO(Supplement API argument description)
       /**
        *  Marks one account as following another account.  Requires the posting authority of the follower.

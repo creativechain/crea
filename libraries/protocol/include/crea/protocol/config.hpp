@@ -16,8 +16,8 @@
 #define CREA_CHAIN_ID (fc::sha256::hash("testnet"))
 #define CREA_ADDRESS_PREFIX                  "crea"
 
-#define CREA_GENESIS_TIME                    (fc::time_point_sec(1550431200))
-#define CREA_MINING_TIME                     (fc::time_point_sec(1550431200))
+#define CREA_GENESIS_TIME                    (fc::time_point_sec(1550595600))
+#define CREA_MINING_TIME                     (fc::time_point_sec(1550595600))
 #define CREA_CASHOUT_WINDOW_SECONDS          (60*60) /// 1 hr
 #define CREA_CASHOUT_WINDOW_SECONDS_PRE_HF12 (CREA_CASHOUT_WINDOW_SECONDS)
 #define CREA_CASHOUT_WINDOW_SECONDS_PRE_HF17 (CREA_CASHOUT_WINDOW_SECONDS)
@@ -53,13 +53,14 @@
 
 #define CREA_INIT_PRIVATE_KEY                (fc::ecc::private_key::regenerate(fc::sha256::hash(std::string("init_key"))))
 #define CREA_INIT_PUBLIC_KEY_STR             (std::string( crea::protocol::public_key_type(CREA_INIT_PRIVATE_KEY.get_public_key()) ))
-#define CREA_CHAIN_ID fc::sha256()
+#define CREA_CHAIN_ID                        fc::sha256()
 #define CREA_ADDRESS_PREFIX                  "CREA"
 
-#define CREA_GENESIS_TIME                    (fc::time_point_sec(1550431200))
-#define CREA_MINING_TIME                     (fc::time_point_sec(1550431200))
+#define CREA_GENESIS_TIME                    (fc::time_point_sec(1550595600))
+#define CREA_MINING_TIME                     (fc::time_point_sec(1550595600))
 #define CREA_CASHOUT_WINDOW_SECONDS_PRE_HF12 (60*60*24)    /// 1 day
 #define CREA_CASHOUT_WINDOW_SECONDS_PRE_HF17 (60*60*12)    /// 12 hours
+#define CREA_FIRST_WINDOW_SECONDS            (60*60)       /// 1 hour -> Reward regulation
 #define CREA_CASHOUT_WINDOW_SECONDS          (60*60*24*10) /// 10 days -> Rewards
 #define CREA_SECOND_CASHOUT_WINDOW           (60*60*24*30) /// 30 days
 #define CREA_MAX_CASHOUT_WINDOW_SECONDS      (60*60*24*14) /// 2 weeks
@@ -76,7 +77,7 @@
 #define CREA_OWNER_AUTH_HISTORY_TRACKING_START_BLOCK_NUM 1
 
 //Supply for CREA and CBD
-#define CREA_TOTAL_INIT_SUPPLY               (int64_t( 18808120 ) * int64_t( 1000 ))
+#define CREA_TOTAL_INIT_SUPPLY               (int64_t( 19078301 ) * int64_t( 1000 ))
 #define CREA_CBD_PERCENT_SUPPLY              (int64_t(0)) //1% of total supply is CBD
 #define CREA_TO_CBD_SUPPLY                   (int64_t(CREA_TOTAL_INIT_SUPPLY * CREA_CBD_PERCENT_SUPPLY / 100)) //Total CREA to convert as CBD
 #define CREA_INIT_PRICE                      (int64_t(7)) //CBD per 1 CREA at start
@@ -104,12 +105,12 @@
 #define CREA_MAX_WITNESSES                   25
 
 #define CREA_MAX_VOTED_WITNESSES_HF0         24
-#define CREA_MAX_MINER_WITNESSES_HF0         1
-#define CREA_MAX_RUNNER_WITNESSES_HF0        0
+#define CREA_MAX_MINER_WITNESSES_HF0         0
+#define CREA_MAX_RUNNER_WITNESSES_HF0        1
 
 #define CREA_MAX_VOTED_WITNESSES_HF17        24
-#define CREA_MAX_MINER_WITNESSES_HF17        1
-#define CREA_MAX_RUNNER_WITNESSES_HF17       0
+#define CREA_MAX_MINER_WITNESSES_HF17        0
+#define CREA_MAX_RUNNER_WITNESSES_HF17       1
 
 #define CREA_HARDFORK_REQUIRED_WITNESSES     20 // 19 of the 25 dpos witnesses (24 elected and 1 virtual time) required for hardfork. This guarantees 75% participation on all subsequent rounds.
 #define CREA_MAX_TIME_UNTIL_EXPIRATION       (60*60) // seconds,  aka: 1 hour
@@ -126,7 +127,8 @@
 #define CREA_REVERSE_AUCTION_WINDOW_SECONDS_HF6 (60*30) /// 30 minutes
 #define CREA_REVERSE_AUCTION_WINDOW_SECONDS_HF20 (60*15) /// 15 minutes
 #define CREA_MIN_VOTE_INTERVAL_SEC           3
-#define CREA_VOTE_DUST_THRESHOLD             (3800000)
+#define CREA_VOTE_DUST_THRESHOLD             (50000000)
+//#define CREA_VOTE_DUST_THRESHOLD             (3800000)
 
 #define CREA_MIN_ROOT_COMMENT_INTERVAL       (fc::seconds(60*5)) // 5 minutes
 #define CREA_MIN_REPLY_INTERVAL              (fc::seconds(20)) // 20 seconds

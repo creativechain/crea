@@ -702,6 +702,11 @@ void comment_evaluator::do_apply( const comment_operation& o )
       FC_ASSERT( o.title.size() + o.body.size() + o.json_metadata.size(), "Cannot update comment because nothing appears to be changing." );
 
    const auto& by_permlink_idx = _db.get_index< comment_index >().indices().get< by_permlink >();
+
+   const auto& comment_idx = _db.get_index< comment_index >().indices();
+   const auto& idx_itr = comment_idx.begin();
+   bool first_comment = idx_itr == comment_idx.end();
+
    auto itr = by_permlink_idx.find( boost::make_tuple( o.author, o.permlink ) );
 
    const auto& auth = _db.get_account( o.author ); /// prove it exists
@@ -820,7 +825,12 @@ void comment_evaluator::do_apply( const comment_operation& o )
 
          if( _db.has_hardfork( CREA_HARDFORK_0_17__769 ) )
          {
-            com.cashout_time = com.created + CREA_CASHOUT_WINDOW_SECONDS;
+             if (first_comment) {
+                 com.cashout_time = com.created + CREA_FIRST_WINDOW_SECONDS;
+             } else {
+                 com.cashout_time = com.created + CREA_CASHOUT_WINDOW_SECONDS;
+             }
+
          }
       });
 
