@@ -225,7 +225,9 @@ RUN chown cread:cread -R /var/lib/cread
 
 VOLUME ["/var/lib/cread"]
 
-# rpc service:
+# http rpc service:
+EXPOSE 1996
+# ws rpc service:
 EXPOSE 1886
 # p2p service:
 EXPOSE 1776
