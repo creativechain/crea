@@ -128,6 +128,8 @@ if [[ "$USE_NGINX_FRONTEND" ]]; then
     service nginx restart
     exec chpst -ucread \
         $CREAD \
+            --enable-stale-production=$STALE_PRODUCTION \
+            --required-participation=$PARTICIPATION \
             --webserver-ws-endpoint=0.0.0.0:$WS_PORT \
             --webserver-http-endpoint=0.0.0.0:$HTTP_PORT \
             --p2p-endpoint=0.0.0.0:1776 \
@@ -138,6 +140,8 @@ if [[ "$USE_NGINX_FRONTEND" ]]; then
 else
     exec chpst -ucread \
         $CREAD \
+            --enable-stale-production=$STALE_PRODUCTION \
+            --required-participation=$PARTICIPATION \
             --webserver-ws-endpoint=0.0.0.0:$WS_PORT \
             --webserver-http-endpoint=0.0.0.0:$HTTP_PORT \
             --p2p-endpoint=0.0.0.0:1776 \
