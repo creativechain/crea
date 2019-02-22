@@ -45,7 +45,7 @@ if [[ ! "$STALE_PRODUCTION" ]]; then
 fi
 
 if [[ ! "$PARTICIPATION" ]]; then
-   ARGS+=" --required-paritcipation=$PARTICIPATION"
+   ARGS+=" --required-partcipation=$PARTICIPATION"
 fi
 
 if [[ ! -z "$P2P_PORT" ]]; then
