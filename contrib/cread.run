@@ -40,12 +40,12 @@ if [[ ! "$DISABLE_SCALE_MEM" ]]; then
    ARGS+=" --shared-file-full-threshold=9500 --shared-file-scale-rate=1000"
 fi
 
-if [[ ! "$STALE_PRODUCTION" ]]; then
+if [[ ! -z "$STALE_PRODUCTION" ]]; then
    ARGS+=" --enable-stale-production"
 fi
 
-if [[ ! "$PARTICIPATION" ]]; then
-   ARGS+=" --required-partcipation=$PARTICIPATION"
+if [[ ! -z "$PARTICIPATION" ]]; then
+   ARGS+=" --required-participation=$PARTICIPATION"
 fi
 
 if [[ ! -z "$P2P_PORT" ]]; then
