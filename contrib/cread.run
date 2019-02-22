@@ -40,6 +40,14 @@ if [[ ! "$DISABLE_SCALE_MEM" ]]; then
    ARGS+=" --shared-file-full-threshold=9500 --shared-file-scale-rate=1000"
 fi
 
+if [[ ! "$STALE_PRODUCTION" ]]; then
+   ARGS+=" --enable-stale-production"
+fi
+
+if [[ ! "$PARTICIPATION" ]]; then
+   ARGS+=" --required-paritcipation=$PARTICIPATION"
+fi
+
 if [[ ! -z "$P2P_PORT" ]]; then
     P2P_PORT=$P2P_PORT
 else
@@ -128,8 +136,6 @@ if [[ "$USE_NGINX_FRONTEND" ]]; then
     service nginx restart
     exec chpst -ucread \
         $CREAD \
-            --enable-stale-production=$STALE_PRODUCTION \
-            --required-participation=$PARTICIPATION \
             --webserver-ws-endpoint=0.0.0.0:$WS_PORT \
             --webserver-http-endpoint=0.0.0.0:$HTTP_PORT \
             --p2p-endpoint=0.0.0.0:1776 \
@@ -140,8 +146,6 @@ if [[ "$USE_NGINX_FRONTEND" ]]; then
 else
     exec chpst -ucread \
         $CREAD \
-            --enable-stale-production=$STALE_PRODUCTION \
-            --required-participation=$PARTICIPATION \
             --webserver-ws-endpoint=0.0.0.0:$WS_PORT \
             --webserver-http-endpoint=0.0.0.0:$HTTP_PORT \
             --p2p-endpoint=0.0.0.0:1776 \
