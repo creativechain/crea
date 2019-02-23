@@ -1,7 +1,7 @@
-Copyright (c) 2018 Creativechain Foundation, and contributors.
+Copyright (c) 2018 Creativechain FDN, and contributors.
 
 The following license applies to code contained within this repository that
-is created by Creativechain Foundation. Other copy right holders have licensed dependencies such
+is created by Creativechain FDN. Other copy right holders have licensed dependencies such
 as Graphene, FC, and Boost under their own individual licenses.
 
 The MIT License
