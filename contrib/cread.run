@@ -74,6 +74,7 @@ ARGS+=" --follow-start-feeds=$CREAD_FEED_START_TIME"
 # overwrite local config with image one
 if [[ "$USE_FULL_WEB_NODE" ]]; then
   cp /etc/cread/fullnode.config.ini $HOME/config.ini
+  CREAD="/usr/local/cread-full/bin/cread"
 elif [[ "$IS_BROADCAST_NODE" ]]; then
   cp /etc/cread/config-for-broadcaster.ini $HOME/config.ini
 elif [[ "$IS_AH_NODE" ]]; then
