@@ -1,5 +1,6 @@
 /*
- * Copyright (c) 2016 Creativechain, Inc., and contributors.
+ * Copyright (c) 2016 Steemit, Inc., and contributors.
+ * Copyright (c) 2018 Creativechain FDN, and contributors.
  */
 #pragma once
 #include <crea/protocol/hardfork.hpp>

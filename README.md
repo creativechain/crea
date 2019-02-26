@@ -8,14 +8,11 @@ Being one of the most actively developed blockchain projects currently in existe
 
 Crea aims to be the preferred blockchain for dApp development with Smart Media Tokens at its core. With SMTs, everyone can leverage the power of Crea.
 
-Originally, Crea was announced on the [Bitcointalk forum](https://bitcointalk.org/index.php?topic=1410943.new) prior to the start of any mining. (Crea is currently not mineable)
+Originally, Crea was announced on the [Bitcointalk forum](https://bitcointalk.org/index.php?topic=1809920.0) prior to the start of any mining. (Crea is currently not mineable)
 
 ## Documents
 
-* Whitepaper: [crea.io/CreaWhitepaper.pdf](https://crea.io/CreaWhitePaper.pdf)
-* Bluepaper: [crea.io/CreaBluepaper.pdf](https://crea.io/crea-bluepaper.pdf)
-* SMT Whitepaper: [crea.io/SMTWhitepaper.pdf](https://smt.crea.io/smt-whitepaper.pdf) (*not final*)
-* Developer Portal: https://developers.crea.io/
+* Developer Portal: https://dev.creaproject.io
 
 ## Advantages
 
@@ -26,7 +23,6 @@ Originally, Crea was announced on the [Bitcointalk forum](https://bitcointalk.or
 * Integrated Token Allocation
 * Smart Media Tokens (**soon**)
 * Lowest Entry-Barrier for User Adoption in the market
-* Dozens of dApps already built on Crea and many more to come
 
 ## Technical Details
 
@@ -34,9 +30,9 @@ Originally, Crea was announced on the [Bitcointalk forum](https://bitcointalk.or
 * CBD - Crea's very own stable coin with a one-way peg
 * Delegated Proof-of-Stake Consensus (DPOS)
 * 10% APR inflation narrowing to 1% APR over 20 years
-    * 75% of inflation to "Proof of Brain" social consensus algorithm.
+    * 70% of inflation to "Proof of Brain" social consensus algorithm.
     * 15% of inflation to stakeholders.
-    * 10% of inflation to block producers.
+    * 15% of inflation to block producers.
 
 # Installation
 
@@ -65,7 +61,7 @@ To run a p2p node (ca. 2GB of memory is required at the moment):
 ## Dockerized Full Node
 
 To run a node with *all* the data (e.g. for supporting a content website)
-ca. 14GB of memory, and growing, is required:
+ca. 8GB of memory, and growing, is required:
 
     docker run \
         --env USE_WAY_TOO_MUCH_RAM=1 --env USE_FULL_WEB_NODE=1 \
@@ -109,18 +105,9 @@ There are quite a few environment variables that can be set to run cread in diff
 * `USE_MULTICORE_READONLY` - if set to true, this will enable cread in multiple reader mode to take advantage of multiple cores (if available). Read requests are handled by the read-only nodes and write requests are forwarded back to the single 'writer' node automatically. NGINX load balances all requests to the reader nodes, 4 per available core. This setting is still considered experimental and may have trouble with some API calls until further development is completed.
 * `HOME` - set this to the path where you want cread to store it's data files (block log, shared memory, config file, etc). By default `/var/lib/cread` is used and exists inside the docker container. If you want to use a different mount point (like a ramdisk, or a different drive) then you may want to set this variable to map the volume to your docker container.
 
-## PaaS mode
-
-Cread now supports a PaaS mode (platform as a service) that currently works with Amazon's Elastic Beanstalk service. It can be launched using the following environment variables:
-
-* `USE_PAAS` - if set to true, cread will launch in a format that works with AWS EB. Containers will exit upon failure so that they can be relaunched automatically by ECS. This mode assumes `USE_WAY_TOO_MUCH_RAM` and `USE_FULL_WEB_NODE`, they do not need to be also set.
-* `S3_BUCKET` - set this to the name of the S3 bucket where you will store shared memory files for cread in Amazon S3. They will be stored compressed in bz2 format with the file name `blockchain-$VERSION-latest.tar.bz2`, where $VERSION is the release number followed by the git short commit hash stored in each docker image at `/etc/creadversion`.
-* `SYNC_TO_S3` - if set to true, the node will function to only generate shared memory files and upload them to the specified S3 bucket. This makes fast deployments and autoscaling for cread possible.
-
-
 ## System Requirements
 
-For a full web node, you need at least 110GB of disk space available. Cread uses a memory mapped file which currently holds 56GB of data and by default is set to use up to 80GB. The block log of the blockchain itself is a little over 27GB. It's highly recommended to run cread on a fast disk such as an SSD or by placing the shared memory files in a ramdisk and using the `--shared-file-dir=/path` command line option to specify where. At least 16GB of memory is required for a full web node. Seed nodes (p2p mode) can run with as little as 4GB of memory with a 24 GB state file. Any CPU with decent single core performance should be sufficient. Cread is constantly growing. As of August 2017, these numbers were accurate, but you may find you need more disk space to run a full node. We are also constantly working on optimizing Crea's use of disk space.
+For a full web node, you need at least 25GB of disk space available. Cread uses a memory mapped file which currently holds 25GB of data and by default is set to use up to 25GB. The block log of the blockchain is 27GB. It's highly recommended to run cread on a fast disk such as an SSD or by placing the shared memory files in a ramdisk and using the `--shared-file-dir=/path` command line option to specify where. At least 8GB of memory is required for a full web node. Seed nodes (p2p mode) can run with as little as 4GB of memory with a 24 GB state file. Any CPU with decent single core performance should be sufficient. Cread is constantly growing. As of February 2019, these numbers were accurate, but you may find you need more disk space to run a full node. We are also constantly working on optimizing Crea's use of disk space.
 
 On Linux use the following Virtual Memory configuration for the initial sync and subsequent replays. It is not needed for normal operation.
 
