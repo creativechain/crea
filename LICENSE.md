@@ -1,4 +1,5 @@
-Copyright (c) 2017 Steemit, Inc, Creativechain FDN, and contributors.
+Copyright (c) 2017 Steemit, Inc., and contributors.
+Copyright (c) 2018 Creativechain FDN, and contributors.
 
 The following license applies to code contained within this repository that
 is created by Steemit Inc., and modified by Creativechain FDN Other copy right 
