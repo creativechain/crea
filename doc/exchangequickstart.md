@@ -1,11 +1,9 @@
 Exchange Quickstart
 -------------------
 
-System Requirements: A dedicated server or virtual machine with a minimum of 16GB of RAM, and at least 50GB of fast local SSD storage. CREA is one of the most active blockchains in the world and handles an incredibly large amount of transactions per second, as such, it requires fast storage to run efficiently.
+System Requirements: A dedicated server or virtual machine with a minimum of 8GB of RAM, and at least 30GB of fast local SSD storage.
 
-With the right equipment and technical configuration a reindex should take **no longer than 24 hours**.  If recommendations are not followed precisely, the reindex can drag on for days or even weeks with significant slowdowns towards the end.
-
-Physically attached SSD will ensure an optimal reindex time.  SSD over a NAS or some kind of network storage backed by SSD will often have much higher latency. As an example, AWS EBS is not performant enough. A good recommended instance in AWS is the i3.2xlarge, it comes with a physically attached nVME drive (it must be formatted and mounted on instance launch).
+With the right equipment and technical configuration a reindex should take **no longer than 2 hours**.  If recommendations are not followed precisely, the reindex can drag on for days or even weeks with significant slowdowns towards the end.
 
 We recommend using docker to both build and run CREA for exchanges. Docker is the world's leading containerization platform and using it guarantees that your build and run environment is identical to what our developers use. You can still build from source and you can keep both blockchain data and wallet data outside of the docker container. The instructions below will show you how to do this in just a few easy steps.
 
@@ -72,6 +70,7 @@ docker stop cread-exchange
 ```
 
 For your convenience, we have provided a provided an [example_config](example_config.ini) that we expect should be sufficient to run your exchange node. Be sure to rename it to simply `config.ini`.
+Add [nodes](seednodes.txt) to your configuration file to perform full synchronization.
 
 ### Create directories to store blockchain and wallet data outside of Docker
 
@@ -84,17 +83,21 @@ mkdir creawallet
 
 ### Run the container
 
-The below command will start a daemonized instance opening ports for p2p and RPC  while linking the directories we created for blockchain and wallet data inside the container. Fill in `TRACK_ACCOUNT` with the name of your exchange account that you want to follow. The `-v` flags are how you map directories outside of the container to the inside, you list the path to the directories you created earlier before the `:` for each `-v` flag. The restart policy ensures that the container will automatically restart even if your system is restarted.
+The below command will start a daemonized instance opening ports for p2p and RPC  while linking the directories we created for blockchain and wallet data inside the container. The `-v` flags are how you map directories outside of the container to the inside, you list the path to the directories you created earlier before the `:` for each `-v` flag. The restart policy ensures that the container will automatically restart even if your system is restarted.
 
 ```
-docker run -d --name cread-exchange --env TRACK_ACCOUNT=nameofaccount --env -p 1776:1776 -p 1886:1886 -v /path/to/creawallet:/var/creawallet -v /path/to/blockchain:/var/lib/cread/blockchain --restart always creary/crea
+docker run -d --name cread-exchange --env -p 1776:1776 -p 1996:1996 -v /path/to/creawallet:/var/creawallet -v /path/to/blockchain:/var/lib/cread/blockchain --restart always creary/crea
 ```
 
 You can see that the container is running with the `docker ps` command.
 
 To follow along with the logs, use `docker logs -f`.
 
-Initial syncing will take between 6 and 48 hours depending on your equipment, faster storage devices will take less time and be more efficient. Subsequent restarts will not take as long.
+Initial syncing will take between 5 minutes and 1 hour depending on your equipment, faster storage devices will take less time and be more efficient. Subsequent restarts will not take as long.
+
+### Receive notifications
+
+To receive notifications about an account it is necessary to have installed our developer and exchange package for Nodejs. You can see the documentation [here](https://github.com/creativechain/creary-tools/wiki).
 
 ### Running the cli_wallet
 
