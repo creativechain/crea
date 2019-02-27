@@ -1,55 +1,67 @@
-# Crea - The Blockchain That Will Tokenize The Web
+![alt text](https://i.imgur.com/P04jzp4.png)
 
-Welcome to the official repository for Crea, the blockchain that will revolutionize the web, and soon the blockchain for Smart Media Tokens!
 
-Crea is the first blockchain which introduced the "Proof of Brain" social consensus algorithm for token allocation.
+## Introducing Crea (beta)
 
-Being one of the most actively developed blockchain projects currently in existence, it's become fertile soil for entrepreneurial pursuits. It has also become home for many cryptocurrency centric projects.
+# Crea
+#### Decentralized Creative Communities
+Platform for the creation of hypermedia dapps based on the #blockchain that rewards creatives and curators of digital content. 
 
-Crea aims to be the preferred blockchain for dApp development with Smart Media Tokens at its core. With SMTs, everyone can leverage the power of Crea.
 
-Originally, Crea was announced on the [Bitcointalk forum](https://bitcointalk.org/index.php?topic=1809920.0) prior to the start of any mining. (Crea is currently not mineable)
+## DPOS-Decentralized
+Thanks to the integration of the Delegated Proof of Stake (DPOS) consensus protocol, Crea’s blockchain is maintained in a decentralized way by community members from around the world.
+DPOS uses the voting power of users to solve consensus problems efficiently, fairly and democratically.
 
-## Documents
+## REWARDS-Smart Media Rewards
+Proof of Creation is a type of algorithm that issues rewards in tokens for the creation and curation of content. Users decide with their “likes” as votes which publications should be rewarded by the system.
+Any online platform can easily integrate this token distribution system and create decentralized applications (DAPPS). This distributed monetization model promotes the creation and collective work while distributing power among the members of the community.
 
-* Developer Portal: https://dev.creaproject.io
+## FAST-Speed and scalability
+Thanks to Graphene technology, the Crea network can support the issuance of more than 1000 Transactions Per Second (TPS) and without network fees. This amount of TPS is necessary to sustain the massive volume of interactions in the new generation social networks.
 
-## Advantages
 
-* Free Transactions (Resource Credits = Freemium Model)
-* Fast Block Confirmations (3 seconds)
-* Time Delay Security (Vested Crea & Savings)
-* Hierarchical Role Based Permissions (Keys)
-* Integrated Token Allocation
-* Smart Media Tokens (**soon**)
-* Lowest Entry-Barrier for User Adoption in the market
+## BENEFITS IN THE FIELD OF DIGITAL CREATION
 
-## Technical Details
+### Proof of Existence
+Certificate of creation registration based on the blockchain.
 
-* Currency symbol CREA
-* CBD - Crea's very own stable coin with a one-way peg
-* Delegated Proof-of-Stake Consensus (DPOS)
-* 10% APR inflation narrowing to 1% APR over 20 years
-    * 70% of inflation to "Proof of Brain" social consensus algorithm.
-    * 15% of inflation to stakeholders.
-    * 15% of inflation to block producers.
+### Proof of Creation (POC)
+An algorithm rewards authors and curators for their work.
 
-# Installation
+### Reputation & Voting power
+Those who get more tokens will have more influence in the community.
 
-Getting started with Crea is fairly simple. You can either choose to use docker-images, build with docker manually or build from source directly. All steps have been documented and while many different OS are supported, the easiest one is Ubuntu 16.04.
+### Decentralized Exchange (DEX)
+Crea tokens exchange markets without fees.
+
+### Open Source
+Our ecosystem is completely open source to help you meet your needs when launching your application projects.
+
+### Control of inflation
+Issuance of new tokens using a formula that controls the annual inflation rate.
+
+### Eliminating Transaction Fees
+An advantage of the CREA blockchain over centralized applications competitors.
+
+### Censorship resistance
+The distributed consensus protocol of Crea prevents the centralization and the censorship of content.
+
 
 ## Quickstart
 
-Just want to get up and running quickly? We have pre-built Docker images for your convenience. More details are in our [Quickstart Guide](https://github.com/creativechain/crea/blob/master/doc/exchangequickstart.md).
+Just want to get up and running quickly? We have pre-built docker images for your convenience. More details are in our 
+[quickstart guide mainnet](https://github.com/creativechain/crea/blob/master/doc/exchangequickstart.md). 
+[quickstart guide test](https://github.com/creativechain/crea/blob/test/doc/exchangequickstart.md).
 
 ## Building
 
-We **strongly** recommend using one of our pre-built Docker images or using Docker to build Crea. Both of these processes are described in the [Quickstart Guide](https://github.com/creativechain/crea/blob/master/doc/exchangequickstart.md).
+We strongly recommend using one of our pre-built Docker images or using Docker to build Crea. Both of these processes are described in the [quickstart guide](https://github.com/creativecoin/creativecoin/blob/master/doc/exchangequickstart.md).
+See [doc/building.md](doc/building.md) for detailed build instructions, including
+compile-time options, and specific commands for Linux (Ubuntu LTS) or macOS.
 
-But if you would still like to build from source, we also have [build instructions](https://github.com/creativechain/crea/blob/master/doc/building.md) for Linux (Ubuntu LTS) and macOS.
+## Quickstart
 
-## Dockerized P2P Node
-
+### Dockerized p2p Node
 To run a p2p node (ca. 2GB of memory is required at the moment):
 
     docker run \
@@ -58,7 +70,7 @@ To run a p2p node (ca. 2GB of memory is required at the moment):
 
     docker logs -f cread-default  # follow along
 
-## Dockerized Full Node
+### Dockerized Full Node
 
 To run a node with *all* the data (e.g. for supporting a content website)
 ca. 8GB of memory, and growing, is required:
@@ -70,15 +82,15 @@ ca. 8GB of memory, and growing, is required:
 
     docker logs -f cread-full
 
-## CLI Wallet
+## Environment variables
+
+* `USE_WAY_TOO_MUCH_RAM` - if set to true, cread starts a 'full node'
+* `USE_FULL_WEB_NODE` - if set to true, a default config file will be used that enables a full set of API's and associated plugins.
+* `USE_NGINX_FRONTEND` - if set to true, this will enable an NGINX reverse proxy in front of cread that proxies WebSocket requests to cread. This will also enable a custom healthcheck at the path '/health' that lists how many seconds away from current blockchain time your node is. It will return a '200' if it's less than 60 seconds away from being synced.
+* `USE_MULTICORE_READONLY` - if set to true, this will enable cread in multiple reader mode to take advantage of multiple cores (if available). Read requests are handled by the read-only nodes and write requests are forwarded back to the single 'writer' node automatically. NGINX load balances all requests to the reader nodes, 4 per available core. This setting is still considered experimental and may have trouble with some API calls until further development is completed.
+* `HOME` - set this to the path where you want cread to store it's data files (block log, shared memory, config file, etc). By default `/var/lib/cread` is used and exists inside the docker container. If you want to use a different mount point (like a ramdisk, or a different drive) then you may want to set this variable to map the volume to your docker container.
 
 We provide a basic cli wallet for interfacing with `cread`. The wallet is self-documented via command line help. The node you connect to via the cli wallet needs to be running the `account_by_key_api`, `condenser_api`, and needs to be configured to accept WebSocket connections via `webserver-ws-endpoint`.
-
-## Testing
-
-See [doc/testing.md](doc/testing.md) for test build targets and info
-on how to use lcov to check code test coverage.
-
 
 # Configuration
 
@@ -95,20 +107,13 @@ This same file is baked into the docker images and can be overridden by
 setting `CREAD_SEED_NODES` in the container environment at `docker run`
 time to a whitespace delimited list of seed nodes (with port).
 
-## Environment variables
+## CLI Wallet
 
-There are quite a few environment variables that can be set to run cread in different ways:
-
-* `USE_WAY_TOO_MUCH_RAM` - if set to true, cread starts a 'full node'
-* `USE_FULL_WEB_NODE` - if set to true, a default config file will be used that enables a full set of API's and associated plugins.
-* `USE_NGINX_FRONTEND` - if set to true, this will enable an NGINX reverse proxy in front of cread that proxies WebSocket requests to cread. This will also enable a custom healthcheck at the path '/health' that lists how many seconds away from current blockchain time your node is. It will return a '200' if it's less than 60 seconds away from being synced.
-* `USE_MULTICORE_READONLY` - if set to true, this will enable cread in multiple reader mode to take advantage of multiple cores (if available). Read requests are handled by the read-only nodes and write requests are forwarded back to the single 'writer' node automatically. NGINX load balances all requests to the reader nodes, 4 per available core. This setting is still considered experimental and may have trouble with some API calls until further development is completed.
-* `HOME` - set this to the path where you want cread to store it's data files (block log, shared memory, config file, etc). By default `/var/lib/cread` is used and exists inside the docker container. If you want to use a different mount point (like a ramdisk, or a different drive) then you may want to set this variable to map the volume to your docker container.
+We provide a basic cli wallet for interfacing with `cread`. The wallet is self documented via command line help. The node you connect to via the cli wallet needs to be running the `account_by_key_api`, `condenser_api`, and needs to be configured to accept websocket connections via `webserver-ws-endpoint`.
 
 ## System Requirements
 
-For a full web node, you need at least 25GB of disk space available. Cread uses a memory mapped file which currently holds 25GB of data and by default is set to use up to 25GB. The block log of the blockchain is 27GB. It's highly recommended to run cread on a fast disk such as an SSD or by placing the shared memory files in a ramdisk and using the `--shared-file-dir=/path` command line option to specify where. At least 8GB of memory is required for a full web node. Seed nodes (p2p mode) can run with as little as 4GB of memory with a 24 GB state file. Any CPU with decent single core performance should be sufficient. Cread is constantly growing. As of February 2019, these numbers were accurate, but you may find you need more disk space to run a full node. We are also constantly working on optimizing Crea's use of disk space.
-
+For a full web node, you need at least 25GB of disk space available. Creativecoind uses a memory mapped file which currently holds 56GB of data and by default is set to use up to 80GB. The block log of the blockchain itself is a little over 27GB. It's highly recommended to run cread on a fast disk such as an SSD or by placing the shared memory files in a ramdisk and using the `--shared-file-dir=/path` command line option to specify where. At least 16GB of memory is required for a full web node. Seed nodes (p2p mode) can run with as little as 4GB of memory with a 24 GB state file. Any CPU with decent single core performance should be sufficient.
 On Linux use the following Virtual Memory configuration for the initial sync and subsequent replays. It is not needed for normal operation.
 
 ```
@@ -118,7 +123,7 @@ echo    80 | sudo tee /proc/sys/vm/dirty_ratio
 echo 30000 | sudo tee /proc/sys/vm/dirty_writeback_centisecs
 ```
 
-# No Support & No Warranty
+## No Support & No Warranty
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
@@ -127,3 +132,12 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
 IN THE SOFTWARE.
+
+ ## Public Announcement & Discussion
+
+Crea was announced on the
+[Bitcointalk forum](https://bitcointalk.org/index.php?topic=1809920.0)
+
+The members of the Creativechain foundation & creaproject.io. development team are currently the main contributors to the Crea Network software. They oversee the open source Create GitHub repository, and maintain many of the open source libraries that developers use.
+To get any help regarding the development of CREA Network you can access Crea Devs Chat in Discord https://discord.gg/XZKGbZb .
+Create Devs Channel is a public Discord chat community where members of the Create development community go to discuss Create development, and other related topics.
