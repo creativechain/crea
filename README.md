@@ -50,12 +50,12 @@ The distributed consensus protocol of Crea prevents the centralization and the c
 ## Quickstart
 
 Just want to get up and running quickly? We have pre-built docker images for your convenience. More details are in our 
-[quickstart guide mainnet](https://github.com/creativechain/crea/blob/master/doc/exchangequickstart.md). 
+[quickstart guide mainnet](doc/exchangequickstart.md). 
 [quickstart guide test](https://github.com/creativechain/crea/blob/test/doc/exchangequickstart.md).
 
 ## Building
 
-We strongly recommend using one of our pre-built Docker images or using Docker to build Crea. Both of these processes are described in the [quickstart guide](https://github.com/creativecoin/creativecoin/blob/master/doc/exchangequickstart.md).
+We strongly recommend using one of our pre-built Docker images or using Docker to build Crea. Both of these processes are described in the [quickstart guide](doc/exchangequickstart.md).
 See [doc/building.md](doc/building.md) for detailed build instructions, including
 compile-time options, and specific commands for Linux (Ubuntu LTS) or macOS.
 
