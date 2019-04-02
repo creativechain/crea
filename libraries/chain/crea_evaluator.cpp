@@ -112,7 +112,7 @@ void witness_update_evaluator::do_apply( const witness_update_operation& o )
    else if( !o.props.account_creation_fee.symbol.is_canon() )
    {
       // after HF, above check can be moved to validate() if reindex doesn't show this warning
-      //wlog( "Wrong fee symbol in block ${b}", ("b", _db.head_block_num()+1) );
+      wlog( "Wrong fee symbol in block ${b}", ("b", _db.head_block_num()+1) );
    }
 
    FC_TODO( "Check and move this to validate after HF 20" );
@@ -2688,7 +2688,7 @@ void request_account_recovery_evaluator::do_apply( const request_account_recover
    {
       FC_ASSERT( account_to_recover.recovery_account == o.recovery_account, "Cannot recover an account that does not have you as there recovery partner." );
       if( o.recovery_account == CREA_TEMP_ACCOUNT )
-         //wlog( "Recovery by temp account" );
+         wlog( "Recovery by temp account" );
    }
    else                                                  // Empty string recovery account defaults to top witness
       FC_ASSERT( _db.get_index< witness_index >().indices().get< by_vote_name >().begin()->owner == o.recovery_account, "Top witness must recover an account with no recovery partner." );

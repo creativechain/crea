@@ -296,7 +296,7 @@ struct api_account_object
       const auto& by_control_account_index = db.get_index<smt_token_index>().indices().get<by_control_account>();
       auto smt_obj_itr = by_control_account_index.find( name );
       is_smt = smt_obj_itr != by_control_account_index.end();
-#endif7
+#endif
        auto follow_itr = db.find< crea::plugins::follow::follow_count_object, crea::plugins::follow::by_account >(name);
 
        if ( follow_itr != nullptr) {
