@@ -112,7 +112,7 @@ void witness_update_evaluator::do_apply( const witness_update_operation& o )
    else if( !o.props.account_creation_fee.symbol.is_canon() )
    {
       // after HF, above check can be moved to validate() if reindex doesn't show this warning
-      wlog( "Wrong fee symbol in block ${b}", ("b", _db.head_block_num()+1) );
+      //wlog( "Wrong fee symbol in block ${b}", ("b", _db.head_block_num()+1) );
    }
 
    FC_TODO( "Check and move this to validate after HF 20" );
@@ -1040,6 +1040,7 @@ void comment_download_evaluator::do_apply(const comment_download_operation& o)
    try {
 
       //Checking comment exists
+      //wlog("Checking comment exists");
       const auto& by_permlink_idx = _db.get_index< comment_index >().indices().get< by_permlink >();
       auto itr = by_permlink_idx.find( boost::make_tuple( o.comment_author, o.comment_permlink ) );
 
@@ -1050,11 +1051,14 @@ void comment_download_evaluator::do_apply(const comment_download_operation& o)
       const auto& comment = *itr;
       const comment_download_object& cdo = _db.get< comment_download_object, by_comment >( comment.id );
 
+      const auto& dBalance = _db.get_balance( o.downloader, cdo.price.symbol );
+      //wlog("cdo=${cdo}, dBalance=${dBalance}", ("cdo", cdo)("dBalance", dBalance));
+
       //const auto& granted_download_idx = _db.get_index< download_granted_index >().indices().get< by_downloader >();
       //const download_granted_object& ditr = _db.get< download_granted_object, by_downloader >( boost::make_tuple(o.downloader, o.comment_author, o.comment_permlink ) );
 
       //FC_ASSERT(ditr == granted_download_idx.end(), "This account already paid the download");
-      FC_ASSERT( _db.get_balance( o.downloader, cdo.price.symbol ) >= cdo.price, "Account does not have sufficient funds for download." );
+      FC_ASSERT( dBalance >= cdo.price, "Account does not have sufficient funds for download." );
 
       //Store download payment for this user
 
@@ -1590,12 +1594,12 @@ void pre_hf20_vote_evaluator( const vote_operation& o, database& _db )
       used_power = (used_power + max_vote_denom - 1) / max_vote_denom;
    }
 
-    wlog("used_power: ${up}", ("up", used_power));
+    //wlog("used_power: ${up}", ("up", used_power));
    FC_ASSERT( used_power <= current_power, "Account does not have enough power to vote." );
 
    int64_t abs_rshares    = ((uint128_t( _db.get_effective_vesting_shares( voter, VESTS_SYMBOL ).amount.value ) * used_power) / (CREA_100_PERCENT)).to_uint64();
 
-    wlog("abs_shares: ${as}", ("as", abs_rshares));
+    //wlog("abs_shares: ${as}", ("as", abs_rshares));
    if( !_db.has_hardfork( CREA_HARDFORK_0_14__259 ) && abs_rshares == 0 ) abs_rshares = 1;
 
    if( _db.has_hardfork( CREA_HARDFORK_0_20__1764 ) )
@@ -1980,27 +1984,27 @@ void hf20_vote_evaluator( const vote_operation& o, database& _db )
    int16_t abs_weight = abs( o.weight );
    uint128_t used_flow = ( uint128_t( voter.voting_flowbar.current_flow ) * abs_weight * 60 * 60 * 24 ) / CREA_100_PERCENT;
 
-   wlog("abs_weight: ${mvd}", ("mvd", abs_weight));
-   wlog("used_flow: ${mvd}", ("mvd", used_flow.to_uint64()));
+   //wlog("abs_weight: ${mvd}", ("mvd", abs_weight));
+   //wlog("used_flow: ${mvd}", ("mvd", used_flow.to_uint64()));
    const dynamic_global_property_object& dgpo = _db.get_dynamic_global_properties();
 
    int64_t max_vote_denom = dgpo.vote_power_reserve_rate * CREA_VOTING_FLOW_REGENERATION_SECONDS;
    FC_ASSERT( max_vote_denom > 0 );
 
-   wlog("max_vote_denom: ${mvd}", ("mvd", max_vote_denom));
+   //wlog("max_vote_denom: ${mvd}", ("mvd", max_vote_denom));
 
 
    used_flow = ( used_flow + max_vote_denom - 1 ) / max_vote_denom;
-   wlog("used_flow: ${mvd}", ("mvd", used_flow.to_uint64()));
+  //wlog("used_flow: ${mvd}", ("mvd", used_flow.to_uint64()));
    FC_ASSERT( voter.voting_flowbar.has_flow( used_flow.to_uint64() ), "Account does not have enough flow to vote." );
 
    int64_t abs_rshares = used_flow.to_uint64();
 
-   wlog("abs_rshares: ${mvd}", ("mvd", abs_rshares));
+   //wlog("abs_rshares: ${mvd}", ("mvd", abs_rshares));
    abs_rshares -= CREA_VOTE_DUST_THRESHOLD;
    abs_rshares = std::max( int64_t(0), abs_rshares );
 
-   wlog("abs_rshares: ${mvd}", ("mvd", abs_rshares));
+   //wlog("abs_rshares: ${mvd}", ("mvd", abs_rshares));
    uint32_t cashout_delta = ( comment.cashout_time - _db.head_block_time() ).to_seconds();
 
    if( cashout_delta < CREA_UPVOTE_LOCKOUT_SECONDS )
@@ -2008,7 +2012,7 @@ void hf20_vote_evaluator( const vote_operation& o, database& _db )
       abs_rshares = (int64_t) ( ( uint128_t( abs_rshares ) * cashout_delta ) / CREA_UPVOTE_LOCKOUT_SECONDS ).to_uint64();
    }
 
-    wlog("abs_rshares: ${mvd}", ("mvd", abs_rshares));
+    //wlog("abs_rshares: ${mvd}", ("mvd", abs_rshares));
    if( itr == comment_vote_idx.end() )
    {
       FC_ASSERT( o.weight != 0, "Vote weight cannot be 0." );
@@ -2684,7 +2688,7 @@ void request_account_recovery_evaluator::do_apply( const request_account_recover
    {
       FC_ASSERT( account_to_recover.recovery_account == o.recovery_account, "Cannot recover an account that does not have you as there recovery partner." );
       if( o.recovery_account == CREA_TEMP_ACCOUNT )
-         wlog( "Recovery by temp account" );
+         //wlog( "Recovery by temp account" );
    }
    else                                                  // Empty string recovery account defaults to top witness
       FC_ASSERT( _db.get_index< witness_index >().indices().get< by_vote_name >().begin()->owner == o.recovery_account, "Top witness must recover an account with no recovery partner." );

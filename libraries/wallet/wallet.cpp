@@ -2351,6 +2351,7 @@ condenser_api::legacy_signed_transaction wallet_api::content_download(
    op.comment_author = comment_author;
    op.comment_permlink = comment_permlink;
 
+   wlog("building op");
    signed_transaction tx;
    tx.operations.push_back( op );
    tx.validate();
@@ -2372,7 +2373,9 @@ condenser_api::api_download_granted_object wallet_api::get_download(
     fc::raw::pack(enc, comment_permlink);
     digest_type digest = enc.result();
 
-    fc::ecc::private_key privkey = my->get_private_key(downloader_accnt.posting.get_keys()[0]);
+    wlog("whash: ${h}", ("h", digest));
+
+    fc::ecc::private_key privkey = my->get_private_key(downloader_accnt.active.get_keys()[0]);
 
     fc::array<unsigned char, 65> signature = privkey.sign_compact(digest);
     string sig64 = fc::base64_encode(signature.begin(), (unsigned int) signature.size());

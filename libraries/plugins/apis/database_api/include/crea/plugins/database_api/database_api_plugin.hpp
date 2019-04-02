@@ -1,6 +1,7 @@
 #pragma once
 #include <crea/plugins/chain/chain_plugin.hpp>
 #include <crea/plugins/json_rpc/json_rpc_plugin.hpp>
+#include <crea/plugins/follow/follow_plugin.hpp>
 
 #include <appbase/application.hpp>
 
@@ -19,6 +20,7 @@ class database_api_plugin : public plugin< database_api_plugin >
       APPBASE_PLUGIN_REQUIRES(
          (crea::plugins::json_rpc::json_rpc_plugin)
          (crea::plugins::chain::chain_plugin)
+         (crea::plugins::follow::follow_plugin)
       )
 
       static const std::string& name() { static std::string name = CREA_DATABASE_API_PLUGIN_NAME; return name; }

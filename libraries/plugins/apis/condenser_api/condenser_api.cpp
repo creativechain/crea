@@ -1346,9 +1346,8 @@ namespace detail
 
       //Check signature
       digest_type::encoder enc;
-      string author = comment_author;
-      enc.write(author.data(), (uint32_t ) author.size());
-      enc.write(comment_permlink.data(), (uint32_t) comment_permlink.size());
+      fc::raw::pack(enc, comment_author);
+      fc::raw::pack(enc, comment_permlink);
       digest_type digest = enc.result();
 
       string raw_signature = fc::base64_decode(signature);
@@ -1363,7 +1362,7 @@ namespace detail
 
       verify_args.hash = digest;
       verify_args.signatures.push_back(sig);
-      verify_args.required_posting.insert(verify_args.required_posting.end(), downloader);
+      verify_args.required_active.push_back(downloader);
 
       crea::plugins::database_api::verify_signatures_return result = _database_api->verify_signatures(verify_args);
 

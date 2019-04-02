@@ -41,8 +41,6 @@ struct api_comment_download_object
        author = comment.author;
        permlink = to_string( comment.permlink );
 
-
-        wlog("Parsing downloaders");
         const auto& dgi = db.get_index< download_granted_index >().indices().get< by_downloader >();
         auto itr = dgi.find( boost::make_tuple( comment.author, comment.permlink ) );
 
@@ -52,8 +50,6 @@ struct api_comment_download_object
             }
             ++itr;
         }
-
-        wlog("downloaders final ${d}", ("d", downloaders));
 
     };
 
@@ -300,7 +296,7 @@ struct api_account_object
       const auto& by_control_account_index = db.get_index<smt_token_index>().indices().get<by_control_account>();
       auto smt_obj_itr = by_control_account_index.find( name );
       is_smt = smt_obj_itr != by_control_account_index.end();
-#endif
+#endif7
        auto follow_itr = db.find< crea::plugins::follow::follow_count_object, crea::plugins::follow::by_account >(name);
 
        if ( follow_itr != nullptr) {
