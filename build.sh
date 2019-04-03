@@ -63,8 +63,14 @@ while test $# -gt 0; do
 		--procs)
 			PROCS=$2
 		    printMsg "Using $PROCS cores for building"
-			shift
+		    shift
+		    shift
 			;;
+		--lm)
+		    FLAGS="$FLAGS -DLOW_MEMORY_NODE=ON"
+		    printMsg "Using Low Memory config for building"
+		    shift
+		    ;;
 		--hf)
 			rm -rf $BUILD_DIR/libraries/protocol/include/crea/protocol/hardfork.hpp
 			shift
@@ -73,7 +79,6 @@ while test $# -gt 0; do
 
 			;;
 	esac
-	shift
 done
 
 git submodule update --init --recursive

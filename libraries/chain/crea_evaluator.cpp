@@ -37,6 +37,8 @@ std::string wstring_to_utf8(const std::wstring& str)
     return utf_to_utf<char>(str.c_str(), str.c_str() + str.size());
 }
 
+#endif
+
 std::string generate_password(const int min, const int max) {
     int pwd_len = min + (rand() % static_cast<int>(max - min + 1));
 
@@ -49,8 +51,6 @@ std::string generate_password(const int min, const int max) {
 
     return password;
 }
-
-#endif
 
 #include <fc/uint128.hpp>
 #include <fc/utf8.hpp>
@@ -848,66 +848,61 @@ void comment_evaluator::do_apply( const comment_operation& o )
          }
          from_string( con.json_metadata, o.json_metadata );
       });
+   #endif
 
-       const comment_download_object& cdo = _db.create< comment_download_object >( [&]( comment_download_object& d)
-       {
-          try
-          {
-             d.comment = id;
-             if (o.download.empty()) {
-                 d.size = 0;
-                 from_string(d.type, "");
-                 from_string(d.name, "");
-                 from_string(d.password, "");
-                 from_string(d.resource, "");
-                 d.price = crea::chain::util::asset_from_string("0.000 CREA");
-             } else {
-                 comment_download_data download_data;
+      const comment_download_object& cdo = _db.create< comment_download_object >( [&]( comment_download_object& d)
+      {
+         try
+         {
+            d.comment = id;
+            if (o.download.empty()) {
+               d.size = 0;
+               from_string(d.type, "");
+               from_string(d.name, "");
+               from_string(d.password, "");
+               from_string(d.resource, "");
+               d.price = crea::chain::util::asset_from_string("0.000 CREA");
+            } else {
+               comment_download_data download_data;
+               download_data = fc::json::from_string( o.download ).as< comment_download_data >();
 
-                 download_data = fc::json::from_string( o.download ).as< comment_download_data >();
+               FC_ASSERT(download_data.resource.size(), "Invalid download resource");
 
-                 FC_ASSERT(download_data.resource.size(), "Invalid download resource");
+               d.size = download_data.size;
+               from_string(d.type, download_data.type);
+               from_string(d.name, download_data.name);
+               d.price = crea::chain::util::asset_from_string(download_data.price);
 
-                 d.size = download_data.size;
-                 from_string(d.type, download_data.type);
-                 from_string(d.name, download_data.name);
-                 d.price = crea::chain::util::asset_from_string(download_data.price);
+               //Create a password for encrypt this download
+               //Determine password length
+               const int min = 6;
+               const int max = 12;
+               string password = generate_password(min, max);
 
-                 //Create a password for encrypt this download
-                 //Determine password length
-                 const int min = 6;
-                 const int max = 12;
+               //Encrypt the content
+               fc::sha512::encoder enc;
+               fc::raw::pack(enc, password);
+               fc::sha512 pwd = enc.result();
 
-                 string password = generate_password(min, max);
+               std::vector<char> encrypted = fc::aes_encrypt(pwd, fc::raw::pack_to_vector(download_data.resource));
 
-                 //Encrypt the content
-                 fc::sha512::encoder enc;
-                 fc::raw::pack(enc, password);
-                 fc::sha512 pwd = enc.result();
+               from_string(d.password, password);
+               string enconded = fc::base64_encode(encrypted.data(), (unsigned int) encrypted.size());
+               from_string(d.resource, enconded);
+            }
+         }
+         FC_CAPTURE_AND_RETHROW( (o) )
+      });
 
-                 std::vector<char> encrypted = fc::aes_encrypt(pwd, fc::raw::pack_to_vector(download_data.resource));
-
-                 from_string(d.password, password);
-
-                 string enconded = fc::base64_encode(encrypted.data(), (unsigned int) encrypted.size());
-                 from_string(d.resource, enconded);
-
-             }
-          }
-          FC_CAPTURE_AND_RETHROW( (o) )
-       });
-
-       //Free download for author
-       _db.create< download_granted_object >( [&] (download_granted_object& dgo){
+      //Free download for author
+      _db.create< download_granted_object >( [&] (download_granted_object& dgo){
           dgo.download = cdo.id;
           dgo.price = cdo.price;
           dgo.comment_author = o.author;
           dgo.downloader = o.author;
           from_string(dgo.comment_permlink, o.permlink);
           dgo.payment_date = _db.head_block_time();
-       });
-
-   #endif
+      });
 
 
 /// this loop can be skiped for validate-only nodes as it is merely gathering stats for indicies
@@ -1040,7 +1035,7 @@ void comment_download_evaluator::do_apply(const comment_download_operation& o)
    try {
 
       //Checking comment exists
-      wlog("Checking comment exists");
+      //wlog("Checking comment exists");
       const auto& by_permlink_idx = _db.get_index< comment_index >().indices().get< by_permlink >();
       auto itr = by_permlink_idx.find( boost::make_tuple( o.comment_author, o.comment_permlink ) );
 
@@ -1051,16 +1046,24 @@ void comment_download_evaluator::do_apply(const comment_download_operation& o)
       const comment_download_object& cdo = _db.get< comment_download_object, by_comment >( comment.id );
 
       const auto& dBalance = _db.get_balance( o.downloader, cdo.price.symbol );
-      wlog("cdo=${cdo}, dBalance=${dBalance}", ("cdo", cdo)("dBalance", dBalance));
+      //wlog("cdo=${cdo}, dBalance=${dBalance}", ("cdo", cdo)("dBalance", dBalance));
 
-      //const auto& granted_download_idx = _db.get_index< download_granted_index >().indices().get< by_downloader >();
-      //const download_granted_object& ditr = _db.get< download_granted_object, by_downloader >( boost::make_tuple(o.downloader, o.comment_author, o.comment_permlink ) );
+      const auto& granted_download_idx = _db.get_index< download_granted_index, by_downloader >();
+      auto gd_itr = granted_download_idx.lower_bound( o.downloader );
 
-      //FC_ASSERT(ditr == granted_download_idx.end(), "This account already paid the download");
+      bool paid = false;
+      while (!paid && gd_itr != granted_download_idx.end()) {
+          paid = gd_itr->downloader == o.downloader && gd_itr->comment_author == o.comment_author && to_string( gd_itr->comment_permlink ) == o.comment_permlink;
+          ++gd_itr;
+      }
+
+      //wlog("Paid: ${p}", ("p", paid));
+      FC_ASSERT( !paid, "This account already paid the download");
+
       FC_ASSERT( dBalance >= cdo.price, "Account does not have sufficient funds for download." );
 
       //Store download payment for this user
-      wlog("storing download");
+      //wlog("storing download");
       _db.create< download_granted_object > ( [&]( download_granted_object& dgo )
       {
          dgo.downloader = o.downloader;
@@ -1072,17 +1075,17 @@ void comment_download_evaluator::do_apply(const comment_download_operation& o)
 
       });
 
-      wlog("modfying comment_download_object");
+      //wlog("modfying comment_download_object");
       _db.modify( _db.get< comment_download_object, by_id >( cdo.id ), [&]( comment_download_object& d) {
           d.times_downloaded += 1;
       });
 
 
-      wlog("adjusting balance");
+      //wlog("adjusting balance");
       _db.adjust_balance( o.downloader, -cdo.price );
       _db.adjust_balance( o.comment_author, cdo.price );
 
-      wlog("terminating");
+      //wlog("terminating");
    } FC_CAPTURE_AND_RETHROW( (o) )
 
 }
