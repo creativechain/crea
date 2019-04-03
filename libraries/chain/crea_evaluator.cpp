@@ -1040,10 +1040,9 @@ void comment_download_evaluator::do_apply(const comment_download_operation& o)
    try {
 
       //Checking comment exists
-      //wlog("Checking comment exists");
+      wlog("Checking comment exists");
       const auto& by_permlink_idx = _db.get_index< comment_index >().indices().get< by_permlink >();
       auto itr = by_permlink_idx.find( boost::make_tuple( o.comment_author, o.comment_permlink ) );
-
 
       FC_ASSERT(itr != by_permlink_idx.end(), "Comment not exists.");
 
@@ -1052,7 +1051,7 @@ void comment_download_evaluator::do_apply(const comment_download_operation& o)
       const comment_download_object& cdo = _db.get< comment_download_object, by_comment >( comment.id );
 
       const auto& dBalance = _db.get_balance( o.downloader, cdo.price.symbol );
-      //wlog("cdo=${cdo}, dBalance=${dBalance}", ("cdo", cdo)("dBalance", dBalance));
+      wlog("cdo=${cdo}, dBalance=${dBalance}", ("cdo", cdo)("dBalance", dBalance));
 
       //const auto& granted_download_idx = _db.get_index< download_granted_index >().indices().get< by_downloader >();
       //const download_granted_object& ditr = _db.get< download_granted_object, by_downloader >( boost::make_tuple(o.downloader, o.comment_author, o.comment_permlink ) );
@@ -1061,7 +1060,7 @@ void comment_download_evaluator::do_apply(const comment_download_operation& o)
       FC_ASSERT( dBalance >= cdo.price, "Account does not have sufficient funds for download." );
 
       //Store download payment for this user
-
+      wlog("storing download");
       _db.create< download_granted_object > ( [&]( download_granted_object& dgo )
       {
          dgo.downloader = o.downloader;
@@ -1073,15 +1072,17 @@ void comment_download_evaluator::do_apply(const comment_download_operation& o)
 
       });
 
-
+      wlog("modfying comment_download_object");
       _db.modify( _db.get< comment_download_object, by_id >( cdo.id ), [&]( comment_download_object& d) {
           d.times_downloaded += 1;
       });
 
 
+      wlog("adjusting balance");
       _db.adjust_balance( o.downloader, -cdo.price );
       _db.adjust_balance( o.comment_author, cdo.price );
 
+      wlog("terminating");
    } FC_CAPTURE_AND_RETHROW( (o) )
 
 }
