@@ -1345,11 +1345,13 @@ namespace detail
       crea::plugins::database_api::verify_signatures_args verify_args;
 
       //Check signature
+      string author = comment_author;
       digest_type::encoder enc;
-      fc::raw::pack(enc, comment_author);
-      fc::raw::pack(enc, comment_permlink);
+      enc.write(author.data(), (uint32_t ) author.size());
+      enc.write(comment_permlink.data(), (uint32_t) comment_permlink.size());
       digest_type digest = enc.result();
 
+      wlog("signature: ${s}", ("s", signature));
       string raw_signature = fc::base64_decode(signature);
 
       FC_ASSERT(raw_signature.size() == 65, "Invalid signature size: " + std::to_string(raw_signature.size()));

@@ -2368,9 +2368,10 @@ condenser_api::api_download_granted_object wallet_api::get_download(
 
     condenser_api::api_account_object downloader_accnt = get_account( downloader );
 
+    string author = comment_author;
     digest_type::encoder enc;
-    fc::raw::pack(enc, comment_author);
-    fc::raw::pack(enc, comment_permlink);
+    enc.write(author.data(), (uint32_t ) author.size());
+    enc.write(comment_permlink.data(), (uint32_t) comment_permlink.size());
     digest_type digest = enc.result();
 
     wlog("whash: ${h}", ("h", digest));
