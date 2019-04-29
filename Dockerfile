@@ -12,6 +12,7 @@ ENV LANG=en_US.UTF-8
 ENV NVM_DIR /usr/local/nvm # or ~/.nvm , depending
 ENV NODE_VERSION 10.15.3
 
+RUN mkdir -p $NVM_DIR
 
 RUN \
     apt-get update && \
