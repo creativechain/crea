@@ -9,7 +9,7 @@ ENV BUILD_STEP ${BUILD_STEP}
 
 ENV LANG=en_US.UTF-8
 
-ENV NVM_DIR /usr/local/nvm # or ~/.nvm , depending
+ENV NVM_DIR /usr/local/nvm
 ENV NODE_VERSION 10.15.3
 
 RUN mkdir -p $NVM_DIR
