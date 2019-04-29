@@ -9,15 +9,22 @@ ENV BUILD_STEP ${BUILD_STEP}
 
 ENV LANG=en_US.UTF-8
 
+ENV NVM_DIR /usr/local/nvm # or ~/.nvm , depending
+ENV NODE_VERSION 10.15.3
+
+
 RUN \
     apt-get update && \
     apt-get install -y \
+	apt-transport-https \
         autoconf \
         automake \
         autotools-dev \
         bsdmainutils \
         build-essential \
+	ca-certificates \
         cmake \
+	curl \
         doxygen \
         gdb \
         git \
@@ -50,6 +57,16 @@ RUN \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* && \
     pip3 install gcovr
+
+# Install nvm with node and npm
+RUN curl https://raw.githubusercontent.com/creationix/nvm/v0.34.0/install.sh | bash \
+    && . $NVM_DIR/nvm.sh \
+    && nvm install $NODE_VERSION \
+    && nvm alias default $NODE_VERSION \
+    && nvm use default
+
+# Install Creary Tools Commands
+RUN npm install -g @creativechain-fdn/creary-tools
 
 ADD . /usr/local/src/crea
 
@@ -180,7 +197,6 @@ RUN \
     apt-get remove -y \
         automake \
         autotools-dev \
-        build-essential \
         cmake \
         doxygen \
         dpkg-dev \
@@ -199,7 +215,6 @@ RUN \
         libpython2.7-dev \
         libreadline-dev \
         libreadline6-dev \
-        libssl-dev \
         libstdc++-5-dev \
         libtinfo-dev \
         libtool \
@@ -256,11 +271,13 @@ ADD contrib/pulltestnetscripts.sh /usr/local/bin/pulltestnetscripts.sh
 ADD contrib/paas-sv-run.sh /usr/local/bin/paas-sv-run.sh
 ADD contrib/sync-sv-run.sh /usr/local/bin/sync-sv-run.sh
 ADD contrib/healthcheck.sh /usr/local/bin/healthcheck.sh
+ADD contrib/witness-price-updater.sh /usr/local/bin/witness-price-updater
 RUN chmod +x /usr/local/bin/startpaascread.sh
 RUN chmod +x /usr/local/bin/pulltestnetscripts.sh
 RUN chmod +x /usr/local/bin/paas-sv-run.sh
 RUN chmod +x /usr/local/bin/sync-sv-run.sh
 RUN chmod +x /usr/local/bin/healthcheck.sh
+RUN chmod +x /usr/local/bin/witness-price-updater
 
 # new entrypoint for all instances
 # this enables exitting of the container when the writer node dies
@@ -269,3 +286,10 @@ RUN chmod +x /usr/local/bin/healthcheck.sh
 ADD contrib/creadentrypoint.sh /usr/local/bin/creadentrypoint.sh
 RUN chmod +x /usr/local/bin/creadentrypoint.sh
 CMD /usr/local/bin/creadentrypoint.sh
+
+# Add cron for update witness feed automatically
+ADD contrib/crontab /etc/cread/crontab
+RUN crontab /etc/cread/crontab
+
+# Update witness feed
+CMD /usr/local/bin/witness-price-updater
