@@ -66,6 +66,9 @@ RUN curl https://raw.githubusercontent.com/creationix/nvm/v0.34.0/install.sh | b
     && nvm alias default $NODE_VERSION \
     && nvm use default
 
+CMD $NVM_DIR/nvm.sh
+CMD $NVM_DIR/bash_completion
+
 # Install Creary Tools Commands
 RUN npm install -g @creativechain-fdn/creary-tools
 
