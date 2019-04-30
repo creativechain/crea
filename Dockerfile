@@ -275,20 +275,16 @@ ADD contrib/pulltestnetscripts.sh /usr/local/bin/pulltestnetscripts.sh
 ADD contrib/paas-sv-run.sh /usr/local/bin/paas-sv-run.sh
 ADD contrib/sync-sv-run.sh /usr/local/bin/sync-sv-run.sh
 ADD contrib/healthcheck.sh /usr/local/bin/healthcheck.sh
-ADD contrib/witness-price-updater.sh /usr/local/bin/witness-price-updater
+ADD contrib/witness-price-updater.sh /etc/cread/witness-price-updater.sh
 RUN chmod +x /usr/local/bin/startpaascread.sh
 RUN chmod +x /usr/local/bin/pulltestnetscripts.sh
 RUN chmod +x /usr/local/bin/paas-sv-run.sh
 RUN chmod +x /usr/local/bin/sync-sv-run.sh
 RUN chmod +x /usr/local/bin/healthcheck.sh
-RUN chmod +x /usr/local/bin/witness-price-updater
 
 # Add cron for update witness feed automatically
 ADD contrib/crontab /etc/cread/crontab
 RUN crontab /etc/cread/crontab
-
-# Update witness feed
-# CMD /usr/local/bin/witness-price-updater
 
 # new entrypoint for all instances
 # this enables exitting of the container when the writer node dies

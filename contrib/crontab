@@ -20,4 +20,4 @@
 # For more information see the manual pages of crontab(5) and cron(8)
 #
 # m h  dom mon dow   command
-0 0 * * * witness-price-updater
+0 0 * * * /usr/local/bin/witness-price-updater

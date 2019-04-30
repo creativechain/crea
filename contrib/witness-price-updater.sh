@@ -1,9 +1,12 @@
 #!/bin/bash
 
-if [[ ! -z "$NODE_UPDATER" ]]; then
-    NODE_UPDATER=$NODE_UPDATER
-else
-    NODE_UPDATER=https://nodes.creary.net
-fi
+export PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/usr/local/nvm/versions/node/v10.15.3/bin"
 
-crea-witness update-price --node $NODE_UPDATER $CREAD_PRIVATE_KEY $CREAD_WITNESS_NAME
+export NVM_DIR="/usr/local/nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+
+
+WITNESS=
+PRIVATE_KEY=
+NODE_UPDATER=https://nodes.creary.net
+crea-witness update-price $PRIVATE_KEY $WITNESS --node $NODE_UPDATER

@@ -14,3 +14,16 @@ elif [[ "$IS_TESTNET" ]]; then
 else
   /usr/local/bin/startpaascread.sh
 fi
+
+
+WPU=/etc/cread/witness-price-updater.sh
+
+if [[ ! -z "$NODE_UPDATER" ]]; then
+   sed 's/NODE_UPDATER=/NODE_UPDATER=${NODE_UPDATER}/g' $WPU > /tmp/witness-price-updater
+   WPU=/tmp/witness-price-updater
+fi
+
+sed 's/WITNESS=/WITNESS=${CREAD_WITNESS_NAME}/g' $WPU > /tmp/witness-price-updater2
+sed 's/PRIVATE_KEY=/PRIVATE_KEY=${CREAD_PRIVATE_KEY}/g' /tmp/witness-price-updater2 > /usr/local/bin/witness-price-updater
+
+chmod +x /usr/local/bin/witness-price-updater
