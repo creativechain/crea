@@ -293,7 +293,6 @@ CMD /usr/local/bin/creadentrypoint.sh
 
 # Add cron for update witness feed automatically
 ADD contrib/crontab /etc/cread/crontab
-RUN crontab /etc/cread/crontab
 
 # Update witness feed
 CMD /usr/local/bin/witness-price-updater
