@@ -5,4 +5,5 @@ if [[ ! -z "$HTTP_PORT" ]]; then
 else
     HTTP_PORT=1996
 fi
+
 crea-witness update-price --node http://localhost:$HTTP_PORT $CREAD_PRIVATE_KEY $CREAD_WITNESS_NAME
