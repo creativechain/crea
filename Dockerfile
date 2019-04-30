@@ -283,6 +283,13 @@ RUN chmod +x /usr/local/bin/sync-sv-run.sh
 RUN chmod +x /usr/local/bin/healthcheck.sh
 RUN chmod +x /usr/local/bin/witness-price-updater
 
+# Add cron for update witness feed automatically
+ADD contrib/crontab /etc/cread/crontab
+RUN crontab /etc/cread/crontab
+
+# Update witness feed
+# CMD /usr/local/bin/witness-price-updater
+
 # new entrypoint for all instances
 # this enables exitting of the container when the writer node dies
 # for PaaS mode (elasticbeanstalk, etc)
@@ -291,9 +298,4 @@ ADD contrib/creadentrypoint.sh /usr/local/bin/creadentrypoint.sh
 RUN chmod +x /usr/local/bin/creadentrypoint.sh
 CMD /usr/local/bin/creadentrypoint.sh
 
-# Add cron for update witness feed automatically
-ADD contrib/crontab /etc/cread/crontab
-RUN crontab /etc/cread/crontab
 
-# Update witness feed
-CMD /usr/local/bin/witness-price-updater
