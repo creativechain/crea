@@ -15,16 +15,17 @@ else
   /usr/local/bin/startpaascread.sh
 fi
 
+cp /etc/cread/witness-price-updater.sh /usr/local/bin/witness-price-updater
 
 if [[ ! -z "$NODE_UPDATER" ]]; then
-   sed 's/NODE_UPDATER=/NODE_UPDATER=${NODE_UPDATER}/g' /etc/cread/witness-price-updater.sh > /tmp/witness-price-updater
+   sed -i "s|NODE_UPDATER=|NODE_UPDATER=${NODE_UPDATER}|g" /usr/local/bin/witness-price-updater
 else
    NODE="https://nodes.creary.net"
-   sed 's/NODE_UPDATER=/NODE_UPDATER=${NODE}g' /etc/cread/witness-price-updater.sh > /tmp/witness-price-updater
+   sed -i 's|NODE_UPDATER=|NODE_UPDATER=${NODE}|g' /usr/local/bin/witness-price-updater
 
 fi
 
-sed 's/WITNESS=/WITNESS=${CREAD_WITNESS_NAME}/g' /tmp/witness-price-updater > /tmp/witness-price-updater2
-sed 's/PRIVATE_KEY=/PRIVATE_KEY=${CREAD_PRIVATE_KEY}/g' /tmp/witness-price-updater2 > /usr/local/bin/witness-price-updater
+sed -i "s|WITNESS=|WITNESS=${CREAD_WITNESS_NAME}|g" /usr/local/bin/witness-price-updater
+sed -i "s|PRIVATE_KEY=|PRIVATE_KEY=${CREAD_PRIVATE_KEY}|g" /usr/local/bin/witness-price-updater
 
 chmod +x /usr/local/bin/witness-price-updater
