@@ -8,5 +8,5 @@ export NVM_DIR="/usr/local/nvm"
 
 WITNESS=
 PRIVATE_KEY=
-NODE_UPDATER=https://nodes.creary.net
+NODE_UPDATER=
 crea-witness update-price $PRIVATE_KEY $WITNESS --node $NODE_UPDATER
