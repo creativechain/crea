@@ -3,6 +3,9 @@
 echo /tmp/core | tee /proc/sys/kernel/core_pattern
 ulimit -c unlimited
 
+# Enable CRON
+service cron start
+
 # Enable price updater
 cp /etc/cread/witness-price-updater.sh /usr/local/bin/witness-price-updater
 
