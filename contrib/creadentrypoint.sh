@@ -22,6 +22,9 @@ sed -i "s|PRIVATE_KEY=|PRIVATE_KEY=${CREAD_PRIVATE_KEY}|g" /usr/local/bin/witnes
 
 chmod +x /usr/local/bin/witness-price-updater
 
+# Update price
+/usr/local/bin/witness-price-updater
+
 # if we're not using PaaS mode then start cread traditionally with sv to control it
 if [[ ! "$USE_PAAS" ]]; then
   mkdir -p /etc/service/cread
