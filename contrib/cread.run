@@ -24,6 +24,9 @@ if [[ ! -z "$CREAD_WITNESS_NAME" ]]; then
     ARGS+=" --witness=\"$CREAD_WITNESS_NAME\""
 fi
 
+if [[ ! -z "$REPLAY_BLOCKCHAIN" ]]; then
+    ARGS+=" --replay-blockchain"
+fi
 
 if [[ ! -z "$CREAD_PRIVATE_KEY" ]]; then
     ARGS+=" --private-key=$CREAD_PRIVATE_KEY"
