@@ -64,6 +64,8 @@ class tags_api_impl
 
       chain::database& _db;
       std::shared_ptr< crea::plugins::follow::follow_api > _follow_api;
+      get_discussions_by_author_before_date_return getDiscussionByAuthorBeforeDateCreated(const get_discussions_by_author_before_date_args& args);
+      get_discussions_by_author_before_date_return getDiscussionByAuthorBeforeDate(const get_discussions_by_author_before_date_args& args);
 };
 
 DEFINE_API_IMPL( tags_api_impl, get_popular_tags )
@@ -461,45 +463,95 @@ DEFINE_API_IMPL( tags_api_impl, get_replies_by_last_update )
    return result;
 }
 
+get_discussions_by_author_before_date_return tags_api_impl::getDiscussionByAuthorBeforeDateCreated(const get_discussions_by_author_before_date_args& args)
+{
+   get_discussions_by_author_before_date_return result;
+#ifndef IS_LOW_MEM
+   FC_ASSERT( args.limit <= 100 );
+   result.discussions.reserve( args.limit );
+   uint32_t count = 0;
+
+   const auto& didx = _db.get_index< comment_index, by_author_created >();
+
+   auto before_date = args.before_date;
+
+   if( before_date == time_point_sec() )
+      before_date = time_point_sec::maximum();
+
+   auto itr = didx.lower_bound( boost::make_tuple( args.author, time_point_sec::maximum() ) );
+   if( args.start_permlink.size() )
+   {
+      const auto& comment = _db.get_comment( args.author, args.start_permlink );
+      if( comment.created < before_date )
+         itr = didx.iterator_to( comment );
+   }
+
+
+   while( itr != didx.end() && itr->author == args.author && count < args.limit )
+   {
+      if( itr->parent_author.size() == 0 )
+      {
+         result.discussions.push_back( discussion( *itr, _db ) );
+         set_pending_payout( result.discussions.back() );
+         result.discussions.back().active_votes = get_active_votes( get_active_votes_args( { itr->author, chain::to_string( itr->permlink ) } ) ).votes;
+         ++count;
+      }
+      ++itr;
+   }
+
+#endif
+   return result;
+}
+
+get_discussions_by_author_before_date_return tags_api_impl::getDiscussionByAuthorBeforeDate(const get_discussions_by_author_before_date_args& args)
+    {
+       get_discussions_by_author_before_date_return result;
+#ifndef IS_LOW_MEM
+       FC_ASSERT( args.limit <= 100 );
+       result.discussions.reserve( args.limit );
+       uint32_t count = 0;
+
+       const auto& didx = _db.get_index< comment_index, by_author_last_update >();
+
+       auto before_date = args.before_date;
+
+       if( before_date == time_point_sec() )
+          before_date = time_point_sec::maximum();
+
+       auto itr = didx.lower_bound( boost::make_tuple( args.author, time_point_sec::maximum() ) );
+       if( args.start_permlink.size() )
+       {
+          const auto& comment = _db.get_comment( args.author, args.start_permlink );
+          if( comment.created < before_date )
+             itr = didx.iterator_to( comment );
+       }
+
+
+       while( itr != didx.end() && itr->author == args.author && count < args.limit )
+       {
+          if( itr->parent_author.size() == 0 )
+          {
+             result.discussions.push_back( discussion( *itr, _db ) );
+             set_pending_payout( result.discussions.back() );
+             result.discussions.back().active_votes = get_active_votes( get_active_votes_args( { itr->author, chain::to_string( itr->permlink ) } ) ).votes;
+             ++count;
+          }
+          ++itr;
+       }
+
+#endif
+       return result;
+    }
+
 DEFINE_API_IMPL( tags_api_impl, get_discussions_by_author_before_date )
 {
    try
    {
-      get_discussions_by_author_before_date_return result;
-#ifndef IS_LOW_MEM
-      FC_ASSERT( args.limit <= 100 );
-      result.discussions.reserve( args.limit );
-      uint32_t count = 0;
-      const auto& didx = _db.get_index< comment_index, by_author_last_update >();
-
-      auto before_date = args.before_date;
-
-      if( before_date == time_point_sec() )
-         before_date = time_point_sec::maximum();
-
-      auto itr = didx.lower_bound( boost::make_tuple( args.author, time_point_sec::maximum() ) );
-      if( args.start_permlink.size() )
-      {
-         const auto& comment = _db.get_comment( args.author, args.start_permlink );
-         if( comment.created < before_date )
-            itr = didx.iterator_to( comment );
+      if (args.order == "created") {
+         return getDiscussionByAuthorBeforeDateCreated(args);
+      } else {
+         return getDiscussionByAuthorBeforeDate(args);
       }
-
-
-      while( itr != didx.end() && itr->author == args.author && count < args.limit )
-      {
-         if( itr->parent_author.size() == 0 )
-         {
-            result.discussions.push_back( discussion( *itr, _db ) );
-            set_pending_payout( result.discussions.back() );
-            result.discussions.back().active_votes = get_active_votes( get_active_votes_args( { itr->author, chain::to_string( itr->permlink ) } ) ).votes;
-            ++count;
-         }
-         ++itr;
-      }
-
-#endif
-      return result;
    }
    FC_CAPTURE_AND_RETHROW( (args) )
 }

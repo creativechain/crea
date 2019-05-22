@@ -247,6 +247,7 @@ namespace crea { namespace chain {
    struct by_parent;
    struct by_last_update; /// parent_auth, last_update
    struct by_author_last_update;
+   struct by_author_created;
 
    /**
     * @ingroup object_index
@@ -301,7 +302,15 @@ namespace crea { namespace chain {
                member< comment_object, comment_id_type, &comment_object::id >
             >,
             composite_key_compare< std::less< account_name_type >, std::greater< time_point_sec >, std::less< comment_id_type > >
-         >
+         >,
+        ordered_unique< tag< by_author_created >,
+            composite_key< comment_object,
+                member< comment_object, account_name_type, &comment_object::author >,
+                member< comment_object, time_point_sec, &comment_object::created >,
+                member< comment_object, comment_id_type, &comment_object::id >
+            >,
+            composite_key_compare< std::less< account_name_type >, std::greater< time_point_sec >, std::less< comment_id_type > >
+        >
 #endif
       >,
       allocator< comment_object >
