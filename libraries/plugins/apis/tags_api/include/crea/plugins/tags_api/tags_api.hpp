@@ -276,7 +276,7 @@ FC_REFLECT( crea::plugins::tags::get_replies_by_last_update_args,
             (start_parent_author)(start_permlink)(limit) )
 
 FC_REFLECT( crea::plugins::tags::get_discussions_by_author_before_date_args,
-            (author)(start_permlink)(before_date)(limit) )
+            (author)(start_permlink)(before_date)(limit)(order) )
 
 FC_REFLECT( crea::plugins::tags::get_active_votes_return,
             (votes) )
