@@ -187,7 +187,7 @@ struct get_discussions_by_author_before_date_args
    string            start_permlink;
    time_point_sec    before_date;
    uint32_t          limit = 100;
-   string            order = "created";
+   string            order = "";
 };
 
 typedef discussion_query_result get_discussions_by_author_before_date_return;
