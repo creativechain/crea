@@ -60,7 +60,6 @@
 
 #define CREA_GENESIS_TIME                    (fc::time_point_sec(1550592000))
 #define CREA_MINING_TIME                     (fc::time_point_sec(1550592000))
-#define CREA_REWARD_REGULATION_TIME          (fc::time_point_sec(1562493600)) //07/07/2019 @ 10:00am (UTC)
 #define CREA_CASHOUT_WINDOW_SECONDS_PRE_HF12 (60*60*24)    /// 1 day
 #define CREA_CASHOUT_WINDOW_SECONDS_PRE_HF17 (60*60*12)    /// 12 hours
 #define CREA_FIRST_WINDOW_SECONDS            (60*60)       /// 1 hour -> Reward regulation
@@ -131,7 +130,7 @@
 #define CREA_REVERSE_AUCTION_WINDOW_SECONDS_HF20 (60*15) /// 15 minutes
 #define CREA_MIN_VOTE_INTERVAL_SEC           3
 #define CREA_VOTE_DUST_THRESHOLD             (50000000)
-//#define CREA_VOTE_DUST_THRESHOLD             (3800000)
+#define CREA_REWARD_REGULATION_TIME          (fc::time_point_sec(1562493600)) //07/07/2019 @ 10:00am (UTC)
 
 #define CREA_MIN_ROOT_COMMENT_INTERVAL       (fc::seconds(60*5)) // 5 minutes
 #define CREA_MIN_REPLY_INTERVAL              (fc::seconds(20)) // 20 seconds
