@@ -1608,7 +1608,9 @@ void pre_hf20_vote_evaluator( const vote_operation& o, database& _db )
 
    if( _db.has_hardfork( CREA_HARDFORK_0_20__1764 ) )
    {
-      abs_rshares -= CREA_VOTE_DUST_THRESHOLD;
+      if (_db.head_block_time() < CREA_REWARD_REGULATION_TIME) {
+          abs_rshares -= CREA_VOTE_DUST_THRESHOLD;
+      }
       abs_rshares = std::max( int64_t(0), abs_rshares );
    }
    else if( _db.has_hardfork( CREA_HARDFORK_0_14__259 ) )
@@ -2005,7 +2007,10 @@ void hf20_vote_evaluator( const vote_operation& o, database& _db )
    int64_t abs_rshares = used_flow.to_uint64();
 
    //wlog("abs_rshares: ${mvd}", ("mvd", abs_rshares));
-   abs_rshares -= CREA_VOTE_DUST_THRESHOLD;
+   if (_db.head_block_time() < CREA_REWARD_REGULATION_TIME) {
+       abs_rshares -= CREA_VOTE_DUST_THRESHOLD;
+   }
+
    abs_rshares = std::max( int64_t(0), abs_rshares );
 
    //wlog("abs_rshares: ${mvd}", ("mvd", abs_rshares));
