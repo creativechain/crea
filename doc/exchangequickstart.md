@@ -63,7 +63,7 @@ If you build with Docker but do not want to run cread from within a docker conta
 To extract the binary you need to start a container and then copy the file from it.
 
 ```
-docker run -d --name cread-exchange creary/crea
+docker run -d --name cread-exchange -t creary/crea:latest
 docker cp cread-exchange:/usr/local/cread-default/bin/cread /local/path/to/cread
 docker cp cread-exchange:/usr/local/cread-default/bin/cli_wallet /local/path/to/cli_wallet
 docker stop cread-exchange
@@ -86,7 +86,7 @@ mkdir creawallet
 The below command will start a daemonized instance opening ports for p2p and RPC  while linking the directories we created for blockchain and wallet data inside the container. The `-v` flags are how you map directories outside of the container to the inside, you list the path to the directories you created earlier before the `:` for each `-v` flag. The restart policy ensures that the container will automatically restart even if your system is restarted.
 
 ```
-docker run -d --name cread-exchange --env -p 1776:1776 -p 1996:1996 -v /path/to/creawallet:/var/creawallet -v /path/to/blockchain:/var/lib/cread/blockchain --restart always creary/crea
+docker run -d --name cread-exchange -p 1776:1776 -p 1996:1996 -v /path/to/creawallet:/var/creawallet -v /path/to/blockchain:/var/lib/cread/blockchain --restart always -t creary/crea:latest
 ```
 
 You can see that the container is running with the `docker ps` command.
