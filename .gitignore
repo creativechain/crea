@@ -54,3 +54,4 @@ cmake-build-debug
 nbproject
 error.log
 resources
+rm-tag.sh
