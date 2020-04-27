@@ -1,4 +1,4 @@
-
+duc
 #include <crea/chain/crea_fwd.hpp>
 
 #include <crea/plugins/block_data_export/block_data_export_plugin.hpp>
@@ -476,12 +476,12 @@ void rc_plugin_impl::on_post_apply_block( const block_notification& note )
                double k = 27.027027027027028;
                double a = double(params.pool_eq - pool);
                a /= k*double(pool);
-               dlog( "a=${a}   aR=${aR}", ("a", a)("aR", a*gpo.total_vesting_shares.amount.value/CREA_RC_REGEN_TIME) );
+               //dlog( "a=${a}   aR=${aR}", ("a", a)("aR", a*gpo.total_vesting_shares.amount.value/CREA_RC_REGEN_TIME) );
             }
          }
          if( debug_print )
          {
-            dlog( "${t} : ${i}", ("t", gpo.time)("i", block_info) );
+            //dlog( "${t} : ${i}", ("t", gpo.time)("i", block_info) );
          }
       } );
 
