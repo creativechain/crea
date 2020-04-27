@@ -90,15 +90,8 @@ fi
 
 chown cread:cread $HOME/config.ini
 
-if [[ ! -d $HOME/blockchain ]]; then
-    if [[ -e /var/cache/cread/blocks.tbz2 ]]; then
-        # init with blockchain cached in image
-        ARGS+=" --replay-blockchain"
-        mkdir -p $HOME/blockchain/database
-        cd $HOME/blockchain/database
-        tar xvjpf /var/cache/cread/blocks.tbz2
-        chown -R cread:cread $HOME/blockchain
-    fi
+if [[ "$REINDEX" ]]; then
+   ARGS+=" --replay-blockchain"
 else
    ARGS+=" --tags-skip-startup-update"
 fi
@@ -107,22 +100,6 @@ fi
 # who knows what else it dumps into current dir
 cd $HOME
 
-if [[ "$USE_PUBLIC_SHARED_MEMORY" ]]; then
-  echo cread: Downloading and uncompressing blockchain-$VERSION-latest.tar.lz4 - this may take awhile.
-  wget -qO- https://s3.amazonaws.com/creativecoin-dev-blockchainstate/blockchain-$VERSION-latest.tar.lz4 | lz4 -d | tar x
-fi
-
-if [[ "$USE_PUBLIC_BLOCKLOG" ]]; then
-  if [[ ! -e $HOME/blockchain/block_log ]]; then
-    if [[ ! -d $HOME/blockchain ]]; then
-      mkdir -p $HOME/blockchain
-    fi
-    echo "cread: Downloading a block_log and replaying the blockchain"
-    echo "This may take a little while..."
-    wget -O $HOME/blockchain/block_log https://s3.amazonaws.com/creativecoin-dev-blockchainstate/block_log-latest
-    ARGS+=" --replay-blockchain"
-  fi
-fi
 
 # slow down restart loop if flapping
 sleep 1
