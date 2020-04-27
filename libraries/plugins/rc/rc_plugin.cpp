@@ -1,4 +1,4 @@
-duc
+
 #include <crea/chain/crea_fwd.hpp>
 
 #include <crea/plugins/block_data_export/block_data_export_plugin.hpp>
