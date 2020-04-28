@@ -1035,7 +1035,7 @@ void comment_download_evaluator::do_apply(const comment_download_operation& o)
    try {
 
       //Checking comment exists
-      wlog("Checking comment exists");
+      //wlog("Checking comment exists");
       const auto& by_permlink_idx = _db.get_index< comment_index >().indices().get< by_permlink >();
       auto itr = by_permlink_idx.find( boost::make_tuple( o.comment_author, o.comment_permlink ) );
 
@@ -1046,7 +1046,7 @@ void comment_download_evaluator::do_apply(const comment_download_operation& o)
       const comment_download_object& cdo = _db.get< comment_download_object, by_comment >( comment.id );
 
       const auto& dBalance = _db.get_balance( o.downloader, cdo.price.symbol );
-      wlog("cdo=${cdo}, dBalance=${dBalance}", ("cdo", cdo)("dBalance", dBalance));
+      //wlog("cdo=${cdo}, dBalance=${dBalance}", ("cdo", cdo)("dBalance", dBalance));
 
       const auto& granted_download_idx = _db.get_index< download_granted_index, by_downloader >();
       auto gd_itr = granted_download_idx.lower_bound( o.downloader );
@@ -1057,7 +1057,7 @@ void comment_download_evaluator::do_apply(const comment_download_operation& o)
           ++gd_itr;
       }
 
-      wlog("Paid: ${p}", ("p", paid));
+      //wlog("Paid: ${p}", ("p", paid));
       FC_ASSERT( !paid, "This account already paid the download");
 
       FC_ASSERT( dBalance >= cdo.price, "Account does not have sufficient funds for download. Account balance: ${b}, Price: ${p}", ("b", dBalance)("p", cdo.price) );
@@ -1075,17 +1075,17 @@ void comment_download_evaluator::do_apply(const comment_download_operation& o)
 
       });
 
-      wlog("modfying comment_download_object");
+      //wlog("modfying comment_download_object");
       _db.modify( _db.get< comment_download_object, by_id >( cdo.id ), [&]( comment_download_object& d) {
           d.times_downloaded += 1;
       });
 
 
-      wlog("adjusting balance");
+      //wlog("adjusting balance");
       _db.adjust_balance( o.downloader, -cdo.price );
       _db.adjust_balance( o.comment_author, cdo.price );
 
-      wlog("terminating");
+      //wlog("terminating");
    } FC_CAPTURE_AND_RETHROW( (o) )
 
 }
