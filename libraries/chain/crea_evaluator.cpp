@@ -1060,7 +1060,7 @@ void comment_download_evaluator::do_apply(const comment_download_operation& o)
       //wlog("Paid: ${p}", ("p", paid));
       FC_ASSERT( !paid, "This account already paid the download");
 
-      FC_ASSERT( dBalance >= cdo.price, "Account does not have sufficient funds for download." );
+      FC_ASSERT( dBalance >= cdo.price, "Account does not have sufficient funds for download. Account balance: ${b}, Price: ${p}", ("b", dBalance)("p", cdo.price) );
 
       //Store download payment for this user
       //wlog("storing download");
