@@ -1,53 +1,54 @@
 #pragma once
+#include <crea/chain/crea_fwd.hpp>
+
 #include <crea/protocol/transaction.hpp>
 
 #include <crea/chain/buffer_type.hpp>
 #include <crea/chain/crea_object_types.hpp>
 
-#include <boost/multi_index/hashed_index.hpp>
+//#include <boost/multi_index/hashed_index.hpp>
 
 namespace crea { namespace chain {
 
-   using crea::protocol::signed_transaction;
-   using chainbase::t_vector;
+  using crea::protocol::signed_transaction;
+  using chainbase::t_vector;
 
-   /**
+  /**
     * The purpose of this object is to enable the detection of duplicate transactions. When a transaction is included
     * in a block a transaction_object is added. At the end of block processing all transaction_objects that have
     * expired can be removed from the index.
     */
-   class transaction_object : public object< transaction_object_type, transaction_object >
-   {
-      transaction_object() = delete;
+  class transaction_object : public object< transaction_object_type, transaction_object >
+  {
+    CHAINBASE_OBJECT( transaction_object );
+    public:
+      CHAINBASE_DEFAULT_CONSTRUCTOR( transaction_object, (packed_trx) )
 
-      public:
-         template< typename Constructor, typename Allocator >
-         transaction_object( Constructor&& c, allocator< Allocator > a )
-            : packed_trx( a )
-         {
-            c( *this );
-         }
+      typedef buffer_type t_packed_trx;
 
-         id_type              id;
+      t_packed_trx         packed_trx;
+      transaction_id_type  trx_id;
+      time_point_sec       expiration;
+  };
 
-         typedef buffer_type t_packed_trx;
-
-         t_packed_trx         packed_trx;
-         transaction_id_type  trx_id;
-         time_point_sec       expiration;
-   };
-
-   struct by_expiration;
-   struct by_trx_id;
-   typedef multi_index_container<
-      transaction_object,
-      indexed_by<
-         ordered_unique< tag< by_id >, member< transaction_object, transaction_object_id_type, &transaction_object::id > >,
-         hashed_unique< tag< by_trx_id >, BOOST_MULTI_INDEX_MEMBER(transaction_object, transaction_id_type, trx_id), std::hash<transaction_id_type> >,
-         ordered_non_unique< tag< by_expiration >, member<transaction_object, time_point_sec, &transaction_object::expiration > >
-      >,
-      allocator< transaction_object >
-   > transaction_index;
+  struct by_expiration;
+  struct by_trx_id;
+  typedef multi_index_container<
+    transaction_object,
+    indexed_by<
+      ordered_unique< tag< by_id >,
+        const_mem_fun< transaction_object, transaction_object::id_type, &transaction_object::get_id > >,
+      ordered_unique< tag< by_trx_id >,
+        member< transaction_object, transaction_id_type, &transaction_object::trx_id > >,
+      ordered_unique< tag< by_expiration >,
+        composite_key< transaction_object,
+          member<transaction_object, time_point_sec, &transaction_object::expiration >,
+          const_mem_fun<transaction_object, transaction_object::id_type, &transaction_object::get_id >
+        >
+      >
+    >,
+    allocator< transaction_object >
+  > transaction_index;
 
 } } // crea::chain
 
@@ -56,28 +57,28 @@ CHAINBASE_SET_INDEX_TYPE( crea::chain::transaction_object, crea::chain::transact
 
 namespace helpers
 {
-   template <>
-   class index_statistic_provider<crea::chain::transaction_index>
-   {
-   public:
-      typedef crea::chain::transaction_index IndexType;
-      typedef typename crea::chain::transaction_object::t_packed_trx t_packed_trx;
+  template <>
+  class index_statistic_provider<crea::chain::transaction_index>
+  {
+  public:
+    typedef crea::chain::transaction_index IndexType;
+    typedef typename crea::chain::transaction_object::t_packed_trx t_packed_trx;
 
-      index_statistic_info gather_statistics(const IndexType& index, bool onlyStaticInfo) const
+    index_statistic_info gather_statistics(const IndexType& index, bool onlyStaticInfo) const
+    {
+      index_statistic_info info;
+      gather_index_static_data(index, &info);
+
+      if(onlyStaticInfo == false)
       {
-         index_statistic_info info;
-         gather_index_static_data(index, &info);
-
-         if(onlyStaticInfo == false)
-         {
-            for(const auto& o : index)
-            {
-               info._item_additional_allocation += o.packed_trx.capacity()*sizeof(t_packed_trx::value_type);
-            }
-         }
-
-         return info;
+        for(const auto& o : index)
+        {
+          info._item_additional_allocation += o.packed_trx.capacity()*sizeof(t_packed_trx::value_type);
+        }
       }
-   };
+
+      return info;
+    }
+  };
 
 } /// namespace helpers

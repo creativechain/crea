@@ -5,25 +5,25 @@
 #include <fc/api.hpp>
 
 namespace crea { namespace app {
-   struct api_context;
+  struct api_context;
 } }
 
 namespace crea { namespace account_statistics {
 
 namespace detail
 {
-   class account_statistics_api_impl;
+  class account_statistics_api_impl;
 }
 
 class account_statistics_api
 {
-   public:
-      account_statistics_api( const crea::app::api_context& ctx );
+  public:
+    account_statistics_api( const crea::app::api_context& ctx );
 
-      void on_api_startup();
+    void on_api_startup();
 
-   private:
-      std::shared_ptr< detail::account_statistics_api_impl > _my;
+  private:
+    std::shared_ptr< detail::account_statistics_api_impl > _my;
 };
 
 } } // crea::account_statistics

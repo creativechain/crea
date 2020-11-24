@@ -24,15 +24,15 @@ using crea::protocol::signed_block;
 
 struct broadcast_transaction_args
 {
-   signed_transaction   trx;
-   int32_t              max_block_age = -1;
+  signed_transaction   trx;
+  int32_t              max_block_age = -1;
 };
 
 typedef void_type broadcast_transaction_return;
 
 struct broadcast_block_args
 {
-   signed_block   block;
+  signed_block   block;
 };
 
 typedef void_type broadcast_block_return;
@@ -41,23 +41,23 @@ namespace detail{ class network_broadcast_api_impl; }
 
 class network_broadcast_api
 {
-   public:
-      network_broadcast_api();
-      ~network_broadcast_api();
+  public:
+    network_broadcast_api();
+    ~network_broadcast_api();
 
-      DECLARE_API(
-         (broadcast_transaction)
-         (broadcast_block)
-      )
+    DECLARE_API(
+      (broadcast_transaction)
+      (broadcast_block)
+    )
 
-   private:
-      std::unique_ptr< detail::network_broadcast_api_impl > my;
+  private:
+    std::unique_ptr< detail::network_broadcast_api_impl > my;
 };
 
 } } } // crea::plugins::network_broadcast_api
 
 FC_REFLECT( crea::plugins::network_broadcast_api::broadcast_transaction_args,
-   (trx)(max_block_age) )
+  (trx)(max_block_age) )
 
 FC_REFLECT( crea::plugins::network_broadcast_api::broadcast_block_args,
-   (block) )
+  (block) )

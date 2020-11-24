@@ -1,9 +1,10 @@
 #pragma once
 
 #include <fc/variant_object.hpp>
+#include <fc/crypto/sha256.hpp>
 
 namespace crea { namespace protocol {
 
-fc::variant_object get_config();
+fc::variant_object get_config( const std::string& treasury_name, const fc::sha256& chain_id );
 
 } } // crea::protocol

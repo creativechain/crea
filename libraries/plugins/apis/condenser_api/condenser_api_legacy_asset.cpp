@@ -17,51 +17,59 @@ uint32_t string_to_asset_num( const char* p, uint8_t decimals )
       break;
    }
 
-   // [A-Z]
-   uint32_t asset_num = 0;
-   switch( *p )
-   {
-      case 'A': case 'B': case 'C': case 'D': case 'E': case 'F': case 'G': case 'H': case 'I':
-      case 'J': case 'K': case 'L': case 'M': case 'N': case 'O': case 'P': case 'Q': case 'R':
-      case 'S': case 'T': case 'U': case 'V': case 'W': case 'X': case 'Y': case 'Z':
+  // [A-Z]
+  uint32_t asset_num = 0;
+  switch( *p )
+  {
+    case 'A': case 'B': case 'C': case 'D': case 'E': case 'F': case 'G': case 'H': case 'I':
+    case 'J': case 'K': case 'L': case 'M': case 'N': case 'O': case 'P': case 'Q': case 'R':
+    case 'S': case 'T': case 'U': case 'V': case 'W': case 'X': case 'Y': case 'Z':
+    {
+      // [A-Z]{1,6}
+      int shift = 0;
+      uint64_t name_u64 = 0;
+      while( true )
       {
-         // [A-Z]{1,6}
-         int shift = 0;
-         uint64_t name_u64 = 0;
-         while( true )
-         {
-            if( ((*p) >= 'A') && ((*p) <= 'Z') )
-            {
-               FC_ASSERT( shift < 64, "Cannot parse asset symbol" );
-               name_u64 |= uint64_t(*p) << shift;
-               shift += 8;
-               ++p;
-               continue;
-            }
-            break;
-         }
-         switch( name_u64 )
-         {
-            case CREA_SYMBOL_U64:
-               FC_ASSERT( decimals == 3, "Incorrect decimal places" );
-               asset_num = CREA_ASSET_NUM_CREA;
-               break;
-            case CBD_SYMBOL_U64:
-               FC_ASSERT( decimals == 3, "Incorrect decimal places" );
-               asset_num = CREA_ASSET_NUM_CBD;
-               break;
-            case VESTS_SYMBOL_U64:
-               FC_ASSERT( decimals == 6, "Incorrect decimal places" );
-               asset_num = CREA_ASSET_NUM_VESTS;
-               break;
-            default:
-               FC_ASSERT( false, "Cannot parse asset symbol" );
-         }
-         break;
+        if( ((*p) >= 'A') && ((*p) <= 'Z') )
+        {
+          FC_ASSERT( shift < 64, "Cannot parse asset symbol" );
+          name_u64 |= uint64_t(*p) << shift;
+          shift += 8;
+          ++p;
+          continue;
+        }
+        break;
       }
-      default:
-         FC_ASSERT( false, "Cannot parse asset symbol" );
-   }
+      switch( name_u64 )
+      {
+#ifndef IS_TEST_NET
+        /// Has same value as CREA_SYMBOL_U64
+        case OBSOLETE_SYMBOL_U64:
+#endif /// IS_TEST_NET
+        case CREA_SYMBOL_U64:
+          FC_ASSERT( decimals == 3, "Incorrect decimal places" );
+          asset_num = CREA_ASSET_NUM_CREA;
+          break;
+#ifndef IS_TEST_NET
+        /// Has same value as CBD_SYMBOL_U64
+        case OBD_SYMBOL_U64:
+#endif ///IS_TEST_NET
+        case CBD_SYMBOL_U64:
+          FC_ASSERT( decimals == 3, "Incorrect decimal places" );
+          asset_num = CREA_ASSET_NUM_CBD;
+          break;
+        case VESTS_SYMBOL_U64:
+          FC_ASSERT( decimals == 6, "Incorrect decimal places" );
+          asset_num = CREA_ASSET_NUM_VESTS;
+          break;
+        default:
+          FC_ASSERT( false, "Cannot parse asset symbol" );
+      }
+      break;
+    }
+    default:
+      FC_ASSERT( false, "Cannot parse asset symbol" );
+  }
 
    // \s*\0
    while( true )
@@ -159,20 +167,34 @@ legacy_asset legacy_asset::from_string( const string& from )
 
          int64_t prec = precision( result.symbol );
 
-         result.amount = fc::to_int64( intpart );
-         result.amount.value *= prec;
-         result.amount.value += fc::to_int64( fractpart );
-         result.amount.value -= prec;
-      }
+      //Max amount = 9223372036854775.807 CREA/CBD
+      //`inpart` * `prec` can cause overflow, better is to emulate multiplication using additional zeros
+      auto _prec = std::to_string( prec );
+      if( !_prec.empty() )
+        intpart += _prec.substr( 1 );
+
+      result.amount = fc::to_int64( intpart );
+
+      int64_t _new_value = fc::to_int64( fractpart ) - prec;
+
+      //adding `_new_value` can cause overflow, better is to check sum before addition
+      int64_t check = result.amount.value + _new_value;
+      bool overflow_a = result.amount.value > 0 && _new_value > 0 && check < 0;
+      bool overflow_b = result.amount.value < 0 && _new_value < 0 && check > 0;
+      if( overflow_a || overflow_b )
+        FC_THROW_EXCEPTION( fc::parse_error_exception, "Couldn't parse int64_t" );
       else
-      {
-         auto intpart = s.substr( 0, space_pos );
-         result.amount = fc::to_int64( intpart );
-         result.symbol.asset_num = string_to_asset_num( str_symbol.c_str(), 0 );
-      }
-      return result;
-   }
-   FC_CAPTURE_AND_RETHROW( (from) )
+        result.amount.value += _new_value;
+    }
+    else
+    {
+      auto intpart = s.substr( 0, space_pos );
+      result.amount = fc::to_int64( intpart );
+      result.symbol.asset_num = string_to_asset_num( str_symbol.c_str(), 0 );
+    }
+    return result;
+  }
+  FC_CAPTURE_AND_RETHROW( (from) )
 }
 
 } } }

@@ -7,7 +7,7 @@ With the right equipment and technical configuration a reindex should take **no 
 
 We recommend using docker to both build and run CREA for exchanges. Docker is the world's leading containerization platform and using it guarantees that your build and run environment is identical to what our developers use. You can still build from source and you can keep both blockchain data and wallet data outside of the docker container. The instructions below will show you how to do this in just a few easy steps.
 
-### Install Docker
+You can save a lot of time by replaying from a `block_log`. Using the docker method below, we have made it easy to download a `block_log` at launch and replay from it by passing in the `USE_PUBLIC_BLOCKLOG=1` environment variable. To do this, make sure your data directory is empty and does not contain a block_log. If you are not using docker, you can download a `block_log` from [here](https://gtg.steem.house/get/blockchain), put it in your Crea data directory, and use the `--replay-blockchain` command line option. Be sure to remove the option if you have to stop/restart cread after already being synced.
 
  - Install Docker on [Debian](https://docs.docker.com/install/linux/docker-ce/debian/)
  - Install Docker on [Ubuntu](https://docs.docker.com/install/linux/docker-ce/ubuntu/)
@@ -69,8 +69,19 @@ docker cp cread-exchange:/usr/local/cread-default/bin/cli_wallet /local/path/to/
 docker stop cread-exchange
 ```
 
-For your convenience, we have provided a provided an [example_config](example_config.ini) that we expect should be sufficient to run your exchange node. Be sure to rename it to simply `config.ini`.
+### Configuration files when not using a Docker image
+
+For your convenience, we have provided a provided an [example\_config](example\_config.ini) that we expect should be sufficient to run your exchange node. Be sure to rename it to simply `config.ini`. Be sure to set the account name of your wallet account that you would like to track account history for in the config file. It is defined as `account-history-track-account-range = ["accountname","accountname"]`.
 Add [nodes](seednodes.txt) to your configuration file to perform full synchronization.
+
+
+### Custom configuration files when using a Docker image
+
+If you are using our docker image and have a need for using a custom config file, instead use [config-for-docker.ini](https://github.com/opencrea-network/crea/blob/master/contrib/config-for-docker.ini). You can place this outside of your container and map to it by adding this argument to your docker run command: `-v /path/to/config.ini:/etc/cread/config.ini`. In most cases, a custom configuration file is not necessary.
+
+### Account history and limitations
+
+If you need to track all account history instead of just a single account, this would add quite a bit of overhead and lead to a much longer reindex. If you absolutely need this, we recommend instead using the `account_history_rocksdb` plugin instead, however, there is one caveat: the rocksdb plugin does not allow the ability to query by transaction ID. For either `account_history` or `account_history_rocksdb` you would also add the `account_history_api` plugin in order to be able to query data. To use these, you would add them to a custom config file.
 
 ### Create directories to store blockchain and wallet data outside of Docker
 
@@ -93,11 +104,7 @@ You can see that the container is running with the `docker ps` command.
 
 To follow along with the logs, use `docker logs -f`.
 
-Initial syncing will take between 5 minutes and 1 hour depending on your equipment, faster storage devices will take less time and be more efficient. Subsequent restarts will not take as long.
-
-### Receive notifications
-
-To receive notifications about an account it is necessary to have installed our developer and exchange package for Nodejs. You can see the documentation [here](https://github.com/creativechain/creary-tools/wiki).
+Initial syncing will take between 6 and 72 hours depending on your equipment, faster storage devices will take less time and be more efficient. Subsequent restarts will not take as long.
 
 ### Running the cli_wallet
 
@@ -105,4 +112,29 @@ The command below will run the cli_wallet from inside the running container whil
 
 ```
 docker exec -it cread-exchange /usr/local/cread-default/bin/cli_wallet -w /var/creawallet/wallet.json
+```
+
+### Upgrading for major releases that require a full reindex
+
+For upgrades that require a full replay, we highly recommend *performing the upgrade on a separate server* in order to minimize downtime of your wallet. When the replay is complete, switch to the server running the newer version of Crea. If for some reason it is absolutely not possible to perform the upgrade on a separate server, you would use the following instructions instead:
+
+Stop the docker container, remove the existing container, clear out your blockchain data directory completely, pull in the latest docker image (or build the image from scratch), and then start a new container using the same command that you previously launched with.
+
+```
+docker stop cread-exchange
+docker rm cread-exchange
+rm -rf blockchain/*
+docker pull creaio/crea
+docker run -d --name cread-exchange --env TRACK_ACCOUNT=nameofaccount --env USE_PUBLIC_BLOCKLOG=1 -p 2001:2001 -p 8090:8090 -v /path/to/creawallet:/var/creawallet -v /path/to/blockchain:/var/lib/cread/blockchain --restart always creaio/crea
+```
+
+### Upgrading for releases that do not require a reindex
+
+For upgrades that do not require a full replay, you would use the following instructions: stop the docker container, remove the existing container, pull in the latest docker image (or build the image from scratch), and then start a new container using the same command that you previously launched with:
+
+```
+docker stop cread-exchange
+docker rm cread-exchange
+docker pull creaio/crea
+docker run -d --name cread-exchange --env TRACK_ACCOUNT=nameofaccount --env USE_PUBLIC_BLOCKLOG=1 -p 2001:2001 -p 8090:8090 -v /path/to/creawallet:/var/creawallet -v /path/to/blockchain:/var/lib/cread/blockchain --restart always creaio/crea
 ```

@@ -1,24 +1,31 @@
 #pragma once
-#include <boost/multi_index_container.hpp>
-#include <boost/multi_index/member.hpp>
-#include <boost/multi_index/ordered_index.hpp>
-#include <boost/multi_index/mem_fun.hpp>
+
+#include <crea/chain/crea_fwd.hpp>
 
 #include <chainbase/chainbase.hpp>
+#include <chainbase/util/object_id_serialization.hpp>
 
 #include <crea/protocol/types.hpp>
 #include <crea/protocol/authority.hpp>
 
 #include <crea/chain/buffer_type.hpp>
 
-namespace crea { namespace chain {
+#include <crea/chain/multi_index_types.hpp>
 
-using namespace boost::multi_index;
+namespace crea {
 
-using boost::multi_index_container;
+namespace protocol {
+
+struct asset;
+struct price;
+
+}
+
+namespace chain {
 
 using chainbase::object;
 using chainbase::oid;
+using chainbase::oid_ref;
 using chainbase::allocator;
 
 using crea::protocol::block_id_type;
@@ -26,63 +33,70 @@ using crea::protocol::transaction_id_type;
 using crea::protocol::chain_id_type;
 using crea::protocol::account_name_type;
 using crea::protocol::share_type;
+using crea::protocol::ushare_type;
 
 using chainbase::shared_string;
 
 inline std::string to_string( const shared_string& str ) { return std::string( str.begin(), str.end() ); }
 inline void from_string( shared_string& out, const string& in ){ out.assign( in.begin(), in.end() ); }
 
-struct by_id;
+using chainbase::by_id;
 struct by_name;
 
 enum object_type
 {
-   dynamic_global_property_object_type,
-   account_object_type,
-   account_authority_object_type,
-   witness_object_type,
-   transaction_object_type,
-   block_summary_object_type,
-   witness_schedule_object_type,
-   comment_object_type,
-   comment_content_object_type,
-   comment_download_object_type,
-   download_granted_object_type,
-   comment_vote_object_type,
-   witness_vote_object_type,
-   limit_order_object_type,
-   feed_history_object_type,
-   convert_request_object_type,
-   liquidity_reward_balance_object_type,
-   operation_object_type,
-   account_history_object_type,
-   hardfork_property_object_type,
-   withdraw_vesting_route_object_type,
-   owner_authority_history_object_type,
-   account_recovery_request_object_type,
-   change_recovery_account_request_object_type,
-   escrow_object_type,
-   savings_withdraw_object_type,
-   decline_voting_rights_request_object_type,
-   block_stats_object_type,
-   reward_fund_object_type,
-   vesting_delegation_object_type,
-   vesting_delegation_expiration_object_type,
-   pending_required_action_object_type,
-   pending_optional_action_object_type,
+  dynamic_global_property_object_type,
+  account_object_type,
+  account_metadata_object_type,
+  account_authority_object_type,
+  witness_object_type,
+  transaction_object_type,
+  block_summary_object_type,
+  witness_schedule_object_type,
+  comment_object_type,
+  comment_content_object_type,
+  comment_download_object_type,
+  download_granted_object_type,
+  comment_vote_object_type,
+  witness_vote_object_type,
+  limit_order_object_type,
+  feed_history_object_type,
+  convert_request_object_type,
+  liquidity_reward_balance_object_type,
+  operation_object_type,
+  account_history_object_type,
+  hardfork_property_object_type,
+  withdraw_vesting_route_object_type,
+  owner_authority_history_object_type,
+  account_recovery_request_object_type,
+  change_recovery_account_request_object_type,
+  escrow_object_type,
+  savings_withdraw_object_type,
+  decline_voting_rights_request_object_type,
+  block_stats_object_type,
+  reward_fund_object_type,
+  vesting_delegation_object_type,
+  vesting_delegation_expiration_object_type,
+  pending_required_action_object_type,
+  pending_optional_action_object_type,
+  proposal_object_type,
+  proposal_vote_object_type,
+  comment_cashout_object_type,
 #ifdef CREA_ENABLE_SMT
-   // SMT objects
-   smt_token_object_type,
-   smt_event_token_object_type,
-   account_regular_balance_object_type,
-   account_rewards_balance_object_type,
-   nai_pool_object_type,
-   smt_token_emissions_object_type
+  // SMT objects
+  smt_token_object_type,
+  account_regular_balance_object_type,
+  account_rewards_balance_object_type,
+  nai_pool_object_type,
+  smt_token_emissions_object_type,
+  smt_contribution_object_type,
+  smt_ico_object_type,
 #endif
 };
 
 class dynamic_global_property_object;
 class account_object;
+class account_metadata_object;
 class account_authority_object;
 class witness_object;
 class transaction_object;
@@ -114,83 +128,109 @@ class vesting_delegation_object;
 class vesting_delegation_expiration_object;
 class pending_required_action_object;
 class pending_optional_action_object;
+class comment_cashout_object;
 
 #ifdef CREA_ENABLE_SMT
 class smt_token_object;
-class smt_event_token_object;
 class account_regular_balance_object;
 class account_rewards_balance_object;
 class nai_pool_object;
 class smt_token_emissions_object;
+class smt_contribution_object;
+class smt_ico_object;
 #endif
 
-typedef oid< dynamic_global_property_object         > dynamic_global_property_id_type;
-typedef oid< account_object                         > account_id_type;
-typedef oid< account_authority_object               > account_authority_id_type;
-typedef oid< witness_object                         > witness_id_type;
-typedef oid< transaction_object                     > transaction_object_id_type;
-typedef oid< block_summary_object                   > block_summary_id_type;
-typedef oid< witness_schedule_object                > witness_schedule_id_type;
-typedef oid< comment_object                         > comment_id_type;
-typedef oid< comment_content_object                 > comment_content_id_type;
+class proposal_object;
+class proposal_vote_object;
+
+typedef oid_ref< dynamic_global_property_object         > dynamic_global_property_id_type;
+typedef oid_ref< account_object                         > account_id_type;
+typedef oid_ref< account_metadata_object                > account_metadata_id_type;
+typedef oid_ref< account_authority_object               > account_authority_id_type;
+typedef oid_ref< witness_object                         > witness_id_type;
+typedef oid_ref< transaction_object                     > transaction_object_id_type;
+typedef oid_ref< block_summary_object                   > block_summary_id_type;
+typedef oid_ref< witness_schedule_object                > witness_schedule_id_type;
+typedef oid_ref< comment_object                         > comment_id_type;
+typedef oid_ref< comment_content_object                 > comment_content_id_type;
 typedef oid< comment_download_object                > comment_download_id_type;
 typedef oid< download_granted_object                > download_granted_id_type;
-typedef oid< comment_vote_object                    > comment_vote_id_type;
-typedef oid< witness_vote_object                    > witness_vote_id_type;
-typedef oid< limit_order_object                     > limit_order_id_type;
-typedef oid< feed_history_object                    > feed_history_id_type;
-typedef oid< convert_request_object                 > convert_request_id_type;
-typedef oid< liquidity_reward_balance_object        > liquidity_reward_balance_id_type;
-typedef oid< operation_object                       > operation_id_type;
-typedef oid< account_history_object                 > account_history_id_type;
-typedef oid< hardfork_property_object               > hardfork_property_id_type;
-typedef oid< withdraw_vesting_route_object          > withdraw_vesting_route_id_type;
-typedef oid< owner_authority_history_object         > owner_authority_history_id_type;
-typedef oid< account_recovery_request_object        > account_recovery_request_id_type;
-typedef oid< change_recovery_account_request_object > change_recovery_account_request_id_type;
-typedef oid< escrow_object                          > escrow_id_type;
-typedef oid< savings_withdraw_object                > savings_withdraw_id_type;
-typedef oid< decline_voting_rights_request_object   > decline_voting_rights_request_id_type;
-typedef oid< block_stats_object                     > block_stats_id_type;
-typedef oid< reward_fund_object                     > reward_fund_id_type;
-typedef oid< vesting_delegation_object              > vesting_delegation_id_type;
-typedef oid< vesting_delegation_expiration_object   > vesting_delegation_expiration_id_type;
-typedef oid< pending_required_action_object         > pending_required_action_id_type;
-typedef oid< pending_optional_action_object         > pending_optional_action_id_type;
+typedef oid_ref< comment_vote_object                    > comment_vote_id_type;
+typedef oid_ref< witness_vote_object                    > witness_vote_id_type;
+typedef oid_ref< limit_order_object                     > limit_order_id_type;
+typedef oid_ref< feed_history_object                    > feed_history_id_type;
+typedef oid_ref< convert_request_object                 > convert_request_id_type;
+typedef oid_ref< liquidity_reward_balance_object        > liquidity_reward_balance_id_type;
+typedef oid_ref< operation_object                       > operation_id_type;
+typedef oid_ref< account_history_object                 > account_history_id_type;
+typedef oid_ref< hardfork_property_object               > hardfork_property_id_type;
+typedef oid_ref< withdraw_vesting_route_object          > withdraw_vesting_route_id_type;
+typedef oid_ref< owner_authority_history_object         > owner_authority_history_id_type;
+typedef oid_ref< account_recovery_request_object        > account_recovery_request_id_type;
+typedef oid_ref< change_recovery_account_request_object > change_recovery_account_request_id_type;
+typedef oid_ref< escrow_object                          > escrow_id_type;
+typedef oid_ref< savings_withdraw_object                > savings_withdraw_id_type;
+typedef oid_ref< decline_voting_rights_request_object   > decline_voting_rights_request_id_type;
+typedef oid_ref< block_stats_object                     > block_stats_id_type;
+typedef oid_ref< reward_fund_object                     > reward_fund_id_type;
+typedef oid_ref< vesting_delegation_object              > vesting_delegation_id_type;
+typedef oid_ref< vesting_delegation_expiration_object   > vesting_delegation_expiration_id_type;
+typedef oid_ref< pending_required_action_object         > pending_required_action_id_type;
+typedef oid_ref< pending_optional_action_object         > pending_optional_action_id_type;
+typedef oid_ref< comment_cashout_object                 > comment_cashout_id_type;
 
 #ifdef CREA_ENABLE_SMT
-typedef oid< smt_token_object                       > smt_token_id_type;
-typedef oid< smt_event_token_object                 > smt_event_token_id_type;
-typedef oid< account_regular_balance_object         > account_regular_balance_id_type;
-typedef oid< account_rewards_balance_object         > account_rewards_balance_id_type;
-typedef oid< nai_pool_object                        > nai_pool_id_type;
-typedef oid< smt_token_emissions_object             > smt_token_emissions_object_id_type;
+typedef oid_ref< smt_token_object                       > smt_token_id_type;
+typedef oid_ref< account_regular_balance_object         > account_regular_balance_id_type;
+typedef oid_ref< account_rewards_balance_object         > account_rewards_balance_id_type;
+typedef oid_ref< nai_pool_object                        > nai_pool_id_type;
+typedef oid_ref< smt_token_emissions_object             > smt_token_emissions_id_type;
+typedef oid_ref< smt_contribution_object                > smt_contribution_id_type;
+typedef oid_ref< smt_ico_object                         > smt_ico_id_type;
 #endif
+
+typedef oid_ref< proposal_object                        > proposal_id_type;
+typedef oid_ref< proposal_vote_object                   > proposal_vote_id_type;
 
 enum bandwidth_type
 {
-   post,    ///< Rate limiting posting reward eligibility over time
-   forum,   ///< Rate limiting for all forum related actins
-   market   ///< Rate limiting for all other actions
+  post,    ///< Rate limiting posting reward eligibility over time
+  forum,   ///< Rate limiting for all forum related actins
+  market   ///< Rate limiting for all other actions
 };
 
 } } //crea::chain
 
+#ifdef ENABLE_MIRA
+namespace mira {
+
+template< typename T > struct is_static_length< chainbase::oid< T > > : public boost::true_type {};
+template< typename T > struct is_static_length< chainbase::oid_ref< T > > : public boost::true_type {};
+template< typename T > struct is_static_length< fc::fixed_string< T > > : public boost::true_type {};
+template<> struct is_static_length< crea::protocol::account_name_type > : public boost::true_type {};
+template<> struct is_static_length< crea::protocol::asset_symbol_type > : public boost::true_type {};
+template<> struct is_static_length< crea::protocol::asset > : public boost::true_type {};
+template<> struct is_static_length< crea::protocol::price > : public boost::true_type {};
+
+} // mira
+#endif
+
 namespace fc
 {
-
 class variant;
 
+#ifndef ENABLE_MIRA
 inline void to_variant( const crea::chain::shared_string& s, variant& var )
 {
-   var = fc::string( crea::chain::to_string( s ) );
+  var = fc::string( crea::chain::to_string( s ) );
 }
 
 inline void from_variant( const variant& var, crea::chain::shared_string& s )
 {
-   auto str = var.as_string();
-   s.assign( str.begin(), str.end() );
+  auto str = var.as_string();
+  s.assign( str.begin(), str.end() );
 }
+#endif
 
 template<typename T>
 void to_variant( const chainbase::oid<T>& var,  variant& vo )
@@ -207,149 +247,144 @@ void from_variant( const variant& vo, chainbase::oid<T>& var )
 namespace raw
 {
 
-template<typename Stream, typename T>
-void pack( Stream& s, const chainbase::oid<T>& id )
-{
-   s.write( (const char*)&id._id, sizeof(id._id) );
-}
-
-template<typename Stream, typename T>
-void unpack( Stream& s, chainbase::oid<T>& id, uint32_t )
-{
-   s.read( (char*)&id._id, sizeof(id._id));
-}
-
+#ifndef ENABLE_MIRA
 template< typename Stream >
 void pack( Stream& s, const chainbase::shared_string& ss )
 {
-   std::string str = crea::chain::to_string( ss );
-   fc::raw::pack( s, str );
+  std::string str = crea::chain::to_string( ss );
+  fc::raw::pack( s, str );
 }
 
 template< typename Stream >
 void unpack( Stream& s, chainbase::shared_string& ss, uint32_t depth )
 {
-   depth++;
-   std::string str;
-   fc::raw::unpack( s, str, depth );
-   crea::chain::from_string( ss, str );
+  depth++;
+  std::string str;
+  fc::raw::unpack( s, str, depth );
+  crea::chain::from_string( ss, str );
 }
+#endif
 
 template< typename Stream, typename E, typename A >
 void pack( Stream& s, const boost::interprocess::deque<E, A>& dq )
 {
-   // This could be optimized
-   std::vector<E> temp;
-   std::copy( dq.begin(), dq.end(), std::back_inserter(temp) );
-   pack( s, temp );
+  // This could be optimized
+  std::vector<E> temp;
+  std::copy( dq.begin(), dq.end(), std::back_inserter(temp) );
+  pack( s, temp );
 }
 
 template< typename Stream, typename E, typename A >
 void unpack( Stream& s, boost::interprocess::deque<E, A>& dq, uint32_t depth )
 {
-   depth++;
-   FC_ASSERT( depth <= MAX_RECURSION_DEPTH );
-   // This could be optimized
-   std::vector<E> temp;
-   unpack( s, temp, depth );
-   dq.clear();
-   std::copy( temp.begin(), temp.end(), std::back_inserter(dq) );
+  depth++;
+  FC_ASSERT( depth <= MAX_RECURSION_DEPTH );
+  // This could be optimized
+  std::vector<E> temp;
+  unpack( s, temp, depth );
+  dq.clear();
+  std::copy( temp.begin(), temp.end(), std::back_inserter(dq) );
 }
 
 template< typename Stream, typename K, typename V, typename C, typename A >
 void pack( Stream& s, const boost::interprocess::flat_map< K, V, C, A >& value )
 {
-   fc::raw::pack( s, unsigned_int((uint32_t)value.size()) );
-   auto itr = value.begin();
-   auto end = value.end();
-   while( itr != end )
-   {
-      fc::raw::pack( s, *itr );
-      ++itr;
-   }
+  fc::raw::pack( s, unsigned_int((uint32_t)value.size()) );
+  auto itr = value.begin();
+  auto end = value.end();
+  while( itr != end )
+  {
+    fc::raw::pack( s, *itr );
+    ++itr;
+  }
 }
 
 template< typename Stream, typename K, typename V, typename C, typename A >
 void unpack( Stream& s, boost::interprocess::flat_map< K, V, C, A >& value, uint32_t depth )
 {
-   depth++;
-   FC_ASSERT( depth <= MAX_RECURSION_DEPTH );
-   unsigned_int size;
-   unpack( s, size, depth );
-   value.clear();
-   FC_ASSERT( size.value*(sizeof(K)+sizeof(V)) < MAX_ARRAY_ALLOC_SIZE );
-   for( uint32_t i = 0; i < size.value; ++i )
-   {
-      std::pair<K,V> tmp;
-      fc::raw::unpack( s, tmp, depth );
-      value.insert( std::move(tmp) );
-   }
+  depth++;
+  FC_ASSERT( depth <= MAX_RECURSION_DEPTH );
+  unsigned_int size;
+  unpack( s, size, depth );
+  value.clear();
+  FC_ASSERT( size.value*(sizeof(K)+sizeof(V)) < MAX_ARRAY_ALLOC_SIZE );
+  for( uint32_t i = 0; i < size.value; ++i )
+  {
+    std::pair<K,V> tmp;
+    fc::raw::unpack( s, tmp, depth );
+    value.insert( std::move(tmp) );
+  }
 }
 
-#ifndef ENABLE_STD_ALLOCATOR
+#ifndef ENABLE_MIRA
 template< typename T >
 T unpack_from_vector( const crea::chain::buffer_type& s )
 {
-   try
-   {
-      T tmp;
-      if( s.size() )
-      {
-         datastream<const char*>  ds( s.data(), size_t(s.size()) );
-         fc::raw::unpack(ds,tmp);
-      }
-      return tmp;
-   } FC_RETHROW_EXCEPTIONS( warn, "error unpacking ${type}", ("type",fc::get_typename<T>::name() ) )
+  try
+  {
+    T tmp;
+    if( s.size() )
+    {
+      datastream<const char*>  ds( s.data(), size_t(s.size()) );
+      fc::raw::unpack(ds,tmp);
+    }
+    return tmp;
+  } FC_RETHROW_EXCEPTIONS( warn, "error unpacking ${type}", ("type",fc::get_typename<T>::name() ) )
 }
 #endif
 } } // namespace fc::raw
 
 FC_REFLECT_ENUM( crea::chain::object_type,
-                 (dynamic_global_property_object_type)
-                 (account_object_type)
-                 (account_authority_object_type)
-                 (witness_object_type)
-                 (transaction_object_type)
-                 (block_summary_object_type)
-                 (witness_schedule_object_type)
-                 (comment_object_type)
-                 (comment_content_object_type)
-                 (comment_download_object_type)
-                 (download_granted_object_type)
-                 (comment_vote_object_type)
-                 (witness_vote_object_type)
-                 (limit_order_object_type)
-                 (feed_history_object_type)
-                 (convert_request_object_type)
-                 (liquidity_reward_balance_object_type)
-                 (operation_object_type)
-                 (account_history_object_type)
-                 (hardfork_property_object_type)
-                 (withdraw_vesting_route_object_type)
-                 (owner_authority_history_object_type)
-                 (account_recovery_request_object_type)
-                 (change_recovery_account_request_object_type)
-                 (escrow_object_type)
-                 (savings_withdraw_object_type)
-                 (decline_voting_rights_request_object_type)
-                 (block_stats_object_type)
-                 (reward_fund_object_type)
-                 (vesting_delegation_object_type)
-                 (vesting_delegation_expiration_object_type)
-                 (pending_required_action_object_type)
-                 (pending_optional_action_object_type)
+            (dynamic_global_property_object_type)
+            (account_object_type)
+            (account_metadata_object_type)
+            (account_authority_object_type)
+            (witness_object_type)
+            (transaction_object_type)
+            (block_summary_object_type)
+            (witness_schedule_object_type)
+            (comment_object_type)
+            (comment_content_object_type)
+            (comment_download_object_type)
+            (download_granted_object_type)
+            (comment_vote_object_type)
+            (witness_vote_object_type)
+            (limit_order_object_type)
+            (feed_history_object_type)
+            (convert_request_object_type)
+            (liquidity_reward_balance_object_type)
+            (operation_object_type)
+            (account_history_object_type)
+            (hardfork_property_object_type)
+            (withdraw_vesting_route_object_type)
+            (owner_authority_history_object_type)
+            (account_recovery_request_object_type)
+            (change_recovery_account_request_object_type)
+            (escrow_object_type)
+            (savings_withdraw_object_type)
+            (decline_voting_rights_request_object_type)
+            (block_stats_object_type)
+            (reward_fund_object_type)
+            (vesting_delegation_object_type)
+            (vesting_delegation_expiration_object_type)
+            (pending_required_action_object_type)
+            (pending_optional_action_object_type)
+            (proposal_object_type)
+            (proposal_vote_object_type)
+            (comment_cashout_object_type)
 
 #ifdef CREA_ENABLE_SMT
-                 (smt_token_object_type)
-                 (smt_event_token_object_type)
-                 (account_regular_balance_object_type)
-                 (account_rewards_balance_object_type)
-                 (nai_pool_object_type)
-                 (smt_token_emissions_object_type)
+            (smt_token_object_type)
+            (account_regular_balance_object_type)
+            (account_rewards_balance_object_type)
+            (nai_pool_object_type)
+            (smt_token_emissions_object_type)
+            (smt_contribution_object_type)
+            (smt_ico_object_type)
 #endif
-               )
+          )
 
-#ifndef ENABLE_STD_ALLOCATOR
+#ifndef ENABLE_MIRA
 FC_REFLECT_TYPENAME( crea::chain::shared_string )
 #endif
 

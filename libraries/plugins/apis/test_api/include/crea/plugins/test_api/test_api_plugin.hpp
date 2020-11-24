@@ -1,4 +1,5 @@
 #pragma once
+#include <crea/chain/crea_fwd.hpp>
 #include <appbase/application.hpp>
 
 #include <crea/plugins/json_rpc/json_rpc_plugin.hpp>
@@ -18,25 +19,25 @@ struct test_api_b_return { std::string value; };
 
 class test_api_plugin : public appbase::plugin< test_api_plugin >
 {
-   public:
-      test_api_plugin();
-      virtual ~test_api_plugin();
+  public:
+    test_api_plugin();
+    virtual ~test_api_plugin();
 
-      //APPBASE_PLUGIN_REQUIRES()
-      APPBASE_PLUGIN_REQUIRES( (plugins::json_rpc::json_rpc_plugin) );
+    //APPBASE_PLUGIN_REQUIRES()
+    APPBASE_PLUGIN_REQUIRES( (plugins::json_rpc::json_rpc_plugin) );
 
-      static const std::string& name() { static std::string name = CREA_TEST_API_PLUGIN_NAME; return name; }
+    static const std::string& name() { static std::string name = CREA_TEST_API_PLUGIN_NAME; return name; }
 
-      virtual void set_program_options( options_description&, options_description& ) override {}
+    virtual void set_program_options( options_description&, options_description& ) override {}
 
-      virtual void plugin_initialize( const variables_map& options ) override;
-      virtual void plugin_startup() override;
-      virtual void plugin_shutdown() override;
+    virtual void plugin_initialize( const variables_map& options ) override;
+    virtual void plugin_startup() override;
+    virtual void plugin_shutdown() override;
 
-      DECLARE_API(
-         (test_api_a)
-         (test_api_b)
-      )
+    DECLARE_API(
+      (test_api_a)
+      (test_api_b)
+    )
 };
 
 } } } // crea::plugins::test_api

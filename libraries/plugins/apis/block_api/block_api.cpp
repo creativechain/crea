@@ -1,3 +1,4 @@
+#include <crea/chain/crea_fwd.hpp>
 #include <appbase/application.hpp>
 
 #include <crea/plugins/block_api/block_api.hpp>

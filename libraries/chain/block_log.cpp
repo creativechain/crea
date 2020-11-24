@@ -2,6 +2,8 @@
 #include <fstream>
 #include <fc/io/raw.hpp>
 
+#include <appbase/application.hpp>
+
 #include <boost/thread/mutex.hpp>
 #include <boost/interprocess/sync/scoped_lock.hpp>
 #include <boost/interprocess/sync/lock_options.hpp>
@@ -184,10 +186,64 @@ namespace crea { namespace chain {
       }
    }
 
-   void block_log::close()
-   {
-      my.reset( new detail::block_log_impl() );
-   }
+  void block_log::rewrite(const fc::path& inputFile, const fc::path& outputFile, uint32_t maxBlockNo)
+    {
+    if(my->block_stream.is_open())
+      my->block_stream.close();
+    if(my->index_stream.is_open())
+      my->index_stream.close();
+    my->index_write = false;
+    my->block_file = inputFile;
+
+    my->block_stream.open(my->block_file.generic_string().c_str(), LOG_READ);
+    my->block_write = false;
+
+    std::fstream outFile;
+
+    outFile.exceptions(std::fstream::failbit | std::fstream::badbit);
+    outFile.open(outputFile.generic_string().c_str(), LOG_WRITE);
+
+    uint64_t pos = 0;
+    uint64_t end_pos = 0;
+
+    my->block_stream.seekg(-sizeof(uint64_t), std::ios::end);
+    my->block_stream.read((char*)&end_pos, sizeof(end_pos));
+    signed_block tmp;
+
+    my->block_stream.seekg(pos);
+
+    uint32_t blockNo = 0;
+
+    while(pos < end_pos)
+      {
+      fc::raw::unpack(my->block_stream, tmp);
+      my->block_stream.read((char*)&pos, sizeof(pos));
+
+      uint64_t outPos = outFile.tellp();
+
+      if(outPos != pos)
+      {
+      ilog("Block position mismatch");
+      }
+
+      auto data = fc::raw::pack_to_vector(tmp);
+      outFile.write(data.data(), data.size());
+      outFile.write((char*)&outPos, sizeof(outPos));
+
+      if(++blockNo >= maxBlockNo)
+      break;
+
+      if(blockNo % 1000 == 0)
+      printf("Rewritten block: %u\r", blockNo);
+      }
+
+    outFile.close();
+    }
+
+  void block_log::close()
+  {
+    my.reset( new detail::block_log_impl() );
+  }
 
    bool block_log::is_open()const
    {
@@ -264,28 +320,30 @@ namespace crea { namespace chain {
       FC_LOG_AND_RETHROW()
    }
 
-   optional< signed_block > block_log::read_block_by_num( uint32_t block_num )const
-   {
-      try
+  optional< std::pair< signed_block, uint64_t > > block_log::read_block_by_num( uint32_t block_num )const
+  {
+    try
+    {
+      scoped_lock lock( my->mtx, defer_lock );
+
+      if( my->use_locking )
       {
-         scoped_lock lock( my->mtx, defer_lock );
-
-         if( my->use_locking )
-         {
-            lock.lock();;
-         }
-
-         optional< signed_block > b;
-         uint64_t pos = get_block_pos_helper( block_num );
-         if( pos != npos )
-         {
-            b = read_block_helper( pos ).first;
-            FC_ASSERT( b->block_num() == block_num , "Wrong block was read from block log.", ( "returned", b->block_num() )( "expected", block_num ));
-         }
-         return b;
+        lock.lock();
       }
-      FC_LOG_AND_RETHROW()
-   }
+
+      optional< std::pair< signed_block, uint64_t > > res;
+
+      uint64_t pos = get_block_pos_helper( block_num );
+      if( pos != npos )
+      {
+        res = read_block_helper( pos );
+        const signed_block& b = res->first;
+        FC_ASSERT( b.block_num() == block_num , "Wrong block was read from block log.", ( "returned", b.block_num() )( "expected", block_num ));
+      }
+      return res;
+    }
+    FC_LOG_AND_RETHROW()
+  }
 
    uint64_t block_log::get_block_pos( uint32_t block_num ) const
    {
@@ -348,35 +406,58 @@ namespace crea { namespace chain {
       return my->head;
    }
 
-   void block_log::construct_index()
-   {
-      try
-      {
-         ilog( "Reconstructing Block Log Index..." );
-         my->index_stream.close();
-         fc::remove_all( my->index_file );
-         my->index_stream.open( my->index_file.generic_string().c_str(), LOG_WRITE );
-         my->index_write = true;
+  void block_log::construct_index( bool resume, uint64_t index_pos )
+  {
+    try
+    {
+      ilog( "Reconstructing Block Log Index..." );
+      my->index_stream.close();
 
-         uint64_t pos = 0;
-         uint64_t end_pos;
-         my->check_block_read();
+      if( !resume )
+        fc::remove_all( my->index_file );
+
+      my->index_stream.open( my->index_file.generic_string().c_str(), LOG_WRITE );
+      my->index_write = true;
+
+      uint64_t pos = resume ? index_pos : 0;
+      uint64_t end_pos;
+      my->check_block_read();
 
          my->block_stream.seekg( -sizeof( uint64_t), std::ios::end );
          my->block_stream.read( (char*)&end_pos, sizeof( end_pos ) );
          signed_block tmp;
 
-         my->block_stream.seekg( pos );
+      my->block_stream.seekg( pos );
+      if( resume )
+      {
+        my->index_stream.seekg( 0, std::ios::end );
 
-         while( pos < end_pos )
-         {
-            fc::raw::unpack( my->block_stream, tmp );
-            my->block_stream.read( (char*)&pos, sizeof( pos ) );
-            my->index_stream.write( (char*)&pos, sizeof( pos ) );
-         }
+        fc::raw::unpack( my->block_stream, tmp );
+        my->block_stream.read( (char*)&pos, sizeof( pos ) );
+
+        ilog("Resuming Block Log Index. Last applied: ( block number: ${n} )( trx: ${trx} )( bytes position: ${pos} )",
+                                                            ( "n", tmp.block_num() )( "trx", tmp.id() )( "pos", pos ) );
       }
-      FC_LOG_AND_RETHROW()
-   }
+
+      while( !appbase::app().is_interrupt_request() && pos < end_pos )
+      {
+        fc::raw::unpack( my->block_stream, tmp );
+        my->block_stream.read( (char*)&pos, sizeof( pos ) );
+        my->index_stream.write( (char*)&pos, sizeof( pos ) );
+      }
+
+      if( appbase::app().is_interrupt_request() )
+        ilog("Creating Block Log Index is interrupted on user request. Last applied: ( block number: ${n} )( trx: ${trx} )( bytes position: ${pos} )",
+                                                            ( "n", tmp.block_num() )( "trx", tmp.id() )( "pos", pos ) );
+
+      /// Flush and reopen to be sure that given index file has been saved.
+      /// Otherwise just executed replay, next stopped by ctrl+C can again corrupt this file.
+      my->index_stream.flush();
+      my->index_stream.close();
+      my->index_stream.open(my->index_file.generic_string().c_str(), LOG_WRITE);
+    }
+    FC_LOG_AND_RETHROW()
+  }
 
    void block_log::set_locking( bool use_locking )
    {

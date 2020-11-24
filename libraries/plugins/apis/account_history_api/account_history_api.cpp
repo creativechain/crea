@@ -123,7 +123,7 @@ class account_history_api_rocksdb_impl : public abstract_account_history_api_imp
 {
    public:
       account_history_api_rocksdb_impl() :
-         abstract_account_history_api_impl(), _dataSource( appbase::app().get_plugin< crea::plugins::account_history_rocksdb::account_history_rocksdb_plugin >() ) {}
+         abstract_account_history_api_impl(), _dataSource( appbase::app().get_plugin< steem::plugins::account_history_rocksdb::account_history_rocksdb_plugin >() ) {}
       ~account_history_api_rocksdb_impl() {}
 
       get_ops_in_block_return get_ops_in_block( const get_ops_in_block_args& ) override;
@@ -166,22 +166,141 @@ DEFINE_API_IMPL( account_history_api_rocksdb_impl, get_account_history )
 
 DEFINE_API_IMPL( account_history_api_rocksdb_impl, get_transaction )
 {
-   FC_ASSERT( false, "This API is not supported for account history backed by RocksDB" );
+#ifdef SKIP_BY_TX_ID
+  FC_ASSERT(false, "This node's operator has disabled operation indexing by transaction_id");
+#else
+  uint32_t blockNo = 0;
+  uint32_t txInBlock = 0;
+
+  if(_dataSource.find_transaction_info(args.id, &blockNo, &txInBlock))
+    {
+    get_transaction_return result;
+    _db.with_read_lock([this, blockNo, txInBlock, &result]()
+    {
+    auto blk = _db.fetch_block_by_number(blockNo);
+    FC_ASSERT(blk.valid());
+    FC_ASSERT(blk->transactions.size() > txInBlock);
+    result = blk->transactions[txInBlock];
+    result.block_num = blockNo;
+    result.transaction_num = txInBlock;
+    });
+
+    return result;
+    }
+  else
+    {
+    FC_ASSERT(false, "Unknown Transaction ${t}", ("t", args.id));
+    }
+#endif
+
 }
+
+#define CHECK_OPERATION( r, data, CLASS_NAME ) \
+  void operator()( const crea::protocol::CLASS_NAME& op ) { _accepted = (_filter & enum_vops_filter::CLASS_NAME) == enum_vops_filter::CLASS_NAME; }
+
+#define CHECK_OPERATIONS( CLASS_NAMES ) \
+  BOOST_PP_SEQ_FOR_EACH( CHECK_OPERATION, _, CLASS_NAMES )
+
+struct filtering_visitor
+{
+  typedef void result_type;
+
+  bool check(uint32_t filter, const crea::protocol::operation& op)
+  {
+    _filter = filter;
+    _accepted = false;
+    op.visit(*this);
+
+    return _accepted;
+  }
+
+  template< typename T >
+  void operator()( const T& ) { _accepted = false; }
+
+  CHECK_OPERATIONS( (fill_convert_request_operation)(author_reward_operation)(curation_reward_operation)
+  (comment_reward_operation)(liquidity_reward_operation)(interest_operation)
+  (fill_vesting_withdraw_operation)(fill_order_operation)(shutdown_witness_operation)
+  (fill_transfer_from_savings_operation)(hardfork_operation)(comment_payout_update_operation)
+  (return_vesting_delegation_operation)(comment_benefactor_reward_operation)(producer_reward_operation)
+  (clear_null_account_balance_operation)(proposal_pay_operation)(sps_fund_operation)
+  (hardfork_crea_operation)(hardfork_crea_restore_operation)(delayed_voting_operation)
+  (consolidate_treasury_balance_operation)(effective_comment_vote_operation)(ineffective_delete_comment_operation) )
+
+private:
+  uint32_t _filter = 0;
+  bool     _accepted = false;
+};
 
 DEFINE_API_IMPL( account_history_api_rocksdb_impl, enum_virtual_ops)
 {
    enum_virtual_ops_return result;
 
-   result.next_block_range_begin = _dataSource.enum_operations_from_block_range(args.block_range_begin,
-      args.block_range_end,
-      [&result](const account_history_rocksdb::rocksdb_operation_object& op)
-      {
-         result.ops.emplace_back(api_operation_object(op));
-      }
-   );
+  bool groupOps = args.group_by_block.valid() && *args.group_by_block;
 
-   return result;
+  std::pair< uint32_t, uint64_t > next_values = _dataSource.enum_operations_from_block_range(args.block_range_begin,
+    args.block_range_end, args.operation_begin, args.limit,
+    [groupOps, &result, &args ](const account_history_rocksdb::rocksdb_operation_object& op, uint64_t operation_id)
+    {
+
+      if( args.filter.valid() )
+      {
+        api_operation_object _api_obj( op );
+
+        _api_obj.operation_id = operation_id;
+
+        filtering_visitor accepting_visitor;
+
+        if(accepting_visitor.check(*args.filter, _api_obj.op))
+        {
+          if(groupOps)
+          {
+            auto ii = result.ops_by_block.emplace(op.block);
+            ops_array_wrapper& w = const_cast<ops_array_wrapper&>(*ii.first);
+
+            if(ii.second)
+              w.timestamp = op.timestamp;
+
+            w.ops.emplace_back(std::move(_api_obj));
+          }
+          else
+          {
+            result.ops.emplace_back(std::move(_api_obj));
+          }
+          return true;
+        }
+        else
+          return false;
+      }
+      else
+      {
+        if(groupOps)
+        {
+          auto ii = result.ops_by_block.emplace(op.block);
+          ops_array_wrapper& w = const_cast<ops_array_wrapper&>(*ii.first);
+
+          if(ii.second)
+            w.timestamp = op.timestamp;
+
+          api_operation_object _api_obj(op);
+          _api_obj.operation_id = operation_id;
+          w.ops.emplace_back(std::move(_api_obj));
+        }
+        else
+        {
+          api_operation_object _api_obj(op);
+          _api_obj.operation_id = operation_id;
+
+          result.ops.emplace_back(std::move(_api_obj));
+        }
+        return true;
+      }
+    }
+  );
+
+  result.next_block_range_begin = next_values.first;
+  result.next_operation_begin = next_values.second;
+
+  return result;
 }
 
 } // detail
@@ -207,7 +326,7 @@ account_history_api::account_history_api()
       FC_ASSERT( false, "Account History API only works if account_history or account_history_rocksdb plugins are enabled" );
    }
 
-   JSON_RPC_REGISTER_API( CREA_ACCOUNT_HISTORY_API_PLUGIN_NAME );
+   JSON_RPC_REGISTER_API( STEEM_ACCOUNT_HISTORY_API_PLUGIN_NAME );
 }
 
 account_history_api::~account_history_api() {}

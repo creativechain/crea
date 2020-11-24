@@ -6,8 +6,8 @@
 
 namespace crea { namespace chain {
 
-   void replenish_nai_pool( database& db );
-   void remove_from_nai_pool( database &db, const asset_symbol_type& a );
+  void replenish_nai_pool( database& db );
+  void remove_from_nai_pool( database &db, const asset_symbol_type& a );
 
 } } // crea::chain
 

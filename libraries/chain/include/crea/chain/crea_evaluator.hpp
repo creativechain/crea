@@ -11,6 +11,7 @@ using namespace crea::protocol;
 CREA_DEFINE_EVALUATOR( account_create )
 CREA_DEFINE_EVALUATOR( account_create_with_delegation )
 CREA_DEFINE_EVALUATOR( account_update )
+CREA_DEFINE_EVALUATOR( account_update2 )
 CREA_DEFINE_EVALUATOR( transfer )
 CREA_DEFINE_EVALUATOR( transfer_to_vesting )
 CREA_DEFINE_EVALUATOR( witness_update )
@@ -57,12 +58,15 @@ CREA_DEFINE_EVALUATOR( delegate_vesting_shares )
 CREA_DEFINE_EVALUATOR( witness_set_properties )
 #ifdef CREA_ENABLE_SMT
 CREA_DEFINE_EVALUATOR( smt_setup )
-CREA_DEFINE_EVALUATOR( smt_cap_reveal )
-CREA_DEFINE_EVALUATOR( smt_refund )
 CREA_DEFINE_EVALUATOR( smt_setup_emissions )
 CREA_DEFINE_EVALUATOR( smt_set_setup_parameters )
 CREA_DEFINE_EVALUATOR( smt_set_runtime_parameters )
 CREA_DEFINE_EVALUATOR( smt_create )
+CREA_DEFINE_EVALUATOR( smt_contribute )
 #endif
+CREA_DEFINE_EVALUATOR( create_proposal )
+CREA_DEFINE_EVALUATOR(update_proposal)
+CREA_DEFINE_EVALUATOR( update_proposal_votes )
+CREA_DEFINE_EVALUATOR( remove_proposal )
 
 } } // crea::chain

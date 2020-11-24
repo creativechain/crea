@@ -14,37 +14,37 @@ namespace crea { namespace schema { namespace detail {
 
 template< size_t N >
 struct schema_fixed_string_impl
-   : public abstract_schema
+  : public abstract_schema
 {
-   CREA_SCHEMA_TEMPLATE_CLASS_BODY( schema_fixed_string_impl )
+  CREA_SCHEMA_TEMPLATE_CLASS_BODY( schema_fixed_string_impl )
 };
 
 template< size_t N >
 void schema_fixed_string_impl<N>::get_deps( std::vector< std::shared_ptr< abstract_schema > >& deps )
 {
-   return;
+  return;
 }
 
 template< size_t N >
 void schema_fixed_string_impl<N>::get_str_schema( std::string& s )
 {
-   if( str_schema != "" )
-   {
-      s = str_schema;
-      return;
-   }
+  if( str_schema != "" )
+  {
+    s = str_schema;
+    return;
+  }
 
-   std::string my_name;
-   get_name( my_name );
-   fc::mutable_variant_object mvo;
-   mvo("name", my_name)
-      ("type", "string")
-      ("max_size", N)
-      ;
+  std::string my_name;
+  get_name( my_name );
+  fc::mutable_variant_object mvo;
+  mvo("name", my_name)
+    ("type", "string")
+    ("max_size", N)
+    ;
 
-   str_schema = fc::json::to_string( mvo );
-   s = str_schema;
-   return;
+  str_schema = fc::json::to_string( mvo );
+  s = str_schema;
+  return;
 }
 
 }
@@ -52,7 +52,7 @@ void schema_fixed_string_impl<N>::get_str_schema( std::string& s )
 template< size_t N >
 struct schema_reflect< typename crea::protocol::fixed_string_impl_for_size<N> >
 {
-   typedef detail::schema_fixed_string_impl< N >        schema_impl_type;
+  typedef detail::schema_fixed_string_impl< N >        schema_impl_type;
 };
 
 } }

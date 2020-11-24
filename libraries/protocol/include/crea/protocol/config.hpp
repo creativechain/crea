@@ -10,7 +10,7 @@
 // This is checked by get_config_check.sh called from Dockerfile
 
 #ifdef IS_TEST_NET
-#define CREA_BLOCKCHAIN_VERSION              ( version(0, 21, 0) )
+#define CREA_BLOCKCHAIN_VERSION               ( version(1, 25, 0) )
 
 #define CREA_INIT_PRIVATE_KEY                (fc::ecc::private_key::regenerate(fc::sha256::hash(std::string("init_key"))))
 #define CREA_INIT_PUBLIC_KEY_STR             (std::string( crea::protocol::public_key_type(CREA_INIT_PRIVATE_KEY.get_public_key()) ))
@@ -49,9 +49,13 @@
 /// Allows to limit number of total produced blocks.
 #define TESTNET_BLOCK_LIMIT                   (3000000)
 
+#define CREA_PROPOSAL_MAINTENANCE_PERIOD          3600
+#define CREA_PROPOSAL_MAINTENANCE_CLEANUP         (60*60*24*1) // 1 day
+#define CREA_DAILY_PROPOSAL_MAINTENANCE_PERIOD           (60*60) /// 1 hour
+
 #else // IS LIVE CREA NETWORK
 
-#define CREA_BLOCKCHAIN_VERSION              ( version(0, 20, 6) )
+#define CREA_BLOCKCHAIN_VERSION               ( version(1, 24, 0) )
 
 #define CREA_INIT_PRIVATE_KEY                (fc::ecc::private_key::regenerate(fc::sha256::hash(std::string("init_key"))))
 #define CREA_INIT_PUBLIC_KEY_STR             (std::string( crea::protocol::public_key_type(CREA_INIT_PRIVATE_KEY.get_public_key()) ))
@@ -70,8 +74,8 @@
 #define CREA_UPVOTE_LOCKOUT_SECONDS          (60*60*12)    /// 12 hours
 #define CREA_UPVOTE_LOCKOUT_HF17             (fc::hours(12))
 
-#define CREA_MIN_ACCOUNT_CREATION_FEE           1
-#define CREA_MAX_ACCOUNT_CREATION_FEE           int64_t(1000000000)
+#define CREA_MIN_ACCOUNT_CREATION_FEE         1
+#define CREA_MAX_ACCOUNT_CREATION_FEE         int64_t(1000000000)
 
 #define CREA_OWNER_AUTH_RECOVERY_PERIOD                  fc::days(30)
 #define CREA_ACCOUNT_RECOVERY_REQUEST_EXPIRATION_PERIOD  fc::days(1)
@@ -86,6 +90,10 @@
 #define CREA_INIT_SUPPLY                     (int64_t(CREA_TOTAL_INIT_SUPPLY - CREA_TO_CBD_SUPPLY))
 #define CREA_CBD_INIT_SUPPLY                 (CREA_TO_CBD_SUPPLY / CREA_INIT_PRICE)
 
+#define CREA_PROPOSAL_MAINTENANCE_PERIOD           3600
+#define CREA_PROPOSAL_MAINTENANCE_CLEANUP          (60*60*24*1) /// 1 day
+#define CREA_DAILY_PROPOSAL_MAINTENANCE_PERIOD           CREA_ONE_DAY_SECONDS
+
 #endif
 
 #define VESTS_SYMBOL  (crea::protocol::asset_symbol_type::from_asset_num( CREA_ASSET_NUM_VESTS ) )
@@ -93,6 +101,10 @@
 #define CBD_SYMBOL    (crea::protocol::asset_symbol_type::from_asset_num( CREA_ASSET_NUM_CBD ) )
 
 #define CREA_BLOCKCHAIN_HARDFORK_VERSION     ( hardfork_version( CREA_BLOCKCHAIN_VERSION ) )
+
+#define CREA_100_PERCENT                      10000
+#define CREA_1_PERCENT                        (CREA_100_PERCENT/100)
+#define CREA_1_BASIS_POINT                    (CREA_100_PERCENT/10000) // 0.01%
 
 #define CREA_BLOCK_INTERVAL                  3 //3 seconds
 #define CREA_BLOCKS_PER_YEAR                 (365*24*60*60/CREA_BLOCK_INTERVAL)
@@ -122,33 +134,46 @@
 #define CREA_VESTING_WITHDRAW_INTERVALS      8
 #define CREA_VESTING_WITHDRAW_INTERVAL_SECONDS (60*60*24*7) /// 1 week interval
 #define CREA_MAX_WITHDRAW_ROUTES             10
+#define CREA_MAX_PENDING_TRANSFERS            255
 #define CREA_SAVINGS_WITHDRAW_TIME        	(fc::days(3))
 #define CREA_SAVINGS_WITHDRAW_REQUEST_LIMIT  100
 #define CREA_VOTING_FLOW_REGENERATION_SECONDS (5*60*60*24) // 5 day
 #define CREA_MAX_VOTE_CHANGES                5
 #define CREA_REVERSE_AUCTION_WINDOW_SECONDS_HF6 (60*30) /// 30 minutes
 #define CREA_REVERSE_AUCTION_WINDOW_SECONDS_HF20 (60*15) /// 15 minutes
+#define CREA_REVERSE_AUCTION_WINDOW_SECONDS_HF21 (60*5) /// 5 minutes
 #define CREA_MIN_VOTE_INTERVAL_SEC           3
 #define CREA_VOTE_DUST_THRESHOLD             (50000000)
+#define CREA_DOWNVOTE_POOL_PERCENT_HF21       (25*CREA_1_PERCENT)
+
+#define CREA_DELAYED_VOTING_TOTAL_INTERVAL_SECONDS (60*60*24*30) // 30 days
+#define CREA_DELAYED_VOTING_INTERVAL_SECONDS       (60*60*24*1)  // 1 day
+
 #define CREA_REWARD_REGULATION_TIME          (fc::time_point_sec(1562493600)) //07/07/2019 @ 10:00am (UTC)
 
-#define CREA_MIN_ROOT_COMMENT_INTERVAL       (fc::seconds(60*5)) // 5 minutes
-#define CREA_MIN_REPLY_INTERVAL              (fc::seconds(20)) // 20 seconds
-#define CREA_MIN_REPLY_INTERVAL_HF20         (fc::seconds(3)) // 3 seconds
-#define CREA_POST_AVERAGE_WINDOW             (60*60*24u) // 1 day
-#define CREA_POST_WEIGHT_CONSTANT            (uint64_t(4*CREA_100_PERCENT) * (4*CREA_100_PERCENT))// (4*CREA_100_PERCENT) -> 2 posts per 1 days, average 1 every 12 hours
+#define CREA_MIN_ROOT_COMMENT_INTERVAL        (fc::seconds(60*5)) // 5 minutes
+#define CREA_MIN_REPLY_INTERVAL               (fc::seconds(20)) // 20 seconds
+#define CREA_MIN_REPLY_INTERVAL_HF20          (fc::seconds(3)) // 3 seconds
+#define CREA_MIN_COMMENT_EDIT_INTERVAL        (fc::seconds(3)) // 3 seconds
+#define CREA_POST_AVERAGE_WINDOW              (60*60*24u) // 1 day
+#define CREA_POST_WEIGHT_CONSTANT             (uint64_t(4*CREA_100_PERCENT) * (4*CREA_100_PERCENT))// (4*CREA_100_PERCENT) -> 2 posts per 1 days, average 1 every 12 hours
 
 #define CREA_MAX_ACCOUNT_WITNESS_VOTES       35
 
-#define CREA_100_PERCENT                     10000
-#define CREA_1_PERCENT                       (CREA_100_PERCENT/100)
 #define CREA_DEFAULT_CBD_INTEREST_RATE       (10*CREA_1_PERCENT) ///< 10% APR
 
 #define CREA_INFLATION_RATE_START_PERCENT    (700) // Fixes block 7,000,000 to 7.00%
 #define CREA_INFLATION_RATE_STOP_PERCENT     (95) // 0.95%
 #define CREA_INFLATION_NARROWING_PERIOD      (300000) // Narrow 0.01% every 300k blocks
-#define CREA_CONTENT_REWARD_PERCENT          (70*CREA_1_PERCENT) //75% of inflation, 7.125% inflation
-#define CREA_VESTING_FUND_PERCENT            (15*CREA_1_PERCENT) //15% of inflation, 1.425% inflation
+#define CREA_CONTENT_REWARD_PERCENT_HF16      (70*CREA_1_PERCENT) //75% of inflation, 7.125% inflation
+#define CREA_VESTING_FUND_PERCENT_HF16        (15*CREA_1_PERCENT) //15% of inflation, 1.425% inflation
+#define CREA_PROPOSAL_FUND_PERCENT_HF0        (0)
+
+#define CREA_CONTENT_REWARD_PERCENT_HF21      (65*CREA_1_PERCENT)
+#define CREA_PROPOSAL_FUND_PERCENT_HF21       (10*CREA_1_PERCENT)
+
+#define CREA_HF21_CONVERGENT_LINEAR_RECENT_CLAIMS (fc::uint128_t(0,503600561838938636ull))
+#define CREA_CONTENT_CONSTANT_HF21            (fc::uint128_t(0,2000000000000ull))
 
 #define CREA_MINER_PAY_PERCENT               (CREA_1_PERCENT) // 1%
 #define CREA_MAX_RATION_DECAY_RATE           (1000000)
@@ -278,60 +303,87 @@
 
 #define CREA_IRREVERSIBLE_THRESHOLD          (75 * CREA_1_PERCENT)
 
-#define CREA_VIRTUAL_SCHEDULE_LAP_LENGTH  ( fc::uint128(uint64_t(-1)) )
-#define CREA_VIRTUAL_SCHEDULE_LAP_LENGTH2 ( fc::uint128::max_value() )
+#define CREA_VIRTUAL_SCHEDULE_LAP_LENGTH      ( fc::uint128(uint64_t(-1)) )
+#define CREA_VIRTUAL_SCHEDULE_LAP_LENGTH2     ( fc::uint128::max_value() )
 
-#define CREA_INITIAL_VOTE_POWER_RATE (40)
-#define CREA_REDUCED_VOTE_POWER_RATE (10)
+#define CREA_INITIAL_VOTE_POWER_RATE          (40)
+#define CREA_REDUCED_VOTE_POWER_RATE          (10)
 
-#define CREA_MAX_LIMIT_ORDER_EXPIRATION     (60*60*24*28) // 28 days
-#define CREA_DELEGATION_RETURN_PERIOD_HF0   (CREA_CASHOUT_WINDOW_SECONDS)
-#define CREA_DELEGATION_RETURN_PERIOD_HF20  (CREA_VOTING_FLOW_REGENERATION_SECONDS)
+#define CREA_MAX_LIMIT_ORDER_EXPIRATION       (60*60*24*28) // 28 days
+#define CREA_DELEGATION_RETURN_PERIOD_HF0     (CREA_CASHOUT_WINDOW_SECONDS)
+#define CREA_DELEGATION_RETURN_PERIOD_HF20    (CREA_VOTING_FLOW_REGENERATION_SECONDS)
 
-#define CREA_RD_MIN_DECAY_BITS               6
-#define CREA_RD_MAX_DECAY_BITS              32
-#define CREA_RD_DECAY_DENOM_SHIFT           36
-#define CREA_RD_MAX_POOL_BITS               64
-#define CREA_RD_MAX_BUDGET_1                ((uint64_t(1) << (CREA_RD_MAX_POOL_BITS + CREA_RD_MIN_DECAY_BITS - CREA_RD_DECAY_DENOM_SHIFT))-1)
-#define CREA_RD_MAX_BUDGET_2                ((uint64_t(1) << (64-CREA_RD_DECAY_DENOM_SHIFT))-1)
-#define CREA_RD_MAX_BUDGET_3                (uint64_t( std::numeric_limits<int32_t>::max() ))
-#define CREA_RD_MAX_BUDGET                  (int32_t( std::min( { CREA_RD_MAX_BUDGET_1, CREA_RD_MAX_BUDGET_2, CREA_RD_MAX_BUDGET_3 } )) )
-#define CREA_RD_MIN_DECAY                   (uint32_t(1) << CREA_RD_MIN_DECAY_BITS)
-#define CREA_RD_MIN_BUDGET                  1
-#define CREA_RD_MAX_DECAY                   (uint32_t(0xFFFFFFFF))
+#define CREA_RD_MIN_DECAY_BITS                6
+#define CREA_RD_MAX_DECAY_BITS                32
+#define CREA_RD_DECAY_DENOM_SHIFT             36
+#define CREA_RD_MAX_POOL_BITS                 64
+#define CREA_RD_MAX_BUDGET_1                  ((uint64_t(1) << (CREA_RD_MAX_POOL_BITS + CREA_RD_MIN_DECAY_BITS - CREA_RD_DECAY_DENOM_SHIFT))-1)
+#define CREA_RD_MAX_BUDGET_2                  ((uint64_t(1) << (64-CREA_RD_DECAY_DENOM_SHIFT))-1)
+#define CREA_RD_MAX_BUDGET_3                  (uint64_t( std::numeric_limits<int32_t>::max() ))
+#define CREA_RD_MAX_BUDGET                    (int32_t( std::min( { CREA_RD_MAX_BUDGET_1, CREA_RD_MAX_BUDGET_2, CREA_RD_MAX_BUDGET_3 } )) )
+#define CREA_RD_MIN_DECAY                     (uint32_t(1) << CREA_RD_MIN_DECAY_BITS)
+#define CREA_RD_MIN_BUDGET                    1
+#define CREA_RD_MAX_DECAY                     (uint32_t(0xFFFFFFFF))
 
-#define CREA_ACCOUNT_SUBSIDY_PRECISION      (CREA_100_PERCENT)
+#define CREA_ACCOUNT_SUBSIDY_PRECISION        (CREA_100_PERCENT)
 
 // We want the global subsidy to run out first in normal (Poisson)
 // conditions, so we boost the per-witness subsidy a little.
-#define CREA_WITNESS_SUBSIDY_BUDGET_PERCENT (125 * CREA_1_PERCENT)
+#define CREA_WITNESS_SUBSIDY_BUDGET_PERCENT   (125 * CREA_1_PERCENT)
 
 // Since witness decay only procs once per round, multiplying the decay
 // constant by the number of witnesses means the per-witness pools have
 // the same effective decay rate in real-time terms.
-#define CREA_WITNESS_SUBSIDY_DECAY_PERCENT  (CREA_MAX_WITNESSES * CREA_100_PERCENT)
+#define CREA_WITNESS_SUBSIDY_DECAY_PERCENT    (CREA_MAX_WITNESSES * CREA_100_PERCENT)
 
 // 347321 corresponds to a 5-day halflife
-#define CREA_DEFAULT_ACCOUNT_SUBSIDY_DECAY  (347321)
+#define CREA_DEFAULT_ACCOUNT_SUBSIDY_DECAY    (347321)
 // Default rate is 0.5 accounts per block
-#define CREA_DEFAULT_ACCOUNT_SUBSIDY_BUDGET (797)
-#define CREA_DECAY_BACKSTOP_PERCENT         (90 * CREA_1_PERCENT)
+#define CREA_DEFAULT_ACCOUNT_SUBSIDY_BUDGET   (797)
+#define CREA_DECAY_BACKSTOP_PERCENT           (90 * CREA_1_PERCENT)
+
+#define CREA_BLOCK_GENERATION_POSTPONED_TX_LIMIT 5
+#define CREA_PENDING_TRANSACTION_EXECUTION_LIMIT fc::milliseconds(200)
+
+#define CREA_CUSTOM_OP_ID_MAX_LENGTH          (32)
+#define CREA_CUSTOM_OP_DATA_MAX_LENGTH        (8192)
+#define CREA_BENEFICIARY_LIMIT                (128)
+#define CREA_COMMENT_TITLE_LIMIT              (256)
+
+#define CREA_ONE_DAY_SECONDS                  (60*60*24) // One day in seconds
 
 /**
  *  Reserved Account IDs with special meaning
  */
 ///@{
 /// Represents the current witnesses
-#define CREA_MINER_ACCOUNT                   "miners"
+#define CREA_MINER_ACCOUNT                    "miners"
 /// Represents the canonical account with NO authority (nobody can access funds in null account)
-#define CREA_NULL_ACCOUNT                    "null"
+#define CREA_NULL_ACCOUNT                     "null"
 /// Represents the canonical account with WILDCARD authority (anybody can access funds in temp account)
-#define CREA_TEMP_ACCOUNT                    "temp"
+#define CREA_TEMP_ACCOUNT                     "temp"
 /// Represents the canonical account for specifying you will vote for directly (as opposed to a proxy)
-#define CREA_PROXY_TO_SELF_ACCOUNT           ""
+#define CREA_PROXY_TO_SELF_ACCOUNT            ""
 /// Represents the canonical root post parent account
-#define CREA_ROOT_POST_PARENT                (account_name_type())
+#define CREA_ROOT_POST_PARENT                 (account_name_type())
+/// Represents the account with NO authority which holds resources for payouts according to given proposals
+//#define CREA_TREASURY_ACCOUNT                 "steem.dao" //no longer constant, changed in HF24 - use database::get_treasury_name() instead
+//note that old account is still considered a treasury (cannot be reused for other purposes), just all funds and actions are redirected to new one
+//DO NOT USE the following constants anywhere other than inside database::get_treasury_name()
+#define OBSOLETE_TREASURY_ACCOUNT             "steem.dao"
+#define NEW_CREA_TREASURY_ACCOUNT             "hive.fund"
 ///@}
+
+/// CREA PROPOSAL SYSTEM support
+
+#define CREA_TREASURY_FEE                          (10 * CREA_BLOCKCHAIN_PRECISION)
+#define CREA_PROPOSAL_SUBJECT_MAX_LENGTH           80
+/// Max number of IDs passed at once to the update_proposal_voter_operation or remove_proposal_operation.
+#define CREA_PROPOSAL_MAX_IDS_NUMBER               5
+#define CREA_PROPOSAL_FEE_INCREASE_DAYS            60
+#define CREA_PROPOSAL_FEE_INCREASE_DAYS_SEC        (60*60*24*CREA_PROPOSAL_FEE_INCREASE_DAYS) /// 60 days
+#define CREA_PROPOSAL_FEE_INCREASE_AMOUNT          (1 * CREA_BLOCKCHAIN_PRECISION)
+#define CREA_PROPOSAL_CONVERSION_RATE             (5 * CREA_1_BASIS_POINT)
 
 #ifdef CREA_ENABLE_SMT
 

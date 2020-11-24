@@ -6,13 +6,13 @@
 
 namespace crea { namespace protocol {
 
-   /** NOTE: do not change the order of any actions or it will trigger a hardfork.
+  /** NOTE: do not change the order of any actions or it will trigger a hardfork.
     */
-   typedef fc::static_variant<
+  typedef fc::static_variant<
 #ifdef IS_TEST_NET
-            example_required_action
+        example_required_action
 #endif
-         > required_automated_action;
+      > required_automated_action;
 
 } } // crea::protocol
 

@@ -36,18 +36,18 @@ namespace detail_ns {
 
 string remove_tail_if( const string& str, char c, const string& match )
 {
-   auto last = str.find_last_of( c );
-   if( last != std::string::npos )
-      if( str.substr( last + 1 ) == match )
-         return str.substr( 0, last );
-   return str;
+  auto last = str.find_last_of( c );
+  if( last != std::string::npos )
+    if( str.substr( last + 1 ) == match )
+      return str.substr( 0, last );
+  return str;
 }
 string remove_namespace_if( const string& str, const string& match )
 {
-   auto last = str.find( match );
-   if( last != std::string::npos )
-      return str.substr( match.size()+2 );
-   return str;
+  auto last = str.find( match );
+  if( last != std::string::npos )
+    return str.substr( match.size()+2 );
+  return str;
 }
 
 
@@ -81,13 +81,13 @@ crea::vector<std::function<void()>>       serializers;
 
 bool register_serializer( const string& name, std::function<void()> sr )
 {
-   if( st.find(name) == st.end() )
-   {
-      serializers.push_back( sr );
-      st[name] = serializers.size() - 1;
-      return true;
-   }
-   return false;
+  if( st.find(name) == st.end() )
+  {
+    serializers.push_back( sr );
+    st[name] = serializers.size() - 1;
+    return true;
+  }
+  return false;
 }
 
 template<typename T> struct js_name { static std::string name(){ return  remove_namespace(fc::get_typename<T>::name()); }; };
@@ -95,13 +95,14 @@ template<typename T> struct js_name { static std::string name(){ return  remove_
 template<typename T, size_t N>
 struct js_name<fc::array<T,N>>
 {
-   static std::string name(){ return  "fixed_array "+ fc::to_string(N) + ", "  + remove_namespace(fc::get_typename<T>::name()); };
+  static std::string name(){ return  "fixed_array "+ fc::to_string(N) + ", "  + remove_namespace(fc::get_typename<T>::name()); };
 };
 template<size_t N>   struct js_name<fc::array<char,N>>    { static std::string name(){ return  "bytes "+ fc::to_string(N); }; };
 template<size_t N>   struct js_name<fc::array<uint8_t,N>> { static std::string name(){ return  "bytes "+ fc::to_string(N); }; };
 template<typename T> struct js_name< fc::optional<T> >    { static std::string name(){ return "optional " + js_name<T>::name(); } };
 template<typename T> struct js_name< fc::smart_ref<T> >   { static std::string name(){ return js_name<T>::name(); } };
 template<typename T> struct js_name< fc::flat_set<T> >    { static std::string name(){ return "set " + js_name<T>::name(); } };
+template<typename T> struct js_name< flat_set_ex<T> > { static std::string name(){ return "set " + js_name< fc::flat_set<T> >::name(); } };
 template<typename T> struct js_name< std::vector<T> >     { static std::string name(){ return "array " + js_name<T>::name(); } };
 template<typename T> struct js_name< fc::safe<T> > { static std::string name(){ return js_name<T>::name(); } };
 
@@ -117,11 +118,18 @@ template<> struct js_name<fc::time_point_sec >    { static std::string name(){ r
 template<typename O>
 struct js_name<chainbase::oid<O> >
 {
-   static std::string name(){
-      return "protocol_id_type \"" + remove_namespace(fc::get_typename<O>::name()) + "\"";
-   };
+  static std::string name(){
+    return "protocol_id_type \"" + remove_namespace(fc::get_typename<O>::name()) + "\"";
+  };
 };
-
+template<typename O>
+struct js_name<chainbase::oid_ref<O> >
+{
+  static std::string name()
+  {
+    return "protocol_id_type \"" + remove_namespace( fc::get_typename<O>::name() ) + "\"";
+  };
+};
 
 template<typename T> struct js_name< std::set<T> > { static std::string name(){ return "set " + js_name<T>::name(); } };
 
@@ -143,22 +151,22 @@ struct js_sv_name<A,T...> { static std::string name(){ return  "\n    " + js_nam
 template<typename... T>
 struct js_name< fc::static_variant<T...> >
 {
-   static std::string name( std::string n = ""){
-      static const std::string name = n;
-      if( name == "" )
-         return "static_variant [" + js_sv_name<T...>::name() + "\n]";
-      else return name;
-   }
+  static std::string name( std::string n = ""){
+    static const std::string name = n;
+    if( name == "" )
+      return "static_variant [" + js_sv_name<T...>::name() + "\n]";
+    else return name;
+  }
 };
 template<>
 struct js_name< fc::static_variant<> >
 {
-   static std::string name( std::string n = ""){
-      static const std::string name = n;
-      if( name == "" )
-         return "static_variant []";
-      else return name;
-   }
+  static std::string name( std::string n = ""){
+    static const std::string name = n;
+    if( name == "" )
+      return "static_variant []";
+    else return name;
+  }
 };
 
 
@@ -169,83 +177,83 @@ struct serializer;
 
 struct register_type_visitor
 {
-   typedef void result_type;
+  typedef void result_type;
 
-   template<typename Type>
-   result_type operator()( const Type& op )const { serializer<Type>::init(); }
+  template<typename Type>
+  result_type operator()( const Type& op )const { serializer<Type>::init(); }
 };
 
 class register_member_visitor;
 
 struct serialize_type_visitor
 {
-   typedef void result_type;
+  typedef void result_type;
 
-   int t = 0;
-   serialize_type_visitor(int _t ):t(_t){}
+  int t = 0;
+  serialize_type_visitor(int _t ):t(_t){}
 
-   template<typename Type>
-   result_type operator()( const Type& op )const
-   {
-      std::cout << "    " <<remove_namespace( fc::get_typename<Type>::name() )  <<": "<<t<<"\n";
-   }
+  template<typename Type>
+  result_type operator()( const Type& op )const
+  {
+    std::cout << "    " <<remove_namespace( fc::get_typename<Type>::name() )  <<": "<<t<<"\n";
+  }
 };
 
 
 class serialize_member_visitor
 {
-   public:
-      template<typename Member, class Class, Member (Class::*member)>
-      void operator()( const char* name )const
-      {
-         std::cout << "    " << name <<": " << js_name<Member>::name() <<"\n";
-      }
+  public:
+    template<typename Member, class Class, Member (Class::*member)>
+    void operator()( const char* name )const
+    {
+      std::cout << "    " << name <<": " << js_name<Member>::name() <<"\n";
+    }
 };
 
 template<typename T>
 struct serializer<T,false>
 {
-   static_assert( fc::reflector<T>::is_defined::value == false, "invalid template arguments" );
-   static void init()
-   {}
+  static_assert( fc::reflector<T>::is_defined::value == false, "invalid template arguments" );
+  static void init()
+  {}
 
-   static void generate()
-   {}
+  static void generate()
+  {}
 };
 
 template<typename T, size_t N>
 struct serializer<fc::array<T,N>,false>
 {
-   static void init() { serializer<T>::init(); }
-   static void generate() {}
+  static void init() { serializer<T>::init(); }
+  static void generate() {}
 };
 template<typename T>
 struct serializer<std::vector<T>,false>
 {
-   static void init() { serializer<T>::init(); }
-   static void generate() {}
+  static void init() { serializer<T>::init(); }
+  static void generate() {}
 };
 
 template<typename T>
 struct serializer<fc::smart_ref<T>,false>
 {
-   static void init() {
-      serializer<T>::init(); }
-   static void generate() {}
+  static void init() {
+    serializer<T>::init(); }
+  static void generate() {}
 };
 
 template<>
 struct serializer<std::vector<operation>,false>
 {
-   static void init() { }
-   static void generate() {}
+  static void init() { }
+  static void generate() {}
 };
 
 template<>
 struct serializer<uint64_t,false>
 {
-   static void init() {}
-   static void generate() {}
+  static void init() {}
+  static void generate() {}
 };
 #ifdef __APPLE__
 // on mac, size_t is a distinct type from uint64_t or uint32_t and needs a separate specialization
@@ -257,112 +265,118 @@ template<> struct serializer<int64_t,true> { static void init() {} static void g
 template<typename T>
 struct serializer<fc::optional<T>,false>
 {
-   static void init() { serializer<T>::init(); }
-   static void generate(){}
+  static void init() { serializer<T>::init(); }
+  static void generate(){}
 };
 
 template<typename T>
 struct serializer< chainbase::oid<T> ,true>
 {
-   static void init() {}
-   static void generate() {}
+  static void init() {}
+  static void generate() {}
+};
+template<typename T>
+struct serializer< chainbase::oid_ref<T>, true>
+{
+  static void init() {}
+  static void generate() {}
 };
 
 template<typename... T>
 struct serializer< fc::static_variant<T...>, false >
 {
-   static void init()
-   {
-      static bool init = false;
-      if( !init )
+  static void init()
+  {
+    static bool init = false;
+    if( !init )
+    {
+      init = true;
+      fc::static_variant<T...> var;
+      for( int i = 0; i < var.count(); ++i )
       {
-         init = true;
-         fc::static_variant<T...> var;
-         for( int i = 0; i < var.count(); ++i )
-         {
-            var.set_which(i);
-            var.visit( register_type_visitor() );
-         }
-         register_serializer( js_name<fc::static_variant<T...>>::name(), [=](){ generate(); } );
+        var.set_which(i);
+        var.visit( register_type_visitor() );
       }
-   }
+      register_serializer( js_name<fc::static_variant<T...>>::name(), [=](){ generate(); } );
+    }
+  }
 
-   static void generate()
-   {
-      std::cout <<  js_name<fc::static_variant<T...>>::name() << " = static_variant [" + js_sv_name<T...>::name() + "\n]\n\n";
-   }
+  static void generate()
+  {
+    std::cout <<  js_name<fc::static_variant<T...>>::name() << " = static_variant [" + js_sv_name<T...>::name() + "\n]\n\n";
+  }
 };
 template<>
 struct serializer< fc::static_variant<>, false >
 {
-   static void init()
-   {
-      static bool init = false;
-      if( !init )
-      {
-         init = true;
-         fc::static_variant<> var;
-         register_serializer( js_name<fc::static_variant<>>::name(), [=](){ generate(); } );
-      }
-   }
+  static void init()
+  {
+    static bool init = false;
+    if( !init )
+    {
+      init = true;
+      fc::static_variant<> var;
+      register_serializer( js_name<fc::static_variant<>>::name(), [=](){ generate(); } );
+    }
+  }
 
-   static void generate()
-   {
-      std::cout <<  js_name<fc::static_variant<>>::name() << " = static_variant []\n\n";
-   }
+  static void generate()
+  {
+    std::cout <<  js_name<fc::static_variant<>>::name() << " = static_variant []\n\n";
+  }
 };
 
 
 class register_member_visitor
 {
-   public:
-      template<typename Member, class Class, Member (Class::*member)>
-      void operator()( const char* name )const
-      {
-         serializer<Member>::init();
-      }
+  public:
+    template<typename Member, class Class, Member (Class::*member)>
+    void operator()( const char* name )const
+    {
+      serializer<Member>::init();
+    }
 };
 
 template<typename T, bool reflected>
 struct serializer
 {
-   static_assert( fc::reflector<T>::is_defined::value == reflected, "invalid template arguments" );
-   static void init()
-   {
-      auto name = js_name<T>::name();
-      if( st.find(name) == st.end() )
-      {
-         fc::reflector<T>::visit( register_member_visitor() );
-         register_serializer( name, [=](){ generate(); } );
-      }
-   }
+  static_assert( fc::reflector<T>::is_defined::value == reflected, "invalid template arguments" );
+  static void init()
+  {
+    auto name = js_name<T>::name();
+    if( st.find(name) == st.end() )
+    {
+      fc::reflector<T>::visit( register_member_visitor() );
+      register_serializer( name, [=](){ generate(); } );
+    }
+  }
 
-   static void generate()
-   {
-      auto name = remove_namespace( js_name<T>::name() );
-      if( name == "int64" ) return;
-      std::cout << "" << name
-                << " = new Serializer( \n"
-                << "    \"" + name + "\"\n";
+  static void generate()
+  {
+    auto name = remove_namespace( js_name<T>::name() );
+    if( name == "int64" ) return;
+    std::cout << "" << name
+            << " = new Serializer( \n"
+            << "    \"" + name + "\"\n";
 
-      fc::reflector<T>::visit( serialize_member_visitor() );
+    fc::reflector<T>::visit( serialize_member_visitor() );
 
-      std::cout <<")\n\n";
-   }
+    std::cout <<")\n\n";
+  }
 };
 
 } // namespace detail_ns
 
 int main( int argc, char** argv )
 {
-   try {
+  try {
     operation op;
 
     std::cout << "ChainTypes.operations=\n";
     for( int i = 0; i < op.count(); ++i )
     {
-       op.set_which(i);
-       op.visit( detail_ns::serialize_type_visitor(i) );
+      op.set_which(i);
+      op.visit( detail_ns::serialize_type_visitor(i) );
     }
     std::cout << "\n";
 
@@ -375,8 +389,8 @@ int main( int argc, char** argv )
     detail_ns::serializer<transaction>::init();
     detail_ns::serializer<signed_transaction>::init();
     for( const auto& gen : detail_ns::serializers )
-       gen();
+      gen();
 
   } catch ( const fc::exception& e ){ edump((e.to_detail_string())); }
-   return 0;
+  return 0;
 }

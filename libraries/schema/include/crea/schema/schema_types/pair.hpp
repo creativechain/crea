@@ -14,47 +14,47 @@ namespace crea { namespace schema { namespace detail {
 
 template< typename K, typename V >
 struct schema_pair_impl
-   : public abstract_schema
+  : public abstract_schema
 {
-   CREA_SCHEMA_TEMPLATE_CLASS_BODY( schema_pair_impl )
+  CREA_SCHEMA_TEMPLATE_CLASS_BODY( schema_pair_impl )
 };
 
 template< typename K, typename V >
 void schema_pair_impl< K, V >::get_deps( std::vector< std::shared_ptr< abstract_schema > >& deps )
 {
-   deps.push_back( get_schema_for_type<K>() );
-   deps.push_back( get_schema_for_type<V>() );
+  deps.push_back( get_schema_for_type<K>() );
+  deps.push_back( get_schema_for_type<V>() );
 }
 
 template< typename K, typename V >
 void schema_pair_impl< K, V >::get_str_schema( std::string& s )
 {
-   if( str_schema != "" )
-   {
-      s = str_schema;
-      return;
-   }
+  if( str_schema != "" )
+  {
+    s = str_schema;
+    return;
+  }
 
-   std::vector< std::shared_ptr< abstract_schema > > deps;
-   get_deps( deps );
-   std::vector< std::string > e_types;
-   for( size_t i=0; i<2; i++ )
-   {
-      e_types.emplace_back();
-      deps[i]->get_name(e_types.back());
-   }
+  std::vector< std::shared_ptr< abstract_schema > > deps;
+  get_deps( deps );
+  std::vector< std::string > e_types;
+  for( size_t i=0; i<2; i++ )
+  {
+    e_types.emplace_back();
+    deps[i]->get_name(e_types.back());
+  }
 
-   std::string my_name;
-   get_name( my_name );
-   fc::mutable_variant_object mvo;
-   mvo("name", my_name)
-      ("type", "tuple")
-      ("etypes", e_types)
-      ;
+  std::string my_name;
+  get_name( my_name );
+  fc::mutable_variant_object mvo;
+  mvo("name", my_name)
+    ("type", "tuple")
+    ("etypes", e_types)
+    ;
 
-   str_schema = fc::json::to_string( mvo );
-   s = str_schema;
-   return;
+  str_schema = fc::json::to_string( mvo );
+  s = str_schema;
+  return;
 }
 
 }
@@ -62,7 +62,7 @@ void schema_pair_impl< K, V >::get_str_schema( std::string& s )
 template< typename K, typename V >
 struct schema_reflect< std::pair< K, V > >
 {
-   typedef detail::schema_pair_impl< K, V >        schema_impl_type;
+  typedef detail::schema_pair_impl< K, V >        schema_impl_type;
 };
 
 } }

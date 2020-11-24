@@ -55,7 +55,7 @@ respond appropriately."  This is a slightly fuzzy concept, because the "detectio
 Every user has a "flowbar" called *resource credits* (RC).
 
 - The maximum RC an account can have is equal to its Crea Energy (technically, VESTS).
-- It takes 5 days for RC to regenerate from 0% to 100%.  (So more SP means more RC's per hour.)
+- It takes 5 days for RC to regenerate from 0% to 100%.  (So more CGY means more RC's per hour.)
 - Users automatically spend RC whenever they transact. RCs are charged based on various resources a transaction can consume. Resources are things like execution time, state size, transaction size. The sum of costs of all resources are charges to the user's RCs. The one RC pool pays for _all_ resources.
 - A user who doesn't have enough RC is unable to transact.
 - The amount of RC required per byte [1] is a decreasing function of the number of bytes in the pool (so-called "price curve").
@@ -104,7 +104,7 @@ wrong, and it should actually be "1.5x" or "3x".  But it will probably not be as
 less, than the sum of each individual user's decisions.  The budget creates market forces that influence these decisions:  You need X Crea Energy
 to transact at R rate (today, and tomorrow the numbers will probably be similar, but over time they might become very different).  The code sets
 the numbers so that the budget is an upper bound on user activity.  How far below that upper bound will the actual user activity be?  That
-depends very much on the sum of users' individual decisions about how many resources to consume and how much SP heavy consumers are willing
+depends very much on the sum of users' individual decisions about how many resources to consume and how much CGY heavy consumers are willing
 and able to buy from light consumers to increase their consumption.
 
 
@@ -147,7 +147,7 @@ The question basically boils down to:
 
 - How much is the community willing to tolerate increases in full-node replay times and hardware requirements?
 - How do you balance these concerns against allowing users to transact regularly, with little SP?
-- How much SP do legitimate users and service providers delegate, relative to how much SP spammers have?
+- How much CGY do legitimate users and service providers delegate, relative to how much CGY spammers have?
 
 Generous resource budgets mean users can transact a lot, and don't need a lot of SP.  This is great for
 legitimate users' user experience and growth.  But ultimately spam and IT concerns mean a line must be

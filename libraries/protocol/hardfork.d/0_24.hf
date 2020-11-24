@@ -1,0 +1,11 @@
+#ifndef CREA_HARDFORK_1_24
+#define CREA_HARDFORK_1_24 24
+#define CREA_TREASURY_RENAME_HARDFORK CREA_HARDFORK_1_24
+
+long hf24_time();
+
+#define CREA_HARDFORK_1_24_TIME        hf24_time()
+
+#define CREA_HARDFORK_1_24_VERSION hardfork_version( 1, 24 )
+
+#endif

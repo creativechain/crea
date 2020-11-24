@@ -42,7 +42,6 @@ LIST(APPEND BOOST_COMPONENTS thread
                              system
                              filesystem
                              program_options
-                             signals
                              serialization
                              chrono
                              unit_test_framework
@@ -71,14 +70,14 @@ if( ENABLE_SMT_SUPPORT  )
   SET( CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -DCREA_ENABLE_SMT" )
 endif()
 
-OPTION( ENABLE_STD_ALLOCATOR_SUPPORT "Build source with STD allocator (ON OR OFF)" OFF )
-MESSAGE( STATUS "ENABLE_STD_ALLOCATOR_SUPPORT: ${ENABLE_STD_ALLOCATOR_SUPPORT}" )
-if( ENABLE_STD_ALLOCATOR_SUPPORT )
+OPTION( ENABLE_MIRA "Build source with MIRA (ON OR OFF)" OFF )
+MESSAGE( STATUS "ENABLE_MIRA: ${ENABLE_MIRA}" )
+if( ENABLE_MIRA )
   MESSAGE( STATUS "     " )
-  MESSAGE( STATUS "             CONFIGURING FOR STD ALLOCATOR             " )
+  MESSAGE( STATUS "             CONFIGURING FOR MIRA             " )
   MESSAGE( STATUS "     " )
-  SET( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DENABLE_STD_ALLOCATOR" )
-  SET( CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -DENABLE_STD_ALLOCATOR" )
+  SET( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DENABLE_MIRA" )
+  SET( CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -DENABLE_MIRA" )
 endif()
 
 OPTION( LOW_MEMORY_NODE "Build source for low memory node (ON OR OFF)" OFF )
@@ -90,6 +89,22 @@ if( LOW_MEMORY_NODE )
   SET( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DIS_LOW_MEM" )
   SET( CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -DIS_LOW_MEM" )
 endif()
+
+OPTION( SUPPORT_COMMENT_CONTENT "Build source with enabled comment content support (ON OR OFF)" OFF )
+MESSAGE( STATUS "SUPPORT_COMMENT_CONTENT: ${SUPPORT_COMMENT_CONTENT}" )
+IF (SUPPORT_COMMENT_CONTENT)
+  if( LOW_MEMORY_NODE )
+    MESSAGE( WARNING "Ignoring SUPPORT_COMMENT_CONTENT setting due to enabled LOW_MEMORY_NODE")
+  ELSE()
+    MESSAGE( STATUS "     " )
+    MESSAGE( STATUS "             CONFIGURING FOR COMMENT_CONTENT_SUPPORT      " )
+    MESSAGE( STATUS "     " )
+    SET( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DSTORE_COMMENT_CONTENT" )
+    SET( CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -DSTORE_COMMENT_CONTENT" )
+  endif()
+ELSE()
+  MESSAGE( STATUS "             CONFIGURING to skip COMMENT_CONTENT objects      " )
+ENDIF()
 
 OPTION( CHAINBASE_CHECK_LOCKING "Check locks in chainbase (ON or OFF)" ON )
 MESSAGE( STATUS "CHAINBASE_CHECK_LOCKING: ${CHAINBASE_CHECK_LOCKING}" )
@@ -155,6 +170,11 @@ ENDIF(WIN32)
 
 FIND_PACKAGE(Boost 1.58 REQUIRED COMPONENTS ${BOOST_COMPONENTS})
 
+if( NOT( Boost_VERSION LESS 106900 ) )
+   SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fvisibility=hidden")
+   SET(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fvisibility=hidden")
+endif()
+
 if( WIN32 )
 
    message( STATUS "Configuring Crea on WIN32")
@@ -163,6 +183,7 @@ if( WIN32 )
 
    set( ZLIB_LIBRARIES "" )
    SET( DEFAULT_EXECUTABLE_INSTALL_DIR bin/ )
+
    set(CRYPTO_LIB)
 
    if( MSVC )
@@ -324,10 +345,10 @@ else()
 MESSAGE( STATUS "\n\n             CONFIGURED FOR NO SUPPORT OF SMT             \n\n" )
 endif()
 
-if( ENABLE_STD_ALLOCATOR_SUPPORT )
-MESSAGE( STATUS "\n\n             CONFIGURED FOR STD ALLOCATOR SUPPORT             \n\n" )
+if( ENABLE_MIRA )
+MESSAGE( STATUS "\n\n             CONFIGURED FOR MIRA                  \n\n" )
 else()
-MESSAGE( STATUS "\n\n             CONFIGURED FOR NO SUPPORT OF STD ALLOCATOR             \n\n" )
+MESSAGE( STATUS "\n\n             CONFIGURED FOR BMIC MMAP             \n\n" )
 endif()
 
 if( LOW_MEMORY_NODE )
@@ -336,4 +357,14 @@ else()
   MESSAGE( STATUS "\n\n             CONFIGURED FOR FULL NODE                \n\n" )
 endif()
 
+set(INDENT_WIDTH 2 CACHE STRING "Determine how many spaces should be used for formating (by default 2)")
+find_program(PYTHON_3_6 "python3.6")
 
+# How to launch?
+# cmake --build . --target format
+if(PYTHON_3_6)
+  add_custom_target(format COMMAND ${PYTHON_3_6} ${CMAKE_SOURCE_DIR}/format.py ${INDENT_WIDTH} WORKING_DIRECTORY ${CMAKE_SOURCE_DIR})
+  MESSAGE( STATUS "\n\n             FORMAT IS AVAIABLE                \n\n" )
+else(PYTHON_3_6)
+  MESSAGE( STATUS "\n\n             FORMAT IS NOT AVAIABLE                \n\n" )
+endif( PYTHON_3_6 )

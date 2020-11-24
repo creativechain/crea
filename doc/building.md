@@ -36,10 +36,12 @@ We ship a Dockerfile.  This builds both common node type binaries.
     cd crea
     docker build -t creary/crea .
 
-## Building on Ubuntu 16.04
+## Building on Ubuntu 18.04/16.04
 
 For Ubuntu 16.04 users, after installing the right packages with `apt` Crea
 will build out of the box without further effort:
+
+    sudo apt-get update
 
     # Required packages
     sudo apt-get install -y \

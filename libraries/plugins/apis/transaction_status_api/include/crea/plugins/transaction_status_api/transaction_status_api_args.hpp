@@ -11,14 +11,14 @@ namespace crea { namespace plugins { namespace transaction_status_api {
 
 struct find_transaction_args
 {
-   chain::transaction_id_type transaction_id;
-   fc::optional< fc::time_point_sec > expiration;
+  chain::transaction_id_type transaction_id;
+  fc::optional< fc::time_point_sec > expiration;
 };
 
 struct find_transaction_return
 {
-   transaction_status::transaction_status status;
-   fc::optional< uint32_t > block_num;
+  transaction_status::transaction_status status;
+  fc::optional< uint32_t > block_num;
 };
 
 } } } // crea::transaction_status_api

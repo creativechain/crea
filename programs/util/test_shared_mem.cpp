@@ -52,46 +52,9 @@ using chainbase::shared_string;
 using chainbase::t_deque;
 using chainbase::allocator;
 
-/* shared_string is a string type placeable in shared memory,
- *  * courtesy of Boost.Interprocess.
- *   */
-
-namespace fc {
-#ifndef ENABLE_STD_ALLOCATOR
-    void to_variant( const shared_string& s, fc::variant& vo ) {
-       vo = std::string(s.c_str());
-    }
-    void from_variant( const fc::variant& var,  shared_string& vo ) {
-       vo = var.as_string().c_str();
-    }
-#endif
-
-    /*
-    template<typename... T >
-    void to_variant( const bip::deque< T... >& t, fc::variant& v ) {
-      std::vector<variant> vars(t.size());
-      for( size_t i = 0; i < t.size(); ++i ) {
-         vars[i] = t[i];
-      }
-      v = std::move(vars);
-    }
-
-    template<typename T, typename... A>
-    void from_variant( const fc::variant& v, bip::deque< T, A... >& d ) {
-      const variants& vars = v.get_array();
-      d.clear();
-      d.resize( vars.size() );
-      for( uint32_t i = 0; i < vars.size(); ++i ) {
-         from_variant( vars[i], d[i] );
-      }
-    }
-    */
-}
-
-
-    /* Book record. All its members can be placed in shared memory,
-     *  * hence the structure itself can too.
-     *   */
+/* Book record. All its members can be placed in shared memory,
+  * hence the structure itself can too.
+  */
 
 struct book
 {
@@ -122,9 +85,9 @@ struct book
 typedef multi_index_container<
   book,
   indexed_by<
-     ordered_non_unique< BOOST_MULTI_INDEX_MEMBER(book,shared_string,author) >,
-     ordered_non_unique< BOOST_MULTI_INDEX_MEMBER(book,shared_string,name) >,
-     ordered_non_unique< BOOST_MULTI_INDEX_MEMBER(book,int32_t,prize) >
+    ordered_non_unique< BOOST_MULTI_INDEX_MEMBER(book,shared_string,author) >,
+    ordered_non_unique< BOOST_MULTI_INDEX_MEMBER(book,shared_string,name) >,
+    ordered_non_unique< BOOST_MULTI_INDEX_MEMBER(book,int32_t,prize) >
   >,
   allocator< book >
 > book_container;
@@ -133,45 +96,45 @@ typedef multi_index_container<
 FC_REFLECT( book, (name)(author)(pages)(prize)(deq)(auth) )
 
 struct astr {
-   fc::fixed_string<> str;
-   fc::fixed_string<> str1;
-   fc::fixed_string<> str2;
+  fc::fixed_string<> str;
+  fc::fixed_string<> str1;
+  fc::fixed_string<> str2;
 };
 FC_REFLECT( astr, (str)(str1)(str2) );
 struct bstr {
-   std::string str;
-   std::string str1;
-   std::string str2;
+  std::string str;
+  std::string str1;
+  std::string str2;
 };
 FC_REFLECT( bstr, (str)(str1)(str2) );
 
 int main(int argc, char** argv, char** envp)
 {
-   try {
+  try {
 
-#ifndef ENABLE_STD_ALLOCATOR
-   bip::managed_mapped_file seg( bip::open_or_create,"./book_container.db", 1024*100);
-   bip::named_mutex mutex( bip::open_or_create,"./book_container.db");
+#ifndef ENABLE_MIRA
+  bip::managed_mapped_file seg( bip::open_or_create,"./book_container.db", 1024*100);
+  bip::named_mutex mutex( bip::open_or_create,"./book_container.db");
 #endif
 
-   /*
-   book b( book::allocator_type( seg.get_segment_manager() ) );
-   b.name = "test name";
-   b.author = "test author";
-   b.deq.push_back( shared_string( "hello world", basic_string_allocator( seg.get_segment_manager() )  ) );
-   idump((b));
-   */
-#ifndef ENABLE_STD_ALLOCATOR
-   book_container* pbc = seg.find_or_construct<book_container>("book container")( book_container::ctor_args_list(),
-                                                                                  book_container::allocator_type(seg.get_segment_manager()));
+  /*
+  book b( book::allocator_type( seg.get_segment_manager() ) );
+  b.name = "test name";
+  b.author = "test author";
+  b.deq.push_back( shared_string( "hello world", basic_string_allocator( seg.get_segment_manager() )  ) );
+  idump((b));
+  */
+#ifndef ENABLE_MIRA
+  book_container* pbc = seg.find_or_construct<book_container>("book container")( book_container::ctor_args_list(),
+                                                        book_container::allocator_type(seg.get_segment_manager()));
 #else
-   book_container* pbc = new book_container( book_container::ctor_args_list(),
-                                             book_container::allocator_type() );
+  book_container* pbc = new book_container( book_container::ctor_args_list(),
+                              book_container::allocator_type() );
 #endif
 
-   for( const auto& item : *pbc ) {
-      idump((item));
-   }
+  for( const auto& item : *pbc ) {
+    idump((item));
+  }
 
    //b.pages = pbc->size();
    //b.auth = crea::chain::authority( 1, "dan", pbc->size() );
@@ -181,26 +144,26 @@ int main(int argc, char** argv, char** envp)
                  b.pages = pbc->size();
                 }, allocator<book>( seg.get_segment_manager() ) );
 #else
-   pbc->emplace( [&]( book& b ) {
-                 b.name = "emplace name";
-                 b.pages = pbc->size();
-                }, allocator<book>() );
+  pbc->emplace( [&]( book& b ) {
+            b.name = "emplace name";
+            b.pages = pbc->size();
+            }, allocator<book>() );
 #endif
 
-#ifndef ENABLE_STD_ALLOCATOR
-   t_deque< book > * deq = seg.find_or_construct<chainbase::t_deque<book>>("book deque")(allocator<book>(seg.get_segment_manager()));
+#ifndef ENABLE_MIRA
+  t_deque< book > * deq = seg.find_or_construct<chainbase::t_deque<book>>("book deque")(allocator<book>(seg.get_segment_manager()));
 #else
-   t_deque< book > * deq = new chainbase::t_deque<book>( allocator<book>() );
+  t_deque< book > * deq = new chainbase::t_deque<book>( allocator<book>() );
 #endif
 
-   idump((deq->size()));
+  idump((deq->size()));
 
   // book c( b ); //book::allocator_type( seg.get_segment_manager() ) );
   // deq->push_back( b );
 
 
-   } catch ( const std::exception& e ) {
-      edump( (std::string(e.what())) );
-   }
-   return 0;
+  } catch ( const std::exception& e ) {
+    edump( (std::string(e.what())) );
+  }
+  return 0;
 }

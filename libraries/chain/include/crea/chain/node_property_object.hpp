@@ -2,7 +2,7 @@
 
 namespace crea { namespace chain {
 
-   /**
+  /**
     * @brief Contains per-node database configuration.
     *
     *  Transactions are evaluated differently based on per-node state.
@@ -12,12 +12,12 @@ namespace crea { namespace chain {
     *  from the p2p network.  Or configuration-specified tradeoffs of
     *  performance/hardfork resilience vs. paranoia.
     */
-   class node_property_object
-   {
-      public:
-         node_property_object(){}
-         ~node_property_object(){}
+  class node_property_object
+  {
+    public:
+      node_property_object(){}
+      ~node_property_object(){}
 
-         uint32_t skip_flags = 0;
-   };
+      uint32_t skip_flags = 0;
+  };
 } } // crea::chain

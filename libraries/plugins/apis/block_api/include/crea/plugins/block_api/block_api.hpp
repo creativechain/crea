@@ -12,33 +12,33 @@ class block_api_impl;
 
 class block_api
 {
-   public:
-      block_api();
-      ~block_api();
+  public:
+    block_api();
+    ~block_api();
 
-      DECLARE_API(
+    DECLARE_API(
 
-         /////////////////////////////
-         // Blocks and transactions //
-         /////////////////////////////
+      /////////////////////////////
+      // Blocks and transactions //
+      /////////////////////////////
 
-         /**
-         * @brief Retrieve a block header
-         * @param block_num Height of the block whose header should be returned
-         * @return header of the referenced block, or null if no matching block was found
-         */
-         (get_block_header)
+      /**
+      * @brief Retrieve a block header
+      * @param block_num Height of the block whose header should be returned
+      * @return header of the referenced block, or null if no matching block was found
+      */
+      (get_block_header)
 
-         /**
-         * @brief Retrieve a full, signed block
-         * @param block_num Height of the block to be returned
-         * @return the referenced block, or null if no matching block was found
-         */
-         (get_block)
-      )
+      /**
+      * @brief Retrieve a full, signed block
+      * @param block_num Height of the block to be returned
+      * @return the referenced block, or null if no matching block was found
+      */
+      (get_block)
+    )
 
-   private:
-      std::unique_ptr< block_api_impl > my;
+  private:
+    std::unique_ptr< block_api_impl > my;
 };
 
 } } } //crea::plugins::block_api

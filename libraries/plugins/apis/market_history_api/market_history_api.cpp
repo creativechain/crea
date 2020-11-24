@@ -16,25 +16,25 @@ class market_history_api_impl
    public:
       market_history_api_impl() : _db( appbase::app().get_plugin< crea::plugins::chain::chain_plugin >().db() ) {}
 
-      DECLARE_API_IMPL(
-         (get_ticker)
-         (get_volume)
-         (get_order_book)
-         (get_trade_history)
-         (get_recent_trades)
-         (get_market_history)
-         (get_market_history_buckets)
-      )
+    DECLARE_API_IMPL(
+      (get_ticker)
+      (get_volume)
+      (get_order_book)
+      (get_trade_history)
+      (get_recent_trades)
+      (get_market_history)
+      (get_market_history_buckets)
+    )
 
-      chain::database& _db;
+    chain::database& _db;
 };
 
 DEFINE_API_IMPL( market_history_api_impl, get_ticker )
 {
-   get_ticker_return result;
+  get_ticker_return result;
 
-   const auto& bucket_idx = _db.get_index< bucket_index, by_bucket >();
-   auto itr = bucket_idx.lower_bound( boost::make_tuple( 0, _db.head_block_time() - 86400 ) );
+  const auto& bucket_idx = _db.get_index< bucket_index, by_bucket >();
+  auto itr = bucket_idx.lower_bound( boost::make_tuple( 0, _db.head_block_time() - 86400 ) );
 
    if( itr != bucket_idx.end() )
    {
@@ -44,27 +44,27 @@ DEFINE_API_IMPL( market_history_api_impl, get_ticker )
       result.percent_change = ( (result.latest - open ) / open ) * 100;
    }
 
-   auto orders = get_order_book( get_order_book_args{ 1 } );
-   if( orders.bids.empty() == false)
-      result.highest_bid = orders.bids[0].real_price;
-   if( orders.asks.empty() == false)
-      result.lowest_ask = orders.asks[0].real_price;
+  auto orders = get_order_book( get_order_book_args{ 1 } );
+  if( orders.bids.empty() == false)
+    result.highest_bid = orders.bids[0].real_price;
+  if( orders.asks.empty() == false)
+    result.lowest_ask = orders.asks[0].real_price;
 
    auto volume = get_volume( get_volume_args() );
    result.crea_volume = volume.crea_volume;
    result.cbd_volume = volume.cbd_volume;
 
-   return result;
+  return result;
 }
 
 DEFINE_API_IMPL( market_history_api_impl, get_volume )
 {
-   const auto& bucket_idx = _db.get_index< bucket_index, by_bucket >();
-   auto itr = bucket_idx.lower_bound( boost::make_tuple( 0, _db.head_block_time() - 86400 ) );
-   get_volume_return result;
+  const auto& bucket_idx = _db.get_index< bucket_index, by_bucket >();
+  auto itr = bucket_idx.lower_bound( boost::make_tuple( 0, _db.head_block_time() - 86400 ) );
+  get_volume_return result;
 
-   if( itr == bucket_idx.end() )
-      return result;
+  if( itr == bucket_idx.end() )
+    return result;
 
    uint32_t bucket_size = itr->seconds;
    do
@@ -72,20 +72,20 @@ DEFINE_API_IMPL( market_history_api_impl, get_volume )
       result.crea_volume.amount += itr->crea.volume;
       result.cbd_volume.amount += itr->non_crea.volume;
 
-      ++itr;
-   } while( itr != bucket_idx.end() && itr->seconds == bucket_size );
+    ++itr;
+  } while( itr != bucket_idx.end() && itr->seconds == bucket_size );
 
-   return result;
+  return result;
 }
 
 DEFINE_API_IMPL( market_history_api_impl, get_order_book )
 {
-   FC_ASSERT( args.limit <= 500 );
+  FC_ASSERT( args.limit <= 500 );
 
    const auto& order_idx = _db.get_index< chain::limit_order_index, chain::by_price >();
    auto itr = order_idx.lower_bound( price::max( CBD_SYMBOL, CREA_SYMBOL ) );
 
-   get_order_book_return result;
+  get_order_book_return result;
 
    while( itr != order_idx.end() && itr->sell_price.base.symbol == CBD_SYMBOL && result.bids.size() < args.limit )
    {
@@ -113,66 +113,66 @@ DEFINE_API_IMPL( market_history_api_impl, get_order_book )
       ++itr;
    }
 
-   return result;
+  return result;
 }
 
 DEFINE_API_IMPL( market_history_api_impl, get_trade_history )
 {
-   FC_ASSERT( args.limit <= 1000 );
-   const auto& bucket_idx = _db.get_index< order_history_index, by_time >();
-   auto itr = bucket_idx.lower_bound( args.start );
+  FC_ASSERT( args.limit <= 1000 );
+  const auto& bucket_idx = _db.get_index< order_history_index, by_time >();
+  auto itr = bucket_idx.lower_bound( args.start );
 
-   get_trade_history_return result;
+  get_trade_history_return result;
 
-   while( itr != bucket_idx.end() && itr->time <= args.end && result.trades.size() < args.limit )
-   {
-      market_trade trade;
-      trade.date = itr->time;
-      trade.current_pays = itr->op.current_pays;
-      trade.open_pays = itr->op.open_pays;
-      result.trades.push_back( trade );
-      ++itr;
-   }
+  while( itr != bucket_idx.end() && itr->time <= args.end && result.trades.size() < args.limit )
+  {
+    market_trade trade;
+    trade.date = itr->time;
+    trade.current_pays = itr->op.current_pays;
+    trade.open_pays = itr->op.open_pays;
+    result.trades.push_back( trade );
+    ++itr;
+  }
 
-   return result;
+  return result;
 }
 
 DEFINE_API_IMPL( market_history_api_impl, get_recent_trades )
 {
-   FC_ASSERT( args.limit <= 1000 );
-   const auto& order_idx = _db.get_index< order_history_index, by_time >();
-   auto itr = order_idx.rbegin();
+  FC_ASSERT( args.limit <= 1000 );
+  const auto& order_idx = _db.get_index< order_history_index, by_time >();
+  auto itr = order_idx.rbegin();
 
-   get_recent_trades_return result;
+  get_recent_trades_return result;
 
-   while( itr != order_idx.rend() && result.trades.size() < args.limit )
-   {
-      market_trade trade;
-      trade.date = itr->time;
-      trade.current_pays = itr->op.current_pays;
-      trade.open_pays = itr->op.open_pays;
-      result.trades.push_back( trade );
-      ++itr;
-   }
+  while( itr != order_idx.rend() && result.trades.size() < args.limit )
+  {
+    market_trade trade;
+    trade.date = itr->time;
+    trade.current_pays = itr->op.current_pays;
+    trade.open_pays = itr->op.open_pays;
+    result.trades.push_back( trade );
+    ++itr;
+  }
 
-   return result;
+  return result;
 }
 
 DEFINE_API_IMPL( market_history_api_impl, get_market_history )
 {
-   const auto& bucket_idx = _db.get_index< bucket_index, by_bucket >();
-   auto itr = bucket_idx.lower_bound( boost::make_tuple( args.bucket_seconds, args.start ) );
+  const auto& bucket_idx = _db.get_index< bucket_index, by_bucket >();
+  auto itr = bucket_idx.lower_bound( boost::make_tuple( args.bucket_seconds, args.start ) );
 
-   get_market_history_return result;
+  get_market_history_return result;
 
-   while( itr != bucket_idx.end() && itr->seconds == args.bucket_seconds && itr->open < args.end )
-   {
-      result.buckets.push_back( *itr );
+  while( itr != bucket_idx.end() && itr->seconds == args.bucket_seconds && itr->open < args.end )
+  {
+    result.buckets.push_back( itr->copy_chain_object() );
 
-      ++itr;
-   }
+    ++itr;
+  }
 
-   return result;
+  return result;
 }
 
 DEFINE_API_IMPL( market_history_api_impl, get_market_history_buckets )
@@ -193,13 +193,13 @@ market_history_api::market_history_api(): my( new detail::market_history_api_imp
 market_history_api::~market_history_api() {}
 
 DEFINE_READ_APIS( market_history_api,
-   (get_ticker)
-   (get_volume)
-   (get_order_book)
-   (get_trade_history)
-   (get_recent_trades)
-   (get_market_history)
-   (get_market_history_buckets)
+  (get_ticker)
+  (get_volume)
+  (get_order_book)
+  (get_trade_history)
+  (get_recent_trades)
+  (get_market_history)
+  (get_market_history_buckets)
 )
 
 } } } // crea::plugins::market_history

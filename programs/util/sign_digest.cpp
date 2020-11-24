@@ -14,8 +14,8 @@
 
 struct signing_request
 {
-   fc::sha256                         dig;
-   std::string                        wif;
+  fc::sha256                         dig;
+  std::string                        wif;
 };
 
 struct signing_result
@@ -30,15 +30,15 @@ FC_REFLECT( signing_result, (dig)(key)(sig) )
 
 int main(int argc, char** argv, char** envp)
 {
-   // hash key pairs on stdin
-   std::string chain_id, hash, wif;
-   while( std::cin )
-   {
-      std::string line;
-      std::getline( std::cin, line );
-      boost::trim(line);
-      if( line == "" )
-         continue;
+  // hash key pairs on stdin
+  std::string chain_id, hash, wif;
+  while( std::cin )
+  {
+    std::string line;
+    std::getline( std::cin, line );
+    boost::trim(line);
+    if( line == "" )
+      continue;
 
       fc::variant v = fc::json::from_string( line, fc::json::strict_parser );
       signing_request sreq;

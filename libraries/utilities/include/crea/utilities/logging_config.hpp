@@ -14,20 +14,20 @@ namespace crea { namespace utilities {
 
 struct appender_args
 {
-   std::string appender;
-   std::string file;
-   std::string stream;
+  std::string appender;
+  std::string file;
+  std::string stream;
 
-   void validate();
+  void validate();
 };
 
 struct logger_args
 {
-   std::string name;
-   std::string level;
-   std::string appender;
+  std::string name;
+  std::string level;
+  std::string appender;
 
-   void validate();
+  void validate();
 };
 
 void set_logging_program_options( boost::program_options::options_description& options );

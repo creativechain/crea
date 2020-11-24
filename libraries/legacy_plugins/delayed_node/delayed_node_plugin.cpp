@@ -1,26 +1,26 @@
 /*
- * Copyright (c) 2015 Cryptonomex, Inc., and contributors.
- *
- * The MIT License
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- */
+  * Copyright (c) 2015 Cryptonomex, Inc., and contributors.
+  *
+  * The MIT License
+  *
+  * Permission is hereby granted, free of charge, to any person obtaining a copy
+  * of this software and associated documentation files (the "Software"), to deal
+  * in the Software without restriction, including without limitation the rights
+  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+  * copies of the Software, and to permit persons to whom the Software is
+  * furnished to do so, subject to the following conditions:
+  *
+  * The above copyright notice and this permission notice shall be included in
+  * all copies or substantial portions of the Software.
+  *
+  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+  * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+  * THE SOFTWARE.
+  */
 
 #include <crea/delayed_node/delayed_node_plugin.hpp>
 
@@ -77,8 +77,8 @@ void delayed_node_plugin::connect()
 
 void delayed_node_plugin::plugin_initialize(const boost::program_options::variables_map& options)
 {
-   FC_ASSERT( options.count( "trusted-node" ) > 0 );
-   my->remote_endpoint = "ws://" + options.at("trusted-node").as<std::string>();
+  FC_ASSERT( options.count( "trusted-node" ) > 0 );
+  my->remote_endpoint = "ws://" + options.at("trusted-node").as<std::string>();
 }
 
 void delayed_node_plugin::sync_with_trusted_node()
@@ -115,52 +115,52 @@ void delayed_node_plugin::sync_with_trusted_node()
 
 void delayed_node_plugin::mainloop()
 {
-   while( true )
-   {
-      try
-      {
-         fc::usleep( fc::microseconds( 296645 ) );  // wake up a little over 3Hz
+  while( true )
+  {
+    try
+    {
+      fc::usleep( fc::microseconds( 296645 ) );  // wake up a little over 3Hz
 
-         if( my->last_received_remote_head == my->last_processed_remote_head )
-            continue;
+      if( my->last_received_remote_head == my->last_processed_remote_head )
+        continue;
 
-         sync_with_trusted_node();
-         my->last_processed_remote_head = my->last_received_remote_head;
-      }
-      catch( const fc::exception& e )
-      {
-         elog("Error during connection: ${e}", ("e", e.to_detail_string()));
-      }
-   }
+      sync_with_trusted_node();
+      my->last_processed_remote_head = my->last_received_remote_head;
+    }
+    catch( const fc::exception& e )
+    {
+      elog("Error during connection: ${e}", ("e", e.to_detail_string()));
+    }
+  }
 }
 
 void delayed_node_plugin::plugin_startup()
 {
-   fc::async([this]()
-   {
-      mainloop();
-   });
+  fc::async([this]()
+  {
+    mainloop();
+  });
 
-   try
-   {
-      connect();
-      my->database_api->set_block_applied_callback([this]( const fc::variant& block_id )
-      {
-         fc::from_variant( block_id, my->last_received_remote_head );
-      } );
-      return;
-   }
-   catch (const fc::exception& e)
-   {
-      elog("Error during connection: ${e}", ("e", e.to_detail_string()));
-   }
-   fc::async([this]{connection_failed();});
+  try
+  {
+    connect();
+    my->database_api->set_block_applied_callback([this]( const fc::variant& block_id )
+    {
+      fc::from_variant( block_id, my->last_received_remote_head );
+    } );
+    return;
+  }
+  catch (const fc::exception& e)
+  {
+    elog("Error during connection: ${e}", ("e", e.to_detail_string()));
+  }
+  fc::async([this]{connection_failed();});
 }
 
 void delayed_node_plugin::connection_failed()
 {
-   elog("Connection to trusted node failed; retrying in 5 seconds...");
-   fc::schedule([this]{connect();}, fc::time_point::now() + fc::seconds(5));
+  elog("Connection to trusted node failed; retrying in 5 seconds...");
+  fc::schedule([this]{connect();}, fc::time_point::now() + fc::seconds(5));
 }
 
 } }

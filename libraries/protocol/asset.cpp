@@ -16,19 +16,19 @@ The bounds on asset serialization are as follows:
 index : field
 0     : decimals
 1..6  : symbol
-   7  : \0
+  7  : \0
 */
 
 namespace crea { namespace protocol {
 
 std::string asset_symbol_type::to_string()const
 {
-   return fc::json::to_string( fc::variant( *this ) );
+  return fc::json::to_string( fc::variant( *this ) );
 }
 
 asset_symbol_type asset_symbol_type::from_string( const std::string& str )
 {
-   return fc::json::from_string( str ).as< asset_symbol_type >();
+  return fc::json::from_string( str ).as< asset_symbol_type >();
 }
 
 void asset_symbol_type::to_nai_string( char* buf )const
@@ -65,55 +65,55 @@ asset_symbol_type asset_symbol_type::from_nai_string( const char* p, uint8_t dec
 // https://en.wikipedia.org/wiki/Damm_algorithm
 uint8_t asset_symbol_type::damm_checksum_8digit(uint32_t value)
 {
-   FC_ASSERT( value < 100000000 );
+  FC_ASSERT( value < 100000000 );
 
-   const uint8_t t[] = {
-       0, 30, 10, 70, 50, 90, 80, 60, 40, 20,
-      70,  0, 90, 20, 10, 50, 40, 80, 60, 30,
-      40, 20,  0, 60, 80, 70, 10, 30, 50, 90,
-      10, 70, 50,  0, 90, 80, 30, 40, 20, 60,
-      60, 10, 20, 30,  0, 40, 50, 90, 70, 80,
-      30, 60, 70, 40, 20,  0, 90, 50, 80, 10,
-      50, 80, 60, 90, 70, 20,  0, 10, 30, 40,
-      80, 90, 40, 50, 30, 60, 20,  0, 10, 70,
-      90, 40, 30, 80, 60, 10, 70, 20,  0, 50,
-      20, 50, 80, 10, 40, 30, 60, 70, 90, 0
-   };
+  const uint8_t t[] = {
+      0, 30, 10, 70, 50, 90, 80, 60, 40, 20,
+    70,  0, 90, 20, 10, 50, 40, 80, 60, 30,
+    40, 20,  0, 60, 80, 70, 10, 30, 50, 90,
+    10, 70, 50,  0, 90, 80, 30, 40, 20, 60,
+    60, 10, 20, 30,  0, 40, 50, 90, 70, 80,
+    30, 60, 70, 40, 20,  0, 90, 50, 80, 10,
+    50, 80, 60, 90, 70, 20,  0, 10, 30, 40,
+    80, 90, 40, 50, 30, 60, 20,  0, 10, 70,
+    90, 40, 30, 80, 60, 10, 70, 20,  0, 50,
+    20, 50, 80, 10, 40, 30, 60, 70, 90, 0
+  };
 
-   uint32_t q0 = value/10;
-   uint32_t d0 = value%10;
-   uint32_t q1 = q0/10;
-   uint32_t d1 = q0%10;
-   uint32_t q2 = q1/10;
-   uint32_t d2 = q1%10;
-   uint32_t q3 = q2/10;
-   uint32_t d3 = q2%10;
-   uint32_t q4 = q3/10;
-   uint32_t d4 = q3%10;
-   uint32_t q5 = q4/10;
-   uint32_t d5 = q4%10;
-   uint32_t d6 = q5%10;
-   uint32_t d7 = q5/10;
+  uint32_t q0 = value/10;
+  uint32_t d0 = value%10;
+  uint32_t q1 = q0/10;
+  uint32_t d1 = q0%10;
+  uint32_t q2 = q1/10;
+  uint32_t d2 = q1%10;
+  uint32_t q3 = q2/10;
+  uint32_t d3 = q2%10;
+  uint32_t q4 = q3/10;
+  uint32_t d4 = q3%10;
+  uint32_t q5 = q4/10;
+  uint32_t d5 = q4%10;
+  uint32_t d6 = q5%10;
+  uint32_t d7 = q5/10;
 
-   uint8_t x = t[d7];
-   x = t[x+d6];
-   x = t[x+d5];
-   x = t[x+d4];
-   x = t[x+d3];
-   x = t[x+d2];
-   x = t[x+d1];
-   x = t[x+d0];
-   return x/10;
+  uint8_t x = t[d7];
+  x = t[x+d6];
+  x = t[x+d5];
+  x = t[x+d4];
+  x = t[x+d3];
+  x = t[x+d2];
+  x = t[x+d1];
+  x = t[x+d0];
+  return x/10;
 }
 
 uint32_t asset_symbol_type::asset_num_from_nai( uint32_t nai, uint8_t decimal_places )
 {
-   // Can be replaced with some clever bitshifting
-   uint32_t nai_check_digit = nai % 10;
-   uint32_t nai_data_digits = nai / 10;
+  // Can be replaced with some clever bitshifting
+  uint32_t nai_check_digit = nai % 10;
+  uint32_t nai_data_digits = nai / 10;
 
-   FC_ASSERT( (nai_data_digits >= SMT_MIN_NAI) & (nai_data_digits <= SMT_MAX_NAI), "NAI out of range" );
-   FC_ASSERT( nai_check_digit == damm_checksum_8digit(nai_data_digits), "Invalid check digit" );
+  FC_ASSERT( (nai_data_digits >= SMT_MIN_NAI) & (nai_data_digits <= SMT_MAX_NAI), "NAI out of range" );
+  FC_ASSERT( nai_check_digit == damm_checksum_8digit(nai_data_digits), "Invalid check digit" );
 
    switch( nai_data_digits )
    {
@@ -134,7 +134,7 @@ uint32_t asset_symbol_type::asset_num_from_nai( uint32_t nai, uint8_t decimal_pl
 
 uint32_t asset_symbol_type::to_nai()const
 {
-   uint32_t nai_data_digits = 0;
+  uint32_t nai_data_digits = 0;
 
    // Can be replaced with some clever bitshifting
    switch( asset_num )
@@ -153,8 +153,8 @@ uint32_t asset_symbol_type::to_nai()const
          nai_data_digits = (asset_num >> CREA_NAI_SHIFT);
    }
 
-   uint32_t nai_check_digit = damm_checksum_8digit(nai_data_digits);
-   return nai_data_digits * 10 + nai_check_digit;
+  uint32_t nai_check_digit = damm_checksum_8digit(nai_data_digits);
+  return nai_data_digits * 10 + nai_check_digit;
 }
 
 bool asset_symbol_type::is_vesting() const
@@ -266,18 +266,18 @@ bool asset::isZero()const
 }
 
 #define BQ(a) \
-   std::tie( a.base.symbol, a.quote.symbol )
+  std::tie( a.base.symbol, a.quote.symbol )
 
 #define DEFINE_PRICE_COMPARISON_OPERATOR( op ) \
 bool operator op ( const price& a, const price& b ) \
 { \
-   if( BQ(a) != BQ(b) ) \
-      return BQ(a) op BQ(b); \
-   \
-   const uint128_t amult = uint128_t( b.quote.amount.value ) * a.base.amount.value; \
-   const uint128_t bmult = uint128_t( a.quote.amount.value ) * b.base.amount.value; \
-   \
-   return amult op bmult;  \
+  if( BQ(a) != BQ(b) ) \
+    return BQ(a) op BQ(b); \
+  \
+  const uint128_t amult = uint128_t( b.quote.amount.value ) * a.base.amount.value; \
+  const uint128_t bmult = uint128_t( a.quote.amount.value ) * b.base.amount.value; \
+  \
+  return amult op bmult;  \
 }
 
 DEFINE_PRICE_COMPARISON_OPERATOR( == )
@@ -287,30 +287,30 @@ DEFINE_PRICE_COMPARISON_OPERATOR( <= )
 DEFINE_PRICE_COMPARISON_OPERATOR( >  )
 DEFINE_PRICE_COMPARISON_OPERATOR( >= )
 
-      asset operator * ( const asset& a, const price& b )
+    asset operator * ( const asset& a, const price& b )
+    {
+      if( a.symbol == b.base.symbol )
       {
-         if( a.symbol == b.base.symbol )
-         {
-            FC_ASSERT( b.base.amount.value > 0 );
-            uint128_t result = (uint128_t(a.amount.value) * b.quote.amount.value)/b.base.amount.value;
-            FC_ASSERT( result.hi == 0 );
-            return asset( result.to_uint64(), b.quote.symbol );
-         }
-         else if( a.symbol == b.quote.symbol )
-         {
-            FC_ASSERT( b.quote.amount.value > 0 );
-            uint128_t result = (uint128_t(a.amount.value) * b.base.amount.value)/b.quote.amount.value;
-            FC_ASSERT( result.hi == 0 );
-            return asset( result.to_uint64(), b.base.symbol );
-         }
-         FC_THROW_EXCEPTION( fc::assert_exception, "invalid asset * price", ("asset",a)("price",b) );
+        FC_ASSERT( b.base.amount.value > 0 );
+        uint128_t result = (uint128_t(a.amount.value) * b.quote.amount.value)/b.base.amount.value;
+        FC_ASSERT( result.hi == 0 );
+        return asset( result.to_uint64(), b.quote.symbol );
       }
+      else if( a.symbol == b.quote.symbol )
+      {
+        FC_ASSERT( b.quote.amount.value > 0 );
+        uint128_t result = (uint128_t(a.amount.value) * b.base.amount.value)/b.quote.amount.value;
+        FC_ASSERT( result.hi == 0 );
+        return asset( result.to_uint64(), b.base.symbol );
+      }
+      FC_THROW_EXCEPTION( fc::assert_exception, "invalid asset * price", ("asset",a)("price",b) );
+    }
 
-      price operator / ( const asset& base, const asset& quote )
-      { try {
-         FC_ASSERT( base.symbol != quote.symbol );
-         return price{ base, quote };
-      } FC_CAPTURE_AND_RETHROW( (base)(quote) ) }
+    price operator / ( const asset& base, const asset& quote )
+    { try {
+      FC_ASSERT( base.symbol != quote.symbol );
+      return price{ base, quote };
+    } FC_CAPTURE_AND_RETHROW( (base)(quote) ) }
 
       price price::max( asset_symbol_type base, asset_symbol_type quote ) { return asset( share_type(CREA_MAX_SATOSHIS), base ) / asset( share_type(1), quote); }
       price price::min( asset_symbol_type base, asset_symbol_type quote ) { return asset( 1, base ) / asset( CREA_MAX_SATOSHIS, quote); }

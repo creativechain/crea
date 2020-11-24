@@ -1,12 +1,16 @@
 #include <crea/chain/database_exceptions.hpp>
 
 #include <crea/plugins/chain/abstract_block_producer.hpp>
+#include <crea/plugins/chain/state_snapshot_provider.hpp>
 #include <crea/plugins/chain/chain_plugin.hpp>
 #include <crea/plugins/statsd/utility.hpp>
 
 #include <crea/utilities/benchmark_dumper.hpp>
+#include <crea/utilities/database_configuration.hpp>
 
 #include <fc/string.hpp>
+#include <fc/io/json.hpp>
+#include <fc/io/fstream.hpp>
 
 #include <boost/asio.hpp>
 #include <boost/optional.hpp>
@@ -21,10 +25,17 @@
 
 namespace crea { namespace plugins { namespace chain {
 
+#define BENCHMARK_FILE_NAME "replay_benchmark.json"
+
 using namespace crea;
+
 using fc::flat_map;
 using crea::chain::block_id_type;
 namespace asio = boost::asio;
+
+using crea::plugins::chain::synchronization_type;
+using index_memory_details_cntr_t = crea::utilities::benchmark_dumper::index_memory_details_cntr_t;
+using get_indexes_memory_details_type = std::function< void( index_memory_details_cntr_t&, bool ) >;
 
 #define NUM_THREADS 1
 
@@ -63,25 +74,48 @@ class chain_plugin_impl
       chain_plugin_impl() : write_queue( 64 ) {}
       ~chain_plugin_impl() { stop_write_processing(); }
 
-      void start_write_processing();
-      void stop_write_processing();
+    void register_snapshot_provider(state_snapshot_provider& provider)
+      {
+      snapshot_provider = &provider;
+      }
 
-      uint64_t                         shared_memory_size = 0;
-      uint16_t                         shared_file_full_threshold = 0;
-      uint16_t                         shared_file_scale_rate = 0;
-      bfs::path                        shared_memory_dir;
-      bool                             replay = false;
-      bool                             resync   = false;
-      bool                             readonly = false;
-      bool                             check_locks = false;
-      bool                             validate_invariants = false;
-      bool                             dump_memory_details = false;
-      bool                             benchmark_is_enabled =false;
-      bool                             statsd_on_replay = false;
-      uint32_t                         stop_replay_at = 0;
-      uint32_t                         benchmark_interval = 0;
-      uint32_t                         flush_interval = 0;
-      flat_map<uint32_t,block_id_type> loaded_checkpoints;
+    void start_write_processing();
+    void stop_write_processing();
+
+    bool start_replay_processing( synchronization_type& on_sync );
+
+    void initial_settings();
+    void open();
+    bool replay_blockchain();
+    void process_snapshot();
+    bool check_data_consistency();
+
+    void work( synchronization_type& on_sync );
+
+    void write_default_database_config( bfs::path& p );
+
+    uint64_t                         shared_memory_size = 0;
+    uint16_t                         shared_file_full_threshold = 0;
+    uint16_t                         shared_file_scale_rate = 0;
+    int16_t                          sps_remove_threshold = -1;
+    uint32_t                         chainbase_flags = 0;
+    bfs::path                        shared_memory_dir;
+    bool                             replay = false;
+    bool                             resync   = false;
+    bool                             readonly = false;
+    bool                             check_locks = false;
+    bool                             validate_invariants = false;
+    bool                             dump_memory_details = false;
+    bool                             benchmark_is_enabled = false;
+    bool                             statsd_on_replay = false;
+    uint32_t                         stop_replay_at = 0;
+    bool                             exit_after_replay = false;
+    bool                             force_replay = false;
+    uint32_t                         benchmark_interval = 0;
+    uint32_t                         flush_interval = 0;
+    bool                             replay_in_memory = false;
+    std::vector< std::string >       replay_memory_indices{};
+    flat_map<uint32_t,block_id_type> loaded_checkpoints;
 
       uint32_t allow_future_time = 5;
 
@@ -90,12 +124,20 @@ class chain_plugin_impl
       boost::lockfree::queue< write_context* > write_queue;
       int16_t                          write_lock_hold_time = 500;
 
-      vector< string >                 loaded_plugins;
-      fc::mutable_variant_object       plugin_state_opts;
+    vector< string >                 loaded_plugins;
+    fc::mutable_variant_object       plugin_state_opts;
+    bfs::path                        database_cfg;
 
-      database  db;
-      std::string block_generator_registrant;
-      std::shared_ptr< abstract_block_producer > block_generator;
+    database  db;
+    std::string block_generator_registrant;
+    std::shared_ptr< abstract_block_producer > block_generator;
+
+    crea::utilities::benchmark_dumper   dumper;
+    crea::chain::open_args              db_open_args;
+    get_indexes_memory_details_type     get_indexes_memory_details;
+
+    state_snapshot_provider*            snapshot_provider = nullptr;
+    bool                                is_p2p_enabled = true;
 };
 
 struct write_request_visitor
@@ -288,6 +330,248 @@ void chain_plugin_impl::stop_write_processing()
    write_processor_thread.reset();
 }
 
+bool chain_plugin_impl::start_replay_processing( synchronization_type& on_sync )
+{
+  bool replay_is_last_operation = replay_blockchain();
+
+  if( replay_is_last_operation )
+  {
+    if( !appbase::app().is_interrupt_request() )
+    {
+      /*
+        Triggering artifical signal.
+        Whole application should be closed in identical way, as if it was closed by user.
+        This case occurs only when `exit-after-replay` switch is used.
+      */
+      appbase::app().generate_interrupt_request();
+    }
+  }
+  else
+  {
+    //if `stop_replay_at` > 0 stay in API node context( without p2p connections )
+    if( stop_replay_at > 0 )
+      is_p2p_enabled = false;
+  }
+
+  return replay_is_last_operation;
+}
+
+void chain_plugin_impl::initial_settings()
+{
+  if( statsd_on_replay )
+  {
+    auto statsd = appbase::app().find_plugin< crea::plugins::statsd::statsd_plugin >();
+    if( statsd != nullptr )
+    {
+      statsd->start_logging();
+    }
+  }
+
+  ilog( "Starting chain with shared_file_size: ${n} bytes", ("n", shared_memory_size) );
+
+  if(resync)
+  {
+    wlog("resync requested: deleting block log and shared memory");
+    db.wipe( app().data_dir() / "blockchain", shared_memory_dir, true );
+  }
+
+  db.set_flush_interval( flush_interval );
+  db.add_checkpoints( loaded_checkpoints );
+  db.set_require_locking( check_locks );
+
+  const auto& abstract_index_cntr = db.get_abstract_index_cntr();
+
+  get_indexes_memory_details = [ this, &abstract_index_cntr ]
+    (index_memory_details_cntr_t& index_memory_details_cntr, bool onlyStaticInfo)
+  {
+    if( dump_memory_details == false )
+      return;
+
+    for (auto idx : abstract_index_cntr)
+    {
+      auto info = idx->get_statistics(onlyStaticInfo);
+      index_memory_details_cntr.emplace_back(std::move(info._value_type_name), info._item_count,
+        info._item_sizeof, info._item_additional_allocation, info._additional_container_allocation);
+    }
+  };
+
+  fc::variant database_config;
+
+#ifdef ENABLE_MIRA
+  try
+  {
+    database_config = fc::json::from_file( database_cfg, fc::json::strict_parser );
+  }
+  catch ( const std::exception& e )
+  {
+    elog( "Error while parsing database configuration: ${e}", ("e", e.what()) );
+    exit( EXIT_FAILURE );
+  }
+  catch ( const fc::exception& e )
+  {
+    elog( "Error while parsing database configuration: ${e}", ("e", e.what()) );
+    exit( EXIT_FAILURE );
+  }
+#endif
+
+  db_open_args.data_dir = app().data_dir() / "blockchain";
+  db_open_args.shared_mem_dir = shared_memory_dir;
+  db_open_args.initial_supply = CREA_INIT_SUPPLY;
+  db_open_args.cbd_initial_supply = CREA_CBD_INIT_SUPPLY;
+  db_open_args.shared_file_size = shared_memory_size;
+  db_open_args.shared_file_full_threshold = shared_file_full_threshold;
+  db_open_args.shared_file_scale_rate = shared_file_scale_rate;
+  db_open_args.sps_remove_threshold = sps_remove_threshold;
+  db_open_args.chainbase_flags = chainbase_flags;
+  db_open_args.do_validate_invariants = validate_invariants;
+  db_open_args.stop_replay_at = stop_replay_at;
+  db_open_args.exit_after_replay = exit_after_replay;
+  db_open_args.force_replay = force_replay;
+  db_open_args.benchmark_is_enabled = benchmark_is_enabled;
+  db_open_args.database_cfg = database_config;
+  db_open_args.replay_in_memory = replay_in_memory;
+  db_open_args.replay_memory_indices = replay_memory_indices;
+
+  auto benchmark_lambda = [ this ] ( uint32_t current_block_number,
+    const chainbase::database::abstract_index_cntr_t& abstract_index_cntr )
+  {
+    if( current_block_number == 0 ) // initial call
+    {
+      typedef crea::utilities::benchmark_dumper::database_object_sizeof_cntr_t database_object_sizeof_cntr_t;
+      auto get_database_objects_sizeofs = [ this, &abstract_index_cntr ]
+        (database_object_sizeof_cntr_t& database_object_sizeof_cntr)
+      {
+        if ( dump_memory_details == false)
+          return;
+
+        for (auto idx : abstract_index_cntr)
+        {
+          auto info = idx->get_statistics(true);
+          database_object_sizeof_cntr.emplace_back(std::move(info._value_type_name), info._item_sizeof);
+        }
+      };
+
+      dumper.initialize( get_database_objects_sizeofs, BENCHMARK_FILE_NAME );
+      return;
+    }
+
+    const crea::utilities::benchmark_dumper::measurement& measure =
+      dumper.measure( current_block_number, get_indexes_memory_details );
+    ilog( "Performance report at block ${n}. Elapsed time: ${rt} ms (real), ${ct} ms (cpu). Memory usage: ${cm} (current), ${pm} (peak) kilobytes.",
+      ("n", current_block_number)
+      ("rt", measure.real_ms)
+      ("ct", measure.cpu_ms)
+      ("cm", measure.current_mem)
+      ("pm", measure.peak_mem) );
+  };
+
+  db_open_args.benchmark = crea::chain::TBenchmark( benchmark_interval, benchmark_lambda );
+}
+
+bool chain_plugin_impl::check_data_consistency()
+{
+  uint64_t head_block_num_origin = 0;
+  uint64_t head_block_num_state = 0;
+
+  auto _is_reindex_complete = db.is_reindex_complete( &head_block_num_origin, &head_block_num_state );
+
+  if( !_is_reindex_complete )
+  {
+    if( head_block_num_state > head_block_num_origin )
+    {
+      appbase::app().generate_interrupt_request();
+      return false;
+    }
+    if( db.get_snapshot_loaded() )
+    {
+      wlog( "Replaying has to be forced, after snapshot's loading. { \"block_log-head\": ${b1}, \"state-head\": ${b2} }", ( "b1", head_block_num_origin )( "b2", head_block_num_state ) );
+    }
+    else
+    {
+      wlog( "Replaying is not finished. Synchronization is not allowed. { \"block_log-head\": ${b1}, \"state-head\": ${b2} }", ( "b1", head_block_num_origin )( "b2", head_block_num_state ) );
+      appbase::app().generate_interrupt_request();
+      return false;
+    }
+  }
+
+  return true;
+}
+
+void chain_plugin_impl::open()
+{
+  try
+  {
+    ilog("Opening shared memory from ${path}", ("path",shared_memory_dir.generic_string()));
+
+    db.open( db_open_args );
+
+    if( dump_memory_details )
+      dumper.dump( true, get_indexes_memory_details );
+  }
+  catch( const fc::exception& e )
+  {
+    wlog( "Error opening database. If the binary or configuration has changed, replay the blockchain explicitly using `--replay-blockchain`." );
+    wlog( "If you know what you are doing you can skip this check and force open the database using `--force-open`." );
+    wlog( "WARNING: THIS MAY CORRUPT YOUR DATABASE. FORCE OPEN AT YOUR OWN RISK." );
+    wlog( " Error: ${e}", ("e", e) );
+    exit(EXIT_FAILURE);
+  }
+}
+
+bool chain_plugin_impl::replay_blockchain()
+{
+  try
+  {
+    ilog("Replaying blockchain on user request.");
+    uint32_t last_block_number = 0;
+    last_block_number = db.reindex( db_open_args );
+
+    if( benchmark_interval > 0 )
+    {
+      const crea::utilities::benchmark_dumper::measurement& total_data = dumper.dump( true, get_indexes_memory_details );
+      ilog( "Performance report (total). Blocks: ${b}. Elapsed time: ${rt} ms (real), ${ct} ms (cpu). Memory usage: ${cm} (current), ${pm} (peak) kilobytes.",
+          ("b", total_data.block_number)
+          ("rt", total_data.real_ms)
+          ("ct", total_data.cpu_ms)
+          ("cm", total_data.current_mem)
+          ("pm", total_data.peak_mem) );
+    }
+
+    if( stop_replay_at > 0 && stop_replay_at == last_block_number )
+    {
+      ilog("Stopped blockchain replaying on user request. Last applied block number: ${n}.", ("n", last_block_number));
+    }
+
+    /*
+      Returns information if the replay is last operation.
+    */
+    return appbase::app().is_interrupt_request()/*user triggered SIGINT/SIGTERM*/ || exit_after_replay/*shutdown node definitely*/;
+  } FC_CAPTURE_AND_LOG( () )
+
+  return true;
+}
+
+void chain_plugin_impl::process_snapshot()
+{
+  if( snapshot_provider != nullptr )
+    snapshot_provider->process_explicit_snapshot_requests( db_open_args );
+}
+
+void chain_plugin_impl::work( synchronization_type& on_sync )
+{
+  ilog( "Started on blockchain with ${n} blocks", ("n", db.head_block_num()) );
+
+  on_sync();
+
+  start_write_processing();
+}
+
+void chain_plugin_impl::write_default_database_config( bfs::path &p )
+{
+  ilog( "writing database configuration: ${p}", ("p", p.string()) );
+  fc::json::save_to_file( crea::utilities::default_database_configuration(), p );
+}
+
 } // detail
 
 
@@ -304,27 +588,39 @@ bfs::path chain_plugin::state_storage_dir() const
 
 void chain_plugin::set_program_options(options_description& cli, options_description& cfg)
 {
-   cfg.add_options()
-         ("shared-file-dir", bpo::value<bfs::path>()->default_value("blockchain"),
-            "the location of the chain shared memory files (absolute path or relative to application data dir)")
-         ("shared-file-size", bpo::value<string>()->default_value("54G"), "Size of the shared memory file. Default: 54G. If running a full node, increase this value to 200G.")
-         ("shared-file-full-threshold", bpo::value<uint16_t>()->default_value(0),
-            "A 2 precision percentage (0-10000) that defines the threshold for when to autoscale the shared memory file. Setting this to 0 disables autoscaling. Recommended value for consensus node is 9500 (95%). Full node is 9900 (99%)" )
-         ("shared-file-scale-rate", bpo::value<uint16_t>()->default_value(0),
-            "A 2 precision percentage (0-10000) that defines how quickly to scale the shared memory file. When autoscaling occurs the file's size will be increased by this percent. Setting this to 0 disables autoscaling. Recommended value is between 1000-2000 (10-20%)" )
-         ("checkpoint,c", bpo::value<vector<string>>()->composing(), "Pairs of [BLOCK_NUM,BLOCK_ID] that should be enforced as checkpoints.")
-         ("flush-state-interval", bpo::value<uint32_t>(),
-            "flush shared memory changes to disk every N blocks")
-         ;
-   cli.add_options()
-         ("replay-blockchain", bpo::bool_switch()->default_value(false), "clear chain database and replay all blocks" )
-         ("resync-blockchain", bpo::bool_switch()->default_value(false), "clear chain database and block log" )
-         ("stop-replay-at-block", bpo::value<uint32_t>(), "Stop and exit after reaching given block number")
-         ("advanced-benchmark", "Make profiling for every plugin.")
-         ("set-benchmark-interval", bpo::value<uint32_t>(), "Print time and memory usage every given number of blocks")
-         ("dump-memory-details", bpo::bool_switch()->default_value(false), "Dump database objects memory usage info. Use set-benchmark-interval to set dump interval.")
-         ("check-locks", bpo::bool_switch()->default_value(false), "Check correctness of chainbase locking" )
-         ("validate-database-invariants", bpo::bool_switch()->default_value(false), "Validate all supply invariants check out" )
+  cfg.add_options()
+      ("sps-remove-threshold", bpo::value<uint16_t>()->default_value( 200 ), "Maximum numbers of proposals/votes which can be removed in the same cycle")
+      ("shared-file-dir", bpo::value<bfs::path>()->default_value("blockchain"),
+        "the location of the chain shared memory files (absolute path or relative to application data dir)")
+      ("shared-file-size", bpo::value<string>()->default_value("54G"), "Size of the shared memory file. Default: 54G. If running a full node, increase this value to 200G.")
+      ("shared-file-full-threshold", bpo::value<uint16_t>()->default_value(0),
+        "A 2 precision percentage (0-10000) that defines the threshold for when to autoscale the shared memory file. Setting this to 0 disables autoscaling. Recommended value for consensus node is 9500 (95%). Full node is 9900 (99%)" )
+      ("shared-file-scale-rate", bpo::value<uint16_t>()->default_value(0),
+        "A 2 precision percentage (0-10000) that defines how quickly to scale the shared memory file. When autoscaling occurs the file's size will be increased by this percent. Setting this to 0 disables autoscaling. Recommended value is between 1000-2000 (10-20%)" )
+      ("checkpoint,c", bpo::value<vector<string>>()->composing(), "Pairs of [BLOCK_NUM,BLOCK_ID] that should be enforced as checkpoints.")
+      ("flush-state-interval", bpo::value<uint32_t>(),
+        "flush shared memory changes to disk every N blocks")
+#ifdef ENABLE_MIRA
+      ("memory-replay-indices", bpo::value<vector<string>>()->multitoken()->composing(), "Specify which indices should be in memory during replay")
+#endif
+      ;
+  cli.add_options()
+      ("sps-remove-threshold", bpo::value<uint16_t>()->default_value( 200 ), "Maximum numbers of proposals/votes which can be removed in the same cycle")
+      ("replay-blockchain", bpo::bool_switch()->default_value(false), "clear chain database and replay all blocks" )
+      ("force-open", bpo::bool_switch()->default_value(false), "force open the database, skipping the environment check" )
+      ("resync-blockchain", bpo::bool_switch()->default_value(false), "clear chain database and block log" )
+      ("stop-replay-at-block", bpo::value<uint32_t>(), "Stop after reaching given block number")
+      ("exit-after-replay", bpo::bool_switch()->default_value(false), "Exit after reaching given block number")
+      ("force-replay", bpo::bool_switch()->default_value(false), "Before replaying clean all old files")
+      ("advanced-benchmark", "Make profiling for every plugin.")
+      ("set-benchmark-interval", bpo::value<uint32_t>(), "Print time and memory usage every given number of blocks")
+      ("dump-memory-details", bpo::bool_switch()->default_value(false), "Dump database objects memory usage info. Use set-benchmark-interval to set dump interval.")
+      ("check-locks", bpo::bool_switch()->default_value(false), "Check correctness of chainbase locking" )
+      ("validate-database-invariants", bpo::bool_switch()->default_value(false), "Validate all supply invariants check out" )
+#ifdef ENABLE_MIRA
+      ("database-cfg", bpo::value<bfs::path>()->default_value("database.cfg"), "The database configuration file location")
+      ("memory-replay,m", bpo::bool_switch()->default_value(false), "Replay with state in memory instead of on disk")
+#endif
 #ifdef IS_TEST_NET
          ("chain-id", bpo::value< std::string >()->default_value( CREA_CHAIN_ID ), "chain ID to connect to")
 #endif
@@ -351,19 +647,24 @@ void chain_plugin::plugin_initialize(const variables_map& options) {
    if( options.count( "shared-file-scale-rate" ) )
       my->shared_file_scale_rate = options.at( "shared-file-scale-rate" ).as< uint16_t >();
 
-   my->replay              = options.at( "replay-blockchain").as<bool>();
-   my->resync              = options.at( "resync-blockchain").as<bool>();
-   my->stop_replay_at      =
-      options.count( "stop-replay-at-block" ) ? options.at( "stop-replay-at-block" ).as<uint32_t>() : 0;
-   my->benchmark_interval  =
-      options.count( "set-benchmark-interval" ) ? options.at( "set-benchmark-interval" ).as<uint32_t>() : 0;
-   my->check_locks         = options.at( "check-locks" ).as< bool >();
-   my->validate_invariants = options.at( "validate-database-invariants" ).as<bool>();
-   my->dump_memory_details = options.at( "dump-memory-details" ).as<bool>();
-   if( options.count( "flush-state-interval" ) )
-      my->flush_interval = options.at( "flush-state-interval" ).as<uint32_t>();
-   else
-      my->flush_interval = 10000;
+  my->sps_remove_threshold = options.at( "sps-remove-threshold" ).as< uint16_t >();
+
+  my->chainbase_flags |= options.at( "force-open" ).as< bool >() ? chainbase::skip_env_check : chainbase::skip_nothing;
+
+  my->replay              = options.at( "replay-blockchain").as<bool>();
+  my->resync              = options.at( "resync-blockchain").as<bool>();
+  my->stop_replay_at      = options.count( "stop-replay-at-block" ) ? options.at( "stop-replay-at-block" ).as<uint32_t>() : 0;
+  my->exit_after_replay   = options.count( "exit-after-replay" ) ? options.at( "exit-after-replay" ).as<bool>() : false;
+  my->force_replay        = options.count( "force-replay" ) ? options.at( "force-replay" ).as<bool>() : false;
+  my->benchmark_interval  =
+    options.count( "set-benchmark-interval" ) ? options.at( "set-benchmark-interval" ).as<uint32_t>() : 0;
+  my->check_locks         = options.at( "check-locks" ).as< bool >();
+  my->validate_invariants = options.at( "validate-database-invariants" ).as<bool>();
+  my->dump_memory_details = options.at( "dump-memory-details" ).as<bool>();
+  if( options.count( "flush-state-interval" ) )
+    my->flush_interval = options.at( "flush-state-interval" ).as<uint32_t>();
+  else
+    my->flush_interval = 10000;
 
    if(options.count("checkpoint"))
    {
@@ -378,10 +679,33 @@ void chain_plugin::plugin_initialize(const variables_map& options) {
 
    my->benchmark_is_enabled = (options.count( "advanced-benchmark" ) != 0);
 
-   if( options.count( "statsd-record-on-replay" ) )
-   {
-      my->statsd_on_replay = options.at( "statsd-record-on-replay" ).as< bool >();
-   }
+  if( options.count( "statsd-record-on-replay" ) )
+  {
+    my->statsd_on_replay = options.at( "statsd-record-on-replay" ).as< bool >();
+  }
+#ifdef ENABLE_MIRA
+  my->database_cfg = options.at( "database-cfg" ).as< bfs::path >();
+
+  if( my->database_cfg.is_relative() )
+    my->database_cfg = app().data_dir() / my->database_cfg;
+
+  if( !bfs::exists( my->database_cfg ) )
+  {
+    my->write_default_database_config( my->database_cfg );
+  }
+
+  my->replay_in_memory = options.at( "memory-replay" ).as< bool >();
+  if ( options.count( "memory-replay-indices" ) )
+  {
+    std::vector<std::string> indices = options.at( "memory-replay-indices" ).as< vector< string > >();
+    for ( auto& element : indices )
+    {
+      std::vector< std::string > tmp;
+      boost::split( tmp, element, boost::is_any_of("\t ") );
+      my->replay_memory_indices.insert( my->replay_memory_indices.end(), tmp.begin(), tmp.end() );
+    }
+  }
+#endif
 
 #ifdef IS_TEST_NET
    if( options.count( "chain-id" ) )
@@ -400,143 +724,51 @@ void chain_plugin::plugin_initialize(const variables_map& options) {
 #endif
 }
 
-#define BENCHMARK_FILE_NAME "replay_benchmark.json"
-
 void chain_plugin::plugin_startup()
 {
-   if( my->statsd_on_replay )
-   {
-      auto statsd = appbase::app().find_plugin< crea::plugins::statsd::statsd_plugin >();
-      if( statsd != nullptr )
+  ilog("Chain plugin initialization...");
+
+  my->initial_settings();
+
+  ilog("Database opening...");
+  my->open();
+
+  ilog("Snapshot processing...");
+  my->process_snapshot();
+
+  if( my->replay )
+  {
+    ilog("Replaying...");
+    if( !my->start_replay_processing( on_sync ) )
+    {
+      ilog("P2P enabling after replaying...");
+      my->work( on_sync );
+    }
+  }
+  else
+  {
+    ilog("Consistency data checking...");
+    if( my->check_data_consistency() )
+    {
+      if( my->db.get_snapshot_loaded() )
       {
-         statsd->start_logging();
+        ilog("Replaying...");
+        //Replaying is forced, because after snapshot loading, node should work in synchronization mode.
+        if( !my->start_replay_processing( on_sync ) )
+        {
+          ilog("P2P enabling after replaying...");
+          my->work( on_sync );
+        }
       }
-   }
-
-   ilog( "Starting chain with shared_file_size: ${n} bytes", ("n", my->shared_memory_size) );
-
-   if(my->resync)
-   {
-      wlog("resync requested: deleting block log and shared memory");
-      my->db.wipe( app().data_dir() / "blockchain", my->shared_memory_dir, true );
-   }
-
-   my->db.set_flush_interval( my->flush_interval );
-   my->db.add_checkpoints( my->loaded_checkpoints );
-   my->db.set_require_locking( my->check_locks );
-
-   bool dump_memory_details = my->dump_memory_details;
-   crea::utilities::benchmark_dumper dumper;
-
-   const auto& abstract_index_cntr = my->db.get_abstract_index_cntr();
-
-   typedef crea::utilities::benchmark_dumper::index_memory_details_cntr_t index_memory_details_cntr_t;
-   auto get_indexes_memory_details = [dump_memory_details, &abstract_index_cntr]
-      (index_memory_details_cntr_t& index_memory_details_cntr, bool onlyStaticInfo)
-   {
-      if (dump_memory_details == false)
-         return;
-
-      for (auto idx : abstract_index_cntr)
+      else
       {
-         auto info = idx->get_statistics(onlyStaticInfo);
-         index_memory_details_cntr.emplace_back(std::move(info._value_type_name), info._item_count,
-            info._item_sizeof, info._item_additional_allocation, info._additional_container_allocation);
+        ilog("P2P enabling...");
+        my->work( on_sync );
       }
-   };
+    }
+  }
 
-   database::open_args db_open_args;
-   db_open_args.data_dir = app().data_dir() / "blockchain";
-   db_open_args.shared_mem_dir = my->shared_memory_dir;
-   db_open_args.initial_supply = CREA_INIT_SUPPLY;
-   db_open_args.shared_file_size = my->shared_memory_size;
-   db_open_args.shared_file_full_threshold = my->shared_file_full_threshold;
-   db_open_args.shared_file_scale_rate = my->shared_file_scale_rate;
-   db_open_args.do_validate_invariants = my->validate_invariants;
-   db_open_args.stop_replay_at = my->stop_replay_at;
-   db_open_args.benchmark_is_enabled = my->benchmark_is_enabled;
-
-   auto benchmark_lambda = [&dumper, &get_indexes_memory_details, dump_memory_details] ( uint32_t current_block_number,
-      const chainbase::database::abstract_index_cntr_t& abstract_index_cntr )
-   {
-      if( current_block_number == 0 ) // initial call
-      {
-         typedef crea::utilities::benchmark_dumper::database_object_sizeof_cntr_t database_object_sizeof_cntr_t;
-         auto get_database_objects_sizeofs = [dump_memory_details, &abstract_index_cntr]
-            (database_object_sizeof_cntr_t& database_object_sizeof_cntr)
-         {
-            if (dump_memory_details == false)
-               return;
-
-            for (auto idx : abstract_index_cntr)
-            {
-               auto info = idx->get_statistics(true);
-               database_object_sizeof_cntr.emplace_back(std::move(info._value_type_name), info._item_sizeof);
-            }
-         };
-
-         dumper.initialize(get_database_objects_sizeofs, BENCHMARK_FILE_NAME);
-         return;
-      }
-
-      const crea::utilities::benchmark_dumper::measurement& measure =
-         dumper.measure(current_block_number, get_indexes_memory_details);
-      ilog( "Performance report at block ${n}. Elapsed time: ${rt} ms (real), ${ct} ms (cpu). Memory usage: ${cm} (current), ${pm} (peak) kilobytes.",
-         ("n", current_block_number)
-         ("rt", measure.real_ms)
-         ("ct", measure.cpu_ms)
-         ("cm", measure.current_mem)
-         ("pm", measure.peak_mem) );
-   };
-
-   if(my->replay)
-   {
-      ilog("Replaying blockchain on user request.");
-      uint32_t last_block_number = 0;
-      db_open_args.benchmark = crea::chain::database::TBenchmark(my->benchmark_interval, benchmark_lambda);
-      last_block_number = my->db.reindex( db_open_args );
-
-      if( my->benchmark_interval > 0 )
-      {
-         const crea::utilities::benchmark_dumper::measurement& total_data = dumper.dump(true, get_indexes_memory_details);
-         ilog( "Performance report (total). Blocks: ${b}. Elapsed time: ${rt} ms (real), ${ct} ms (cpu). Memory usage: ${cm} (current), ${pm} (peak) kilobytes.",
-               ("b", total_data.block_number)
-               ("rt", total_data.real_ms)
-               ("ct", total_data.cpu_ms)
-               ("cm", total_data.current_mem)
-               ("pm", total_data.peak_mem) );
-      }
-
-      if( my->stop_replay_at > 0 && my->stop_replay_at == last_block_number )
-      {
-         ilog("Stopped blockchain replaying on user request. Last applied block number: ${n}.", ("n", last_block_number));
-         exit(EXIT_SUCCESS);
-      }
-   }
-   else
-   {
-      db_open_args.benchmark = crea::chain::database::TBenchmark(dump_memory_details, benchmark_lambda);
-
-      try
-      {
-         ilog("Opening shared memory from ${path}", ("path",my->shared_memory_dir.generic_string()));
-
-         my->db.open( db_open_args );
-
-         if( dump_memory_details )
-            dumper.dump( true, get_indexes_memory_details );
-      }
-      catch( const fc::exception& e )
-      {
-         wlog("Error opening database. If the binary or configuration has changed, replay the blockchain explicitly. Error: ${e}", ("e", e));
-         exit(EXIT_FAILURE);
-      }
-   }
-
-   ilog( "Started on blockchain with ${n} blocks", ("n", my->db.head_block_num()) );
-   on_sync();
-
-   my->start_write_processing();
+  ilog("Chain plugin initialization finished...");
 }
 
 void chain_plugin::plugin_shutdown()
@@ -546,6 +778,11 @@ void chain_plugin::plugin_shutdown()
    my->db.close();
    ilog("database closed successfully");
 }
+
+void chain_plugin::register_snapshot_provider(state_snapshot_provider& provider)
+  {
+  my->register_snapshot_provider(provider);
+  }
 
 void chain_plugin::report_state_options( const string& plugin_name, const fc::variant_object& opts )
 {
@@ -656,6 +893,11 @@ void chain_plugin::register_block_generator( const std::string& plugin_name, std
 
    my->block_generator_registrant = plugin_name;
    my->block_generator = block_producer;
+}
+
+bool chain_plugin::is_p2p_enabled() const
+{
+  return my->is_p2p_enabled;
 }
 
 } } } // namespace crea::plugis::chain::chain_apis

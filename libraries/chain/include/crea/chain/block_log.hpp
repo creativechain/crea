@@ -4,11 +4,11 @@
 
 namespace crea { namespace chain {
 
-   using namespace crea::protocol;
+  using namespace crea::protocol;
 
-   namespace detail { class block_log_impl; }
+  namespace detail { class block_log_impl; }
 
-   /* The block log is an external append only log of the blocks. Blocks should only be written
+  /* The block log is an external append only log of the blocks. Blocks should only be written
     * to the log after they irreverisble as the log is append only. The log is a doubly linked
     * list of blocks. There is a secondary index file of only block positions that enables O(1)
     * random access lookup by block number.
@@ -33,42 +33,45 @@ namespace crea { namespace chain {
     * linear scan of the main file.
     */
 
-   class block_log {
-      public:
-         block_log();
-         ~block_log();
+  class block_log {
+    public:
+      block_log();
+      ~block_log();
 
-         void open( const fc::path& file );
-         void close();
-         bool is_open()const;
+      void open( const fc::path& file );
 
-         uint64_t append( const signed_block& b );
-         void flush();
-         std::pair< signed_block, uint64_t > read_block( uint64_t file_pos )const;
-         optional< signed_block > read_block_by_num( uint32_t block_num )const;
+      void rewrite(const fc::path& inputFile, const fc::path& outputFile, uint32_t maxBlockNo);
 
-         /**
-          * Return offset of block in file, or block_log::npos if it does not exist.
-          */
-         uint64_t get_block_pos( uint32_t block_num ) const;
-         signed_block read_head()const;
-         const optional< signed_block >& head()const;
+      void close();
+      bool is_open()const;
 
-         /*
-          * Used by the database to skip locking when reindexing
-          * APIs don't work at this point, so there is no danger.
-          */
-         void set_locking( bool );
+      uint64_t append( const signed_block& b );
+      void flush();
+      std::pair< signed_block, uint64_t > read_block( uint64_t file_pos )const;
+      optional< std::pair< signed_block, uint64_t > > read_block_by_num( uint32_t block_num )const;
 
-         static const uint64_t npos = std::numeric_limits<uint64_t>::max();
+      /**
+        * Return offset of block in file, or block_log::npos if it does not exist.
+        */
+      uint64_t get_block_pos( uint32_t block_num ) const;
+      signed_block read_head()const;
+      const optional< signed_block >& head()const;
 
-      private:
-         void construct_index();
+      /*
+        * Used by the database to skip locking when reindexing
+        * APIs don't work at this point, so there is no danger.
+        */
+      void set_locking( bool );
 
-         std::pair< signed_block, uint64_t > read_block_helper( uint64_t file_pos )const;
-         uint64_t get_block_pos_helper( uint32_t block_num ) const;
+      static const uint64_t npos = std::numeric_limits<uint64_t>::max();
 
-         std::unique_ptr<detail::block_log_impl> my;
-   };
+    private:
+      void construct_index( bool resume = false, uint64_t index_pos = 0 );
+
+      std::pair< signed_block, uint64_t > read_block_helper( uint64_t file_pos )const;
+      uint64_t get_block_pos_helper( uint32_t block_num ) const;
+
+      std::unique_ptr<detail::block_log_impl> my;
+  };
 
 } }

@@ -9,7 +9,7 @@
 #include <string>
 
 namespace crea { namespace app {
-   struct api_context;
+  struct api_context;
 } }
 
 namespace crea { namespace plugin { namespace auth_util {
@@ -20,42 +20,42 @@ class auth_util_api_impl;
 
 struct check_authority_signature_params
 {
-   std::string                          account_name;
-   std::string                          level;
-   fc::sha256                           dig;
-   std::vector< protocol::signature_type > sigs;
+  std::string                          account_name;
+  std::string                          level;
+  fc::sha256                           dig;
+  std::vector< protocol::signature_type > sigs;
 };
 
 struct check_authority_signature_result
 {
-   std::vector< protocol::public_key_type > keys;
+  std::vector< protocol::public_key_type > keys;
 };
 
 class auth_util_api
 {
-   public:
-      auth_util_api( const crea::app::api_context& ctx );
+  public:
+    auth_util_api( const crea::app::api_context& ctx );
 
-      void on_api_startup();
+    void on_api_startup();
 
-      check_authority_signature_result check_authority_signature( check_authority_signature_params args );
+    check_authority_signature_result check_authority_signature( check_authority_signature_params args );
 
-   private:
-      std::shared_ptr< detail::auth_util_api_impl > my;
+  private:
+    std::shared_ptr< detail::auth_util_api_impl > my;
 };
 
 } } }
 
 FC_REFLECT( crea::plugin::auth_util::check_authority_signature_params,
-   (account_name)
-   (level)
-   (dig)
-   (sigs)
-   )
+  (account_name)
+  (level)
+  (dig)
+  (sigs)
+  )
 FC_REFLECT( crea::plugin::auth_util::check_authority_signature_result,
-   (keys)
-   )
+  (keys)
+  )
 
 FC_API( crea::plugin::auth_util::auth_util_api,
-   (check_authority_signature)
-   )
+  (check_authority_signature)
+  )

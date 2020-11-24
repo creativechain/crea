@@ -2,11 +2,11 @@
 
 #include <crea/protocol/asset.hpp>
 
-#define CREA_SYMBOL_LEGACY_SER_1   (uint64_t(1) | (CREA_SYMBOL_U64 << 8))
-#define CREA_SYMBOL_LEGACY_SER_2   (uint64_t(2) | (CREA_SYMBOL_U64 << 8))
-#define CREA_SYMBOL_LEGACY_SER_3   (uint64_t(5) | (CREA_SYMBOL_U64 << 8))
-#define CREA_SYMBOL_LEGACY_SER_4   (uint64_t(3) | (uint64_t('0') << 8) | (uint64_t('.') << 16) | (uint64_t('0') << 24) | (uint64_t('0') << 32) | (uint64_t('1') << 40))
-#define CREA_SYMBOL_LEGACY_SER_5   (uint64_t(3) | (uint64_t('6') << 8) | (uint64_t('.') << 16) | (uint64_t('0') << 24) | (uint64_t('0') << 32) | (uint64_t('0') << 40))
+#define OBSOLETE_SYMBOL_LEGACY_SER_1   (uint64_t(1) | (OBSOLETE_SYMBOL_U64 << 8))
+#define OBSOLETE_SYMBOL_LEGACY_SER_2   (uint64_t(2) | (OBSOLETE_SYMBOL_U64 << 8))
+#define OBSOLETE_SYMBOL_LEGACY_SER_3   (uint64_t(5) | (OBSOLETE_SYMBOL_U64 << 8))
+#define OBSOLETE_SYMBOL_LEGACY_SER_4   (uint64_t(3) | (uint64_t('0') << 8) | (uint64_t('.') << 16) | (uint64_t('0') << 24) | (uint64_t('0') << 32) | (uint64_t('1') << 40))
+#define OBSOLETE_SYMBOL_LEGACY_SER_5   (uint64_t(3) | (uint64_t('6') << 8) | (uint64_t('.') << 16) | (uint64_t('0') << 24) | (uint64_t('0') << 32) | (uint64_t('0') << 40))
 
 namespace crea { namespace protocol {
 
@@ -15,10 +15,10 @@ class legacy_crea_asset_symbol_type
    public:
       legacy_crea_asset_symbol_type() {}
 
-      bool is_canon()const
-      {   return ( ser == CREA_SYMBOL_SER );    }
+    bool is_canon()const
+    {   return ( ser == OBSOLETE_SYMBOL_SER );    }
 
-      uint64_t ser = CREA_SYMBOL_SER;
+    uint64_t ser = OBSOLETE_SYMBOL_SER;
 };
 
 struct legacy_crea_asset
@@ -26,15 +26,15 @@ struct legacy_crea_asset
    public:
       legacy_crea_asset() {}
 
-      template< bool force_canon >
-      asset to_asset()const
+    template< bool force_canon >
+    asset to_asset()const
+    {
+      if( force_canon )
       {
-         if( force_canon )
-         {
-            FC_ASSERT( symbol.is_canon(), "Must use canonical CREA symbol serialization" );
-         }
-         return asset( amount, CREA_SYMBOL );
+        FC_ASSERT( symbol.is_canon(), "Must use canonical CREA symbol serialization" );
       }
+      return asset( amount, CREA_SYMBOL );
+    }
 
       static legacy_crea_asset from_amount( share_type amount )
       {
@@ -60,20 +60,20 @@ namespace fc { namespace raw {
 template< typename Stream >
 inline void pack( Stream& s, const crea::protocol::legacy_crea_asset_symbol_type& sym )
 {
-   switch( sym.ser )
-   {
-      case CREA_SYMBOL_LEGACY_SER_1:
-      case CREA_SYMBOL_LEGACY_SER_2:
-      case CREA_SYMBOL_LEGACY_SER_3:
-      case CREA_SYMBOL_LEGACY_SER_4:
-      case CREA_SYMBOL_LEGACY_SER_5:
-         wlog( "pack legacy serialization ${s}", ("s", sym.ser) );
-      case CREA_SYMBOL_SER:
-         pack( s, sym.ser );
-         break;
-      default:
-         FC_ASSERT( false, "Cannot serialize legacy symbol ${s}", ("s", sym.ser) );
-   }
+  switch( sym.ser )
+  {
+    case OBSOLETE_SYMBOL_LEGACY_SER_1:
+    case OBSOLETE_SYMBOL_LEGACY_SER_2:
+    case OBSOLETE_SYMBOL_LEGACY_SER_3:
+    case OBSOLETE_SYMBOL_LEGACY_SER_4:
+    case OBSOLETE_SYMBOL_LEGACY_SER_5:
+      wlog( "pack legacy serialization ${s}", ("s", sym.ser) );
+    case OBSOLETE_SYMBOL_SER:
+      pack( s, sym.ser );
+      break;
+    default:
+      FC_ASSERT( false, "Cannot serialize legacy symbol ${s}", ("s", sym.ser) );
+  }
 }
 
 template< typename Stream >
@@ -90,21 +90,21 @@ inline void unpack( Stream& s, crea::protocol::legacy_crea_asset_symbol_type& sy
    depth++;
    uint64_t ser = 0;
 
-   fc::raw::unpack( s, ser, depth );
-   switch( ser )
-   {
-      case CREA_SYMBOL_LEGACY_SER_1:
-      case CREA_SYMBOL_LEGACY_SER_2:
-      case CREA_SYMBOL_LEGACY_SER_3:
-      case CREA_SYMBOL_LEGACY_SER_4:
-      case CREA_SYMBOL_LEGACY_SER_5:
-         wlog( "unpack legacy serialization ${s}", ("s", ser) );
-      case CREA_SYMBOL_SER:
-         sym.ser = ser;
-         break;
-      default:
-         FC_ASSERT( false, "Cannot deserialize legacy symbol ${s}", ("s", ser) );
-   }
+  fc::raw::unpack( s, ser, depth );
+  switch( ser )
+  {
+    case OBSOLETE_SYMBOL_LEGACY_SER_1:
+    case OBSOLETE_SYMBOL_LEGACY_SER_2:
+    case OBSOLETE_SYMBOL_LEGACY_SER_3:
+    case OBSOLETE_SYMBOL_LEGACY_SER_4:
+    case OBSOLETE_SYMBOL_LEGACY_SER_5:
+      wlog( "unpack legacy serialization ${s}", ("s", ser) );
+    case OBSOLETE_SYMBOL_SER:
+      sym.ser = ser;
+      break;
+    default:
+      FC_ASSERT( false, "Cannot deserialize legacy symbol ${s}", ("s", ser) );
+  }
 }
 
 } // fc::raw

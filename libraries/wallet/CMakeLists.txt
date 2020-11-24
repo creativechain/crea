@@ -24,11 +24,6 @@ else()
                       DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/api_documentation_standin.cpp )
 endif()
 
-# no perl and doxygen, generate the best docs we can at runtime from reflection
-#[[add_custom_command( OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/api_documentation.cpp
-        COMMAND ${CMAKE_COMMAND} -E copy_if_different ${CMAKE_CURRENT_SOURCE_DIR}/api_documentation_standin.cpp ${CMAKE_CURRENT_BINARY_DIR}/api_documentation.cpp
-        DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/api_documentation_standin.cpp )]]
-
 add_library( crea_wallet wallet.cpp remote_node_api.cpp ${CMAKE_CURRENT_BINARY_DIR}/api_documentation.cpp ${HEADERS} )
 target_link_libraries( crea_wallet PRIVATE graphene_net crea_chain crea_protocol crea_utilities fc condenser_api_plugin ${CMAKE_DL_LIBS} ${PLATFORM_SPECIFIC_LIBS} )
 target_include_directories( crea_wallet PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/include" )

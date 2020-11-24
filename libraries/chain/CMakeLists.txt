@@ -8,6 +8,8 @@ add_library( crea_chain
              index.cpp
 
              smt_evaluator.cpp
+             sps_evaluator.cpp
+
              smt_objects/smt_market_maker.cpp
              smt_objects/nai_pool.cpp
              crea_evaluator.cpp
@@ -28,6 +30,10 @@ add_library( crea_chain
              util/impacted.cpp
              util/advanced_benchmark_dumper.cpp
              util/smt_token.cpp
+             util/sps_processor.cpp
+             util/sps_helper.cpp
+             util/hf23_helper.cpp
+             util/delayed_voting.cpp
 
              ${HEADERS}
            )

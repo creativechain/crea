@@ -1,7 +1,9 @@
 #pragma once
+#include <crea/chain/crea_fwd.hpp>
 #include <appbase/application.hpp>
 
 #include <crea/plugins/json_rpc/json_rpc_plugin.hpp>
+#include <crea/plugins/chain/chain_plugin.hpp>
 
 #include <boost/thread.hpp>
 #include <boost/container/vector.hpp>
@@ -29,23 +31,23 @@ using namespace appbase;
   */
 class webserver_plugin : public appbase::plugin< webserver_plugin >
 {
-   public:
-      webserver_plugin();
-      virtual ~webserver_plugin();
+  public:
+    webserver_plugin();
+    virtual ~webserver_plugin();
 
-      APPBASE_PLUGIN_REQUIRES( (plugins::json_rpc::json_rpc_plugin) );
+    APPBASE_PLUGIN_REQUIRES( (crea::plugins::chain::chain_plugin)(plugins::json_rpc::json_rpc_plugin) );
 
-      static const std::string& name() { static std::string name = CREA_WEBSERVER_PLUGIN_NAME; return name; }
+    static const std::string& name() { static std::string name = CREA_WEBSERVER_PLUGIN_NAME; return name; }
 
-      virtual void set_program_options(options_description&, options_description& cfg) override;
+    virtual void set_program_options(options_description&, options_description& cfg) override;
 
-   protected:
-      virtual void plugin_initialize(const variables_map& options) override;
-      virtual void plugin_startup() override;
-      virtual void plugin_shutdown() override;
+  protected:
+    virtual void plugin_initialize(const variables_map& options) override;
+    virtual void plugin_startup() override;
+    virtual void plugin_shutdown() override;
 
-   private:
-      std::unique_ptr< detail::webserver_plugin_impl > my;
+  private:
+    std::unique_ptr< detail::webserver_plugin_impl > my;
 };
 
 } } } // crea::plugins::webserver

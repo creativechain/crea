@@ -187,34 +187,34 @@ void account_by_key_plugin_impl::update_key_lookup( const account_authority_obje
    for( const auto& item : a.posting.key_auths )
       new_keys.insert( item.first );
 
-   // For each key that needs a lookup
-   for( const auto& key : new_keys )
-   {
-      // If the key was not in the authority, add it to the lookup
-      if( cached_keys.find( key ) == cached_keys.end() )
-      {
-         auto lookup_itr = _db.find< key_lookup_object, by_key >( std::make_tuple( key, a.account ) );
+  // For each key that needs a lookup
+  for( const auto& key : new_keys )
+  {
+    // If the key was not in the authority, add it to the lookup
+    if( cached_keys.find( key ) == cached_keys.end() )
+    {
+      auto lookup_itr = _db.find< key_lookup_object, by_key >( boost::make_tuple( key, a.account ) );
 
-         if( lookup_itr == nullptr )
-         {
-            _db.create< key_lookup_object >( [&]( key_lookup_object& o )
-            {
-               o.key = key;
-               o.account = a.account;
-            });
-         }
-      }
-      else
+      if( lookup_itr == nullptr )
       {
-         // If the key was already in the auths, remove it from the set so we don't delete it
-         cached_keys.erase( key );
+        _db.create< key_lookup_object >( [&]( key_lookup_object& o )
+        {
+          o.key = key;
+          o.account = a.account;
+        });
       }
-   }
+    }
+    else
+    {
+      // If the key was already in the auths, remove it from the set so we don't delete it
+      cached_keys.erase( key );
+    }
+  }
 
-   // Loop over the keys that were in authority but are no longer and remove them from the lookup
-   for( const auto& key : cached_keys )
-   {
-      auto lookup_itr = _db.find< key_lookup_object, by_key >( std::make_tuple( key, a.account ) );
+  // Loop over the keys that were in authority but are no longer and remove them from the lookup
+  for( const auto& key : cached_keys )
+  {
+    auto lookup_itr = _db.find< key_lookup_object, by_key >( boost::make_tuple( key, a.account ) );
 
       if( lookup_itr != nullptr )
       {
@@ -253,7 +253,7 @@ void account_by_key_plugin::plugin_initialize( const boost::program_options::var
       my->_pre_apply_operation_conn = db.add_pre_apply_operation_handler( [&]( const operation_notification& note ){ my->on_pre_apply_operation( note ); }, *this, 0 );
       my->_post_apply_operation_conn = db.add_post_apply_operation_handler( [&]( const operation_notification& note ){ my->on_post_apply_operation( note ); }, *this, 0 );
 
-      add_plugin_index< key_lookup_index >(db);
+    CREA_ADD_PLUGIN_INDEX(db, key_lookup_index);
 
       appbase::app().get_plugin< chain::chain_plugin >().report_state_options( name(), fc::variant_object() );
    }

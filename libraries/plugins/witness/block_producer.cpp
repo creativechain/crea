@@ -69,9 +69,9 @@ chain::signed_block block_producer::_generate_block(fc::time_point_sec when, con
       FC_ASSERT( fc::raw::pack_size(pending_block) <= CREA_MAX_BLOCK_SIZE );
    }
 
-   _db.push_block( pending_block, skip );
+  _db.push_block( pending_block, skip );
 
-   return pending_block;
+  return pending_block;
 }
 
 void block_producer::adjust_hardfork_version_vote(const chain::witness_object& witness, chain::signed_block& pending_block)
@@ -81,7 +81,8 @@ void block_producer::adjust_hardfork_version_vote(const chain::witness_object& w
    if( witness.running_version != CREA_BLOCKCHAIN_VERSION )
       pending_block.extensions.insert( block_header_extensions( CREA_BLOCKCHAIN_VERSION ) );
 
-   const auto& hfp = _db.get_hardfork_property_object();
+  const auto& hfp = _db.get_hardfork_property_object();
+  const auto& hf_versions = _db.get_hardfork_versions();
 
    if( hfp.current_hardfork_version < CREA_BLOCKCHAIN_VERSION // Binary is newer hardfork than has been applied
       && ( witness.hardfork_version_vote != hfp.next_hardfork || witness.hardfork_time_vote != hfp.next_hardfork_time ) ) // Witness vote does not match binary configuration
@@ -98,9 +99,9 @@ void block_producer::adjust_hardfork_version_vote(const chain::witness_object& w
 }
 
 void block_producer::apply_pending_transactions(
-        const chain::account_name_type& witness_owner,
-        fc::time_point_sec when,
-        chain::signed_block& pending_block)
+      const chain::account_name_type& witness_owner,
+      fc::time_point_sec when,
+      chain::signed_block& pending_block)
 {
    // The 4 is for the max size of the transaction vector length
    size_t total_block_size = fc::raw::pack_size( pending_block ) + 4;
@@ -141,8 +142,11 @@ void block_producer::apply_pending_transactions(
       // Only include transactions that have not expired yet for currently generating block,
       // this should clear problem transactions and allow block production to continue
 
-      if( tx.expiration < when )
-         continue;
+    if( postponed_tx_count > CREA_BLOCK_GENERATION_POSTPONED_TX_LIMIT )
+      break;
+
+    if( tx.expiration < when )
+      continue;
 
       uint64_t new_total_size = total_block_size + fc::raw::pack_size( tx );
 

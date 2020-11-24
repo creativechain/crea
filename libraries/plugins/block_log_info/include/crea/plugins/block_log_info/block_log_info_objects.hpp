@@ -16,67 +16,57 @@ using namespace crea::chain;
 
 enum block_log_info_object_types
 {
-   block_log_hash_state_object_type      = ( CREA_BLOCK_LOG_INFO_SPACE_ID << 8 )    ,
-   block_log_pending_message_object_type = ( CREA_BLOCK_LOG_INFO_SPACE_ID << 8 ) + 1,
+  block_log_hash_state_object_type      = ( CREA_BLOCK_LOG_INFO_SPACE_ID << 8 )    ,
+  block_log_pending_message_object_type = ( CREA_BLOCK_LOG_INFO_SPACE_ID << 8 ) + 1,
 };
 
 class block_log_hash_state_object : public object< block_log_hash_state_object_type, block_log_hash_state_object >
 {
-   public:
-      template< typename Constructor, typename Allocator >
-      block_log_hash_state_object( Constructor&& c, allocator< Allocator > a )
-      {
-         c( *this );
-      }
+  CHAINBASE_OBJECT( block_log_hash_state_object );
+  public:
+    CHAINBASE_DEFAULT_CONSTRUCTOR( block_log_hash_state_object )
 
-      id_type                  id;
-
-      uint64_t                 total_size = 0;
-      fc::restartable_sha256   rsha256;
-      uint64_t                 last_interval = 0;
+    uint64_t                 total_size = 0;
+    fc::restartable_sha256   rsha256;
+    uint64_t                 last_interval = 0;
 };
 
 struct block_log_message_data
 {
-   uint32_t block_num = 0;
-   uint64_t total_size = 0;
-   uint64_t current_interval = 0;
-   fc::restartable_sha256 rsha256;
+  uint32_t block_num = 0;
+  uint64_t total_size = 0;
+  uint64_t current_interval = 0;
+  fc::restartable_sha256 rsha256;
 };
 
 class block_log_pending_message_object : public object< block_log_pending_message_object_type, block_log_pending_message_object >
 {
-   public:
-      template< typename Constructor, typename Allocator >
-      block_log_pending_message_object( Constructor&& c, allocator< Allocator > a )
-      {
-         c( *this );
-      }
+  CHAINBASE_OBJECT( block_log_pending_message_object );
+  public:
+    CHAINBASE_DEFAULT_CONSTRUCTOR( block_log_pending_message_object )
 
-      id_type                  id;
-
-      block_log_message_data   data;
+    block_log_message_data   data;
 };
 
-typedef block_log_hash_state_object::id_type block_log_hash_state_id_type;
-typedef block_log_pending_message_object::id_type block_log_pending_message_id_type;
-
-using namespace boost::multi_index;
+typedef oid_ref< block_log_hash_state_object > block_log_hash_state_id_type;
+typedef oid_ref< block_log_pending_message_object > block_log_pending_message_id_type;
 
 typedef multi_index_container<
-   block_log_hash_state_object,
-   indexed_by<
-      ordered_unique< tag< by_id >, member< block_log_hash_state_object, block_log_hash_state_id_type, &block_log_hash_state_object::id > >
-   >,
-   allocator< block_log_hash_state_object >
+  block_log_hash_state_object,
+  indexed_by<
+    ordered_unique< tag< by_id >,
+      const_mem_fun< block_log_hash_state_object, block_log_hash_state_object::id_type, &block_log_hash_state_object::get_id > >
+  >,
+  allocator< block_log_hash_state_object >
 > block_log_hash_state_index;
 
 typedef multi_index_container<
-   block_log_pending_message_object,
-   indexed_by<
-      ordered_unique< tag< by_id >, member< block_log_pending_message_object, block_log_pending_message_id_type, &block_log_pending_message_object::id > >
-   >,
-   allocator< block_log_pending_message_object >
+  block_log_pending_message_object,
+  indexed_by<
+    ordered_unique< tag< by_id >,
+      const_mem_fun< block_log_pending_message_object, block_log_pending_message_object::id_type, &block_log_pending_message_object::get_id > >
+  >,
+  allocator< block_log_pending_message_object >
 > block_log_pending_message_index;
 
 } } } // crea::plugins::block_log_info

@@ -23,6 +23,7 @@ add_library( crea_protocol
 
              smt_operations.cpp
              crea_operations.cpp
+             sps_operations.cpp
              crea_required_actions.cpp
              crea_optional_actions.cpp
              types.cpp

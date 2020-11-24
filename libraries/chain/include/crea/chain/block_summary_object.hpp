@@ -3,9 +3,9 @@
 
 namespace crea { namespace chain {
 
-   using crea::protocol::block_id_type;
+  using crea::protocol::block_id_type;
 
-   /**
+  /**
     *  @brief tracks minimal information about past blocks to implement TaPOS
     *  @ingroup object
     *
@@ -14,31 +14,33 @@ namespace crea { namespace chain {
     *  so we can calculate whether the current transaction is valid and at
     *  what time it should expire.
     */
-   class block_summary_object : public object< block_summary_object_type, block_summary_object >
-   {
-      public:
-         template< typename Constructor, typename Allocator >
-         block_summary_object( Constructor&& c, allocator< Allocator > a )
-         {
-            c( *this );
-         }
+  class block_summary_object : public object< block_summary_object_type, block_summary_object >
+  {
+    CHAINBASE_OBJECT( block_summary_object );
+    public:
+      CHAINBASE_DEFAULT_CONSTRUCTOR( block_summary_object )
 
-         block_summary_object(){};
+      block_id_type  block_id;
+  };
 
-         id_type        id;
-         block_id_type  block_id;
-   };
-
-   typedef multi_index_container<
-      block_summary_object,
-      indexed_by<
-         ordered_unique< tag< by_id >,
-            member< block_summary_object, block_summary_object::id_type, &block_summary_object::id > >
-      >,
-      allocator< block_summary_object >
-   > block_summary_index;
+  typedef multi_index_container<
+    block_summary_object,
+    indexed_by<
+      ordered_unique< tag< by_id >,
+        const_mem_fun< block_summary_object, block_summary_object::id_type, &block_summary_object::get_id > >
+    >,
+    allocator< block_summary_object >
+  > block_summary_index;
 
 } } // crea::chain
+
+#ifdef ENABLE_MIRA
+namespace mira {
+
+template<> struct is_static_length< crea::chain::block_summary_object > : public boost::true_type {};
+
+} // mira
+#endif
 
 FC_REFLECT( crea::chain::block_summary_object, (id)(block_id) )
 CHAINBASE_SET_INDEX_TYPE( crea::chain::block_summary_object, crea::chain::block_summary_index )

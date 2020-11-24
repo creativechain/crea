@@ -106,22 +106,22 @@ struct operation_process
       {
          auto& comment = _db.get_comment( op.author, op.permlink );
 
-         if( comment.created == _db.head_block_time() )
-         {
-            if( comment.parent_author.length() )
-               b.replies++;
-            else
-               b.root_comments++;
-         }
-         else
-         {
-            if( comment.parent_author.length() )
-               b.reply_edits++;
-            else
-               b.root_comment_edits++;
-         }
-      });
-   }
+      if( comment.created == _db.head_block_time() )
+      {
+        if( comment.parent_author_id != CREA_ROOT_POST_PARENT_ID )
+          b.replies++;
+        else
+          b.root_comments++;
+      }
+      else
+      {
+        if( comment.parent_author_id != CREA_ROOT_POST_PARENT_ID )
+          b.reply_edits++;
+        else
+          b.root_comment_edits++;
+      }
+    });
+  }
 
    void operator()( const vote_operation& op )const
    {
@@ -132,22 +132,22 @@ struct operation_process
          auto& voter = _db.get_account( op.voter );
          auto itr = cv_idx.find( boost::make_tuple( comment.id, voter.id ) );
 
-         if( itr->num_changes )
-         {
-            if( comment.parent_author.size() )
-               b.new_reply_votes++;
-            else
-               b.new_root_votes++;
-         }
-         else
-         {
-            if( comment.parent_author.size() )
-               b.changed_reply_votes++;
-            else
-               b.changed_root_votes++;
-         }
-      });
-   }
+      if( itr->num_changes )
+      {
+        if( comment.parent_author_id != CREA_ROOT_POST_PARENT_ID )
+          b.new_reply_votes++;
+        else
+          b.new_root_votes++;
+      }
+      else
+      {
+        if( comment.parent_author_id != CREA_ROOT_POST_PARENT_ID )
+          b.changed_reply_votes++;
+        else
+          b.changed_root_votes++;
+      }
+    });
+  }
 
    void operator()( const author_reward_operation& op )const
    {
@@ -343,19 +343,19 @@ void blockchain_statistics_plugin_impl::pre_operation( const operation_notificat
          auto comment = db.get_comment( op.author, op.permlink );
          const auto& bucket = db.get(bucket_id);
 
-         db.modify( bucket, [&]( bucket_object& b )
-         {
-            if( comment.parent_author.length() )
-               b.replies_deleted++;
-            else
-               b.root_comments_deleted++;
-         });
-      }
-      else if( o.op.which() == operation::tag< withdraw_vesting_operation >::value )
+      db.modify( bucket, [&]( bucket_object& b )
       {
-         withdraw_vesting_operation op = o.op.get< withdraw_vesting_operation >();
-         auto& account = db.get_account( op.account );
-         const auto& bucket = db.get(bucket_id);
+        if( comment.parent_author != CREA_ROOT_POST_PARENT_ID )
+          b.replies_deleted++;
+        else
+          b.root_comments_deleted++;
+      });
+    }
+    else if( o.op.which() == operation::tag< withdraw_vesting_operation >::value )
+    {
+      withdraw_vesting_operation op = o.op.get< withdraw_vesting_operation >();
+      auto& account = db.get_account( op.account );
+      const auto& bucket = db.get(bucket_id);
 
          auto new_vesting_withdrawal_rate = op.vesting_shares.amount / CREA_VESTING_WITHDRAW_INTERVALS;
          if( op.vesting_shares.amount > 0 && new_vesting_withdrawal_rate == 0 )

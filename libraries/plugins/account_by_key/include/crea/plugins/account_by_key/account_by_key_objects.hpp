@@ -1,12 +1,13 @@
 #pragma once
 #include <crea/chain/crea_object_types.hpp>
 
-#include <boost/multi_index/composite_key.hpp>
-
 namespace crea { namespace plugins { namespace account_by_key {
 
 using namespace std;
 using namespace crea::chain;
+
+using crea::protocol::public_key_type;
+using crea::protocol::account_name_type;
 
 #ifndef CREA_ACCOUNT_BY_KEY_SPACE_ID
 #define CREA_ACCOUNT_BY_KEY_SPACE_ID 11
@@ -14,43 +15,36 @@ using namespace crea::chain;
 
 enum account_by_key_object_types
 {
-   key_lookup_object_type = ( CREA_ACCOUNT_BY_KEY_SPACE_ID << 8 )
+  key_lookup_object_type = ( CREA_ACCOUNT_BY_KEY_SPACE_ID << 8 )
 };
 
 class key_lookup_object : public object< key_lookup_object_type, key_lookup_object >
 {
-   public:
-      template< typename Constructor, typename Allocator >
-      key_lookup_object( Constructor&& c, allocator< Allocator > a )
-      {
-         c( *this );
-      }
+  CHAINBASE_OBJECT( key_lookup_object );
+  public:
+    CHAINBASE_DEFAULT_CONSTRUCTOR( key_lookup_object )
 
-      id_type           id;
-
-      public_key_type   key;
-      account_name_type account;
+    public_key_type   key;
+    account_name_type account;
 };
 
-typedef key_lookup_object::id_type key_lookup_id_type;
-
-
-using namespace boost::multi_index;
+typedef oid_ref< key_lookup_object > key_lookup_id_type;
 
 struct by_key;
 
 typedef multi_index_container<
-   key_lookup_object,
-   indexed_by<
-      ordered_unique< tag< by_id >, member< key_lookup_object, key_lookup_id_type, &key_lookup_object::id > >,
-      ordered_unique< tag< by_key >,
-         composite_key< key_lookup_object,
-            member< key_lookup_object, public_key_type, &key_lookup_object::key >,
-            member< key_lookup_object, account_name_type, &key_lookup_object::account >
-         >
+  key_lookup_object,
+  indexed_by<
+    ordered_unique< tag< by_id >,
+      const_mem_fun< key_lookup_object, key_lookup_object::id_type, &key_lookup_object::get_id > >,
+    ordered_unique< tag< by_key >,
+      composite_key< key_lookup_object,
+        member< key_lookup_object, public_key_type, &key_lookup_object::key >,
+        member< key_lookup_object, account_name_type, &key_lookup_object::account >
       >
-   >,
-   allocator< key_lookup_object >
+    >
+  >,
+  allocator< key_lookup_object >
 > key_lookup_index;
 
 } } } // crea::plugins::account_by_key

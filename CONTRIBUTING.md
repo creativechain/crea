@@ -22,10 +22,6 @@ This is not the place to make suggestions for product improvement (please see th
 
 Please do a keyword search to see if there is already an existing issue before opening a new one.
 
-## Creativechain.com vs. Crea Blockchain
-
-This issue tracker is only intended to track issues for the Crea blockchain. If the issue is with the Creativechain.com website, please open an issue in the [Creativechain.com Repository](https://github.com/creativechain/crea.com/).
-
 ## Pull Requests
 
 Anybody in the community is welcome and encouraged to submit pull requests with any desired changes to the platform!

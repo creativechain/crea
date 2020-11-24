@@ -62,23 +62,17 @@ Some possible sources of inaccuracy, the direction and estimated relative sizes 
 
 int main( int argc, char** argv, char** envp )
 {
-   std::vector< share_type > reward_delta;
-   std::vector< share_type > reward_total;
+  std::vector< share_type > reward_delta;
+  std::vector< share_type > reward_total;
 
-/*
-#define CREA_GENESIS_TIME                    (fc::time_point_sec(1458835200))
-#define CREA_MINING_TIME                     (fc::time_point_sec(1458838800))
-#define CREA_FIRST_CASHOUT_TIME              (fc::time_point_sec(1467590400))  /// July 4th
-*/
+  uint32_t liquidity_begin_block = (1467590400 - 1458835200) / 3;
+  uint32_t pow_deficit = 100;
 
-   uint32_t liquidity_begin_block = (1467590400 - 1458835200) / 3;
-   uint32_t pow_deficit = 100;
-
-   for( int i=0; i<REWARD_TYPES; i++ )
-   {
-      reward_delta.emplace_back();
-      reward_total.emplace_back();
-   }
+  for( int i=0; i<REWARD_TYPES; i++ )
+  {
+    reward_delta.emplace_back();
+    reward_total.emplace_back();
+  }
 
    auto block_inflation_model = [&]( uint32_t block_num, share_type& current_supply )
    {
@@ -96,12 +90,12 @@ int main( int argc, char** argv, char** envp )
       reward_delta[ PRODUCER_OFF ] = std::max( producer_reward, CREA_MIN_PRODUCER_REWARD.amount );
       reward_delta[ VPRODUCER_OFF ] = reward_delta[ PRODUCER_OFF ] * vesting_factor;
 
-      current_supply += reward_delta[CURATE_OFF] + reward_delta[VCURATE_OFF] + reward_delta[CONTENT_OFF] + reward_delta[VCONTENT_OFF] + reward_delta[PRODUCER_OFF] + reward_delta[VPRODUCER_OFF];
-      // supply for above is computed by using pre-updated supply for computing all 3 amounts.
-      // supply for below reward types is basically a self-contained event which updates the supply immediately before the next reward type's computation.
+    current_supply += reward_delta[CURATE_OFF] + reward_delta[VCURATE_OFF] + reward_delta[CONTENT_OFF] + reward_delta[VCONTENT_OFF] + reward_delta[PRODUCER_OFF] + reward_delta[VPRODUCER_OFF];
+    // supply for above is computed by using pre-updated supply for computing all 3 amounts.
+    // supply for below reward types is basically a self-contained event which updates the supply immediately before the next reward type's computation.
 
-      share_type liquidity_reward = 0;
-      share_type pow_reward = 0;
+    share_type liquidity_reward = 0;
+    share_type pow_reward = 0;
 
       if( (block_num % CREA_MAX_WITNESSES) == 0 )
          ++pow_deficit;
@@ -117,7 +111,7 @@ int main( int argc, char** argv, char** envp )
       reward_delta[ POW_OFF ] = pow_reward;
       reward_delta[ VPOW_OFF ] = reward_delta[ POW_OFF ] * vesting_factor;
 
-      current_supply += reward_delta[ POW_OFF ] + reward_delta[ VPOW_OFF ];
+    current_supply += reward_delta[ POW_OFF ] + reward_delta[ VPOW_OFF ];
 
       if( (block_num > liquidity_begin_block) && ((block_num % CREA_LIQUIDITY_REWARD_BLOCKS) == 0) )
       {
@@ -128,15 +122,15 @@ int main( int argc, char** argv, char** envp )
       reward_delta[ VLIQUIDITY_OFF ] = reward_delta[ LIQUIDITY_OFF ] * vesting_factor;
       current_supply += reward_delta[ LIQUIDITY_OFF ] + reward_delta[ VLIQUIDITY_OFF ];
 
-      for( int i=0; i<REWARD_TYPES; i++ )
-      {
-         reward_total[i] += reward_delta[i];
-      }
+    for( int i=0; i<REWARD_TYPES; i++ )
+    {
+      reward_total[i] += reward_delta[i];
+    }
 
-      return;
-   };
+    return;
+  };
 
-   share_type current_supply = 0;
+  share_type current_supply = 0;
 
    for( uint32_t b=1; b<10*CREA_BLOCKS_PER_YEAR; b++ )
    {
@@ -149,5 +143,5 @@ int main( int argc, char** argv, char** envp )
       }
    }
 
-   return 0;
+  return 0;
 }

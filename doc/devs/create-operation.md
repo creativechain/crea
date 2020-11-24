@@ -168,12 +168,17 @@ In practice, this means strings should be `shared_string`, and collections (vect
 should be one of the `boost::interprocess` types.  See examples in fields
 `transaction_object::packed_trx`, `comment_object::permlink`, and
 `feed_history_object::price_history`.
-- (9i) The first field should be `id_type id;`
+- (9i) The first field should be `id_type id;` - if you are using `CHAINBASE_OBJECT` macro it
+will be added automatically
 - (9j) Most fields should be default initialized, or set to zero, empty or compile-time
 default values.  Usually, the only field initialization done in the class constructor is
 passing the allocator, setting integer fields to zero, and executing the caller-provided
 `Constructor` callback.  The "real" initialization is performed by that callback, which
 will have access to necessary external information (from `database` and the operation).
+Such standard constructor can be defined with use of `CHAINBASE_DEFAULT_CONSTRUCTOR` macro, but
+you can also define custom constructors - they just need to be extensions of the following:
+```template< typename Allocator >
+chain_object( allocator< Allocator > a, uint64_t _id ) : id( _id ) {}```
 - (9k) All fields must be passed to `FC_REFLECT` in a bubble list
 - (9l) `struct` definitions for any index other than the default `by_id` should follow the class;
 `by_id` should *never* be defined by an object class.
@@ -209,7 +214,7 @@ it involves routing of type parameters to allow interaction of templates and pol
 complicated, but the `object` class definition in `chainbase.hpp` makes clear that it is used to simply
 `typedef oid< smt_token_object > id_type;`
 
-As a consequence of the above, `smt_token_id_type`, `oid< smt_token_object >` and
+As a consequence of the above, `smt_token_id_type`, `oid_ref< smt_token_object >` and
 `smt_token_object::id_type` all refer to a type representing an integer object ID, with a
 compile-time "note" attached that this object ID is a primary key for the `smt_token_object`
 database table.  The table ID of that database table is an integer value given by

@@ -13,7 +13,7 @@
 #include <set>
 
 #ifdef IS_TEST_NET
-#define CREA_NUM_HARDFORKS 21
+#define CREA_NUM_HARDFORKS 25
 #else
-#define CREA_NUM_HARDFORKS 20
+#define CREA_NUM_HARDFORKS 24
 #endif

@@ -30,13 +30,13 @@ static std::vector< rational_u64 > load_mm_ticks()
 
 const std::vector< rational_u64 >& get_mm_ticks()
 {
-   //
-   // In C++11, static local variable initialization is guaranteed to happen exactly once,
-   // in a thread-safe way.  So we use such an initialization to do the heavy work of
-   // converting the jsonball saved during compilation to an object.
-   //
-   static std::vector< rational_u64 > mm_ticks = load_mm_ticks();
-   return mm_ticks;
+  //
+  // In C++11, static local variable initialization is guaranteed to happen exactly once,
+  // in a thread-safe way.  So we use such an initialization to do the heavy work of
+  // converting the jsonball saved during compilation to an object.
+  //
+  static std::vector< rational_u64 > mm_ticks = load_mm_ticks();
+  return mm_ticks;
 }
 
 } }

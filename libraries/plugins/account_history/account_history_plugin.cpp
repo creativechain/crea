@@ -85,12 +85,12 @@ struct operation_visitor
       if( hist_itr != hist_idx.end() && hist_itr->account == item )
          sequence = hist_itr->sequence + 1;
 
-      _db.create< chain::account_history_object >( [&]( chain::account_history_object& ahist )
-      {
-         ahist.account  = item;
-         ahist.sequence = sequence;
-         ahist.op       = new_obj->id;
-      });
+    _db.create< chain::account_history_object >( [&]( chain::account_history_object& ahist )
+    {
+      ahist.account  = item;
+      ahist.sequence = sequence;
+      ahist.op       = new_obj->get_id();
+    });
 
       if( _prune )
       {
